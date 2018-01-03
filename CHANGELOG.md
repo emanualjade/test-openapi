@@ -3,6 +3,7 @@
 ## Features
 
 - Show getters in reporting output
+- Change HTTP status validation error message
 
 ## Dependencies
 

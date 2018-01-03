@@ -1,4 +1,4 @@
-# Pending
+# 42.1.0
 
 ## Features
 

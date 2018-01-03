@@ -18,7 +18,7 @@ const validateStatus = function({
 
   const { value: expected, statusesStr } = normalizeStatuses(vStatuses)
   throw new TestOpenApiError(
-    `Status code should not be ${status} but ${statusesStr}`,
+    `Status code was expected to be ${status}, but got ${statusesStr}`,
     { value: status, expected, property: PROPERTY },
   )
 }

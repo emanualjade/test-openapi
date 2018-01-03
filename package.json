@@ -1,6 +1,6 @@
 {
   "name": "test-openapi",
-  "version": "42.0.0",
+  "version": "42.1.0",
   "main": "index.js",
   "files": [
     "bin",

@@ -116,3 +116,7 @@ This is a simple but flexible way to help you test:
 * different scenarios for the same endpoint
 * a specific parameter
 * error responses
+
+# Similar projects
+
+* [Dredd](https://github.com/apiaryio/dredd): high-profile project with a similar concept. However it only does smoke testing. In particular error responses are not validated and only one HTTP request is performed per endpoint.

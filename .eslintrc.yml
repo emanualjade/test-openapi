@@ -1,0 +1,8 @@
+extends:
+- standard
+- plugin:prettier/recommended
+env:
+  jasmine: true
+parserOptions:
+  # At the moment, eslint-config-standard is still using `8`
+  ecmaVersion: 9

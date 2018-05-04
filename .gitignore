@@ -1,0 +1,13 @@
+.idea
+.env
+*.swp
+*.swo
+package-lock.json
+node_modules
+npm-debug.log
+tmp
+log
+bundles/*
+.vscode
+yarn-error.log
+.eslintcache

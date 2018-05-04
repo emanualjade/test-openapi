@@ -123,3 +123,4 @@ This is a simple but flexible way to help you test:
 
 * [Dredd](https://github.com/apiaryio/dredd): high-profile project with a similar concept. However it only does smoke testing. In particular error responses are not validated and only one HTTP request is performed per endpoint.
 * [Swagger test templates](https://github.com/apigee-127/swagger-test-templates): requires a compilation step and quite a lot of boilerplate.
+* [Abao](https://github.com/cybertk/abao): similar to Dredd but for RAML instead of OpenAPI

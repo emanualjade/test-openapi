@@ -16,7 +16,7 @@
       "git add"
     ]
   },
-  "license": "SEE LICENSE IN LICENSE",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Cardero-X/test-openapi.git"

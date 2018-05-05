@@ -11,3 +11,4 @@ bundles/*
 .vscode
 yarn-error.log
 .eslintcache
+.npmrc

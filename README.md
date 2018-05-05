@@ -7,7 +7,7 @@ test-openapi --endpoint https://api.example.com --spec path/to/my/openapi.json
 Automatically test your API based on a [Swagger/OpenAPI 2.0](https://www.openapis.org/)
 specification.
 
-Note: this is still quite unstable! It should get more stable in coming weeks though.
+Note: this is still quite unstable. It should get more stable in coming weeks though.
 
 # OpenAPI
 
@@ -121,6 +121,6 @@ This is a simple but flexible way to help you test:
 
 # Similar projects
 
-* [Dredd](https://github.com/apiaryio/dredd): high-profile project with a similar concept. However it only does smoke testing. In particular error responses are not validated and only one HTTP request is performed per endpoint.
+* [Dredd](https://github.com/apiaryio/dredd): high-profile project with a similar concept. However it only does smoke testing. In particular error responses are not validated and only one HTTP request is performed per endpoint. Also many tests require to manually add JavaScript "hooks".
 * [Swagger test templates](https://github.com/apigee-127/swagger-test-templates): requires a compilation step and quite a lot of boilerplate.
 * [Abao](https://github.com/cybertk/abao): similar to Dredd but for RAML instead of OpenAPI

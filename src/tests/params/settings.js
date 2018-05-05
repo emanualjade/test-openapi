@@ -7,7 +7,7 @@ const { isObject } = require('../../utils')
 // Retrieve `x-tests.name.*` into requests paramters
 const getSettingsParams = function({ specReqParams, securityParams, settings }) {
   const settingsA = Object.entries(settings)
-    .filter(([name]) => name !== 'response')
+    .filter(([name]) => !RESPONSE_PROPS.includes(name))
     .map(getSettingParam)
   const settingsB = addSettingsParamsLocation({
     specReqParams,
@@ -17,6 +17,8 @@ const getSettingsParams = function({ specReqParams, securityParams, settings }) 
   const settingsC = splitSettings({ settings: settingsB })
   return settingsC
 }
+
+const RESPONSE_PROPS = ['response', 'responseHeaders']
 
 // `x-tests.name.paramName` value can either be null|undefined, true, false or an object
 const getSettingParam = function([name, schema]) {

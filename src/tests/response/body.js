@@ -5,13 +5,10 @@ const { merge } = require('lodash')
 const { normalizeSchema } = require('../json_schema')
 
 // Retrieve test's expected response body
-const getSpecResBody = function({
-  schema,
-  settings: { response: settingsResponse = {}, response: { schema: settingsSchema } = {} },
-}) {
+const getSpecResBody = function({ schema, settings, settings: { response } }) {
   // Using an `undefined|null` schema means body should be empty
-  // I.e. for `x-tests`, `{ response: { schema: undefined } }` is different from `{ response: {} }`
-  if (settingsResponse.propertyIsEnumerable('schema') && settingsSchema == null) {
+  // I.e. for `x-tests`, `{ response: undefined }` is different from `{}`
+  if (settings.propertyIsEnumerable('response') && response == null) {
     return
   }
 
@@ -19,7 +16,7 @@ const getSpecResBody = function({
     return
   }
 
-  const schemaA = merge({}, schema, settingsSchema)
+  const schemaA = merge({}, schema, response)
 
   const schemaB = normalizeSchema({ schema: schemaA })
 

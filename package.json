@@ -3,7 +3,7 @@
   "version": "1.0.3",
   "description": "OpenAPI automatic integration testing",
   "main": "index.js",
-  "bin": "bin/testopenapi.js",
+  "bin": "bin/test-openapi.js",
   "scripts": {
     "test": "gulp test",
     "lint": "gulp lint",

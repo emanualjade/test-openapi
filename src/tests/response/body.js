@@ -7,7 +7,6 @@ const { normalizeSchema } = require('../json_schema')
 // Retrieve test's expected response body
 const getSpecResBody = function({
   schema: body,
-  testOpts,
   testOpts: { response = {}, response: { body: testBody } = {} },
 }) {
   // Using an `undefined|null` schema means body should be empty

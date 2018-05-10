@@ -3,7 +3,7 @@
 const { getContentNegotiations } = require('../content_negotiation')
 const { normalizeSchemas } = require('../json_schema')
 const { getSecChoices } = require('./security')
-const { getTestParams } = require('./testopts')
+const { getTestParams } = require('./test_opts')
 const { mergeParams } = require('./merge')
 
 // Retrieve HTTP request parameters

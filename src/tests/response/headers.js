@@ -9,11 +9,11 @@ const { normalizeSchema } = require('../json_schema')
 const getSpecResHeaders = function({
   headers = {},
   operationObject: { consumes, produces },
-  testOpts: { response },
+  testOpts,
 }) {
   const headersA = normalizeHeaders({ headers })
 
-  const testHeaders = getTestHeaders({ response })
+  const testHeaders = getTestHeaders({ testOpts })
 
   // Deep merge `response.headers` and `test.response.headers`
   const headersB = merge({}, headersA, testHeaders)
@@ -29,7 +29,7 @@ const getSpecResHeaders = function({
 // `test.response.headers.NAME` because it aligns headers with other properties
 // of the same nesting level. It also prevents too much nesting, which makes
 // the file looks more complicated than it is
-const getTestHeaders = function({ response = {} }) {
+const getTestHeaders = function({ testOpts: { response = {} } }) {
   const testHeaders = pickBy(response, isTestHeader)
   const testHeadersA = mapKeys(testHeaders, removePrefix)
   const testHeadersB = normalizeHeaders({ headers: testHeadersA })

@@ -19,7 +19,7 @@ const getSecTestParams = function({ testParams }) {
 
 // OpenAPI specification allows an alternative of sets of authentication-related
 // request parameters, so `specReqParams` is an array of arrays.
-// We only keep security alternatives that have been directly specified in `testOpts`
+// We only keep security alternatives that have been directly specified in `test.request.security.*`
 const getChoices = function({ secTestParams, operationObject }) {
   const operationSecs = getOperationSecs({ operationObject })
 

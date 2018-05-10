@@ -1,6 +1,6 @@
 'use strict'
 
-// Translate `testOpts` into requests paramters
+// Translate `test.request` into requests parameters
 const getTestParams = function({ testOpts: { request: testParams = {} } }) {
   return Object.entries(testParams).map(getTestParam)
 }

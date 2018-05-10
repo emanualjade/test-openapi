@@ -8,7 +8,8 @@ const getTestRequest = function({ testOpts: { request = {} } }) {
 const getTestParam = function([name, schema]) {
   const location = getLocation({ name })
 
-  const testParam = { schema, ...location }
+  // Parameters specified in `test.request.*` are always required (i.e. generated)
+  const testParam = { schema, required: true, ...location }
   return testParam
 }
 

@@ -63,7 +63,7 @@ const validateResBodyValue = function({ schema, value, body }) {
     return
   }
 
-  const errorA = `Invalid HTTP response body: ${error}\n${body}`
+  const errorA = `Invalid HTTP response body: ${error}\nResponse body was:\n${body}\n`
   throw new Error(errorA)
 }
 

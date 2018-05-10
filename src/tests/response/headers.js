@@ -9,13 +9,13 @@ const { normalizeSchema } = require('../json_schema')
 const getSpecResHeaders = function({
   headers = {},
   operationObject: { consumes, produces },
-  testOpts: { responseHeaders = {} },
+  testOpts: { response: { headers: testHeaders } = {} },
 }) {
   const headersA = normalizeHeaders({ headers })
-  const testHeaders = normalizeHeaders({ headers: responseHeaders })
+  const testHeadersA = normalizeHeaders({ headers: testHeaders })
 
-  // Deep merge `response.headers` and `testOpts.responseHeaders`
-  const headersB = merge({}, headersA, testHeaders)
+  // Deep merge `response.headers` and `testOpts.response.headers`
+  const headersB = merge({}, headersA, testHeadersA)
 
   const headersC = arrifyHeaders({ headers: headersB })
 

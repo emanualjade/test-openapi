@@ -101,7 +101,8 @@ responses:
         hasWebsite:
           const: true
         response:
-          required: [websiteUrl]
+          body:
+            required: [websiteUrl]
     schema: ...
 ```
 
@@ -110,14 +111,14 @@ key and an [OpenAPI schema](https://github.com/OAI/OpenAPI-Specification/blob/ma
 (here `{ "const": true }`) as the value. It will be deeply merged to the
 parameter's definition used to generate its value.
 
-To override response validation, set the `response` property with an
+To override response validation, set the `response`'s `body` property with an
 [OpenAPI schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
 It will be deeply merged to the response's definition used for validation.
 
 Response headers are also validated. They can be overriden using the
-`responseHeaders` property.
+`response`'s `headers` property.
 
-Status codes can be overriden using the `responseStatus` property.
+Status codes can be overriden using the `response`'s `status` property.
 
 This is a simple but flexible way to help you test:
 

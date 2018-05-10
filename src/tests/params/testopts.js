@@ -14,7 +14,7 @@ const getTestParams = function({ specReqParams, securityParams, testOpts }) {
   return testParamsB
 }
 
-const RESPONSE_PROPS = ['response', 'responseHeaders', 'responseStatus']
+const RESPONSE_PROPS = ['response']
 
 // `testOpt` value can either be null|undefined, true, false or an object
 const getTestParam = function([name, schema]) {

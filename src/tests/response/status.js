@@ -2,12 +2,12 @@
 
 // Retrieve test's expected response HTTP status code
 const getResponseStatus = function({
-  testOpts: { response: { status = DEFAULT_STATUS_CODE } = {} },
+  testOpts: { response: { status: schema = DEFAULT_SCHEMA } = {} },
 }) {
-  return status
+  return { type: 'integer', ...schema }
 }
 
-const DEFAULT_STATUS_CODE = { enum: [200] }
+const DEFAULT_SCHEMA = { enum: [200] }
 
 module.exports = {
   getResponseStatus,

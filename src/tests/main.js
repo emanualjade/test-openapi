@@ -15,14 +15,14 @@ const getTests = function({ opts }) {
 
 // Normalize each combination of endpoint + response + parameters
 // into something tests can use
-const normalizeTest = function({ name, settings, operationObject, statusCode, headers, schema }) {
+const normalizeTest = function({ name, settings, operationObject, headers, schema }) {
   const method = getMethod({ operationObject })
   const path = getPath({ operationObject })
   const operationId = getOperationId({ operationObject })
 
   const specReqParams = getSpecReqParams({ operationObject, settings })
 
-  const specResStatus = getSpecResStatus({ statusCode })
+  const specResStatus = getSpecResStatus({ settings })
   const specResHeaders = getSpecResHeaders({ headers, operationObject, settings })
   const specResBody = getSpecResBody({ schema, settings })
 

@@ -18,7 +18,7 @@ const getSettingsParams = function({ specReqParams, securityParams, settings }) 
   return settingsC
 }
 
-const RESPONSE_PROPS = ['response', 'responseHeaders']
+const RESPONSE_PROPS = ['response', 'responseHeaders', 'responseStatus']
 
 // `x-tests.name.paramName` value can either be null|undefined, true, false or an object
 const getSettingParam = function([name, schema]) {

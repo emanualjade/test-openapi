@@ -2,7 +2,7 @@
 
 // Validates response status code against OpenAPI specification
 const validateResStatus = function({ test: { specResStatus }, resStatus }) {
-  if (specResStatus === String(resStatus)) {
+  if (specResStatus === resStatus) {
     return
   }
 

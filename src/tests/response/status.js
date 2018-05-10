@@ -1,15 +1,11 @@
 'use strict'
 
 // Retrieve test's expected response HTTP status code
-const getSpecResStatus = function({ statusCode }) {
-  if (statusCode === 'default') {
-    return DEFAULT_STATUS_CODE
-  }
-
-  return statusCode
+const getSpecResStatus = function({ settings: { responseStatus = DEFAULT_STATUS_CODE } }) {
+  return responseStatus
 }
 
-const DEFAULT_STATUS_CODE = '200'
+const DEFAULT_STATUS_CODE = 200
 
 module.exports = {
   getSpecResStatus,

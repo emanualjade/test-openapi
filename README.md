@@ -117,6 +117,8 @@ It will be deeply merged to the response's definition used for validation.
 Response headers are also validated. They can be overriden using the
 `responseHeaders` property.
 
+Status codes can be overriden using the `responseStatus` property.
+
 This is a simple but flexible way to help you test:
 
 * different scenarios for the same endpoint

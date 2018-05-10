@@ -98,17 +98,18 @@ responses:
     x-tests:
       success: {}
       website:
-        hasWebsite:
-          const: true
+        request:
+          query.hasWebsite:
+            enum: [true]
         response:
           body:
             required: [websiteUrl]
     schema: ...
 ```
 
-To override request parameters, set the parameter name (here `hasWebsite`) as the
+To override `request` parameters, set the parameter (here `query.hasWebsite`) as the
 key and an [OpenAPI schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
-(here `{ "const": true }`) as the value. It will be deeply merged to the
+(here `{ "enum": [true] }`) as the value. It will be deeply merged to the
 parameter's definition used to generate its value.
 
 To override response validation, set the `response`'s `body` property with an

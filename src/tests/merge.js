@@ -1,6 +1,6 @@
 'use strict'
 
-const { merge, omit } = require('lodash')
+const { merge } = require('lodash')
 
 // Deep merge parameters or headers with the same name
 const mergeInputs = function({ inputs }) {
@@ -26,49 +26,28 @@ const findSameInput = function(inputs, inputA, start, length) {
 }
 
 const isSameInput = function({ inputA, inputB }) {
-  // Security parameter
-  if (inputA.secName !== undefined) {
-    return inputA.secName === inputB.secName
-  }
-
   return (
     inputA.name.toLowerCase() === inputB.name.toLowerCase() && inputA.location === inputB.location
   )
 }
 
 const mergeSingleInput = function(inputA, inputB) {
-  if (inputB.isTestOpt) {
-    return mergeTestOpt({ input: inputA, testOpt: inputB })
+  // `test.request|response.*: true` means we re-use parameter's schema
+  if (inputB.schema === true) {
+    return inputA
   }
 
-  return merge(inputA, inputB)
-}
-
-// Merge `x-tests.name.*` into requests parameters or response headers
-const mergeTestOpt = function({
-  input,
-  input: { schema: inputSchema },
-  testOpt,
-  testOpt: { schema: testSchema },
-}) {
-  // `x-tests.name.paramName: true` means we re-use parameter's schema
-  if (testSchema === true) {
-    return input
+  // `test.request|response.*: false` means we inverse re-use parameter's schema
+  if (inputB.schema === false) {
+    return { ...inputA, schema: { not: inputA.schema } }
   }
 
-  // `x-tests.name.paramName: false` means we inverse re-use parameter's schema
-  if (testSchema === false) {
-    return { ...input, schema: { not: inputSchema } }
-  }
-
-  // `x-tests.name.paramName: undefined|null` means we do not use that parameter
-  if (testSchema == null) {
+  // `test.request|response.*: undefined|null` means we do not use that parameter
+  if (inputB.schema == null) {
     return
   }
 
-  // Otherwise we merge it
-  const testOptA = omit(testOpt, 'isTestOpt')
-  return merge({}, input, testOptA)
+  return merge({}, inputA, inputB)
 }
 
 module.exports = {

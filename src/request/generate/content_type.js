@@ -10,7 +10,7 @@ const { DEFAULT_REQ_BODY_MIME } = require('../../format')
 const fakeContentType = function({ params }) {
   const [contentTypeParam, paramsA] = extractContentTypeParam({ params })
 
-  const reqBodyType = getReqBodyType({ params })
+  const reqBodyType = getReqBodyType({ params: paramsA })
 
   const contentTypeParamA = normalizeContentType({ contentTypeParam, reqBodyType })
   const paramsB = [...contentTypeParamA, ...paramsA]

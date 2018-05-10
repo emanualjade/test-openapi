@@ -24,12 +24,12 @@ const getParamsJsonSchema = function({ params }) {
 const getRequiredParams = function({ params }) {
   return params
     .filter(({ required }) => required)
-    .map(({ location, name }) => `${location}_${name}`)
+    .map(({ location, name }) => `${location}.${name}`)
 }
 
 // Transform OpenAPI parameter into a JSON schema of `type: object`
 const getProperties = function({ params }) {
-  const paramsA = params.map(({ location, name, schema }) => ({ [`${location}_${name}`]: schema }))
+  const paramsA = params.map(({ location, name, schema }) => ({ [`${location}.${name}`]: schema }))
   const properties = Object.assign({}, ...paramsA)
   return properties
 }
@@ -45,7 +45,7 @@ const addFakeParams = function({ values, params }) {
 }
 
 const addFakeParam = function({ values, param, param: { location, name } }) {
-  const value = values[`${location}_${name}`]
+  const value = values[`${location}.${name}`]
   return { ...param, value }
 }
 

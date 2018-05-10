@@ -5,5 +5,4 @@ module.exports = {
   ...require('./memoize'),
   ...require('./url'),
   ...require('./header'),
-  ...require('./types'),
 }

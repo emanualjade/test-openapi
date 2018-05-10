@@ -2,7 +2,7 @@
 
 const { getContentNegotiations } = require('../content_negotiation')
 const { normalizeSchemas } = require('../json_schema')
-const { getSecurityParams } = require('./security')
+const { getSecChoices } = require('./security')
 const { getTestParams } = require('./testopts')
 const { mergeParams } = require('./merge')
 
@@ -14,17 +14,17 @@ const getSpecReqParams = function({
 }) {
   const specReqParams = parameterObjects.map(getSpecReqParam)
 
-  const securityParams = getSecurityParams({ operationObject })
-
   const contentNegotiations = getContentNegotiations({ contentType: consumes, accept: produces })
 
-  const testsParams = getTestParams({ specReqParams, securityParams, testOpts })
+  const testParams = getTestParams({ testOpts })
+
+  const { secChoices, testParams: testParamsA } = getSecChoices({ operationObject, testParams })
 
   const specReqParamsA = mergeParams({
     specReqParams,
-    securityParams,
+    secChoices,
     contentNegotiations,
-    testsParams,
+    testParams: testParamsA,
   })
 
   const specReqParamsB = normalizeSchemas({ specReqParams: specReqParamsA })

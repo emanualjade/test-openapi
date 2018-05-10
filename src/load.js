@@ -15,9 +15,9 @@ const parseSpec = function({ spec }) {
     const sway = getSway()
     const specA = sway.create({ definition: spec })
     return specA
-  } catch (error) {
-    const message = `OpenAPI specification could not be loaded: ${error.message}`
-    throw new Error(message)
+  } catch ({ message }) {
+    const messageA = `OpenAPI specification could not be loaded: ${message}`
+    throw new Error(messageA)
   }
 }
 

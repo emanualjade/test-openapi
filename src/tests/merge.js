@@ -34,19 +34,54 @@ const isSameInput = function({ inputA, inputB }) {
 }
 
 const mergeSingleInput = function(inputA, inputB) {
-  // `test.request|response.*: invalid` means we inverse re-use parameter's schema
   if (inputB.schema === 'invalid') {
-    return { ...inputA, schema: { not: inputA.schema } }
+    return mergeInvalidSchema({ inputA, inputB })
   }
 
-  // `test.request|response.*: non-object` is shortcut for `{ enum: [value] }`
   if (!isObject(inputB.schema)) {
-    const type = getSchemaType({ value: inputB.schema })
-    return { ...inputA, schema: { ...inputA.schema, type, enum: [inputB.schema] } }
+    return mergeShortcutSchema({ inputA, inputB })
   }
 
   // Otherwise it is a JSON schema that we deep merge
   return merge({}, inputA, inputB)
+}
+
+// `test.request|response.*: invalid` means we inverse re-use parameter's schema
+const mergeInvalidSchema = function({
+  inputA,
+  inputA: {
+    schema,
+    schema: { type },
+  },
+  inputB,
+}) {
+  const typeA = addNullType({ type })
+  const schemaA = { ...schema, type: typeA }
+  return { ...inputA, ...inputB, schema: { not: schemaA } }
+}
+
+// When using 'invalid', we want to make sure the value is generated, i.e. it
+// should never be `null`
+const addNullType = function({ type = [] }) {
+  if (type === 'null') {
+    return type
+  }
+
+  if (!Array.isArray(type)) {
+    return ['null', type]
+  }
+
+  if (type.includes('null')) {
+    return type
+  }
+
+  return ['null', ...type]
+}
+
+// `test.request|response.*: non-object` is shortcut for `{ enum: [value] }`
+const mergeShortcutSchema = function({ inputA, inputB }) {
+  const type = getSchemaType({ value: inputB.schema })
+  return { ...inputA, ...inputB, schema: { ...inputA.schema, type, enum: [inputB.schema] } }
 }
 
 // When using the shortcut notation, we need to set the `type` to make sure it

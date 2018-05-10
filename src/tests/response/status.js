@@ -7,7 +7,7 @@ const getResponseStatus = function({
   return status
 }
 
-const DEFAULT_STATUS_CODE = 200
+const DEFAULT_STATUS_CODE = { enum: [200] }
 
 module.exports = {
   getResponseStatus,

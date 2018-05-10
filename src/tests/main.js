@@ -3,7 +3,7 @@
 const { findTests } = require('./traverse')
 const { getOperationId } = require('./operation_id')
 const { getRequests } = require('./request')
-const { getSpecResStatus, getSpecResHeaders, getSpecResBody } = require('./response')
+const { getResponseStatus, getResponseHeaders, getResponseBody } = require('./response')
 
 // Returns lists of tests to perform
 const getTests = function({ opts }) {
@@ -22,23 +22,12 @@ const normalizeTest = function({ name, testOpts, operationObject, headers, schem
 
   const requests = getRequests({ operationObject, testOpts })
 
-  const specResStatus = getSpecResStatus({ testOpts })
-  const specResHeaders = getSpecResHeaders({ headers, operationObject, testOpts })
-  const specResBody = getSpecResBody({ schema, testOpts })
+  const responseStatus = getResponseStatus({ testOpts })
+  const responseHeaders = getResponseHeaders({ headers, operationObject, testOpts })
+  const responseBody = getResponseBody({ schema, testOpts })
+  const response = { status: responseStatus, headers: responseHeaders, body: responseBody }
 
-  return {
-    name,
-
-    method,
-    path,
-    operationId,
-
-    requests,
-
-    specResStatus,
-    specResHeaders,
-    specResBody,
-  }
+  return { name, method, path, operationId, requests, response }
 }
 
 const getMethod = function({ operationObject: { method } }) {

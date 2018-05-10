@@ -5,7 +5,7 @@ const { merge } = require('lodash')
 const { normalizeSchema } = require('../json_schema')
 
 // Retrieve test's expected response body
-const getSpecResBody = function({
+const getResponseBody = function({
   schema: body,
   testOpts: { response = {}, response: { body: testBody } = {} },
 }) {
@@ -21,10 +21,10 @@ const getSpecResBody = function({
 
   const schema = merge({}, body, testBody)
 
-  const specResBody = normalizeSchema({ schema })
-  return specResBody
+  const responseBody = normalizeSchema({ schema })
+  return responseBody
 }
 
 module.exports = {
-  getSpecResBody,
+  getResponseBody,
 }

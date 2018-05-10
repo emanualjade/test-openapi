@@ -5,21 +5,26 @@ const { capitalizeHeader } = require('../utils')
 const { validateFromSchema } = require('./json_schema')
 
 // Validates response headers against OpenAPI specification
-const validateResHeaders = function({ test: { specResHeaders }, resHeaders }) {
-  specResHeaders.forEach(({ name, schema, collectionFormat }) =>
-    validateResHeader({ name, schema, collectionFormat, resHeader: resHeaders[name] }),
+const validateHeaders = function({
+  test: {
+    response: { headers },
+  },
+  resHeaders,
+}) {
+  headers.forEach(({ name, schema, collectionFormat }) =>
+    validateHeader({ name, schema, collectionFormat, resHeader: resHeaders[name] }),
   )
 }
 
-const validateResHeader = function({ name, schema, collectionFormat, resHeader }) {
-  validateResHeaderRequired({ name, resHeader })
+const validateHeader = function({ name, schema, collectionFormat, resHeader }) {
+  validateHeaderRequired({ name, resHeader })
 
   const value = parseHeader({ header: resHeader, schema, collectionFormat })
-  validateResHeaderValue({ name, schema, value, resHeader })
+  validateHeaderValue({ name, schema, value, resHeader })
 }
 
 // All response headers defined in the specification are considered required
-const validateResHeaderRequired = function({ name, resHeader }) {
+const validateHeaderRequired = function({ name, resHeader }) {
   if (resHeader !== undefined) {
     return
   }
@@ -30,7 +35,7 @@ const validateResHeaderRequired = function({ name, resHeader }) {
 }
 
 // Validates response header against JSON schema from specification
-const validateResHeaderValue = function({ name, schema, value, resHeader }) {
+const validateHeaderValue = function({ name, schema, value, resHeader }) {
   const headerName = capitalizeHeader({ name })
   const error = validateFromSchema({ schema, value, name: `headers['${headerName}']` })
   if (!error) {
@@ -43,5 +48,5 @@ const validateResHeaderValue = function({ name, schema, value, resHeader }) {
 }
 
 module.exports = {
-  validateResHeaders,
+  validateHeaders,
 }

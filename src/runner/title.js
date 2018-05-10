@@ -16,9 +16,16 @@ const getPadding = function({ name, tests }) {
 }
 
 // `it()` title
-const getTestTitle = function({ test, test: { specResStatus, name }, paddings }) {
+const getTestTitle = function({
+  test,
+  test: {
+    response: { status },
+    name,
+  },
+  paddings,
+}) {
   const [method, path] = addPaddings({ names: ['method', 'path'], test, paddings })
-  return `${method} ${path} should respond with status code ${specResStatus} (${name})`
+  return `${method} ${path} should respond with status code ${status} (${name})`
 }
 
 const addPaddings = function({ names, test, paddings }) {

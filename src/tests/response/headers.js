@@ -6,7 +6,7 @@ const { addContentNegotiationsHeaders } = require('../content_negotiation')
 const { normalizeSchema } = require('../json_schema')
 
 // Retrieve test's expected response headers
-const getSpecResHeaders = function({
+const getResponseHeaders = function({
   headers = {},
   operationObject: { consumes, produces },
   testOpts,
@@ -64,5 +64,5 @@ const arrifyHeaders = function({ headers }) {
 }
 
 module.exports = {
-  getSpecResHeaders,
+  getResponseHeaders,
 }

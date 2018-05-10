@@ -1,14 +1,19 @@
 'use strict'
 
 // Validates response status code against OpenAPI specification
-const validateResStatus = function({ test: { specResStatus }, resStatus }) {
-  if (specResStatus === resStatus) {
+const validateStatus = function({
+  test: {
+    response: { status },
+  },
+  resStatus,
+}) {
+  if (status === resStatus) {
     return
   }
 
-  throw new Error(`Expected HTTP status code ${specResStatus} but received ${resStatus} instead`)
+  throw new Error(`Expected HTTP status code ${status} but received ${resStatus} instead`)
 }
 
 module.exports = {
-  validateResStatus,
+  validateStatus,
 }

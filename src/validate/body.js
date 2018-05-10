@@ -6,25 +6,27 @@ const { parseBody } = require('../format')
 const { validateFromSchema } = require('./json_schema')
 
 // Validates response body against OpenAPI specification
-const validateResBody = function({
-  test: { specResBody: schema },
+const validateBody = function({
+  test: {
+    response: { body: schema },
+  },
   resBody: body,
   resHeaders: headers,
 }) {
   const bodyA = body.trim()
 
-  const isEmpty = validateResBodyEmpty({ body: bodyA, headers, schema })
+  const isEmpty = validateBodyEmpty({ body: bodyA, headers, schema })
   if (isEmpty) {
     return
   }
 
   const value = parseBody({ body: bodyA, headers })
-  validateResBodyValue({ schema, value, body: bodyA })
+  validateBodyValue({ schema, value, body: bodyA })
 }
 
 // When specification's `response.schema` is defined, it means response body
 // must not be empty. And vice-versa.
-const validateResBodyEmpty = function({ body, headers, schema }) {
+const validateBodyEmpty = function({ body, headers, schema }) {
   const isEmptyHeaders = !hasBody({ headers })
   const isEmptyBody = body === ''
 
@@ -57,7 +59,7 @@ const validateResBodyEmpty = function({ body, headers, schema }) {
   return isEmptyBody
 }
 
-const validateResBodyValue = function({ schema, value, body }) {
+const validateBodyValue = function({ schema, value, body }) {
   const error = validateFromSchema({ schema, value, name: 'body' })
   if (!error) {
     return
@@ -68,5 +70,5 @@ const validateResBodyValue = function({ schema, value, body }) {
 }
 
 module.exports = {
-  validateResBody,
+  validateBody,
 }

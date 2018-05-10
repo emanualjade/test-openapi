@@ -4,7 +4,7 @@ const { getOpts } = require('./opts')
 const { getTests } = require('./tests')
 const { defineTests } = require('./runner')
 const { sendRequest } = require('./request')
-const { validateRes } = require('./validate')
+const { validateResponse } = require('./validate')
 
 // Main entry point of integration tests definition
 const defineIntegrationTests = function() {
@@ -25,7 +25,7 @@ const runTest = async function({ opts }, test) {
   const { fetchOpts, res } = await sendRequest({ test, opts })
 
   // Validates that the HTTP response matches the endpoint OpenAPI specification
-  await validateRes({ test, fetchOpts, res })
+  await validateResponse({ test, fetchOpts, res })
 }
 
 defineIntegrationTests()

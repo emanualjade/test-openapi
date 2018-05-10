@@ -19,7 +19,14 @@ const sendRequest = async function({ test, opts }) {
 }
 
 // Retrieve HTTP request's URL, headers and body
-const getFetchOpts = function({ test, test: { method, requests }, opts }) {
+const getFetchOpts = function({
+  test,
+  test: {
+    operation: { method },
+    requests,
+  },
+  opts,
+}) {
   const requestA = generateRequest({ requests })
 
   const url = getRequestUrl({ test, opts, request: requestA })

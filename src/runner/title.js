@@ -10,7 +10,7 @@ const getPaddings = function({ tests }) {
 const PADDINGS = { method: 0, path: 0 }
 
 const getPadding = function({ name, tests }) {
-  const values = tests.map(test => test[name].length)
+  const values = tests.map(({ operation }) => operation[name].length)
   const padding = Math.max(...values)
   return padding
 }
@@ -32,8 +32,8 @@ const addPaddings = function({ names, test, paddings }) {
   return names.map(name => addPadding({ name, test, paddings }))
 }
 
-const addPadding = function({ name, test, paddings }) {
-  return test[name].padEnd(paddings[name])
+const addPadding = function({ name, test: { operation }, paddings }) {
+  return operation[name].padEnd(paddings[name])
 }
 
 module.exports = {

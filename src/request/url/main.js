@@ -6,7 +6,13 @@ const { addPathRequest } = require('./path')
 const { addQueryRequest } = require('./query')
 
 // Build request URL from OpenAPI specification request `parameters`
-const getRequestUrl = function({ test: { path }, opts, request }) {
+const getRequestUrl = function({
+  test: {
+    operation: { path },
+  },
+  opts,
+  request,
+}) {
   const pathA = addPathRequest({ path, request })
   const urlA = normalizeRequestUrl({ opts, path: pathA })
   const urlB = addQueryRequest({ url: urlA, request })

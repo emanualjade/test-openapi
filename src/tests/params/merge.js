@@ -7,21 +7,21 @@ const mergeParams = function({
   specReqParams,
   securityParams,
   contentNegotiations,
-  settingsParams: { secSettings, nonSecSettings },
+  testsParams: { secTestParams, nonSecTestParams },
 }) {
-  const securityParamsA = getSecurityParams({ securityParams, secSettings })
+  const securityParamsA = getSecurityParams({ securityParams, secTestParams })
   return securityParamsA.map(security =>
-    mergeEachParams({ specReqParams, security, contentNegotiations, nonSecSettings }),
+    mergeEachParams({ specReqParams, security, contentNegotiations, nonSecTestParams }),
   )
 }
 
 // OpenAPI specification allows an alternative of sets of authentication-related
 // request parameters, so `specReqParams` is an array of arrays.
-// We only keep security alternatives that have been directly specified in `x-tests.*`
-const getSecurityParams = function({ securityParams, secSettings }) {
+// We only keep security alternatives that have been directly specified in `testOpts`
+const getSecurityParams = function({ securityParams, secTestParams }) {
   const securityParamsA = securityParams
-    .filter(security => isSelectedSecurity({ security, secSettings }))
-    .map(security => mergeSecSettings({ security, secSettings }))
+    .filter(security => isSelectedSecurity({ security, secTestParams }))
+    .map(security => mergeSecTestParams({ security, secTestParams }))
   if (securityParamsA.length === 0) {
     return [[]]
   }
@@ -29,22 +29,27 @@ const getSecurityParams = function({ securityParams, secSettings }) {
   return securityParamsA
 }
 
-const isSelectedSecurity = function({ security, secSettings }) {
-  return security.some(securityParam => isSelectedSecurityParam({ securityParam, secSettings }))
+const isSelectedSecurity = function({ security, secTestParams }) {
+  return security.some(securityParam => isSelectedSecurityParam({ securityParam, secTestParams }))
 }
 
-const isSelectedSecurityParam = function({ securityParam, secSettings }) {
-  return secSettings.some(({ secName }) => secName === securityParam.secName)
+const isSelectedSecurityParam = function({ securityParam, secTestParams }) {
+  return secTestParams.some(({ secName }) => secName === securityParam.secName)
 }
 
-const mergeSecSettings = function({ security, secSettings }) {
-  const securityA = [...security, ...secSettings]
+const mergeSecTestParams = function({ security, secTestParams }) {
+  const securityA = [...security, ...secTestParams]
   const securityB = mergeInputs({ inputs: securityA })
   return securityB
 }
 
-const mergeEachParams = function({ specReqParams, security, contentNegotiations, nonSecSettings }) {
-  const params = [...contentNegotiations, ...security, ...specReqParams, ...nonSecSettings]
+const mergeEachParams = function({
+  specReqParams,
+  security,
+  contentNegotiations,
+  nonSecTestParams,
+}) {
+  const params = [...contentNegotiations, ...security, ...specReqParams, ...nonSecTestParams]
   const paramsA = mergeInputs({ inputs: params })
   return paramsA
 }

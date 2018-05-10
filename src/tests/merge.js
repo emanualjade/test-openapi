@@ -37,38 +37,38 @@ const isSameInput = function({ inputA, inputB }) {
 }
 
 const mergeSingleInput = function(inputA, inputB) {
-  if (inputB.isSetting) {
-    return mergeSetting({ input: inputA, setting: inputB })
+  if (inputB.isTestOpt) {
+    return mergeTestOpt({ input: inputA, testOpt: inputB })
   }
 
   return merge(inputA, inputB)
 }
 
 // Merge `x-tests.name.*` into requests parameters or response headers
-const mergeSetting = function({
+const mergeTestOpt = function({
   input,
   input: { schema: inputSchema },
-  setting,
-  setting: { schema: settingSchema },
+  testOpt,
+  testOpt: { schema: testSchema },
 }) {
   // `x-tests.name.paramName: true` means we re-use parameter's schema
-  if (settingSchema === true) {
+  if (testSchema === true) {
     return input
   }
 
   // `x-tests.name.paramName: false` means we inverse re-use parameter's schema
-  if (settingSchema === false) {
+  if (testSchema === false) {
     return { ...input, schema: { not: inputSchema } }
   }
 
   // `x-tests.name.paramName: undefined|null` means we do not use that parameter
-  if (settingSchema == null) {
+  if (testSchema == null) {
     return
   }
 
   // Otherwise we merge it
-  const settingA = omit(setting, 'isSetting')
-  return merge({}, input, settingA)
+  const testOptA = omit(testOpt, 'isTestOpt')
+  return merge({}, input, testOptA)
 }
 
 module.exports = {

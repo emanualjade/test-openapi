@@ -2,7 +2,7 @@
 
 const { flattenDeep } = require('lodash')
 
-// Finds all `x-tests`
+// Finds all tests
 const findTests = function({ opts }) {
   const tests = findOperations({ opts })
   const testsA = flattenDeep(tests)
@@ -18,18 +18,18 @@ const findOperations = function({ opts: { spec } }) {
 
 // Iterates over responses for each operation
 const findResponses = function({ responseObjects }) {
-  return responseObjects.map(findTestSettings)
+  return responseObjects.map(findTestOpts)
 }
 
-// Iterates over `x-tests`
-const findTestSettings = function(response) {
+// Iterates over `testOpts`
+const findTestOpts = function(response) {
   // Defaults to {}, i.e. no tests
   const tests = response['x-tests'] || {}
 
-  return Object.entries(tests).map(([name, settings]) => ({
+  return Object.entries(tests).map(([name, testOpts]) => ({
     ...response,
     name,
-    settings,
+    testOpts,
   }))
 }
 

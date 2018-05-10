@@ -1,7 +1,7 @@
 'use strict'
 
 // Retrieve test's expected response HTTP status code
-const getSpecResStatus = function({ settings: { responseStatus = DEFAULT_STATUS_CODE } }) {
+const getSpecResStatus = function({ testOpts: { responseStatus = DEFAULT_STATUS_CODE } }) {
   return responseStatus
 }
 

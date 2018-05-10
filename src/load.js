@@ -1,13 +1,31 @@
 'use strict'
 
+const { chdir, cwd } = require('process')
+const { dirname, basename } = require('path')
+
 // Parses an OpenAPI file (including JSON references)
 // Then validates its syntax
 const loadOpenApiSpec = async function({ path }) {
-  const spec = await parseSpec({ spec: path })
+  const spec = await loadSpec({ path })
 
   validateOpenApi({ spec })
 
   return spec
+}
+
+const loadSpec = async function({ path }) {
+  const dir = dirname(path)
+  const spec = basename(path)
+
+  // We need to change `process.cwd` for the JSON references to be resolved correctly
+  const currentDir = cwd()
+  chdir(dir)
+
+  const specA = await parseSpec({ spec })
+
+  chdir(currentDir)
+
+  return specA
 }
 
 const parseSpec = function({ spec }) {
@@ -60,5 +78,4 @@ const getErrorMessage = function({ path, message }) {
 
 module.exports = {
   loadOpenApiSpec,
-  parseSpec,
 }

@@ -8,13 +8,15 @@ const { findBodyHandler } = require('./body')
 const parseHeader = function({ header, schema, collectionFormat }) {
   const headerA = header.trim()
 
-  if (schema.type === 'string') {
-    return headerA
-  }
-
   // Response header values that are arrays can either use JSON or OpenAPI `collectionFormat`
   if (usesCollectionFormat({ value: headerA, schema })) {
     return parseCollectionFormat({ value: headerA, collectionFormat })
+  }
+
+  // If `schema.type` is an array including `string`, it will still work when
+  // trying to JSON.parse() first
+  if (schema.type === 'string') {
+    return headerA
   }
 
   try {

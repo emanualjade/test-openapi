@@ -17,15 +17,8 @@ const stringifyParam = function({ param, param: { location }, contentType }) {
 // `path`, `query` and `header` values might not be strings.
 // In which case they are JSON stringified
 // Unless a `collectionFormat` is used
-const stringifyParamFlat = function({
-  param: {
-    value,
-    schema: { type },
-    name,
-    collectionFormat,
-  },
-}) {
-  if (type === 'array') {
+const stringifyParamFlat = function({ param: { value, name, collectionFormat } }) {
+  if (Array.isArray(value)) {
     return stringifyCollectionFormat({ value, collectionFormat, name })
   }
 

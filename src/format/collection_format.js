@@ -6,10 +6,19 @@ const { stringifyFlat, parseFlat } = require('./json')
 // using information from its OpenAPI schema
 const usesCollectionFormat = function({ value, schema }) {
   return (
-    schema.type === 'array' &&
+    hasType({ schema, type: 'array' }) &&
     typeof value === 'string' &&
     (!value.startsWith('[') || !value.endsWith(']'))
   )
+}
+
+const hasType = function({ schema, type }) {
+  // JSON schema `type` can be an array
+  if (Array.isArray(schema.type)) {
+    return schema.type.includes(type)
+  }
+
+  return schema.type === type
 }
 
 // Parses an array according to OpenAPI's `collectionFormat`

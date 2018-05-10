@@ -1,8 +1,8 @@
 'use strict'
 
 // Translate `test.request` into requests parameters
-const getTestParams = function({ testOpts: { request: testParams = {} } }) {
-  return Object.entries(testParams).map(getTestParam)
+const getTestRequest = function({ testOpts: { request = {} } }) {
+  return Object.entries(request).map(getTestParam)
 }
 
 const getTestParam = function([name, schema]) {
@@ -40,5 +40,5 @@ const LOCATIONS = {
 }
 
 module.exports = {
-  getTestParams,
+  getTestRequest,
 }

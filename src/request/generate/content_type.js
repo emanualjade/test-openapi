@@ -6,24 +6,24 @@ const { DEFAULT_REQ_BODY_MIME } = require('../../format')
 // `Content-Type` value generation has extra constraints:
 //  - it should be empty if no request body is going to be sent
 //  - it should include or exclude `multipart/form-data` and `application/x-www-form-urlencoded`
-//    depending on whether the parameter is a `body` or a `formData`
-const fakeContentType = function({ params }) {
-  const [contentTypeParam, paramsA] = extractContentTypeParam({ params })
+//    depending on whether the request parameter is a `body` or a `formData`
+const fakeContentType = function({ request }) {
+  const [contentTypeParam, requestA] = extractContentTypeParam({ request })
 
-  const reqBodyType = getReqBodyType({ params: paramsA })
+  const reqBodyType = getReqBodyType({ request: requestA })
 
   const contentTypeParamA = normalizeContentType({ contentTypeParam, reqBodyType })
-  const paramsB = [...contentTypeParamA, ...paramsA]
+  const requestB = [...contentTypeParamA, ...requestA]
 
   const contentType = getReqContentType({ contentTypeParam: contentTypeParamA })
-  return { params: paramsB, contentType }
+  return { request: requestB, contentType }
 }
 
-// Extract the `Content-Type` header parameter from other parameters
-const extractContentTypeParam = function({ params }) {
-  const contentTypeParam = params.find(param => isContentTypeParam({ param }))
-  const paramsA = params.filter(param => !isContentTypeParam({ param }))
-  return [contentTypeParam, paramsA]
+// Extract the `Content-Type` header request parameter from others
+const extractContentTypeParam = function({ request }) {
+  const contentTypeParam = request.find(param => isContentTypeParam({ param }))
+  const requestA = request.filter(param => !isContentTypeParam({ param }))
+  return [contentTypeParam, requestA]
 }
 
 const isContentTypeParam = function({ param: { location, name } }) {
@@ -31,8 +31,8 @@ const isContentTypeParam = function({ param: { location, name } }) {
 }
 
 // Retrieve whether there is a request body and whether it is of `body` or `formData` type
-const getReqBodyType = function({ params }) {
-  const { location } = params.find(isReqBodyParam) || {}
+const getReqBodyType = function({ request }) {
+  const { location } = request.find(isReqBodyParam) || {}
   return location
 }
 
@@ -74,8 +74,8 @@ const DEFAULT_CONTENT_TYPE_PARAM = {
   schema: { type: 'string', enum: ['application/octet-stream'] },
 }
 
-// Must use `formData` parameter if `x-www-form-urlencoded` or `multipart/form-data`
-// Must use `body` parameter otherwise
+// Must use `formData` request parameter if `x-www-form-urlencoded` or `multipart/form-data`
+// Must use `body` request parameter otherwise
 const filterReqBodyMimes = function({
   contentTypeParam,
   contentTypeParam: {

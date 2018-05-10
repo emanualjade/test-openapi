@@ -5,8 +5,8 @@ const { findBodyHandler } = require('./body')
 const { stringifyFlat } = require('./json')
 
 // Stringify a request's parameters according to OpenAPI's specification
-const stringifyParams = function({ params, contentType }) {
-  return params.map(param => stringifyParam({ param, contentType }))
+const stringifyRequest = function({ request, contentType }) {
+  return request.map(param => stringifyParam({ param, contentType }))
 }
 
 const stringifyParam = function({ param, param: { location }, contentType }) {
@@ -65,6 +65,6 @@ const DEFAULT_REQ_BODY_MIME = {
 }
 
 module.exports = {
-  stringifyParams,
+  stringifyRequest,
   DEFAULT_REQ_BODY_MIME,
 }

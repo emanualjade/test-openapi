@@ -3,29 +3,29 @@
 const { mergeInputs } = require('../merge')
 
 // Get list of authentication-related headers or query variables
-const getSecChoices = function({ operationObject, testParams }) {
-  const { secTestParams, testParams: testParamsA } = getSecTestParams({ testParams })
+const getSecChoices = function({ operationObject, testRequest }) {
+  const { secTestRequest, testRequest: testRequestA } = getSecTestRequest({ testRequest })
 
-  const secChoices = getChoices({ operationObject, secTestParams })
+  const secChoices = getChoices({ operationObject, secTestRequest })
 
-  return { testParams: testParamsA, secChoices }
+  return { testRequest: testRequestA, secChoices }
 }
 
-const getSecTestParams = function({ testParams }) {
-  const secTestParams = testParams.filter(({ location }) => location === 'security')
-  const testParamsA = testParams.filter(({ location }) => location !== 'security')
-  return { secTestParams, testParams: testParamsA }
+const getSecTestRequest = function({ testRequest }) {
+  const secTestRequest = testRequest.filter(({ location }) => location === 'security')
+  const testRequestA = testRequest.filter(({ location }) => location !== 'security')
+  return { secTestRequest, testRequest: testRequestA }
 }
 
 // OpenAPI specification allows an alternative of sets of authentication-related
-// request parameters, so `specReqParams` is an array of arrays.
+// request parameters, so `request` is an array of arrays.
 // We only keep security alternatives that have been directly specified in `test.request.security.*`
-const getChoices = function({ secTestParams, operationObject }) {
+const getChoices = function({ secTestRequest, operationObject }) {
   const operationSecs = getOperationSecs({ operationObject })
 
   const secChoices = operationSecs
-    .map(operationSec => getSecParams({ operationSec, operationObject, secTestParams }))
-    .filter(secParams => secParams !== undefined)
+    .map(operationSec => getSecRequest({ operationSec, operationObject, secTestRequest }))
+    .filter(secRequest => secRequest !== undefined)
 
   // Means no security parameters will be used
   if (secChoices.length === 0) {
@@ -52,22 +52,22 @@ const getOperationSecs = function({
   return apiSecurity
 }
 
-const getSecParams = function({ operationSec, operationObject, secTestParams }) {
-  const secParams = findSecParams({ operationSec, operationObject })
+const getSecRequest = function({ operationSec, operationObject, secTestRequest }) {
+  const secRequest = findSecRequest({ operationSec, operationObject })
 
-  const secTestParamsA = normalizeSecTestParams({ secTestParams, secParams })
+  const secTestRequestA = normalizeSecTestRequest({ secTestRequest, secRequest })
 
-  // Only use security params if specified in `test.request.security`
-  if (secTestParamsA.length === 0) {
+  // Only use security request parameters if specified in `test.request.security`
+  if (secTestRequestA.length === 0) {
     return
   }
 
-  const secParamsA = mergeSecTestParams({ secParams, secTestParams: secTestParamsA })
-  return secParamsA
+  const secRequestA = mergeSecTestRequest({ secRequest, secTestRequest: secTestRequestA })
+  return secRequestA
 }
 
 // Retrieve possible security parameters from specification
-const findSecParams = function({ operationSec, operationObject }) {
+const findSecRequest = function({ operationSec, operationObject }) {
   return Object.entries(operationSec).map(([secName, scopes]) =>
     getSecParam({ secName, scopes, operationObject }),
   )
@@ -111,18 +111,18 @@ const SECURITY_DEFS = {
 
 // Find security parameter for each `test.request.security.SEC_NAME` and merge
 // it except `schema`
-const normalizeSecTestParams = function({ secTestParams, secParams }) {
-  return secTestParams
-    .map(secTestParam => normalizeSecTestParam({ secTestParam, secParams }))
+const normalizeSecTestRequest = function({ secTestRequest, secRequest }) {
+  return secTestRequest
+    .map(secTestParam => normalizeSecTestParam({ secTestParam, secRequest }))
     .filter(secTestParam => secTestParam !== undefined)
 }
 
 const normalizeSecTestParam = function({
   secTestParam,
   secTestParam: { name, schema },
-  secParams,
+  secRequest,
 }) {
-  const secParam = secParams.find(({ secName }) => secName === name)
+  const secParam = secRequest.find(({ secName }) => secName === name)
   if (secParam === undefined) {
     return
   }
@@ -131,10 +131,10 @@ const normalizeSecTestParam = function({
 }
 
 // Merge `test.request.security`
-const mergeSecTestParams = function({ secParams, secTestParams }) {
-  const inputs = [...secParams, ...secTestParams]
-  const secParamsA = mergeInputs({ inputs })
-  return secParamsA
+const mergeSecTestRequest = function({ secRequest, secTestRequest }) {
+  const inputs = [...secRequest, ...secTestRequest]
+  const secRequestA = mergeInputs({ inputs })
+  return secRequestA
 }
 
 module.exports = {

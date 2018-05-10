@@ -1,20 +1,20 @@
 'use strict'
 
-const { filterParams } = require('./utils')
+const { filterRequest } = require('./utils')
 
-// Build request body from OpenAPI specification `parameters`
-const getReqBody = function({ params }) {
-  const bodyParams = filterParams({ params, location: 'body' })
-  if (bodyParams.length !== 0) {
-    return bodyParams[0].value
+// Build request body from OpenAPI specification request `parameters`
+const getRequestBody = function({ request }) {
+  const bodyRequest = filterRequest({ request, location: 'body' })
+  if (bodyRequest.length !== 0) {
+    return bodyRequest[0].value
   }
 
-  const formDataParams = filterParams({ params, location: 'formData' })
-  if (formDataParams.length === 0) {
+  const formDataRequest = filterRequest({ request, location: 'formData' })
+  if (formDataRequest.length === 0) {
     // TODO: add support for sending `formData`
   }
 }
 
 module.exports = {
-  getReqBody,
+  getRequestBody,
 }

@@ -4,26 +4,26 @@ const {
   random: { pick },
 } = require('json-schema-faker')
 
-const { stringifyParams } = require('../../format')
+const { stringifyRequest } = require('../../format')
 
 const { fakeValues } = require('./fake')
 const { fakeContentType } = require('./content_type')
 
-// Generates random parameters based on JSON schema
-const generateParams = function({ specReqParams: params }) {
+// Generates random request parameters based on JSON schema
+const generateRequest = function({ requests }) {
   // OpenAPI specification allows an alternative of sets of authentication-related
   // request parameters. We randomly pick one among the ones specified in `x-tests.*`
-  const paramsA = pick(params)
+  const request = pick(requests)
 
-  const paramsB = fakeValues({ params: paramsA })
+  const requestA = fakeValues({ request })
 
-  const { params: paramsC, contentType } = fakeContentType({ params: paramsB })
+  const { request: requestB, contentType } = fakeContentType({ request: requestA })
 
-  const paramsD = stringifyParams({ params: paramsC, contentType })
+  const requestC = stringifyRequest({ request: requestB, contentType })
 
-  return paramsD
+  return requestC
 }
 
 module.exports = {
-  generateParams,
+  generateRequest,
 }

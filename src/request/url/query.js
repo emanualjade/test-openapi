@@ -1,22 +1,22 @@
 'use strict'
 
-const { filterParams } = require('../utils')
+const { filterRequest } = require('../utils')
 
-// Add `query` parameters to request URL
-const addQueryParams = function({ url, params }) {
-  const queryParams = filterParams({ params, location: 'query' })
-  if (queryParams.length === 0) {
+// Add `query` request parameters to request URL
+const addQueryRequest = function({ url, request }) {
+  const queryRequest = filterRequest({ request, location: 'query' })
+  if (queryRequest.length === 0) {
     return url
   }
 
-  const query = encodeQueryParams({ queryParams })
+  const query = encodeQueryRequest({ queryRequest })
   return `${url}?${query}`
 }
 
 // We cannot use `querystring` core module or `qs` library because they does
 // not support OpenAPI's `collectionFormat`
-const encodeQueryParams = function({ queryParams }) {
-  return queryParams.map(encodeQueryParam).join('&')
+const encodeQueryRequest = function({ queryRequest }) {
+  return queryRequest.map(encodeQueryParam).join('&')
 }
 
 const encodeQueryParam = function({ name, value, collectionFormat }) {
@@ -32,5 +32,5 @@ const encodeQueryParam = function({ name, value, collectionFormat }) {
 }
 
 module.exports = {
-  addQueryParams,
+  addQueryRequest,
 }

@@ -3,48 +3,50 @@
 const { generateFromSchema } = require('../../utils')
 
 // Generates random values based on JSON schema
-const fakeValues = function({ params }) {
-  const schema = getParamsJsonSchema({ params })
+const fakeValues = function({ request }) {
+  const schema = getRequestJsonSchema({ request })
   const values = generateFromSchema({ schema })
-  const paramsA = addFakeParams({ values, params })
-  return paramsA
+  const requestA = addGeneratedValues({ values, request })
+  return requestA
 }
 
 // Transform OpenAPI parameters into a single JSON schema
-const getParamsJsonSchema = function({ params }) {
-  const required = getRequiredParams({ params })
+const getRequestJsonSchema = function({ request }) {
+  const required = getRequired({ request })
 
-  const properties = getProperties({ params })
+  const properties = getProperties({ request })
 
   const schema = { type: 'object', properties, required }
   return schema
 }
 
 // OpenAPI `required` to JSON schema `required`
-const getRequiredParams = function({ params }) {
-  return params
+const getRequired = function({ request }) {
+  return request
     .filter(({ required }) => required)
     .map(({ location, name }) => `${location}.${name}`)
 }
 
 // Transform OpenAPI parameter into a JSON schema of `type: object`
-const getProperties = function({ params }) {
-  const paramsA = params.map(({ location, name, schema }) => ({ [`${location}.${name}`]: schema }))
-  const properties = Object.assign({}, ...paramsA)
+const getProperties = function({ request }) {
+  const requestA = request.map(({ location, name, schema }) => ({
+    [`${location}.${name}`]: schema,
+  }))
+  const properties = Object.assign({}, ...requestA)
   return properties
 }
 
-// Merge generated value back to original parameters as `param.value`
-const addFakeParams = function({ values, params }) {
+// Merge generated values back to original request parameters as `param.value`
+const addGeneratedValues = function({ values, request }) {
   return (
-    params
-      .map(param => addFakeParam({ values, param }))
-      // Optional parameters that have not been picked
+    request
+      .map(param => addGeneratedValue({ values, param }))
+      // Optional request parameters that have not been picked
       .filter(({ value }) => value !== undefined)
   )
 }
 
-const addFakeParam = function({ values, param, param: { location, name } }) {
+const addGeneratedValue = function({ values, param, param: { location, name } }) {
   const value = values[`${location}.${name}`]
   return { ...param, value }
 }

@@ -2,18 +2,18 @@
 
 const { normalizeUrl } = require('../../utils')
 
-const { addPathParams } = require('./path')
-const { addQueryParams } = require('./query')
+const { addPathRequest } = require('./path')
+const { addQueryRequest } = require('./query')
 
-// Build request URL from OpenAPI specification `parameters`
-const getReqUrl = function({ test: { path }, opts, params }) {
-  const pathA = addPathParams({ path, params })
-  const urlA = normalizeReqUrl({ opts, path: pathA })
-  const urlB = addQueryParams({ url: urlA, params })
+// Build request URL from OpenAPI specification request `parameters`
+const getRequestUrl = function({ test: { path }, opts, request }) {
+  const pathA = addPathRequest({ path, request })
+  const urlA = normalizeRequestUrl({ opts, path: pathA })
+  const urlB = addQueryRequest({ url: urlA, request })
   return urlB
 }
 
-const normalizeReqUrl = function({ opts: { baseUrl }, path }) {
+const normalizeRequestUrl = function({ opts: { baseUrl }, path }) {
   const url = `${baseUrl}${path}`
 
   try {
@@ -24,5 +24,5 @@ const normalizeReqUrl = function({ opts: { baseUrl }, path }) {
 }
 
 module.exports = {
-  getReqUrl,
+  getRequestUrl,
 }

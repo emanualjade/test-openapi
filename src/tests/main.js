@@ -2,7 +2,7 @@
 
 const { findTests } = require('./traverse')
 const { getOperationId } = require('./operation_id')
-const { getSpecReqParams } = require('./params')
+const { getRequests } = require('./request')
 const { getSpecResStatus, getSpecResHeaders, getSpecResBody } = require('./response')
 
 // Returns lists of tests to perform
@@ -20,7 +20,7 @@ const normalizeTest = function({ name, testOpts, operationObject, headers, schem
   const path = getPath({ operationObject })
   const operationId = getOperationId({ operationObject })
 
-  const specReqParams = getSpecReqParams({ operationObject, testOpts })
+  const requests = getRequests({ operationObject, testOpts })
 
   const specResStatus = getSpecResStatus({ testOpts })
   const specResHeaders = getSpecResHeaders({ headers, operationObject, testOpts })
@@ -33,7 +33,7 @@ const normalizeTest = function({ name, testOpts, operationObject, headers, schem
     path,
     operationId,
 
-    specReqParams,
+    requests,
 
     specResStatus,
     specResHeaders,

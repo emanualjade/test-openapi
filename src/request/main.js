@@ -1,9 +1,9 @@
 'use strict'
 
-const { generateParams } = require('./generate')
-const { getReqUrl } = require('./url')
-const { getReqHeaders } = require('./headers')
-const { getReqBody } = require('./body')
+const { generateRequest } = require('./generate')
+const { getRequestUrl } = require('./url')
+const { getRequestHeaders } = require('./headers')
+const { getRequestBody } = require('./body')
 const { doFetch } = require('./fetch')
 const { handleResponse } = require('./response')
 
@@ -19,12 +19,12 @@ const sendRequest = async function({ test, opts }) {
 }
 
 // Retrieve HTTP request's URL, headers and body
-const getFetchOpts = function({ test, test: { method, specReqParams }, opts }) {
-  const params = generateParams({ specReqParams })
+const getFetchOpts = function({ test, test: { method, requests }, opts }) {
+  const requestA = generateRequest({ requests })
 
-  const url = getReqUrl({ test, opts, params })
-  const headers = getReqHeaders({ params })
-  const body = getReqBody({ params })
+  const url = getRequestUrl({ test, opts, request: requestA })
+  const headers = getRequestHeaders({ request: requestA })
+  const body = getRequestBody({ request: requestA })
 
   return { url, method, headers, body }
 }

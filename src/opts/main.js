@@ -7,7 +7,7 @@ const getOpts = function() {
   const {
     [Symbol.for('integration')]: {
       spec,
-      endpoint,
+      server,
       // Number of times each `it()` is repeated (each time with new random parameters)
       repeat = DEFAULT_REPEAT,
       // Number of concurrent HTTP requests at once
@@ -20,9 +20,9 @@ const getOpts = function() {
   const timeout = maxParallel * TIMEOUT_PER_TEST
 
   // Retrieve HTTP request's base URL
-  const baseUrl = getBaseUrl({ spec, endpoint })
+  const baseUrl = getBaseUrl({ spec, server })
 
-  return { spec, endpoint, baseUrl, repeat, timeout }
+  return { spec, server, baseUrl, repeat, timeout }
 }
 
 const DEFAULT_REPEAT = 1e1

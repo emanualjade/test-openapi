@@ -6,7 +6,7 @@
 # Usage
 
 ```shell
-test-openapi --endpoint https://api.example.com --spec path/to/my/openapi.json
+test-openapi --server https://api.example.com --spec path/to/my/openapi.json
 ```
 
 Automatically test your API based on a [Swagger/OpenAPI 2.0](https://www.openapis.org/)

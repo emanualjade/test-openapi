@@ -24,9 +24,8 @@ const OPTIONS = {
     demandOption: true,
     describe: 'Path to the OpenAPI specification',
   },
-  endpoint: {
+  server: {
     string: true,
-    alias: 'e',
     requiresArg: true,
     describe: 'URL of the server to test',
   },
@@ -38,7 +37,7 @@ const OPTIONS = {
   },
 }
 
-const USAGE = 'testopenapi --spec PATH_TO_OPENAPI --endpoint SERVER_URL'
+const USAGE = 'testopenapi --spec PATH_TO_OPENAPI --server SERVER_URL'
 
 module.exports = {
   runCli,

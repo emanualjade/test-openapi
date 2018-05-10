@@ -5,15 +5,15 @@ const { env } = require('process')
 const { normalizeUrl } = require('../utils')
 
 // Returns API base URL according to OpenAPI specification
-const getBaseUrl = function({ endpoint, spec }) {
-  const url = getUrl({ endpoint, spec })
+const getBaseUrl = function({ server, spec }) {
+  const url = getUrl({ server, spec })
   const baseUrl = normalizeBaseUrl({ url })
   return baseUrl
 }
 
-const getUrl = function({ endpoint, spec }) {
-  if (endpoint) {
-    return endpoint
+const getUrl = function({ server, spec }) {
+  if (server) {
+    return server
   }
 
   const hostname = getHostname({ spec })

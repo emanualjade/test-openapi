@@ -6,7 +6,7 @@ const { normalizeSchema } = require('../json_schema')
 
 // Retrieve test's expected response body
 const getResponseBody = function({
-  schema: body,
+  schema,
   testOpts: { response = {}, response: { body: testBody } = {} },
 }) {
   // Using an `undefined|null` schema means body should be empty
@@ -15,13 +15,13 @@ const getResponseBody = function({
     return
   }
 
-  if (body == null) {
+  if (schema == null) {
     return
   }
 
-  const schema = merge({}, body, testBody)
+  const body = normalizeSchema({ schema })
 
-  const responseBody = normalizeSchema({ schema })
+  const responseBody = merge({}, body, testBody)
   return responseBody
 }
 

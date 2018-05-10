@@ -51,7 +51,7 @@ const addContentNegotiationsHeaders = function({ headers, produces, consumes }) 
   const contentNegotiationsA = contentNegotiations.map(contentNegotiation =>
     omit(contentNegotiation, 'location'),
   )
-  const headersA = [...headers, ...contentNegotiationsA]
+  const headersA = [...contentNegotiationsA, ...headers]
   // Re-uses request parameters merging logic
   const headersB = mergeInputs({ inputs: headersA })
   return headersB

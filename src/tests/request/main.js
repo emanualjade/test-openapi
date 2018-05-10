@@ -1,7 +1,7 @@
 'use strict'
 
 const { getContentNegotiations } = require('../content_negotiation')
-const { normalizeSchemas } = require('../json_schema')
+const { normalizeSchema } = require('../json_schema')
 const { getSecChoices } = require('./security')
 const { getTestRequest } = require('./test_opts')
 const { mergeRequests } = require('./merge')
@@ -26,15 +26,13 @@ const getRequests = function({
     contentNegotiations,
     testRequest: testRequestA,
   })
-
-  const requestsA = normalizeSchemas({ requests })
-
-  return requestsA
+  return requests
 }
 
 // From OpenAPI request `parameters` to normalized format
 const getParam = function({ name, in: location, required = false, schema, collectionFormat }) {
-  return { name, location, required, schema, collectionFormat }
+  const schemaA = normalizeSchema({ schema })
+  return { name, location, required, schema: schemaA, collectionFormat }
 }
 
 module.exports = {

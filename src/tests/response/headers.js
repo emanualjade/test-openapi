@@ -25,28 +25,6 @@ const getResponseHeaders = function({
   return headersD
 }
 
-// We use the `test.response['headers.NAME']` notation instead of
-// `test.response.headers.NAME` because it aligns headers with other properties
-// of the same nesting level. It also prevents too much nesting, which makes
-// the file looks more complicated than it is
-const getTestHeaders = function({ testOpts: { response = {} } }) {
-  const testHeaders = pickBy(response, isTestHeader)
-  const testHeadersA = mapKeys(testHeaders, removePrefix)
-  const testHeadersB = normalizeHeaders({ headers: testHeadersA })
-  return testHeadersB
-}
-
-const isTestHeader = function(value, name) {
-  return name.startsWith(HEADERS_PREFIX)
-}
-
-const removePrefix = function(value, name) {
-  return name.replace(HEADERS_PREFIX, '')
-}
-
-// We use `test.response['headers.NAME']` notation
-const HEADERS_PREFIX = 'headers.'
-
 const normalizeHeaders = function({ headers }) {
   const headersA = mapKeys(headers, (_, name) => name.toLowerCase())
   const headersB = mapValues(headersA, normalizeHeader)
@@ -58,6 +36,27 @@ const normalizeHeader = function({ collectionFormat, ...schema }) {
 
   return { schema: schemaA, collectionFormat }
 }
+
+// We use the `test.response['headers.NAME']` notation instead of
+// `test.response.headers.NAME` because it aligns headers with other properties
+// of the same nesting level. It also prevents too much nesting, which makes
+// the file looks more complicated than it is
+const getTestHeaders = function({ testOpts: { response = {} } }) {
+  const testHeaders = pickBy(response, isTestHeader)
+  const testHeadersA = mapKeys(testHeaders, normalizeTestHeaderName)
+  return testHeadersA
+}
+
+const isTestHeader = function(value, name) {
+  return name.startsWith(HEADERS_PREFIX)
+}
+
+const normalizeTestHeaderName = function(value, name) {
+  return name.replace(HEADERS_PREFIX, '').toLowerCase()
+}
+
+// We use `test.response['headers.NAME']` notation
+const HEADERS_PREFIX = 'headers.'
 
 const arrifyHeaders = function({ headers }) {
   return Object.entries(headers).map(([name, header]) => ({ ...header, name }))

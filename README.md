@@ -108,12 +108,13 @@ responses:
 ```
 
 To override `request` parameters, set the parameter (here `query.hasWebsite`) as the
-key and an [OpenAPI schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
+key and a
+[JSON schema v4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
 (here `{ "enum": [true] }`) as the value. It will be deeply merged to the
 parameter's definition used to generate its value.
 
-To override response validation, set the `response`'s `body` property with an
-[OpenAPI schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
+To override response validation, set the `response`'s `body` property with a
+[JSON schema v4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
 It will be deeply merged to the response's definition used for validation.
 
 Response headers are also validated. They can be overriden using the

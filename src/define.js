@@ -4,7 +4,7 @@ const { getOpts } = require('./opts')
 const { getTests } = require('./tests')
 const { defineTests } = require('./runner')
 const { sendRequest } = require('./request')
-const { validateResponse } = require('./validate')
+const { validateResponse } = require('./response')
 
 // Main entry point of integration tests definition
 const defineIntegrationTests = function() {

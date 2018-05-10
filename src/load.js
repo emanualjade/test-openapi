@@ -39,7 +39,7 @@ const validateOpenApi = function({ spec }) {
   const problems = [...errors, ...warnings]
 
   if (problems.length === 0) {
-    return spec
+    return
   }
 
   reportOpenApiError({ problems })

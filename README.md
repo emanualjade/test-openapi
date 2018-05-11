@@ -13,8 +13,6 @@ path/**/*.test.yml
 Automatically test your API based on a [Swagger/OpenAPI 2.0](https://www.openapis.org/)
 specification.
 
-Note: this is still quite unstable. It should get more stable in coming weeks though.
-
 # OpenAPI
 
 [OpenAPI](https://www.openapis.org/) (formerly Swagger) is a specification

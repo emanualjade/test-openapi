@@ -63,7 +63,7 @@ paths:
                 type: string
 ```
 
-# Example test
+# Example test file
 
 Using the OpenAPI definition above, let's say you want to test that when the
 `hasWebsite` query variable is set to `true`, the returned company must have a
@@ -93,6 +93,7 @@ operationId.testName:
     status: statusCodeNumber
     body: jsonSchema
     headers.headerName: jsonSchema
+# More tests
 ...
 ```
 

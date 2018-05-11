@@ -580,9 +580,9 @@ cosmiconfig@^4.0.0:
     parse-json "^4.0.0"
     require-from-string "^2.0.1"
 
-cross-fetch@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.1.1.tgz#c41b37af8e62ca1c6ad0bd519dcd0a16c75b6f1f"
+cross-fetch@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.2.0.tgz#2bcbff94ee51319bcee6699c642c5dda2aa8b6c0"
   dependencies:
     node-fetch "2.1.2"
     whatwg-fetch "2.0.4"

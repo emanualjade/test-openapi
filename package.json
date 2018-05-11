@@ -27,7 +27,7 @@
   "homepage": "https://github.com/Cardero-X/test-openapi#readme",
   "dependencies": {
     "ajv": "^6.5.0",
-    "cross-fetch": "^2.1.1",
+    "cross-fetch": "^2.2.0",
     "fast-json-stable-stringify": "^2.0.0",
     "fast-memoize": "^2.3.2",
     "jasmine": "^3.1.0",

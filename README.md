@@ -7,6 +7,7 @@
 
 ```shell
 test-openapi --server https://api.example.com --spec path/to/my/openapi.json
+path/**/*.test.yml
 ```
 
 Automatically test your API based on a [Swagger/OpenAPI 2.0](https://www.openapis.org/)
@@ -20,8 +21,18 @@ Note: this is still quite unstable. It should get more stable in coming weeks th
 allowing you to describe your API endpoints: URLs, parameters, responses,
 authentication, etc.
 
-For example, an API with an endpoint `GET /companies/{companyId}?hasWebsite=boolean`
-returning `{ "id": companyId, "name": "Company name", "websiteUrl": "url" }`
+For example, an API with an endpoint:
+
+```HTTP
+GET /companies/{companyId}?hasWebsite=boolean
+```
+
+returning
+
+```JSON
+{ "id": 50, "name": "Company name", "websiteUrl": "url" }
+```
+
 could be described as:
 
 ```yml
@@ -54,79 +65,84 @@ paths:
                 type: string
 ```
 
+# Example test
+
+Using the OpenAPI definition above, let's say you want to test that when the
+`hasWebsite` query variable is set to `true`, the returned company must have a
+`websiteUrl`. The test would look like:
+
+```yml
+getCompany.website:
+  request:
+    query.hasWebsite: true
+  response:
+    body:
+      required: [websiteUrl]
+```
+
 # Tests
 
-To add tests, simply add the `x-tests` property to a specific operation's response.
+Tests are specified in YAML or JSON files looking like this:
 
 ```yml
-responses:
-  200:
-    x-tests:
-      success: {}
-    schema: ...
+operationId.testName:
+  request:
+    path.pathVariableName: jsonSchema
+    query.queryVariableName: jsonSchema
+    headers.headerName: jsonSchema
+    body[.formDataVariableName]: jsonSchema
+  response:
+    status: statusCodeNumber
+    body: jsonSchema
+    headers.headerName: jsonSchema
+...
 ```
 
-The keys are the tests' names (`success`) and the value the tests' options.
-Because testing is automated, most tests can simply use an empty object as option
-(as above).
-
-Each test is performed as followed:
+Each `operationId.testName` is a single test which will be performed as followed:
 
 * an HTTP request is sent to the server. Its parameters (URL, query variables,
-  headers, request body) are randomly generated from the OpenAPI specification.
-* the server response is validated against the OpenAPI specification's response.
+  headers, request body) are randomly generated according to the `request` properties.
+* the server response is validated according to the `response` properties.
 
-For the example above:
+Both `request` and `response` properties are optional. If missing, they will
+default to what a request/response should look like according to your OpenAPI
+specification. This means for most tests you only need to explicit few `request`
+and `response` properties: `test-openapi` will automate the rest.
 
-* an HTTP request towards
-  `https://api.example.com/companies/{companyId}` is sent.
-* the HTTP response is validated according to the OpenAPI specification: its
-  status code must be `200` and the `id`, `name` and `websiteUrl` properties
-  must have valid types.
+# Properties
 
-# Customizing a test
+* `operationId` `{string}`: OpenAPI's `operationId`, i.e. a unique string identifying
+  an endpoint. For example `getCompany`.
+* `testName` `{string}`: an arbitratry name for the test. For example `authenticationCheck`.
+* `request` `{object}`: specify how to send the HTTP request
+  * `path.pathVariableName` `{jsonSchema}`: variable inside the URL.
+    For example, if the path is `/companies/{companyId}`, can be `path.companyId`.
+    `pathVariableName` should match the OpenAPI `path` parameter name.
+  * `query.queryVariableName` `{jsonSchema}`: same but for a query variable
+  * `headers.headerName` `{jsonSchema}`: same but for a HTTP request header
+  * `body` `{jsonSchema}`: same but for the request body
+  * `body.formDataVariableName` `{jsonSchema}`: same but for a property inside a
+    `multipart/form-data` request body. I.e. an OpenAPI `formData` parameter.
+* `response` `{object}`: how the HTTP response should look like
+  * `status` `{string}`: HTTP status code
+  * `body` `{jsonSchema}`: HTTP response body
+  * `headers.headerName` `{jsonSchema}`: HTTP response header
 
-You can override request parameters values for specific tests.
+`request` and `response` properties are deeply merged into their corresponding OpenAPI
+definition. For example, a `request.query.companyId` property would be merged to
+its corresponding OpenAPI `companyId` parameter definition.
 
-For example you could add another test called `website` to check that when the
-`hasWebsite` query variable is set to `true`, the returned company must have a
-`websiteUrl`.
+The value of any `request` and `response` property can be:
 
-```yml
-responses:
-  200:
-    x-tests:
-      success: {}
-      website:
-        request:
-          query.hasWebsite:
-            enum: [true]
-        response:
-          body:
-            required: [websiteUrl]
-    schema: ...
-```
-
-To override `request` parameters, set the parameter (here `query.hasWebsite`) as the
-key and a
-[JSON schema v4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
-(here `{ "enum": [true] }`) as the value. It will be deeply merged to the
-parameter's definition used to generate its value.
-
-To override response validation, set the `response`'s `body` property with a
-[JSON schema v4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
-It will be deeply merged to the response's definition used for validation.
-
-Response headers are also validated. They can be overriden using the
-`response`'s `headers` property.
-
-Status codes can be overriden using the `response`'s `status` property.
-
-This is a simple but flexible way to help you test:
-
-* different scenarios for the same endpoint
-* a specific parameter
-* error responses
+* a [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
+  The value will be randomly generated accordingly.
+* a specific string, number, boolean, array or null
+* the string `invalid`: will generate a random value that _does not_ match the OpenAPI definition.
+  This is useful when you want to test whether invalid parameters send proper
+  error responses.
+* Using the value `null` or the JSON schema `type: 'null'` means "not set".
+  I.e. "do not generate this request parameter", "this response header should not
+  be present" or "the response body should be empty".
 
 # Similar projects
 

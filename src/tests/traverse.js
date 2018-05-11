@@ -47,7 +47,7 @@ const findResponse = function({
     return responses[String(status)]
   }
 
-  return {}
+  return { body: {}, headers: [] }
 }
 
 module.exports = {

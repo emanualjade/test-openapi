@@ -14,13 +14,12 @@ const defineIntegrationTests = function() {
   // Retrieve all tests inputs for all endpoints
   const tests = getTests({ opts })
 
-  const performTest = runTest.bind(null, { opts })
   // Define each `it()` test
-  defineTests({ tests, opts, performTest })
+  defineTests({ tests, opts, runTest })
 }
 
 // Run an `it()` test
-const runTest = async function({ opts }, test) {
+const runTest = async function({ test, opts }) {
   // Send an HTTP request to the endpoint
   const { fetchOpts, res } = await sendRequest({ test, opts })
 

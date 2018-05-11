@@ -4,12 +4,10 @@ const { DEFAULT_STATUS_CODE } = require('../../constants')
 
 // Retrieve test's expected response HTTP status code
 const getResponseStatus = function({
-  testOpts: { response: { status: schema = DEFAULT_SCHEMA } = {} },
+  testOpts: { response: { status = DEFAULT_STATUS_CODE } = {} },
 }) {
-  return { ...schema, type: 'integer' }
+  return status
 }
-
-const DEFAULT_SCHEMA = { enum: [DEFAULT_STATUS_CODE] }
 
 module.exports = {
   getResponseStatus,

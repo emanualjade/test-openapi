@@ -2,7 +2,7 @@
 
 const { pick } = require('lodash')
 
-const { getDeps } = require('./deps')
+const { findDeps } = require('../deps')
 const { getOperation } = require('./operation')
 const { getRequests } = require('./request')
 const { getResponse } = require('./response')
@@ -19,7 +19,7 @@ const getTests = function({ opts, opts: { spec, tests } }) {
 }
 
 const getTest = function({ testKeys, testKey, testOpts, spec }) {
-  const { deps, depKeys } = getDeps({ testOpts, testKeys })
+  const { deps, depKeys } = findDeps({ testOpts, testKeys })
   const { name, operation } = getOperation({ testKey, testOpts, spec })
   const requests = getRequests({ operation, testOpts })
   const response = getResponse({ operation, testOpts })

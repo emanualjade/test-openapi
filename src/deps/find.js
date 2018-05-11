@@ -5,7 +5,7 @@ const { uniq } = require('lodash')
 const { crawl } = require('../utils')
 
 // Find all `deps`, i.e. references to other tests as `operationId.testName.request|response.*`
-const getDeps = function({ testOpts, testKeys }) {
+const findDeps = function({ testOpts, testKeys }) {
   const nodes = crawl(testOpts)
   const deps = nodes.map(node => parseDep({ node, testKeys })).filter(dep => dep !== undefined)
   const depKeys = getDepKeys({ deps })
@@ -41,5 +41,5 @@ const getDepKeys = function({ deps }) {
 }
 
 module.exports = {
-  getDeps,
+  findDeps,
 }

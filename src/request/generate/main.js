@@ -12,7 +12,8 @@ const { fakeContentType } = require('./content_type')
 // Generates random request parameters based on JSON schema
 const generateRequest = function({ requests }) {
   // OpenAPI specification allows an alternative of sets of authentication-related
-  // request parameters. We randomly pick one among the ones specified in `x-tests.*`
+  // request parameters.
+  // We randomly pick one among the ones specified in `test.request.security`
   const request = pick(requests)
 
   const requestA = fakeValues({ request })

@@ -1,30 +1,18 @@
 'use strict'
 
-const { loadNormalizedSpec } = require('./spec')
+const { loadOpts, setOpts, unsetOpts } = require('./opts')
 const { runTests } = require('./runner')
 
 // Run integration testing
-const runIntegration = async function({ spec, ...opts }) {
-  // Retrieve OpenAPI specification
-  const specA = await loadNormalizedSpec({ path: spec })
-
-  setOpts({ spec: specA, ...opts })
+const runIntegration = async function(opts) {
+  const optsA = await loadOpts(opts)
+  await setOpts(optsA)
 
   try {
     await new Promise(runTests)
   } finally {
     unsetOpts()
   }
-}
-
-// Test files are `require()`'d by Jasmine.
-// So we need to pass information to them by setting global variables
-const setOpts = function(integration) {
-  global[Symbol.for('integration')] = integration
-}
-
-const unsetOpts = function() {
-  delete global[Symbol.for('integration')]
 }
 
 module.exports = {

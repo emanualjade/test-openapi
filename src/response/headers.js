@@ -3,6 +3,7 @@
 const { parseHeader } = require('../format')
 const { capitalizeHeader } = require('../utils')
 const { validateFromSchema } = require('./json_schema')
+const { validateRequiredness } = require('./required')
 
 // Validates response headers against OpenAPI specification
 const validateHeaders = function({
@@ -17,33 +18,27 @@ const validateHeaders = function({
 }
 
 const validateHeader = function({ name, schema, collectionFormat, resHeader }) {
-  validateHeaderRequired({ name, resHeader })
+  const nameA = capitalizeHeader({ name })
+  const message = `HTTP response header '${nameA}'`
+  validateRequiredness({ schema, value: resHeader, message })
 
-  const value = parseHeader({ header: resHeader, schema, collectionFormat })
-  validateHeaderValue({ name, schema, value, resHeader })
-}
-
-// All response headers defined in the specification are considered required
-const validateHeaderRequired = function({ name, resHeader }) {
-  if (resHeader !== undefined) {
+  if (resHeader === undefined) {
     return
   }
 
-  throw new Error(
-    `Expected HTTP response header '${capitalizeHeader({ name })}' to be defined but it is not`,
-  )
+  const value = parseHeader({ header: resHeader, schema, collectionFormat })
+  validateHeaderValue({ name: nameA, schema, value, resHeader })
 }
 
 // Validates response header against JSON schema from specification
 const validateHeaderValue = function({ name, schema, value, resHeader }) {
-  const headerName = capitalizeHeader({ name })
-  const error = validateFromSchema({ schema, value, name: `headers['${headerName}']` })
+  const error = validateFromSchema({ schema, value, name: `headers['${name}']` })
   if (!error) {
     return
   }
 
   const resHeaderA = JSON.stringify(resHeader, null, 2)
-  const errorA = `Invalid HTTP response header '${headerName}' with value ${resHeaderA}: ${error}`
+  const errorA = `Invalid HTTP response header '${name}' with value ${resHeaderA}: ${error}`
   throw new Error(errorA)
 }
 

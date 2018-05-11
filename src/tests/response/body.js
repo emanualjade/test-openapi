@@ -1,28 +1,18 @@
 'use strict'
 
-const { merge } = require('lodash')
-
 const { normalizeSchema } = require('../json_schema')
+const { mergeInput } = require('../merge')
 
 // Retrieve test's expected response body
-const getResponseBody = function({
-  schema,
-  testOpts: { response = {}, response: { body: testBody } = {} },
-}) {
-  // Using an `undefined|null` schema means body should be empty
-  // I.e. for `testOpts.response`, `{ body: undefined }` is different from `{}`
-  if (response.propertyIsEnumerable('body') && testBody == null) {
-    return
+const getResponseBody = function({ schema, testOpts: { response: { body: testSchema } = {} } }) {
+  const schemaA = normalizeSchema({ schema })
+
+  if (testSchema === undefined) {
+    return schemaA
   }
 
-  if (schema == null) {
-    return
-  }
-
-  const body = normalizeSchema({ schema })
-
-  const responseBody = merge({}, body, testBody)
-  return responseBody
+  const { schema: schemaB } = mergeInput({ schema: schemaA }, { schema: testSchema })
+  return schemaB
 }
 
 module.exports = {

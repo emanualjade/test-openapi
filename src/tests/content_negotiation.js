@@ -1,9 +1,5 @@
 'use strict'
 
-const { omit } = require('lodash')
-
-const { mergeInputs } = require('./merge')
-
 // Get `consumes` and `produces` OpenAPI properties as header parameters instead
 // Also works when merging with response header schemas
 const getContentNegotiations = function({ contentType, accept }) {
@@ -45,19 +41,6 @@ const getAcceptHeader = function(mimes = []) {
   ]
 }
 
-// Add content negotiation response headers
-const addContentNegotiationsHeaders = function({ headers, produces, consumes }) {
-  const contentNegotiations = getContentNegotiations({ contentType: produces, accept: consumes })
-  const contentNegotiationsA = contentNegotiations.map(contentNegotiation =>
-    omit(contentNegotiation, 'location'),
-  )
-  const headersA = [...contentNegotiationsA, ...headers]
-  // Re-uses request parameters merging logic
-  const headersB = mergeInputs({ inputs: headersA })
-  return headersB
-}
-
 module.exports = {
   getContentNegotiations,
-  addContentNegotiationsHeaders,
 }

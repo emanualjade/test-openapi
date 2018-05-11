@@ -4,7 +4,7 @@
 const getResponseStatus = function({
   testOpts: { response: { status: schema = DEFAULT_SCHEMA } = {} },
 }) {
-  return { type: 'integer', ...schema }
+  return { ...schema, type: 'integer' }
 }
 
 const DEFAULT_SCHEMA = { enum: [200] }

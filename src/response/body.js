@@ -1,9 +1,8 @@
 'use strict'
 
-const { hasBody } = require('type-is')
-
 const { parseBody } = require('../format')
 const { validateFromSchema } = require('./json_schema')
+const { validateRequiredness } = require('./required')
 
 // Validates response body against OpenAPI specification
 const validateBody = function({
@@ -13,10 +12,12 @@ const validateBody = function({
   resBody: body,
   resHeaders: headers,
 }) {
-  const bodyA = body.trim()
+  const bodyA = trimBody({ body })
 
-  const isEmpty = validateBodyEmpty({ body: bodyA, headers, schema })
-  if (isEmpty) {
+  const message = 'HTTP response body'
+  validateRequiredness({ schema, value: bodyA, message })
+
+  if (bodyA === undefined) {
     return
   }
 
@@ -24,39 +25,16 @@ const validateBody = function({
   validateBodyValue({ schema, value, body: bodyA })
 }
 
-// When specification's `response.schema` is defined, it means response body
-// must not be empty. And vice-versa.
-const validateBodyEmpty = function({ body, headers, schema }) {
-  const isEmptyHeaders = !hasBody({ headers })
-  const isEmptyBody = body === ''
+const trimBody = function({ body }) {
+  const bodyA = body.trim()
 
-  if (isEmptyHeaders && !isEmptyBody) {
-    throw new Error(
-      `Invalid HTTP response body: response headers 'Content-Length': ${headers['content-length'] ||
-        "''"} and/or 'Transfer-Encoding': ${headers['transfer-encoding'] ||
-        "''"} indicate there is a response body, but the body is actually empty`,
-    )
+  // Convert body to `undefined` when empty so we can re-use same logic as
+  // response headers for requiredness checks
+  if (bodyA === '') {
+    return
   }
 
-  if (!isEmptyHeaders && isEmptyBody) {
-    throw new Error(
-      `Invalid HTTP response body: response headers 'Content-Length': ${headers['content-length'] ||
-        "''"} and/or 'Transfer-Encoding': ${headers['transfer-encoding'] ||
-        "''"} indicate there is no response body, but there is one`,
-    )
-  }
-
-  if (isEmptyBody && schema !== undefined) {
-    throw new Error('Invalid HTTP response body: it should not be empty')
-  }
-
-  if (!isEmptyBody && schema === undefined) {
-    throw new Error(
-      `Invalid HTTP response body: it should be empty instead of:\n${JSON.stringify(body)}`,
-    )
-  }
-
-  return isEmptyBody
+  return bodyA
 }
 
 const validateBodyValue = function({ schema, value, body }) {

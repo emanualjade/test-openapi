@@ -18,8 +18,8 @@ const runCli = async function() {
 }
 
 // If an error is thrown, print error's description, then exit with exit code 1
-const cliErrorHandler = function({ message }) {
-  console.error(`Error: ${message}`)
+const cliErrorHandler = function(error) {
+  console.error(`Integration testing failed: ${error.message}`)
 
   exit(1)
 }

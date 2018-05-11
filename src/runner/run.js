@@ -27,10 +27,10 @@ const onComplete = function(resolve, reject, passed) {
     return resolve()
   }
 
-  reject(ERROR_MESSAGE)
+  reject(new Error(ERROR_MESSAGE))
 }
 
-const ERROR_MESSAGE = 'Integration testing failed'
+const ERROR_MESSAGE = 'some tests failed'
 
 module.exports = {
   runTests,

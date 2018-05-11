@@ -17,11 +17,11 @@ const loadNormalizedSpec = async function({ path }) {
 // We do not use Sway for traversing as it has some problems, e.g. does not
 // properly parse security alternatives
 // Also it eases being specification-agnostic
-const normalizeSpec = function({ spec }) {
+const normalizeSpec = function({ spec, spec: { 'x-tests': tests } }) {
   const url = getUrl({ spec })
   const operations = getOperations({ spec })
 
-  const specA = { url, operations }
+  const specA = { url, operations, tests }
   return specA
 }
 

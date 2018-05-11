@@ -24,14 +24,9 @@ const normalizeStatusCode = function(response, statusCode) {
 }
 
 const normalizeResponse = function({ response, spec, operation }) {
-  const tests = getTests({ response })
   const body = getResponseBody({ response })
   const headers = getResponseHeaders({ response, spec, operation })
-  return { tests, body, headers }
-}
-
-const getTests = function({ response: { 'x-tests': tests = {} } }) {
-  return Object.entries(tests).map(([testKey, testOpts]) => ({ testKey, testOpts }))
+  return { body, headers }
 }
 
 const getResponseBody = function({ response: { schema = {} } }) {

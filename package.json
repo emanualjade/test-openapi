@@ -1,6 +1,6 @@
 {
   "name": "test-openapi",
-  "version": "1.0.4",
+  "version": "2.0.0",
   "description": "OpenAPI automatic integration testing",
   "main": "index.js",
   "bin": "bin/test-openapi.js",

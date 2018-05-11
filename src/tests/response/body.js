@@ -1,18 +1,20 @@
 'use strict'
 
-const { normalizeSchema } = require('../json_schema')
-const { mergeInput } = require('../merge')
+const { mergeInput } = require('../../utils')
 
 // Retrieve test's expected response body
-const getResponseBody = function({ schema, testOpts: { response: { body: testSchema } = {} } }) {
-  const schemaA = normalizeSchema({ schema })
-
+const getResponseBody = function({
+  operation: {
+    response: { body: schema },
+  },
+  testOpts: { response: { body: testSchema } = {} },
+}) {
   if (testSchema === undefined) {
-    return schemaA
+    return schema
   }
 
-  const { schema: schemaB } = mergeInput({ schema: schemaA }, { schema: testSchema })
-  return schemaB
+  const { schema: schemaA } = mergeInput({ schema }, { schema: testSchema })
+  return schemaA
 }
 
 module.exports = {

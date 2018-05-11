@@ -1,12 +1,12 @@
 'use strict'
 
-const { loadOpenApiSpec } = require('./load')
+const { loadNormalizedSpec } = require('./spec')
 const { runTests } = require('./runner')
 
 // Run integration testing
 const runIntegration = async function({ spec, ...opts }) {
   // Retrieve OpenAPI specification
-  const specA = await loadOpenApiSpec({ path: spec })
+  const specA = await loadNormalizedSpec({ path: spec })
 
   setOpts({ spec: specA, ...opts })
 

@@ -1,38 +1,20 @@
 'use strict'
 
-const { omit } = require('lodash')
-
-const { getContentNegotiations } = require('../content_negotiation')
-const { normalizeSchema } = require('../json_schema')
-const { mergeInputs } = require('../merge')
+const { mergeItems } = require('../../utils')
 
 // Retrieve test's expected response headers
 const getResponseHeaders = function({
-  headers = {},
-  operationObject: { consumes, produces },
+  operation: {
+    response: { headers },
+  },
   testOpts,
 }) {
-  const contentNegotiations = getContentNegotiationsHeaders({ produces, consumes })
-
-  const headersA = normalizeHeaders({ headers })
-
   const testHeaders = getTestHeaders({ testOpts })
 
-  const inputs = [...contentNegotiations, ...headersA, ...testHeaders]
-  const headersD = mergeInputs({ inputs })
+  const items = [...headers, ...testHeaders]
+  const headersA = mergeItems({ items, isRequest: false })
 
-  return headersD
-}
-
-const normalizeHeaders = function({ headers }) {
-  return Object.entries(headers).map(normalizeHeader)
-}
-
-const normalizeHeader = function([name, { collectionFormat, ...schema }]) {
-  const nameA = name.toLowerCase()
-  const schemaA = normalizeSchema({ schema })
-
-  return { name: nameA, schema: schemaA, collectionFormat }
+  return headersA
 }
 
 // We use the `test.response['headers.NAME']` notation instead of
@@ -57,15 +39,6 @@ const getTestHeader = function([name, schema]) {
 
 // We use `test.response['headers.NAME']` notation
 const HEADERS_PREFIX = 'headers.'
-
-// Get content negotiation response headers
-const getContentNegotiationsHeaders = function({ produces, consumes }) {
-  const contentNegotiations = getContentNegotiations({ contentType: produces, accept: consumes })
-  const contentNegotiationsA = contentNegotiations.map(contentNegotiation =>
-    omit(contentNegotiation, 'location'),
-  )
-  return contentNegotiationsA
-}
 
 module.exports = {
   getResponseHeaders,

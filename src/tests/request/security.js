@@ -1,12 +1,12 @@
 'use strict'
 
-const { mergeInputs } = require('../merge')
+const { mergeItems } = require('../merge')
 
 // Get list of authentication-related headers or query variables
-const getSecChoices = function({ operationObject, testRequest }) {
+const getSecChoices = function({ operation, testRequest }) {
   const { secTestRequest, testRequest: testRequestA } = getSecTestRequest({ testRequest })
 
-  const secChoices = getChoices({ operationObject, secTestRequest })
+  const secChoices = getChoices({ operation, secTestRequest })
 
   return { testRequest: testRequestA, secChoices }
 }
@@ -20,11 +20,9 @@ const getSecTestRequest = function({ testRequest }) {
 // OpenAPI specification allows an alternative of sets of authentication-related
 // request parameters, so `request` is an array of arrays.
 // We only keep security alternatives that have been directly specified in `test.request.security.*`
-const getChoices = function({ secTestRequest, operationObject }) {
-  const operationSecs = getOperationSecs({ operationObject })
-
-  const secChoices = operationSecs
-    .map(operationSec => getSecRequest({ operationSec, operationObject, secTestRequest }))
+const getChoices = function({ operation: { security }, secTestRequest }) {
+  const secChoices = security
+    .map(secRequest => addSecTestRequest({ secRequest, secTestRequest }))
     .filter(secRequest => secRequest !== undefined)
 
   // Means no security parameters will be used
@@ -35,26 +33,7 @@ const getChoices = function({ secTestRequest, operationObject }) {
   return secChoices
 }
 
-// We do not use Sway's `operationObject.securityDefinitions` because it does not
-// take into account that securities can be alternatives (i.e. an array of objects).
-const getOperationSecs = function({
-  operationObject: {
-    security: operationSecurity,
-    pathObject: {
-      api: { security: apiSecurity = [] },
-    },
-  },
-}) {
-  if (operationSecurity !== undefined) {
-    return operationSecurity
-  }
-
-  return apiSecurity
-}
-
-const getSecRequest = function({ operationSec, operationObject, secTestRequest }) {
-  const secRequest = findSecRequest({ operationSec, operationObject })
-
+const addSecTestRequest = function({ secRequest, secTestRequest }) {
   const secTestRequestA = normalizeSecTestRequest({ secTestRequest, secRequest })
 
   // Only use security request parameters if specified in `test.request.security`
@@ -64,49 +43,6 @@ const getSecRequest = function({ operationSec, operationObject, secTestRequest }
 
   const secRequestA = mergeSecTestRequest({ secRequest, secTestRequest: secTestRequestA })
   return secRequestA
-}
-
-// Retrieve possible security parameters from specification
-const findSecRequest = function({ operationSec, operationObject }) {
-  return Object.entries(operationSec).map(([secName, scopes]) =>
-    getSecParam({ secName, scopes, operationObject }),
-  )
-}
-
-// Normalize security to the same format as other parameters
-const getSecParam = function({
-  secName,
-  scopes,
-  operationObject: {
-    pathObject: {
-      api: {
-        securityDefinitions: { [secName]: def },
-      },
-    },
-  },
-}) {
-  const handler = getSecParamHandler(def)
-  const secParam = handler({ ...def, scopes })
-  const secParamA = { secName, ...secParam }
-  return secParamA
-}
-
-const getSecParamHandler = function({ type }) {
-  const handler = SECURITY_DEFS[type]
-  if (handler !== undefined) {
-    return handler
-  }
-
-  throw new Error(`Security definitions of type '${type}' are not implemented yet`)
-}
-
-// `apiKey` security definitions -> `header|query` request paramater
-const getDefApiKey = function({ name, in: location }) {
-  return { name, location, required: true, schema: { type: 'string' } }
-}
-
-const SECURITY_DEFS = {
-  apiKey: getDefApiKey,
 }
 
 // Find security parameter for each `test.request.security.SEC_NAME` and merge
@@ -132,8 +68,8 @@ const normalizeSecTestParam = function({
 
 // Merge `test.request.security`
 const mergeSecTestRequest = function({ secRequest, secTestRequest }) {
-  const inputs = [...secRequest, ...secTestRequest]
-  const secRequestA = mergeInputs({ inputs })
+  const items = [...secRequest, ...secTestRequest]
+  const secRequestA = mergeItems({ items })
   return secRequestA
 }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const { getBaseUrl } = require('./base_url')
+const { getServer } = require('./server')
 
 // Main options are passed as environment variables because a new process is spawn
 const getOpts = function() {
@@ -20,9 +20,9 @@ const getOpts = function() {
   const timeout = maxParallel * TIMEOUT_PER_TEST
 
   // Retrieve HTTP request's base URL
-  const baseUrl = getBaseUrl({ spec, server })
+  const serverA = getServer({ server, spec })
 
-  return { spec, server, baseUrl, repeat, timeout }
+  return { spec, server: serverA, repeat, timeout }
 }
 
 const DEFAULT_REPEAT = 1e1

@@ -19,8 +19,8 @@ const getRequestUrl = function({
   return urlB
 }
 
-const normalizeRequestUrl = function({ opts: { baseUrl }, path }) {
-  const url = `${baseUrl}${path}`
+const normalizeRequestUrl = function({ opts: { server }, path }) {
+  const url = `${server}${path}`
 
   try {
     return normalizeUrl({ url })

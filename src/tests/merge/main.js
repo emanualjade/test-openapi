@@ -2,14 +2,13 @@
 
 const { merge } = require('lodash')
 
-const { mergeValues } = require('../../utils')
-const { isObject } = require('../../utils')
+const { mergeItems, isObject } = require('../../utils')
 const { mergeInvalidSchema } = require('./invalid')
 const { mergeShortcutSchema } = require('./shortcut')
 
 // Deep merge parameters or headers with the same name
-const mergeInputs = function({ inputs }) {
-  return mergeValues(inputs, mergeInput, isSameInput)
+const mergeInputs = function({ items, isRequest }) {
+  return mergeItems({ items, isRequest, merge: mergeInput })
 }
 
 // Deep merge a `test.*.*` value with the specification value
@@ -24,12 +23,6 @@ const mergeInput = function(inputA, inputB) {
 
   // Otherwise it is a JSON schema that we deep merge
   return merge({}, inputA, inputB)
-}
-
-const isSameInput = function(inputA, inputB) {
-  return (
-    inputA.name.toLowerCase() === inputB.name.toLowerCase() && inputA.location === inputB.location
-  )
 }
 
 module.exports = {

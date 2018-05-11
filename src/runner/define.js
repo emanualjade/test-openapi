@@ -7,14 +7,14 @@ const defineTests = function({ tests, opts, runTest }) {
   const paddings = getPaddings({ tests })
 
   describe('Integration tests', function() {
-    tests.forEach(test => defineTest({ test, opts, runTest, paddings }))
+    tests.forEach(test => defineTest({ tests, test, opts, runTest, paddings }))
   })
 }
 
 // Define a single test with `it()`
-const defineTest = function({ test, opts, opts: { timeout }, runTest, paddings }) {
+const defineTest = function({ tests, test, opts, opts: { timeout }, runTest, paddings }) {
   const title = getTestTitle({ test, paddings })
-  const testFunc = runTests.bind(null, { test, opts, runTest })
+  const testFunc = runTests.bind(null, { tests, test, opts, runTest })
 
   it(title, testFunc, timeout)
 }
@@ -26,8 +26,8 @@ const defineTest = function({ test, opts, opts: { timeout }, runTest, paddings }
 // TODO: we should cancel other tests if any of them fails. At the moment, this is
 // not possible because `node-fetch` does not support `AbortController`:
 // a PR is ongoing to add support: https://github.com/bitinn/node-fetch/pull/437
-const runTests = async function({ test, opts, opts: { repeat }, runTest }) {
-  const runningTests = new Array(repeat).fill().map(() => runTest({ test, opts }))
+const runTests = async function({ tests, test, opts, opts: { repeat }, runTest }) {
+  const runningTests = new Array(repeat).fill().map(() => runTest({ tests, test, opts }))
   await Promise.all(runningTests)
 }
 

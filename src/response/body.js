@@ -22,7 +22,10 @@ const validateBody = function({
   }
 
   const value = parseBody({ body: bodyA, headers })
+
   validateBodyValue({ schema, value, body: bodyA })
+
+  return value
 }
 
 const trimBody = function({ body }) {

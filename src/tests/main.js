@@ -25,7 +25,7 @@ const getTest = function({ testKeys, testKey, testOpts, spec }) {
   const response = getResponse({ operation, testOpts })
   const operationA = pick(operation, ['method', 'path'])
 
-  return { name, deps, depKeys, operation: operationA, requests, response }
+  return { name, testKey, deps, depKeys, operation: operationA, requests, response }
 }
 
 module.exports = {

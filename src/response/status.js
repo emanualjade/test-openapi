@@ -8,7 +8,7 @@ const validateStatus = function({
   resStatus,
 }) {
   if (status === resStatus) {
-    return
+    return status
   }
 
   throw new Error(`Invalid HTTP response status code ${resStatus}: it should be ${status}`)

@@ -8,9 +8,11 @@ const { getValidateError } = require('./message')
 // Validates response against OpenAPI specification
 const validateResponse = function({ test, fetchOpts, res: { resStatus, resHeaders, resBody } }) {
   try {
-    validateStatus({ test, resStatus })
-    validateHeaders({ test, resHeaders })
-    validateBody({ test, resBody, resHeaders })
+    const status = validateStatus({ test, resStatus })
+    const headers = validateHeaders({ test, resHeaders })
+    const body = validateBody({ test, resBody, resHeaders })
+
+    return { status, headers, body }
   } catch (error) {
     const message = getValidateError({ error, fetchOpts })
     throw new Error(message)

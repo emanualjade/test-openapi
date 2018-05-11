@@ -12,9 +12,11 @@ const validateHeaders = function({
   },
   resHeaders,
 }) {
-  headers.forEach(({ name, schema, collectionFormat }) =>
+  const headersA = headers.map(({ name, schema, collectionFormat }) =>
     validateHeader({ name, schema, collectionFormat, resHeader: resHeaders[name] }),
   )
+  const headersB = Object.assign({}, ...headersA)
+  return headersB
 }
 
 const validateHeader = function({ name, schema, collectionFormat, resHeader }) {
@@ -23,11 +25,14 @@ const validateHeader = function({ name, schema, collectionFormat, resHeader }) {
   validateRequiredness({ schema, value: resHeader, message })
 
   if (resHeader === undefined) {
-    return
+    return { name, value: undefined }
   }
 
   const value = parseHeader({ header: resHeader, schema, collectionFormat })
+
   validateHeaderValue({ name: nameA, schema, value, resHeader })
+
+  return { name, value }
 }
 
 // Validates response header against JSON schema from specification

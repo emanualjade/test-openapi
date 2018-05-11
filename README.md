@@ -122,25 +122,29 @@ and `response` properties: `test-openapi` will automate the rest.
   * `body.formDataVariableName` `{jsonSchema}`: same but for a property inside a
     `multipart/form-data` request body. I.e. an OpenAPI `formData` parameter.
 * `response` `{object}`: how the HTTP response should look like
-  * `status` `{string}`: HTTP status code
+  * `status` `{integer}` (default: `200`): HTTP status code
   * `body` `{jsonSchema}`: HTTP response body
   * `headers.headerName` `{jsonSchema}`: HTTP response header
 
-`request` and `response` properties are deeply merged into their corresponding OpenAPI
+`request` and `response` properties are deeply merged into their related OpenAPI
 definition. For example, a `request.query.companyId` property would be merged to
-its corresponding OpenAPI `companyId` parameter definition.
+its related OpenAPI `companyId` parameter definition.
 
 The value of any `request` and `response` property can be:
 
 * a [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
   The value will be randomly generated accordingly.
-* a specific string, number, boolean, array or null
-* the string `invalid`: will generate a random value that _does not_ match the OpenAPI definition.
+* a specific string, number, boolean, array or null.
+* the string `invalid`. This will generate a random value that _does not_ match
+  the OpenAPI definition.
   This is useful when you want to test whether invalid parameters send proper
   error responses.
 * Using the value `null` or the JSON schema `type: 'null'` means "not set".
   I.e. "do not generate this request parameter", "this response header should not
   be present" or "the response body should be empty".
+
+Parameters that are neither `required` nor specified in a test's `request`
+will not be used for that test.
 
 # Similar projects
 

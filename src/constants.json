@@ -1,3 +1,19 @@
 {
-  "DEFAULT_STATUS_CODE": 200
+  "DEFAULT_STATUS_CODE": 200,
+
+  "KEY_TO_LOCATION": {
+    "path": "path",
+    "query": "query",
+    "headers": "header",
+    "body": "formData",
+    "security": "security"
+  },
+
+  "LOCATION_TO_KEY": {
+    "path": "path",
+    "query": "query",
+    "header": "headers",
+    "body": "body",
+    "formData": "body"
+  }
 }

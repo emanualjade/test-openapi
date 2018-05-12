@@ -7,46 +7,45 @@ const { validateRequiredness } = require('./required')
 // Validates response body against OpenAPI specification
 const validateBody = function({
   test: {
-    response: { body: schema },
+    response: { body: testBody },
   },
-  resBody: body,
-  resHeaders: headers,
+  fetchResponse: { body: fetchBody, headers: fetchHeaders },
 }) {
-  const bodyA = trimBody({ body })
+  const fetchBodyA = trimBody({ fetchBody })
 
   const message = 'HTTP response body'
-  validateRequiredness({ schema, value: bodyA, message })
+  validateRequiredness({ schema: testBody, value: fetchBodyA, message })
 
-  if (bodyA === undefined) {
+  if (fetchBodyA === undefined) {
     return
   }
 
-  const value = parseBody({ body: bodyA, headers })
+  const parsedBody = parseBody({ body: fetchBodyA, headers: fetchHeaders })
 
-  validateBodyValue({ schema, value, body: bodyA })
+  validateBodyValue({ testBody, parsedBody, fetchBody: fetchBodyA })
 
-  return value
+  return parsedBody
 }
 
-const trimBody = function({ body }) {
-  const bodyA = body.trim()
+const trimBody = function({ fetchBody }) {
+  const fetchBodyA = fetchBody.trim()
 
   // Convert body to `undefined` when empty so we can re-use same logic as
   // response headers for requiredness checks
-  if (bodyA === '') {
+  if (fetchBodyA === '') {
     return
   }
 
-  return bodyA
+  return fetchBodyA
 }
 
-const validateBodyValue = function({ schema, value, body }) {
-  const error = validateFromSchema({ schema, value, name: 'body' })
+const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
+  const error = validateFromSchema({ schema: testBody, value: parsedBody, name: 'body' })
   if (!error) {
     return
   }
 
-  const errorA = `Invalid HTTP response body: ${error}\nResponse body was:\n${body}\n`
+  const errorA = `Invalid HTTP response body: ${error}\nResponse body was:\n${fetchBody}\n`
   throw new Error(errorA)
 }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const { filterRequest } = require('../utils')
+const { filterRequest } = require('../../utils')
 
 // Replace path parameters in the request URL
 const addPathRequest = function({ path, request }) {

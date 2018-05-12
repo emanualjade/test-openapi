@@ -1,7 +1,7 @@
 'use strict'
 
-const { capitalizeHeader } = require('../utils')
-const { filterRequest } = require('./utils')
+const { capitalizeHeader } = require('../../utils')
+const { filterRequest } = require('../utils')
 
 // Build request headers from OpenAPI specification request `parameters`
 const getRequestHeaders = function({ request }) {

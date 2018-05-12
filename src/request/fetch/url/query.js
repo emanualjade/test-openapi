@@ -1,6 +1,6 @@
 'use strict'
 
-const { filterRequest } = require('../utils')
+const { filterRequest } = require('../../utils')
 
 // Add `query` request parameters to request URL
 const addQueryRequest = function({ url, request }) {

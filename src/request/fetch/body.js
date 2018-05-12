@@ -1,6 +1,6 @@
 'use strict'
 
-const { filterRequest } = require('./utils')
+const { filterRequest } = require('../utils')
 
 // Build request body from OpenAPI specification request `parameters`
 const getRequestBody = function({ request }) {

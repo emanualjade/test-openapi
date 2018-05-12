@@ -3,15 +3,15 @@
 // Validates response status code against OpenAPI specification
 const validateStatus = function({
   test: {
-    response: { status },
+    response: { status: testStatus },
   },
-  resStatus,
+  fetchResponse: { status: fetchStatus },
 }) {
-  if (status === resStatus) {
-    return status
+  if (testStatus === fetchStatus) {
+    return fetchStatus
   }
 
-  throw new Error(`Invalid HTTP response status code ${resStatus}: it should be ${status}`)
+  throw new Error(`Invalid HTTP response status code ${fetchStatus}: it should be ${testStatus}`)
 }
 
 module.exports = {

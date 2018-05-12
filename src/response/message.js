@@ -4,7 +4,7 @@
 // we report them for easier debugging
 const getValidateError = function({
   error: { message },
-  fetchOpts: { method, url, headers, body },
+  fetchRequest: { method, url, headers, body },
 }) {
   const headersA = getHeadersError({ headers })
   const bodyA = getBodyError({ body })

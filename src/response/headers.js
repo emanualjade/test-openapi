@@ -8,41 +8,45 @@ const { validateRequiredness } = require('./required')
 // Validates response headers against OpenAPI specification
 const validateHeaders = function({
   test: {
-    response: { headers },
+    response: { headers: testHeaders },
   },
-  resHeaders,
+  fetchResponse: { headers: fetchHeaders },
 }) {
-  const headersA = headers.map(({ name, schema, collectionFormat }) =>
-    validateHeader({ name, schema, collectionFormat, resHeader: resHeaders[name] }),
+  const headers = testHeaders.map(({ name, schema: testHeader, collectionFormat }) =>
+    validateHeader({ name, testHeader, collectionFormat, fetchHeader: fetchHeaders[name] }),
   )
-  const headersB = Object.assign({}, ...headersA)
-  return headersB
+  const headersA = Object.assign({}, ...headers)
+  return headersA
 }
 
-const validateHeader = function({ name, schema, collectionFormat, resHeader }) {
+const validateHeader = function({ name, testHeader, collectionFormat, fetchHeader }) {
   const nameA = capitalizeHeader({ name })
   const message = `HTTP response header '${nameA}'`
-  validateRequiredness({ schema, value: resHeader, message })
+  validateRequiredness({ schema: testHeader, value: fetchHeader, message })
 
-  if (resHeader === undefined) {
-    return { name, value: undefined }
+  if (fetchHeader === undefined) {
+    return { name }
   }
 
-  const value = parseHeader({ header: resHeader, schema, collectionFormat })
+  const parsedHeader = parseHeader({ header: fetchHeader, schema: testHeader, collectionFormat })
 
-  validateHeaderValue({ name: nameA, schema, value, resHeader })
+  validateHeaderValue({ name: nameA, testHeader, parsedHeader, fetchHeader })
 
-  return { name, value }
+  return { name, value: parsedHeader }
 }
 
 // Validates response header against JSON schema from specification
-const validateHeaderValue = function({ name, schema, value, resHeader }) {
-  const error = validateFromSchema({ schema, value, name: `headers['${name}']` })
+const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHeader }) {
+  const error = validateFromSchema({
+    schema: testHeader,
+    value: parsedHeader,
+    name: `headers['${name}']`,
+  })
   if (!error) {
     return
   }
 
-  const resHeaderA = JSON.stringify(resHeader, null, 2)
+  const resHeaderA = JSON.stringify(fetchHeader, null, 2)
   const errorA = `Invalid HTTP response header '${name}' with value ${resHeaderA}: ${error}`
   throw new Error(errorA)
 }

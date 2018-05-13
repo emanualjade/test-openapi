@@ -2,9 +2,7 @@
 
 // Validates response status code against OpenAPI specification
 const validateStatus = function({
-  test: {
-    response: { status: testStatus },
-  },
+  response: { status: testStatus },
   fetchResponse: { status: fetchStatus },
 }) {
   if (testStatus === fetchStatus) {

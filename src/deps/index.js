@@ -1,6 +1,6 @@
 'use strict'
 
 module.exports = {
-  ...require('./find'),
+  ...require('./add'),
   ...require('./replace'),
 }

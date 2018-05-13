@@ -1,9 +1,9 @@
 'use strict'
 
-const { mergeInput } = require('../../utils')
+const { mergeInput } = require('../common')
 
-// Retrieve test's expected response body
-const getResponseBody = function({
+// Merge `test.response.body` to specification
+const mergeResponseBody = function({
   operation: {
     response: { body: schema },
   },
@@ -18,5 +18,5 @@ const getResponseBody = function({
 }
 
 module.exports = {
-  getResponseBody,
+  mergeResponseBody,
 }

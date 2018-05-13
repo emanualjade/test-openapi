@@ -4,10 +4,10 @@ const { env } = require('process')
 
 const { normalizeUrl } = require('../utils')
 
-// Returns API base URL according to OpenAPI specification
+// Returns API base URL
 const getServer = function({ server, spec }) {
   const url = getUrl({ server, spec })
-  const serverA = normalizeServer({ url })
+  const serverA = normalizeServerUrl({ url })
   return serverA
 }
 
@@ -43,7 +43,7 @@ const getEnv = function(name) {
   return env[name] || env[name.toUpperCase()] || env[name.toLowerCase()]
 }
 
-const normalizeServer = function({ url }) {
+const normalizeServerUrl = function({ url }) {
   const urlA = normalizeUrl({ url })
   const urlB = urlA.replace(TRAILING_SLASH_REGEXP, '')
   return urlB

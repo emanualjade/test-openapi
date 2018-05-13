@@ -1,6 +1,6 @@
 'use strict'
 
-const { runIntegration } = require('../run')
+const { runIntegration } = require('../init')
 
 // Command `test-openapi run`
 const run = async function({ opts, posOpts }) {

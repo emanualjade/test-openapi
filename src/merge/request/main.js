@@ -1,11 +1,17 @@
 'use strict'
 
-const { mergeItems } = require('../../utils')
+const { mergeInputs } = require('../common')
 const { getSecChoices } = require('./security')
 const { getTestRequest } = require('./test_opts')
 
-// Retrieve HTTP request parameters
-const getRequests = function({ operation, operation: { parameters }, testOpts }) {
+// Merge HTTP request parameters to specification
+const mergeRequests = function({
+  test: {
+    operation,
+    operation: { parameters },
+    testOpts,
+  },
+}) {
   const testRequest = getTestRequest({ testOpts })
 
   const { secChoices, testRequest: testRequestA } = getSecChoices({ operation, testRequest })
@@ -21,10 +27,10 @@ const getRequests = function({ operation, operation: { parameters }, testOpts })
 
 const mergeRequest = function({ secRequest, parameters, testRequest }) {
   const items = [...secRequest, ...parameters, ...testRequest]
-  const request = mergeItems({ items })
+  const request = mergeInputs({ items })
   return request
 }
 
 module.exports = {
-  getRequests,
+  mergeRequests,
 }

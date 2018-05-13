@@ -1,9 +1,9 @@
 'use strict'
 
-const { mergeItems } = require('../../utils')
+const { mergeInputs } = require('../common')
 
-// Retrieve test's expected response headers
-const getResponseHeaders = function({
+// Merge `test.response.headers.*` to specification
+const mergeResponseHeaders = function({
   operation: {
     response: { headers },
   },
@@ -12,7 +12,7 @@ const getResponseHeaders = function({
   const testHeaders = getTestHeaders({ testOpts })
 
   const items = [...headers, ...testHeaders]
-  const headersA = mergeItems({ items, isRequest: false })
+  const headersA = mergeInputs({ items, isRequest: false })
 
   return headersA
 }
@@ -41,5 +41,5 @@ const getTestHeader = function([name, schema]) {
 const HEADERS_PREFIX = 'headers.'
 
 module.exports = {
-  getResponseHeaders,
+  mergeResponseHeaders,
 }

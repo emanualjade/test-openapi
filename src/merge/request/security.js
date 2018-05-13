@@ -1,6 +1,6 @@
 'use strict'
 
-const { mergeItems } = require('../merge')
+const { mergeInputs } = require('../common')
 
 // Get list of authentication-related headers or query variables
 const getSecChoices = function({ operation, testRequest }) {
@@ -69,7 +69,7 @@ const normalizeSecTestParam = function({
 // Merge `test.request.security`
 const mergeSecTestRequest = function({ secRequest, secTestRequest }) {
   const items = [...secRequest, ...secTestRequest]
-  const secRequestA = mergeItems({ items })
+  const secRequestA = mergeInputs({ items })
   return secRequestA
 }
 

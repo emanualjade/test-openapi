@@ -7,14 +7,12 @@ const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 
 // Load YAML/JSON test files
-const loadTestFiles = async function({ tests = [] }) {
+const loadTestFiles = async function({ tests }) {
   // Can use globbing
   const testsA = await fastGlob(tests)
 
   const testsB = await Promise.all(testsA.map(loadTestFile))
   const testsC = Object.assign({}, ...testsB)
-
-  validateTests({ tests: testsC })
 
   return testsC
 }
@@ -48,12 +46,6 @@ const YAML_OPTS = {
   onWarning(error) {
     throw error
   },
-}
-
-const validateTests = function({ tests }) {
-  if (Object.keys(tests).length === 0) {
-    throw new Error('No tests were found')
-  }
 }
 
 module.exports = {

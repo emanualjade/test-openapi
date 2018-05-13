@@ -7,9 +7,7 @@ const { validateRequiredness } = require('./required')
 
 // Validates response headers against OpenAPI specification
 const validateHeaders = function({
-  test: {
-    response: { headers: testHeaders },
-  },
+  response: { headers: testHeaders },
   fetchResponse: { headers: fetchHeaders },
 }) {
   const headers = testHeaders.map(({ name, schema: testHeader, collectionFormat }) =>
@@ -25,14 +23,14 @@ const validateHeader = function({ name, testHeader, collectionFormat, fetchHeade
   validateRequiredness({ schema: testHeader, value: fetchHeader, message })
 
   if (fetchHeader === undefined) {
-    return { name }
+    return
   }
 
   const parsedHeader = parseHeader({ header: fetchHeader, schema: testHeader, collectionFormat })
 
   validateHeaderValue({ name: nameA, testHeader, parsedHeader, fetchHeader })
 
-  return { name, value: parsedHeader }
+  return { [`headers.${name}`]: parsedHeader }
 }
 
 // Validates response header against JSON schema from specification

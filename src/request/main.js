@@ -5,10 +5,10 @@ const { doFetch } = require('./fetch')
 const { getDepReturn } = require('./dep_return')
 
 // Perform the main HTTP request of the test
-const sendRequest = async function({ test, test: { requests }, opts }) {
+const sendRequest = async function({ method, path, requests, opts }) {
   const request = generateRequest({ requests })
 
-  const { fetchRequest, fetchResponse } = await doFetch({ test, request, opts })
+  const { fetchRequest, fetchResponse } = await doFetch({ method, path, request, opts })
 
   const requestA = getDepReturn({ request })
 

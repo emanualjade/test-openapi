@@ -8,8 +8,8 @@ const { getRequestBody } = require('./body')
 const { handleResponse } = require('./response')
 
 // Actual HTTP request
-const doFetch = async function({ test, request, opts }) {
-  const fetchRequest = getFetchRequest({ test, request, opts })
+const doFetch = async function({ method, path, request, opts }) {
+  const fetchRequest = getFetchRequest({ method, path, request, opts })
 
   const fetchResponse = await fireFetch({ ...fetchRequest, opts })
 
@@ -19,15 +19,8 @@ const doFetch = async function({ test, request, opts }) {
 }
 
 // Retrieve HTTP request's URL, headers and body
-const getFetchRequest = function({
-  test,
-  test: {
-    operation: { method },
-  },
-  request,
-  opts,
-}) {
-  const url = getRequestUrl({ test, opts, request })
+const getFetchRequest = function({ method, path, request, opts }) {
+  const url = getRequestUrl({ path, request, opts })
   const headers = getRequestHeaders({ request })
   const body = getRequestBody({ request })
 

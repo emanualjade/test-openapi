@@ -1,33 +1,24 @@
 'use strict'
 
-const { pick } = require('lodash')
+const { loadTestFiles } = require('./files')
+const { normalizeTests } = require('./normalize')
 
-const { findDeps } = require('../deps')
-const { getOperation } = require('./operation')
-const { getRequests } = require('./request')
-const { getResponse } = require('./response')
+// Load `tests` option from test files, then normalize it
+const loadTests = async function({ tests = [], spec }) {
+  const testsA = await loadTestFiles({ tests })
 
-// Returns lists of tests to perform
-// Normalize each combination of endpoint + response + parameters
-// into something tests can use
-const getTests = function({ opts, opts: { spec, tests } }) {
-  const testKeys = Object.keys(tests)
+  validateTests({ tests: testsA })
 
-  return Object.entries(tests).map(([testKey, testOpts]) =>
-    getTest({ testKeys, testKey, testOpts, spec }),
-  )
+  const testsB = normalizeTests({ tests: testsA, spec })
+  return testsB
 }
 
-const getTest = function({ testKeys, testKey, testOpts, spec }) {
-  const { deps, depKeys } = findDeps({ testOpts, testKeys })
-  const { name, operation } = getOperation({ testKey, testOpts, spec })
-  const requests = getRequests({ operation, testOpts })
-  const response = getResponse({ operation, testOpts })
-  const operationA = pick(operation, ['method', 'path'])
-
-  return { name, testKey, deps, depKeys, operation: operationA, requests, response }
+const validateTests = function({ tests }) {
+  if (Object.keys(tests).length === 0) {
+    throw new Error('No tests were found')
+  }
 }
 
 module.exports = {
-  getTests,
+  loadTests,
 }

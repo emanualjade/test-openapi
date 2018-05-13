@@ -6,13 +6,13 @@ const { validateBody } = require('./body')
 const { getValidateError } = require('./message')
 
 // Validates response against OpenAPI specification
-const validateResponse = function({ test, fetchRequest, fetchResponse }) {
+const validateResponse = function({ response, fetchRequest, fetchResponse }) {
   try {
-    const status = validateStatus({ test, fetchResponse })
-    const headers = validateHeaders({ test, fetchResponse })
-    const body = validateBody({ test, fetchResponse })
+    const status = validateStatus({ response, fetchResponse })
+    const headers = validateHeaders({ response, fetchResponse })
+    const body = validateBody({ response, fetchResponse })
 
-    return { status, headers, body }
+    return { status, ...headers, body }
   } catch (error) {
     const message = getValidateError({ error, fetchRequest })
     throw new Error(message)

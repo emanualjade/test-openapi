@@ -6,9 +6,7 @@ const { validateRequiredness } = require('./required')
 
 // Validates response body against OpenAPI specification
 const validateBody = function({
-  test: {
-    response: { body: testBody },
-  },
+  response: { body: testBody },
   fetchResponse: { body: fetchBody, headers: fetchHeaders },
 }) {
   const fetchBodyA = trimBody({ fetchBody })

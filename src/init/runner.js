@@ -4,7 +4,7 @@ const Jasmine = require('jasmine')
 const { SpecReporter } = require('jasmine-spec-reporter')
 
 // Run Jasmine with `**/*.js` as the test files
-const runTests = function(resolve, reject) {
+const launchRunner = function(resolve, reject) {
   const jasmine = new Jasmine()
 
   jasmine.loadConfig(JASMINE_CONFIG)
@@ -16,8 +16,11 @@ const runTests = function(resolve, reject) {
   jasmine.execute()
 }
 
+// Entry point of test definitions
+const SPEC_FILE = `${__dirname}/../define.js`
+
 const JASMINE_CONFIG = {
-  spec_files: [`${__dirname}/../define.js`],
+  spec_files: [SPEC_FILE],
   stopSpecOnExpectationFailure: true,
 }
 
@@ -33,5 +36,5 @@ const onComplete = function(resolve, reject, passed) {
 const ERROR_MESSAGE = 'some tests failed'
 
 module.exports = {
-  runTests,
+  launchRunner,
 }

@@ -5,8 +5,7 @@
     "path": "path",
     "query": "query",
     "headers": "header",
-    "body": "formData",
-    "security": "security"
+    "body": "formData"
   },
 
   "LOCATION_TO_KEY": {

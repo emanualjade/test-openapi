@@ -2,14 +2,11 @@
 
 const { omit } = require('lodash')
 
-const { mergeItems } = require('../../utils')
-
 // Merge OpenAPI `consumes` and `produces` properties into request headers and response headers
-const addContentNegotiations = function({ spec, operation, items, isRequest = true }) {
+const getContentNegotiations = function({ spec, operation, isRequest }) {
   const { contentType, accept } = getContentTypeAccept({ spec, operation, isRequest })
-  const contentNegotiations = getContentNegotiations({ contentType, accept, isRequest })
-  const itemsA = mergeContentNegotiations({ items, contentNegotiations, isRequest })
-  return itemsA
+  const contentNegotiations = getContentNegotiationsHeaders({ contentType, accept, isRequest })
+  return contentNegotiations
 }
 
 const getContentTypeAccept = function({ spec, operation, isRequest }) {
@@ -31,7 +28,7 @@ const getConsumesProduces = function({
 
 // Get `consumes` and `produces` OpenAPI properties as header parameters instead
 // Also works when merging with response header schemas
-const getContentNegotiations = function({ contentType, accept, isRequest }) {
+const getContentNegotiationsHeaders = function({ contentType, accept, isRequest }) {
   const contentTypeHeader = getContentTypeHeader(contentType)
   const acceptHeader = getAcceptHeader(accept)
   const contentNegotiations = [...contentTypeHeader, ...acceptHeader]
@@ -84,12 +81,6 @@ const normalizeNonParams = function({ contentNegotiations, isRequest }) {
   )
 }
 
-const mergeContentNegotiations = function({ items, contentNegotiations, isRequest }) {
-  const itemsA = [...contentNegotiations, ...items]
-  const itemsB = mergeItems({ items: itemsA, isRequest })
-  return itemsB
-}
-
 module.exports = {
-  addContentNegotiations,
+  getContentNegotiations,
 }

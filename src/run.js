@@ -30,13 +30,13 @@ const runTest = async function({
   const testA = await replaceDeps({ test, opts, runTest })
 
   // Merge test options with specification
-  const { requests, response } = mergeTest({ test: testA })
+  const { request, response } = mergeTest({ test: testA })
 
   // Send an HTTP request to the endpoint
-  const { fetchRequest, fetchResponse, request } = await sendRequest({
+  const { fetchRequest, fetchResponse, request: requestA } = await sendRequest({
     method,
     path,
-    requests,
+    request,
     opts,
   })
 
@@ -44,7 +44,7 @@ const runTest = async function({
   const responseA = await validateResponse({ response, fetchRequest, fetchResponse })
 
   // Return value if this test was a `dep`
-  return { request, response: responseA }
+  return { request: requestA, response: responseA }
 }
 
 module.exports = {

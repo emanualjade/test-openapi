@@ -1,14 +1,14 @@
 'use strict'
 
-const { mergeRequests } = require('./request')
+const { mergeRequest } = require('./request')
 const { mergeResponse } = require('./response')
 
 // Merge test options to specification
 const mergeTest = function({ test }) {
-  const requests = mergeRequests({ test })
+  const request = mergeRequest({ test })
   const response = mergeResponse({ test })
 
-  return { requests, response }
+  return { request, response }
 }
 
 module.exports = {

@@ -3,7 +3,7 @@
 const { isDeepStrictEqual } = require('util')
 
 // Same as below but specialized for OpenAPI
-const mergeItems = function({ items, isRequest = true, merge }) {
+const mergeItems = function({ items, isRequest, merge }) {
   const condition = isRequest ? isSameParam : hasSameName
   return mergeValues(items, condition, merge)
 }

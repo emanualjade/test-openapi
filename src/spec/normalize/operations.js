@@ -3,7 +3,6 @@
 const { flatten, omit } = require('lodash')
 
 const { getParameters } = require('./request')
-const { getSecurity } = require('./security')
 const { normalizeResponses } = require('./response')
 
 // Normalize OpenAPI operation into specification-agnostic format
@@ -35,10 +34,9 @@ const getOperation = function({
 }) {
   const methodA = method.toUpperCase()
   const parameters = getParameters({ spec, pathDef, operation })
-  const security = getSecurity({ spec, operation })
   const responsesA = normalizeResponses({ responses, spec, operation })
 
-  return { method: methodA, path, operationId, parameters, security, responses: responsesA }
+  return { method: methodA, path, operationId, parameters, responses: responsesA }
 }
 
 module.exports = {

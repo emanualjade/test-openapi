@@ -1,7 +1,7 @@
 'use strict'
 
 const { loadNormalizedSpec } = require('../spec')
-const { loadTests } = require('../tests')
+const { loadTests, normalizeTests } = require('../tests')
 const { getServer } = require('./server')
 
 // Load and normalize options
@@ -13,18 +13,24 @@ const loadOpts = async function({
   server,
 }) {
   // Retrieve OpenAPI specification
-  const specA = await loadNormalizedSpec({ path: spec })
+  const specA = loadNormalizedSpec({ path: spec })
 
   // Retrieve test files
-  const testsA = await loadTests({ tests, spec: specA })
+  const testsA = loadTests({ tests })
+
+  // Parallelize for performance reasons
+  const [specB, testsB] = await Promise.all([specA, testsA])
+
+  // Normalize tests, e.g. match test with specification's operation
+  const testsC = normalizeTests({ tests: testsB, spec: specB })
 
   // `it()` timeout must be high because it might wait for parallel tests
   const timeout = maxParallel * TIMEOUT_PER_TEST
 
   // Retrieve HTTP request's base URL
-  const serverA = getServer({ server, spec: specA })
+  const serverA = getServer({ server, spec: specB })
 
-  return { spec: specA, tests: testsA, server: serverA, repeat, timeout }
+  return { spec: specB, tests: testsC, server: serverA, repeat, timeout }
 }
 
 const DEFAULT_TESTS = ['**/*.test.yml', '**/*.spec.yml', '**/*.test.json', '**/*.test.yml']

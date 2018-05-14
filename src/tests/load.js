@@ -1,7 +1,6 @@
 'use strict'
 
 const { loadTestFiles } = require('./files')
-const { normalizeTests } = require('./normalize')
 
 // Load `tests` option from test files, then normalize it
 const loadTests = async function({ tests, spec }) {
@@ -9,8 +8,7 @@ const loadTests = async function({ tests, spec }) {
 
   validateTests({ tests: testsA })
 
-  const testsB = normalizeTests({ tests: testsA, spec })
-  return testsB
+  return testsA
 }
 
 const validateTests = function({ tests }) {

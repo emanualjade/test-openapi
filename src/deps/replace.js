@@ -2,6 +2,8 @@
 
 const { set, merge, uniq } = require('lodash')
 
+const { get } = require('../utils')
+
 // Replace all `deps`, i.e. references to other tests.
 const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
   if (deps.length === 0) {
@@ -51,21 +53,6 @@ const getDepValue = function({ depKey, depReturn, depPath }) {
       `This test targets another test '${depKey}.${depPath}' but this key could not be found`,
     )
   }
-}
-
-// Like Lodash get() except works with objects that have keys with dots in them
-const get = function(obj, path) {
-  if (!path.includes('.') || obj[path] !== undefined) {
-    return obj[path]
-  }
-
-  const keyA = Object.keys(obj).find(key => path.startsWith(`${key}.`))
-  if (keyA === undefined) {
-    throw new Error(`Could not find key named '${path}'`)
-  }
-
-  const pathA = path.replace(`${keyA}.`, '')
-  return get(obj[keyA], pathA)
 }
 
 const mergeDeps = function({ test, test: { testOpts }, deps }) {

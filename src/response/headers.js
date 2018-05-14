@@ -49,7 +49,7 @@ const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHead
     return
   }
 
-  const errorA = `Invalid response header '${name}' with value '${fetchHeader}':${error}.`
+  const errorA = `Response header '${name}' with value '${fetchHeader}'${error}.`
   throw new Error(errorA)
 }
 

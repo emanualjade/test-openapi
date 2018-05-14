@@ -9,7 +9,7 @@ const validateStatus = function({
     return fetchStatus
   }
 
-  throw new Error(`Invalid status code ${fetchStatus}: it should be ${testStatus} instead.`)
+  throw new Error(`Status code ${fetchStatus} should be ${testStatus} instead.`)
 }
 
 module.exports = {

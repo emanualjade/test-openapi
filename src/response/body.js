@@ -43,7 +43,7 @@ const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
     return
   }
 
-  const errorA = `Invalid response body:${error}.\nThe response body was:\n${fetchBody}`
+  const errorA = `Response body${error}.\nThe response body was:\n${fetchBody}`
   throw new Error(errorA)
 }
 

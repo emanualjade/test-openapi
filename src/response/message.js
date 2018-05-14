@@ -8,7 +8,7 @@ const getValidateError = function({
 }) {
   const headersA = getHeadersError({ headers })
   const bodyA = getBodyError({ body })
-  const messageA = `${message}\nThe request was:\n${method} ${url}${headersA}${bodyA}`
+  const messageA = `${message}\n\nThe request was:\n${method} ${url}${headersA}${bodyA}`
   return messageA
 }
 

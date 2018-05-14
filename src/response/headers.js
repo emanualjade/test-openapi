@@ -19,7 +19,7 @@ const validateHeaders = function({
 
 const validateHeader = function({ name, testHeader, collectionFormat, fetchHeader }) {
   const nameA = capitalizeHeader({ name })
-  const message = `HTTP response header '${nameA}'`
+  const message = `The response header '${nameA}'`
   validateRequiredness({ schema: testHeader, value: fetchHeader, message })
 
   if (fetchHeader === undefined) {
@@ -35,17 +35,12 @@ const validateHeader = function({ name, testHeader, collectionFormat, fetchHeade
 
 // Validates response header against JSON schema from specification
 const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHeader }) {
-  const error = validateFromSchema({
-    schema: testHeader,
-    value: parsedHeader,
-    name: `headers['${name}']`,
-  })
+  const error = validateFromSchema({ schema: testHeader, value: parsedHeader })
   if (!error) {
     return
   }
 
-  const resHeaderA = JSON.stringify(fetchHeader, null, 2)
-  const errorA = `Invalid HTTP response header '${name}' with value ${resHeaderA}: ${error}`
+  const errorA = `Invalid response header '${name}' with value '${fetchHeader}':${error}.`
   throw new Error(errorA)
 }
 

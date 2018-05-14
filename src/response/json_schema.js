@@ -23,7 +23,7 @@ const compileJsonSchema = function(schema) {
 }
 
 // Human-friendly error
-const getErrorMessage = function({ errors, name }) {
+const getErrorMessage = function({ errors, name = '' }) {
   return ajv.errorsText(errors, { separator: '\n', dataVar: name })
 }
 

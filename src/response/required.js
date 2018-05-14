@@ -22,7 +22,7 @@ const validateForbidden = function({ value, message }) {
     return
   }
 
-  throw new Error(`${message} should not be defined`)
+  throw new Error(`${message} should be empty. However it is:\n${value}`)
 }
 
 const validateRequired = function({ value, message }) {
@@ -30,7 +30,7 @@ const validateRequired = function({ value, message }) {
     return
   }
 
-  throw new Error(`${message} should be defined`)
+  throw new Error(`${message} should not be empty.`)
 }
 
 module.exports = {

@@ -11,7 +11,7 @@ const validateBody = function({
 }) {
   const fetchBodyA = trimBody({ fetchBody })
 
-  const message = 'HTTP response body'
+  const message = 'The response body'
   validateRequiredness({ schema: testBody, value: fetchBodyA, message })
 
   if (fetchBodyA === undefined) {
@@ -38,12 +38,12 @@ const trimBody = function({ fetchBody }) {
 }
 
 const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
-  const error = validateFromSchema({ schema: testBody, value: parsedBody, name: 'body' })
+  const error = validateFromSchema({ schema: testBody, value: parsedBody })
   if (!error) {
     return
   }
 
-  const errorA = `Invalid HTTP response body: ${error}\nResponse body was:\n${fetchBody}\n`
+  const errorA = `Invalid response body:${error}.\nThe response body was:\n${fetchBody}`
   throw new Error(errorA)
 }
 

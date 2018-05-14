@@ -29,6 +29,7 @@ const runTest = async function({
   // Pass `runTest` for recursion.
   const testA = await replaceDeps({ test, opts, runTest })
 
+  // Merge test options with specification
   const { requests, response } = mergeTest({ test: testA })
 
   // Send an HTTP request to the endpoint

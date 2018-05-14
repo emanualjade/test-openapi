@@ -2,11 +2,13 @@
 
 const { uniq } = require('lodash')
 
+const { handleDepError, checkStack } = require('./stack')
+
 // Run `deps` tests
-const runDeps = async function({ deps, opts, runTest }) {
+const runDeps = async function({ test, deps, opts, runTest }) {
   const depKeys = getDepKeys({ deps })
   const depReturns = await Promise.all(
-    depKeys.map(depKey => runDep({ depKey, deps, opts, runTest })),
+    depKeys.map(depKey => runDep({ depKey, test, opts, runTest })),
   )
   const depReturnsA = Object.assign({}, ...depReturns)
   return depReturnsA
@@ -19,26 +21,20 @@ const getDepKeys = function({ deps }) {
   return depKeysA
 }
 
-const runDep = async function({ depKey, deps, opts, opts: { tests }, runTest }) {
+const runDep = async function({ depKey, test, opts, opts: { tests }, runTest }) {
+  const optsA = checkStack({ depKey, test, opts })
+
   const depTest = tests.find(({ testKey }) => testKey === depKey)
-  const depReturn = await runDepTest({ depTest, deps, opts, runTest })
+  const depReturn = await runDepTest({ depTest, opts: optsA, runTest })
   return { [depKey]: depReturn }
 }
 
-const runDepTest = async function({ depTest, deps, opts, runTest }) {
+const runDepTest = async function({ depTest, opts, runTest }) {
   try {
     return await runTest({ test: depTest, opts })
-  } catch ({ message }) {
-    const error = getDepError({ message, depTest, deps })
-    throw error
+  } catch (error) {
+    handleDepError({ error, opts })
   }
-}
-
-const getDepError = function({ message, depTest, deps }) {
-  const { depKey, depPath } = deps.find(({ depKey }) => depKey === depTest.testKey)
-  const messageA = `This test targets another test '${depKey}.${depPath}' but this test failed with the following error:\n\n${message}`
-  const errorA = new Error(messageA)
-  return errorA
 }
 
 module.exports = {

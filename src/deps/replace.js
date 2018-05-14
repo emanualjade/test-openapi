@@ -11,7 +11,7 @@ const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
     return test
   }
 
-  const depReturns = await runDeps({ deps, opts, runTest })
+  const depReturns = await runDeps({ test, deps, opts, runTest })
   const depsA = deps.map(dep => replaceDep({ dep, depReturns }))
   const testA = mergeDeps({ test, deps: depsA })
   return testA

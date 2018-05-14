@@ -4,7 +4,7 @@ const { loadTestFiles } = require('./files')
 const { normalizeTests } = require('./normalize')
 
 // Load `tests` option from test files, then normalize it
-const loadTests = async function({ tests = [], spec }) {
+const loadTests = async function({ tests, spec }) {
   const testsA = await loadTestFiles({ tests })
 
   validateTests({ tests: testsA })

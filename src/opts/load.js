@@ -7,7 +7,7 @@ const { getServer } = require('./server')
 // Load and normalize options
 const loadOpts = async function({
   spec,
-  tests,
+  tests = DEFAULT_TESTS,
   repeat = DEFAULT_REPEAT,
   maxParallel = DEFAULT_MAX_PARALLEL,
   server,
@@ -27,6 +27,7 @@ const loadOpts = async function({
   return { spec: specA, tests: testsA, server: serverA, repeat, timeout }
 }
 
+const DEFAULT_TESTS = ['**/*.test.yml', '**/*.spec.yml', '**/*.test.json', '**/*.test.yml']
 // Number of times each `it()` is repeated (each time with new random parameters)
 const DEFAULT_REPEAT = 1e1
 // Number of concurrent HTTP requests at once

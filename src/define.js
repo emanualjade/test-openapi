@@ -13,10 +13,11 @@ const defineTests = function({ opts, opts: { tests } }) {
 const DESCRIBE_TITLE = 'Integration tests'
 
 // Define a single test with `it()`
-const defineTest = function({ test: { title, ...test }, opts, opts: { timeout } }) {
+const defineTest = function({ test: { title, ...test }, opts }) {
   // This means `this` context is lost.
   // We can remove the arrow function if we ever need the context.
-  it(title, () => runTests({ test, opts }), timeout)
+  // Timeout is handled differently (i.e. not by the test runner)
+  it(title, () => runTests({ test, opts }), 0)
 }
 
 module.exports = {

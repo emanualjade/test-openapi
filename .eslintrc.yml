@@ -5,9 +5,42 @@ env:
   jasmine: true
 parserOptions:
   # At the moment, eslint-config-standard is still using `8`
-  ecmaVersion: 9
+  ecmaVersion: 2018
+  sourceType: script
 rules:
-  # feross/standard does not check arguments for unused-vars
+  # Rules related to `require()` and module loading
+  no-duplicate-imports: 2
+  no-mixed-requires: 2
+  sort-imports:
+  - 2
+  - ignoreMemberSort: true
   no-unused-vars:
   - 2
   - {}
+
+  import/named: 2
+  import/default: 2
+  import/namespace: 2
+  import/no-named-as-default: 2
+  import/no-named-as-default-member: 2
+  import/no-namespace: 2
+  import/no-named-default: 2
+  import/no-anonymous-default-export: 2
+  import/no-default-export: 2
+  import/extensions: 2
+  import/no-absolute-path: 2
+  import/no-useless-path-segments: 2
+  import/no-self-import: 2
+  import/no-cycle: 2
+  import/no-extraneous-dependencies: 2
+  import/newline-after-import: 2
+  import/unambiguous: 2
+  import/no-dynamic-require: 2
+  import/no-amd: 2
+  import/no-deprecated: 2
+  import/order:
+  - 2
+  - newlines-between: always
+  import/no-unresolved:
+  - 2
+  - commonjs: true

@@ -4,6 +4,10 @@ const { set, merge, uniq } = require('lodash')
 
 // Replace all `deps`, i.e. references to other tests.
 const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
+  if (deps.length === 0) {
+    return test
+  }
+
   const depReturns = await getDepReturns({ deps, opts, runTest })
   const depsA = deps.map(dep => replaceDep({ dep, depReturns }))
   const testA = mergeDeps({ test, deps: depsA })

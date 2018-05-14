@@ -17,6 +17,10 @@ const parseCommand = function([command, ...posOpts]) {
     return { command, posOpts }
   }
 
+  if (command === undefined) {
+    return { command: 'run' }
+  }
+
   return { command: 'run', posOpts: [command, ...posOpts] }
 }
 

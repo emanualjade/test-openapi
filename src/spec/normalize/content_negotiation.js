@@ -1,81 +1,81 @@
 'use strict'
 
-// Merge OpenAPI `consumes` and `produces` properties into request headers
+// Get OpenAPI `consumes` and `produces` properties as request headers
 const getContentNegotiationsRequest = function({ spec, operation }) {
-  const { consumes: contentType, produces: accept } = getConsumesProduces({ spec, operation })
-
-  const contentNegotiations = getContentNegotiationsHeaders({ contentType, accept })
-
-  const contentNegotiationsA = addRequestInfo({ contentNegotiations })
-
-  return contentNegotiationsA
+  const contentType = getContentTypeRequest({ spec, operation })
+  const accept = getAcceptRequest({ spec, operation })
+  const headers = [contentType, accept].filter(header => header !== undefined)
+  return headers
 }
 
-// Merge OpenAPI `consumes` and `produces` properties into response headers
+// Get OpenAPI `produces` property as a response header
 const getContentNegotiationsResponse = function({ spec, operation }) {
-  const { consumes: accept, produces: contentType } = getConsumesProduces({ spec, operation })
-
-  const contentNegotiations = getContentNegotiationsHeaders({ contentType, accept })
-
-  return contentNegotiations
+  const contentType = getContentTypeResponse({ spec, operation })
+  const headers = [contentType].filter(header => header !== undefined)
+  return headers
 }
 
-const getConsumesProduces = function({
-  spec: { consumes: specConsumes, produces: specProduces },
-  operation: { consumes = specConsumes, produces = specProduces },
+const getContentTypeRequest = function({ spec, operation }) {
+  const consumes = getConsumes({ spec, operation })
+  const header = getContentTypeHeader(consumes)
+  const headerA = addRequestInfo(header)
+  return headerA
+}
+
+const getAcceptRequest = function({ spec, operation }) {
+  const produces = getProduces({ spec, operation })
+  const header = getAcceptHeader(produces)
+  const headerA = addRequestInfo(header)
+  return headerA
+}
+
+const getContentTypeResponse = function({ spec, operation }) {
+  const produces = getProduces({ spec, operation })
+  const header = getContentTypeHeader(produces)
+  return header
+}
+
+const getConsumes = function({
+  spec: { consumes: specConsumes },
+  operation: { consumes = specConsumes },
 }) {
-  return { consumes, produces }
+  return consumes
+}
+
+const getProduces = function({
+  spec: { produces: specProduces },
+  operation: { produces = specProduces },
+}) {
+  return produces
 }
 
 // Get `consumes` and `produces` OpenAPI properties as header parameters instead
 // Also works when merging with response header schemas
-const getContentNegotiationsHeaders = function({ contentType, accept }) {
-  const contentTypeHeader = getContentTypeHeader(contentType)
-  const acceptHeader = getAcceptHeader(accept)
-  const contentNegotiations = [...contentTypeHeader, ...acceptHeader]
-
-  return contentNegotiations
-}
-
 // A random request Content-Type will be picked
 const getContentTypeHeader = function(mimes = []) {
   if (mimes.length === 0) {
-    return []
+    return
   }
 
-  return [
-    {
-      name: 'content-type',
-      location: 'header',
-      required: true,
-      schema: { type: 'string', enum: mimes },
-    },
-  ]
+  return { name: 'content-type', schema: { type: 'string', enum: mimes } }
 }
 
 // But the Accept header is always the same
 const getAcceptHeader = function(mimes = []) {
   if (mimes.length === 0) {
-    return []
+    return
   }
 
   const accept = mimes.join(',')
-  return [
-    {
-      name: 'accept',
-      location: 'header',
-      required: true,
-      schema: { type: 'string', enum: [accept] },
-    },
-  ]
+  return { name: 'accept', schema: { type: 'string', enum: [accept] } }
 }
 
-const addRequestInfo = function({ contentNegotiations }) {
-  return contentNegotiations.map(contentNegotiation => ({
-    ...contentNegotiation,
-    location: 'header',
-    required: true,
-  }))
+const addRequestInfo = function(header) {
+  if (header === undefined) {
+    return
+  }
+
+  return { ...header, location: 'header', required: true }
 }
 
 module.exports = {

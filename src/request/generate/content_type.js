@@ -21,13 +21,21 @@ const fakeContentType = function({ request }) {
 
 // Extract the `Content-Type` header request parameter from others
 const extractContentTypeParam = function({ request }) {
-  const contentTypeParam = request.find(param => isContentTypeParam({ param }))
+  const contentTypeParam =
+    request.find(param => isContentTypeParam({ param })) || DEFAULT_CONTENT_TYPE
   const requestA = request.filter(param => !isContentTypeParam({ param }))
   return [contentTypeParam, requestA]
 }
 
 const isContentTypeParam = function({ param: { location, name } }) {
   return location === 'header' && name.toLowerCase() === 'content-type'
+}
+
+// Default request `Content-Type` according to HTTP is `application/octet-stream`
+const DEFAULT_CONTENT_TYPE = {
+  name: 'content-type',
+  location: 'header',
+  schema: { type: 'string', enum: ['application/octet-stream'] },
 }
 
 // Retrieve whether there is a request body and whether it is of `body` or `formData` type
@@ -48,30 +56,13 @@ const normalizeContentType = function({ contentTypeParam, reqBodyType }) {
     return []
   }
 
-  const contentTypeParamA = addDefaultContentType({ contentTypeParam })
+  const contentTypeParamA = { ...contentTypeParam, required: true }
 
-  const contentTypeParamB = { ...contentTypeParamA, required: true }
+  const contentTypeParamB = filterReqBodyMimes({ contentTypeParam: contentTypeParamA, reqBodyType })
 
-  const contentTypeParamC = filterReqBodyMimes({ contentTypeParam: contentTypeParamB, reqBodyType })
+  const contentTypeParamC = generateContentType({ contentTypeParam: contentTypeParamB })
 
-  const contentTypeParamD = generateContentType({ contentTypeParam: contentTypeParamC })
-
-  return [contentTypeParamD]
-}
-
-// Default request `Content-Type` according to HTTP is `application/octet-stream`
-const addDefaultContentType = function({ contentTypeParam }) {
-  if (contentTypeParam !== undefined) {
-    return contentTypeParam
-  }
-
-  return DEFAULT_CONTENT_TYPE_PARAM
-}
-
-const DEFAULT_CONTENT_TYPE_PARAM = {
-  name: 'content-type',
-  location: 'header',
-  schema: { type: 'string', enum: ['application/octet-stream'] },
+  return [contentTypeParamC]
 }
 
 // Must use `formData` request parameter if `x-www-form-urlencoded` or `multipart/form-data`

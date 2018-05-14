@@ -9,7 +9,7 @@ const normalizeTests = function({ tests, spec }) {
   validateTests({ tests })
 
   const testsA = Object.entries(tests).map(([testKey, testOpts]) =>
-    normalizeTest({ testKey, testOpts, tests, spec }),
+    normalizeTest({ testKey, testOpts, spec }),
   )
   const testsB = addTitles({ tests: testsA })
   const testsC = addDeps({ tests: testsB })
@@ -22,7 +22,7 @@ const validateTests = function({ tests }) {
   }
 }
 
-const normalizeTest = function({ testKey, testOpts, tests, spec }) {
+const normalizeTest = function({ testKey, testOpts, spec }) {
   const { name, operation } = getOperation({ testKey, testOpts, spec })
   return { testKey, testOpts, name, operation }
 }

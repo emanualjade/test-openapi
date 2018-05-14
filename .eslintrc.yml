@@ -6,3 +6,8 @@ env:
 parserOptions:
   # At the moment, eslint-config-standard is still using `8`
   ecmaVersion: 9
+rules:
+  # feross/standard does not check arguments for unused-vars
+  no-unused-vars:
+  - 2
+  - {}

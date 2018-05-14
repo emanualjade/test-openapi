@@ -27,7 +27,7 @@ const getTestHeaders = function({ testOpts: { response = {} } }) {
     .map(getTestHeader)
 }
 
-const isTestHeader = function([name, value]) {
+const isTestHeader = function([name]) {
   return name.startsWith(HEADERS_PREFIX)
 }
 

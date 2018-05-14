@@ -26,7 +26,7 @@ const stringifyParamFlat = function({ param: { value, name, collectionFormat } }
 }
 
 // Stringify the request body according to HTTP request header `Content-Type`
-const stringifyBody = function({ param, param: { value }, contentType }) {
+const stringifyBody = function({ param: { value }, contentType }) {
   // Default stringifiers tries JSON.stringify()
   const { stringify = stringifyFlat, name = DEFAULT_REQ_BODY_MIME.body } = findBodyHandler({
     mime: contentType,

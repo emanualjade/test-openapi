@@ -53,11 +53,7 @@ const normalizeSecTestRequest = function({ secTestRequest, secRequest }) {
     .filter(secTestParam => secTestParam !== undefined)
 }
 
-const normalizeSecTestParam = function({
-  secTestParam,
-  secTestParam: { name, schema },
-  secRequest,
-}) {
+const normalizeSecTestParam = function({ secTestParam: { name, schema }, secRequest }) {
   const secParam = secRequest.find(({ secName }) => secName === name)
   if (secParam === undefined) {
     return

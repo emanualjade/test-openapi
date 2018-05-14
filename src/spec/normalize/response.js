@@ -45,10 +45,9 @@ const getResponseHeaders = function({ response: { headers = {} }, spec, operatio
 }
 
 const getResponseHeader = function([name, { collectionFormat, ...schema }]) {
-  const nameA = name.toLowerCase()
   const schemaA = normalizeSchema({ schema })
 
-  return { name: nameA, schema: schemaA, collectionFormat }
+  return { name, schema: schemaA, collectionFormat }
 }
 
 module.exports = {

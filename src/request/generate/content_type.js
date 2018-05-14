@@ -33,7 +33,7 @@ const isContentTypeParam = function({ param: { location, name } }) {
 
 // Default request `Content-Type` according to HTTP is `application/octet-stream`
 const DEFAULT_CONTENT_TYPE = {
-  name: 'content-type',
+  name: 'Content-Type',
   location: 'header',
   schema: { type: 'string', enum: ['application/octet-stream'] },
 }

@@ -57,7 +57,7 @@ const getContentTypeHeader = function(mimes = []) {
     return
   }
 
-  return { name: 'content-type', schema: { type: 'string', enum: mimes } }
+  return { name: 'Content-Type', schema: { type: 'string', enum: mimes } }
 }
 
 // But the Accept header is always the same
@@ -67,7 +67,7 @@ const getAcceptHeader = function(mimes = []) {
   }
 
   const accept = mimes.join(',')
-  return { name: 'accept', schema: { type: 'string', enum: [accept] } }
+  return { name: 'Accept', schema: { type: 'string', enum: [accept] } }
 }
 
 const addRequestInfo = function(header) {

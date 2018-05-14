@@ -13,18 +13,22 @@ const mergeRequest = function(request, merge) {
 
 // Merge response headers of same name
 const mergeResponse = function(headers, merge) {
-  return mergeValues(headers, hasSameName, merge)
+  return mergeValues(headers, isSameHeader, merge)
 }
 
 const isSameParam = function(paramA, paramB) {
-  return hasSameLocation(paramA, paramB) && hasSameName(paramA, paramB)
+  if (paramA.location !== paramB.location) {
+    return false
+  }
+
+  if (paramA.location === 'header') {
+    return paramA.name.toLowerCase() === paramB.name.toLowerCase()
+  }
+
+  return paramA.name === paramB.name
 }
 
-const hasSameLocation = function(paramA, paramB) {
-  return paramA.location === paramB.location
-}
-
-const hasSameName = function(inputA, inputB) {
+const isSameHeader = function(inputA, inputB) {
   return inputA.name.toLowerCase() === inputB.name.toLowerCase()
 }
 

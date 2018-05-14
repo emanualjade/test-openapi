@@ -1,9 +1,24 @@
 'use strict'
 
-const { KEY_TO_LOCATION } = require('../../constants')
+const { KEY_TO_LOCATION } = require('../constants')
+const { mergeTestRequest } = require('./common')
+
+// Merge HTTP request parameters to specification
+const mergeRequest = function({
+  test: {
+    testOpts: { request = {} },
+    operation: { parameters },
+  },
+}) {
+  const testRequest = getTestRequest({ request })
+
+  const requestA = mergeTestRequest([...parameters, ...testRequest])
+
+  return requestA
+}
 
 // Translate `test.request` into requests parameters
-const getTestRequest = function({ testOpts: { request = {} } }) {
+const getTestRequest = function({ request }) {
   return Object.entries(request).map(getTestParam)
 }
 
@@ -31,5 +46,5 @@ const getLocation = function({ name }) {
 }
 
 module.exports = {
-  getTestRequest,
+  mergeRequest,
 }

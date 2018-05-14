@@ -31,7 +31,7 @@ const isTestHeader = function([name]) {
 }
 
 const getTestHeader = function([name, schema]) {
-  const nameA = name.replace(HEADERS_PREFIX, '').toLowerCase()
+  const nameA = name.replace(HEADERS_PREFIX, '')
 
   return { name: nameA, schema }
 }

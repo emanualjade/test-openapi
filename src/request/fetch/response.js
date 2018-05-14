@@ -16,7 +16,7 @@ const getStatus = function({ fetchResponse: { status } }) {
 // Normalize response headers to a plain object
 const getHeaders = function({ fetchResponse: { headers } }) {
   const headersA = [...headers.entries()]
-  const headersB = headersA.map(([name, value]) => ({ [name.toLowerCase()]: value }))
+  const headersB = headersA.map(([name, value]) => ({ [name]: value }))
   const headersC = Object.assign({}, ...headersB)
   return headersC
 }

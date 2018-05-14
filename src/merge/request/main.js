@@ -1,6 +1,6 @@
 'use strict'
 
-const { mergeInputs } = require('../common')
+const { mergeTestRequest } = require('../common')
 const { getTestRequest } = require('./test_opts')
 
 // Merge HTTP request parameters to specification
@@ -12,8 +12,7 @@ const mergeRequest = function({
 }) {
   const testRequest = getTestRequest({ testOpts })
 
-  const items = [...parameters, ...testRequest]
-  const request = mergeInputs({ items, isRequest: true })
+  const request = mergeTestRequest([...parameters, ...testRequest])
 
   return request
 }

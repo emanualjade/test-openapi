@@ -1,17 +1,10 @@
 'use strict'
 
 // `test.request|response.*: invalid` means we inverse re-use parameter's schema
-const mergeInvalidSchema = function({
-  inputA,
-  inputA: {
-    schema,
-    schema: { type },
-  },
-  inputB,
-}) {
+const mergeInvalidSchema = function({ specSchema, specSchema: { type } }) {
   const typeA = addNullType({ type })
-  const schemaA = { ...schema, type: typeA }
-  return { ...inputA, ...inputB, schema: { not: schemaA } }
+  const schema = { not: { ...specSchema, type: typeA } }
+  return schema
 }
 
 // When using 'invalid', we want to make sure the value is generated, i.e. it

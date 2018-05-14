@@ -1,20 +1,20 @@
 'use strict'
 
-const { mergeInput } = require('../common')
+const { mergeTestSchema } = require('../common')
 
 // Merge `test.response.body` to specification
 const mergeResponseBody = function({
   operation: {
-    response: { body: schema },
+    response: { body: specSchema },
   },
   testOpts: { response: { body: testSchema } = {} },
 }) {
   if (testSchema === undefined) {
-    return schema
+    return specSchema
   }
 
-  const { schema: schemaA } = mergeInput({ schema }, { schema: testSchema })
-  return schemaA
+  const schema = mergeTestSchema({ specSchema, testSchema })
+  return schema
 }
 
 module.exports = {

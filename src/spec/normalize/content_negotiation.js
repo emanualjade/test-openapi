@@ -1,22 +1,23 @@
 'use strict'
 
-const { omit } = require('lodash')
+// Merge OpenAPI `consumes` and `produces` properties into request headers
+const getContentNegotiationsRequest = function({ spec, operation }) {
+  const { consumes: contentType, produces: accept } = getConsumesProduces({ spec, operation })
 
-// Merge OpenAPI `consumes` and `produces` properties into request headers and response headers
-const getContentNegotiations = function({ spec, operation, isRequest }) {
-  const { contentType, accept } = getContentTypeAccept({ spec, operation, isRequest })
-  const contentNegotiations = getContentNegotiationsHeaders({ contentType, accept, isRequest })
-  return contentNegotiations
+  const contentNegotiations = getContentNegotiationsHeaders({ contentType, accept })
+
+  const contentNegotiationsA = addRequestInfo({ contentNegotiations })
+
+  return contentNegotiationsA
 }
 
-const getContentTypeAccept = function({ spec, operation, isRequest }) {
-  const { consumes, produces } = getConsumesProduces({ spec, operation })
+// Merge OpenAPI `consumes` and `produces` properties into response headers
+const getContentNegotiationsResponse = function({ spec, operation }) {
+  const { consumes: accept, produces: contentType } = getConsumesProduces({ spec, operation })
 
-  if (isRequest) {
-    return { contentType: consumes, accept: produces }
-  }
+  const contentNegotiations = getContentNegotiationsHeaders({ contentType, accept })
 
-  return { contentType: produces, accept: consumes }
+  return contentNegotiations
 }
 
 const getConsumesProduces = function({
@@ -28,13 +29,12 @@ const getConsumesProduces = function({
 
 // Get `consumes` and `produces` OpenAPI properties as header parameters instead
 // Also works when merging with response header schemas
-const getContentNegotiationsHeaders = function({ contentType, accept, isRequest }) {
+const getContentNegotiationsHeaders = function({ contentType, accept }) {
   const contentTypeHeader = getContentTypeHeader(contentType)
   const acceptHeader = getAcceptHeader(accept)
   const contentNegotiations = [...contentTypeHeader, ...acceptHeader]
 
-  const contentNegotiationsA = normalizeNonParams({ contentNegotiations, isRequest })
-  return contentNegotiationsA
+  return contentNegotiations
 }
 
 // A random request Content-Type will be picked
@@ -70,17 +70,15 @@ const getAcceptHeader = function(mimes = []) {
   ]
 }
 
-// Response headers have a different shape than parameters
-const normalizeNonParams = function({ contentNegotiations, isRequest }) {
-  if (isRequest) {
-    return contentNegotiations
-  }
-
-  return contentNegotiations.map(contentNegotiation =>
-    omit(contentNegotiation, ['location', 'required']),
-  )
+const addRequestInfo = function({ contentNegotiations }) {
+  return contentNegotiations.map(contentNegotiation => ({
+    ...contentNegotiation,
+    location: 'header',
+    required: true,
+  }))
 }
 
 module.exports = {
-  getContentNegotiations,
+  getContentNegotiationsRequest,
+  getContentNegotiationsResponse,
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-const { mergeInputs } = require('../common')
+const { mergeTestResponse } = require('../common')
 
 // Merge `test.response.headers.*` to specification
 const mergeResponseHeaders = function({
@@ -11,8 +11,7 @@ const mergeResponseHeaders = function({
 }) {
   const testHeaders = getTestHeaders({ testOpts })
 
-  const items = [...headers, ...testHeaders]
-  const headersA = mergeInputs({ items, isRequest: false })
+  const headersA = mergeTestResponse([...headers, ...testHeaders])
 
   return headersA
 }

@@ -4,7 +4,7 @@ const { getOpts } = require('./opts')
 const { runTests } = require('./run')
 
 // Main entry point of integration tests definition
-const defineIntegrationTests = function() {
+const defineTests = function() {
   // Retrieve main options
   const opts = getOpts()
 
@@ -21,9 +21,6 @@ const defineTest = function({ test: { title, ...test }, opts, opts: { timeout } 
   it(title, () => runTests({ test, opts }), timeout)
 }
 
-// Run on `require()`
-defineIntegrationTests()
-
 module.exports = {
-  defineIntegrationTests,
+  defineTests,
 }

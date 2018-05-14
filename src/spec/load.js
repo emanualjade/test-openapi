@@ -1,6 +1,5 @@
 'use strict'
 
-const { chdir, cwd } = require('process')
 const { dirname, basename } = require('path')
 
 const { validateOpenApi } = require('./validate')
@@ -16,24 +15,12 @@ const loadOpenApiSpec = async function({ path }) {
 }
 
 const loadSpec = async function({ path }) {
-  const dir = dirname(path)
-  const spec = basename(path)
+  const definition = basename(path)
+  const relativeBase = dirname(path)
 
-  // We need to change `process.cwd` for the JSON references to be resolved correctly
-  const currentDir = cwd()
-  chdir(dir)
-
-  const specA = await parseSpec({ spec })
-
-  chdir(currentDir)
-
-  return specA
-}
-
-const parseSpec = function({ spec }) {
   try {
     const sway = getSway()
-    const specA = sway.create({ definition: spec })
+    const specA = await sway.create({ definition, jsonRefs: { relativeBase } })
     return specA
   } catch ({ message }) {
     const messageA = `OpenAPI specification could not be loaded: ${message}`

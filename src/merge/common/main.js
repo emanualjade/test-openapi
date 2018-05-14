@@ -3,17 +3,18 @@
 const { merge } = require('lodash')
 
 const { mergeValues, isObject } = require('../../utils')
+
 const { mergeInvalidSchema } = require('./invalid')
 const { mergeShortcutSchema } = require('./shortcut')
 
 // Merge request parameters of same name and location
-const mergeRequest = function(request, merge) {
-  return mergeValues(request, isSameParam, merge)
+const mergeRequest = function(request, mergeFunc) {
+  return mergeValues(request, isSameParam, mergeFunc)
 }
 
 // Merge response headers of same name
-const mergeResponse = function(headers, merge) {
-  return mergeValues(headers, isSameHeader, merge)
+const mergeResponse = function(headers, mergeFunc) {
+  return mergeValues(headers, isSameHeader, mergeFunc)
 }
 
 const isSameParam = function(paramA, paramB) {

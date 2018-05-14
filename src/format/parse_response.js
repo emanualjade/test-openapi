@@ -1,6 +1,6 @@
 'use strict'
 
-const { usesCollectionFormat, parseCollectionFormat } = require('./collection_format')
+const { usesCollFormat, parseCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 
 // Parses a response's header according to OpenAPI specification
@@ -9,8 +9,8 @@ const parseHeader = function({ header, schema, collectionFormat }) {
   const headerA = header.trim()
 
   // Response header values that are arrays can either use JSON or OpenAPI `collectionFormat`
-  if (usesCollectionFormat({ value: headerA, schema })) {
-    return parseCollectionFormat({ value: headerA, collectionFormat })
+  if (usesCollFormat({ value: headerA, schema })) {
+    return parseCollFormat({ value: headerA, collectionFormat })
   }
 
   // If `schema.type` is an array including `string`, it will still work when

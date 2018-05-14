@@ -1,6 +1,6 @@
 'use strict'
 
-const { stringifyCollectionFormat } = require('./collection_format')
+const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 const { stringifyFlat } = require('./json')
 
@@ -19,7 +19,7 @@ const stringifyParam = function({ param, param: { location }, contentType }) {
 // Unless a `collectionFormat` is used
 const stringifyParamFlat = function({ param: { value, name, collectionFormat } }) {
   if (Array.isArray(value)) {
-    return stringifyCollectionFormat({ value, collectionFormat, name })
+    return stringifyCollFormat({ value, collectionFormat, name })
   }
 
   return stringifyFlat(value)

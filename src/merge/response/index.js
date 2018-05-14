@@ -1,4 +1,4 @@
-'uses strict'
+'use strict'
 
 module.exports = {
   ...require('./main'),

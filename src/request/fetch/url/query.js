@@ -5,6 +5,7 @@ const { filterRequest } = require('../../utils')
 // Add `query` request parameters to request URL
 const addQueryRequest = function({ url, request }) {
   const queryRequest = filterRequest({ request, location: 'query' })
+
   if (queryRequest.length === 0) {
     return url
   }

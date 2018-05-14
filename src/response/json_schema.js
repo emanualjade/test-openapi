@@ -8,6 +8,7 @@ const { memoize } = require('../utils')
 const validateFromSchema = function({ schema, value, name }) {
   const validate = compileJsonSchema(schema)
   const passed = validate(value)
+
   if (passed) {
     return false
   }

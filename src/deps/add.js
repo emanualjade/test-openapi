@@ -25,6 +25,7 @@ const parseDep = function({ node: { value, path }, tests }) {
   const depKey = tests
     .map(({ testKey }) => testKey)
     .find(testKey => value.startsWith(`${testKey}.`))
+
   if (depKey === undefined) {
     return
   }
@@ -35,7 +36,7 @@ const parseDep = function({ node: { value, path }, tests }) {
 }
 
 // Converts `a.b[0].c` to `a.b.0.c`
-const BRACKETS_TO_DOTS = /\[([0-9]+)\]/g
+const BRACKETS_TO_DOTS = /\[(\d+)\]/g
 
 module.exports = {
   addDeps,

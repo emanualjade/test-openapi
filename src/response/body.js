@@ -1,6 +1,7 @@
 'use strict'
 
 const { parseBody } = require('../format')
+
 const { validateFromSchema } = require('./json_schema')
 const { validateRequiredness } = require('./required')
 
@@ -39,6 +40,7 @@ const trimBody = function({ fetchBody }) {
 
 const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
   const error = validateFromSchema({ schema: testBody, value: parsedBody })
+
   if (!error) {
     return
   }

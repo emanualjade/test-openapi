@@ -3,6 +3,7 @@
 const { set, merge } = require('lodash')
 
 const { get } = require('../utils')
+
 const { runDeps } = require('./run')
 
 // Replace all `deps`, i.e. references to other tests.

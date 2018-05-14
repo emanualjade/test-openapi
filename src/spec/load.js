@@ -22,9 +22,9 @@ const loadSpec = async function({ path }) {
     const sway = getSway()
     const specA = await sway.create({ definition, jsonRefs: { relativeBase } })
     return specA
-  } catch ({ message }) {
-    const messageA = `OpenAPI specification could not be loaded: ${message}`
-    throw new Error(messageA)
+  } catch (error) {
+    const message = `OpenAPI specification could not be loaded: ${error.message}`
+    throw new Error(message)
   }
 }
 

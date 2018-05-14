@@ -7,6 +7,7 @@ const get = function(obj, path) {
   }
 
   const keyA = Object.keys(obj).find(key => path.startsWith(`${key}.`))
+
   if (keyA === undefined) {
     throw new Error(`Could not find key named '${path}'`)
   }

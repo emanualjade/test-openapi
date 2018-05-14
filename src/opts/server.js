@@ -32,6 +32,7 @@ const DEFAULT_HOSTNAME = 'localhost'
 // Defaults to environment variable PORT or the protocol's default port
 const getPort = function() {
   const port = getEnv('port')
+
   if (port) {
     return `:${port}`
   }

@@ -1,7 +1,7 @@
 'use strict'
 
 // Get OpenAPI `consumes` and `produces` properties as request headers
-const getContentNegotiationsRequest = function({ spec, operation }) {
+const getNegotiationsRequest = function({ spec, operation }) {
   const contentType = getContentTypeRequest({ spec, operation })
   const accept = getAcceptRequest({ spec, operation })
   const headers = [contentType, accept].filter(header => header !== undefined)
@@ -9,7 +9,7 @@ const getContentNegotiationsRequest = function({ spec, operation }) {
 }
 
 // Get OpenAPI `produces` property as a response header
-const getContentNegotiationsResponse = function({ spec, operation }) {
+const getNegotiationsResponse = function({ spec, operation }) {
   const contentType = getContentTypeResponse({ spec, operation })
   const headers = [contentType].filter(header => header !== undefined)
   return headers
@@ -79,6 +79,6 @@ const addRequestInfo = function(header) {
 }
 
 module.exports = {
-  getContentNegotiationsRequest,
-  getContentNegotiationsResponse,
+  getNegotiationsRequest,
+  getNegotiationsResponse,
 }

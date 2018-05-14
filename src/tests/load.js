@@ -27,16 +27,16 @@ const loadTestFile = async function(path) {
 const loadTestFileContent = async function({ path }) {
   try {
     return await promisify(readFile)(path)
-  } catch (message) {
-    throw new Error(`Could not load test file '${path}': ${message}`)
+  } catch (error) {
+    throw new Error(`Could not load test file '${path}': ${error.message}`)
   }
 }
 
 const parseTestFile = function({ path, content }) {
   try {
     return loadYaml(content, { ...YAML_OPTS, filename: path })
-  } catch (message) {
-    throw new Error(`Test file '${path}' is not valid YAML or JSON: ${message}`)
+  } catch (error) {
+    throw new Error(`Test file '${path}' is not valid YAML or JSON: ${error.message}`)
   }
 }
 

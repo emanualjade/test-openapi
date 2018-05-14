@@ -2,6 +2,7 @@
 
 const { loadNormalizedSpec } = require('../spec')
 const { loadTests, normalizeTests } = require('../tests')
+
 const { getServer } = require('./server')
 
 // Load and normalize options

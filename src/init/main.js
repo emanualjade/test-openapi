@@ -1,6 +1,7 @@
 'use strict'
 
 const { loadOpts } = require('../opts')
+
 const { launchRunner } = require('./runner')
 
 // Run integration testing

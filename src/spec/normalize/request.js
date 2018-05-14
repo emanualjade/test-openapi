@@ -1,8 +1,9 @@
 'use strict'
 
 const { mergeRequest } = require('../../merge')
+
 const { normalizeSchema } = require('./json_schema')
-const { getContentNegotiationsRequest } = require('./content_negotiation')
+const { getNegotiationsRequest } = require('./content_negotiation')
 const { getSecParams } = require('./security')
 
 // Normalize OpenAPI request parameters into specification-agnostic format
@@ -16,7 +17,7 @@ const getParameters = function({
 
   const parametersB = parametersA.map(getParameter)
 
-  const contentNegotiations = getContentNegotiationsRequest({ spec, operation })
+  const contentNegotiations = getNegotiationsRequest({ spec, operation })
 
   const secParams = getSecParams({ spec, operation })
 

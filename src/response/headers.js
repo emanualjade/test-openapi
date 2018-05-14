@@ -1,6 +1,7 @@
 'use strict'
 
 const { parseHeader } = require('../format')
+
 const { validateFromSchema } = require('./json_schema')
 const { validateRequiredness } = require('./required')
 
@@ -35,6 +36,7 @@ const validateHeader = function({ name, testHeader, collectionFormat, fetchHeade
 
 const getFetchHeader = function({ fetchHeaders, name }) {
   const nameB = Object.keys(fetchHeaders).find(nameA => nameA.toLowerCase() === name.toLowerCase())
+
   if (nameB === undefined) {
     return
   }
@@ -45,6 +47,7 @@ const getFetchHeader = function({ fetchHeaders, name }) {
 // Validates response header against JSON schema from specification
 const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHeader }) {
   const error = validateFromSchema({ schema: testHeader, value: parsedHeader })
+
   if (!error) {
     return
   }

@@ -23,8 +23,8 @@ const OPTIONS = {
 }
 
 const TESTS_OPTION = {
-  // string: true,
-  // array: true,
+  string: true,
+  array: true,
   demandOption: true,
   describe: 'JSON or YAML files containing the tests to perform.\nCan include globbing patterns.',
 }

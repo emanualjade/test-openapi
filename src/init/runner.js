@@ -7,14 +7,14 @@ const { defineTests } = require('../define')
 
 // Run Jasmine with `**/*.js` as the test files
 const launchRunner = function(opts, resolve, reject) {
-  const jasmine = new Jasmine()
+  const runner = new Jasmine()
 
-  jasmine.loadConfig(JASMINE_CONFIG)
+  runner.loadConfig(JASMINE_CONFIG)
 
-  jasmine.env.clearReporters()
-  jasmine.env.addReporter(new SpecReporter())
+  runner.env.clearReporters()
+  runner.env.addReporter(new SpecReporter())
 
-  jasmine.onComplete(onComplete.bind(null, resolve, reject))
+  runner.onComplete(onComplete.bind(null, resolve, reject))
 
   // Instead of calling `describe()` and `it()` when the test files are `require()`'d,
   // we defer it to now.
@@ -28,7 +28,7 @@ const launchRunner = function(opts, resolve, reject) {
   //    which would make running several `launchRunner` impossible)
   defineTests({ opts })
 
-  jasmine.execute()
+  runner.execute()
 }
 
 const JASMINE_CONFIG = {

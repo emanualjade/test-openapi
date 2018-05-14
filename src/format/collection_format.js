@@ -4,7 +4,7 @@ const { stringifyFlat, parseFlat } = require('./json')
 
 // Whether a specific value should be parsed according to `collectionFormat`
 // using information from its OpenAPI schema
-const usesCollectionFormat = function({ value, schema }) {
+const usesCollFormat = function({ value, schema }) {
   return (
     hasType({ schema, type: 'array' }) &&
     typeof value === 'string' &&
@@ -22,26 +22,26 @@ const hasType = function({ schema, type }) {
 }
 
 // Parses an array according to OpenAPI's `collectionFormat`
-const parseCollectionFormat = function({ value, collectionFormat = 'csv' }) {
+const parseCollFormat = function({ value, collectionFormat = 'csv' }) {
   const { parse } = COLLECTION_FORMAT[collectionFormat]
   return parse(value)
 }
 
-const parseGenericCollectionFormat = function(separator, value) {
+const parseGeneric = function(separator, value) {
   return value.split(separator).map(parseFlat)
 }
 
 // Stringify an array according to OpenAPI's `collectionFormat`
-const stringifyCollectionFormat = function({ value, collectionFormat = 'csv', name }) {
+const stringifyCollFormat = function({ value, collectionFormat = 'csv', name }) {
   const { stringify } = COLLECTION_FORMAT[collectionFormat]
   return stringify({ value, name })
 }
 
-const stringifyGenericCollectionFormat = function(separator, { value }) {
+const stringifyGeneric = function(separator, { value }) {
   return value.map(stringifyFlat).join(separator)
 }
 
-const stringifyMultiCollectionFormat = function({ value, name }) {
+const stringifyMulti = function({ value, name }) {
   return value.map(val => stringifyPair({ val, name })).join('&')
 }
 
@@ -51,29 +51,29 @@ const stringifyPair = function({ val, name }) {
 
 const COLLECTION_FORMAT = {
   csv: {
-    parse: parseGenericCollectionFormat.bind(null, ','),
-    stringify: stringifyGenericCollectionFormat.bind(null, ','),
+    parse: parseGeneric.bind(null, ','),
+    stringify: stringifyGeneric.bind(null, ','),
   },
   ssv: {
-    parse: parseGenericCollectionFormat.bind(null, /\s+/),
-    stringify: stringifyGenericCollectionFormat.bind(null, /\s+/),
+    parse: parseGeneric.bind(null, /\s+/),
+    stringify: stringifyGeneric.bind(null, /\s+/),
   },
   tsv: {
-    parse: parseGenericCollectionFormat.bind(null, '\t'),
-    stringify: stringifyGenericCollectionFormat.bind(null, '\t'),
+    parse: parseGeneric.bind(null, '\t'),
+    stringify: stringifyGeneric.bind(null, '\t'),
   },
   pipes: {
-    parse: parseGenericCollectionFormat.bind(null, '|'),
-    stringify: stringifyGenericCollectionFormat.bind(null, '|'),
+    parse: parseGeneric.bind(null, '|'),
+    stringify: stringifyGeneric.bind(null, '|'),
   },
   // No parser because it can only be used in request parameters not response headers
   multi: {
-    stringify: stringifyMultiCollectionFormat,
+    stringify: stringifyMulti,
   },
 }
 
 module.exports = {
-  usesCollectionFormat,
-  parseCollectionFormat,
-  stringifyCollectionFormat,
+  usesCollFormat,
+  parseCollFormat,
+  stringifyCollFormat,
 }

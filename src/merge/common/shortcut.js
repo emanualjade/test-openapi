@@ -11,22 +11,18 @@ const mergeShortcutSchema = function({ specSchema, testSchema }) {
 // matches the value (in case it is not set, or set to several types, or set to
 // a different type)
 const getSchemaType = function({ testSchema }) {
-  if (testSchema === null) {
-    return 'null'
-  }
-
-  if (Number.isInteger(testSchema)) {
-    return 'integer'
-  }
-
-  if (['string', 'number', 'boolean'].includes(typeof testSchema)) {
-    return typeof testSchema
-  }
-
-  if (Array.isArray(testSchema)) {
-    return 'array'
-  }
+  const [type] = TYPES.find(([, condition]) => condition(testSchema))
+  return type
 }
+
+const TYPES = Object.entries({
+  null: value => value === null,
+  integer: Number.isInteger,
+  number: value => typeof value === 'number' && !Number.isInteger(value),
+  string: value => typeof value === 'string',
+  boolean: value => typeof value === 'boolean',
+  array: Array.isArray,
+})
 
 module.exports = {
   mergeShortcutSchema,

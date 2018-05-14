@@ -5,8 +5,10 @@ const { filterRequest } = require('../../utils')
 // Replace path parameters in the request URL
 const addPathRequest = function({ path, request }) {
   const pathRequest = filterRequest({ request, location: 'path' })
-  const pathA = path.replace(PATH_REQUEST_REGEXP, (_, name) => getPathParam({ name, pathRequest }))
-  return pathA
+  const pathB = path.replace(PATH_REQUEST_REGEXP, (pathA, name) =>
+    getPathParam({ name, pathRequest }),
+  )
+  return pathB
 }
 
 // Matches path request parameters, e.g. `/model/{id}`

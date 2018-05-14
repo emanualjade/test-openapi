@@ -38,6 +38,7 @@ const normalizeSecurityDef = function({ securityDef }) {
 
 const getSecParamHandler = function({ type }) {
   const handler = SECURITY_DEFS[type]
+
   if (handler !== undefined) {
     return handler
   }

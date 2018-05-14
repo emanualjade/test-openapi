@@ -14,6 +14,7 @@ const getValidateError = function({
 
 const getHeadersError = function({ headers }) {
   const headersA = Object.entries(headers)
+
   if (headersA.length === 0) {
     return ''
   }

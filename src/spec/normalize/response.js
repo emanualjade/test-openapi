@@ -4,8 +4,9 @@ const { mapKeys, mapValues } = require('lodash')
 
 const { DEFAULT_STATUS_CODE } = require('../../constants')
 const { mergeResponse } = require('../../merge')
+
 const { normalizeSchema } = require('./json_schema')
-const { getContentNegotiationsResponse } = require('./content_negotiation')
+const { getNegotiationsResponse } = require('./content_negotiation')
 
 // Normalize OpenAPI responses into specification-agnostic format
 const normalizeResponses = function({ responses, spec, operation }) {
@@ -37,7 +38,7 @@ const getResponseBody = function({ response: { schema = {} } }) {
 const getResponseHeaders = function({ response: { headers = {} }, spec, operation }) {
   const headersA = Object.entries(headers).map(getResponseHeader)
 
-  const contentNegotiations = getContentNegotiationsResponse({ spec, operation })
+  const contentNegotiations = getNegotiationsResponse({ spec, operation })
 
   const headersB = mergeResponse([...contentNegotiations, ...headersA])
 

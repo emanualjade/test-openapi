@@ -3,14 +3,16 @@
 const { runTests } = require('./run')
 
 // Main entry point of integration tests definition
-const defineTests = function({ opts, opts: { tests } }) {
+const defineTests = function({ opts }) {
   // Define all tests with `it()`
-  describe(DESCRIBE_TITLE, function() {
-    tests.map(test => defineTest({ test, opts }))
-  })
+  describe(DESCRIBE_TITLE, () => defineAllTests({ opts }))
 }
 
 const DESCRIBE_TITLE = 'Integration tests'
+
+const defineAllTests = function({ opts, opts: { tests } }) {
+  tests.map(test => defineTest({ test, opts }))
+}
 
 // Define a single test with `it()`
 const defineTest = function({ test: { title, ...test }, opts }) {

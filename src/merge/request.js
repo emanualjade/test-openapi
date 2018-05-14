@@ -1,6 +1,7 @@
 'use strict'
 
 const { KEY_TO_LOCATION } = require('../constants')
+
 const { mergeTestRequest } = require('./common')
 
 // Merge HTTP request parameters to specification

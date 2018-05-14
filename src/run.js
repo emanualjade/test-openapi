@@ -41,7 +41,7 @@ const runTest = async function({
   })
 
   // Validates that the HTTP response matches the endpoint OpenAPI specification
-  const responseA = await validateResponse({ response, fetchRequest, fetchResponse })
+  const responseA = validateResponse({ response, fetchRequest, fetchResponse })
 
   // Return value if this test was a `dep`
   return { request: requestA, response: responseA }

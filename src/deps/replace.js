@@ -1,8 +1,9 @@
 'use strict'
 
-const { set, merge, uniq } = require('lodash')
+const { set, merge } = require('lodash')
 
 const { get } = require('../utils')
+const { runDeps } = require('./run')
 
 // Replace all `deps`, i.e. references to other tests.
 const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
@@ -10,32 +11,10 @@ const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
     return test
   }
 
-  const depReturns = await getDepReturns({ deps, opts, runTest })
+  const depReturns = await runDeps({ deps, opts, runTest })
   const depsA = deps.map(dep => replaceDep({ dep, depReturns }))
   const testA = mergeDeps({ test, deps: depsA })
   return testA
-}
-
-const getDepReturns = async function({ deps, opts, runTest }) {
-  const depKeys = getDepKeys({ deps })
-  const depReturns = await Promise.all(
-    depKeys.map(depKey => getDepReturn({ depKey, opts, runTest })),
-  )
-  const depReturnsA = Object.assign({}, ...depReturns)
-  return depReturnsA
-}
-
-// Returns unique set of `deps` for current test
-const getDepKeys = function({ deps }) {
-  const depKeys = deps.map(({ depKey }) => depKey)
-  const depKeysA = uniq(depKeys)
-  return depKeysA
-}
-
-const getDepReturn = async function({ depKey, opts, opts: { tests }, runTest }) {
-  const depTest = tests.find(({ testKey }) => testKey === depKey)
-  const depReturn = await runTest({ test: depTest, opts })
-  return { [depKey]: depReturn }
 }
 
 const replaceDep = function({ dep: { depKey, depPath, path }, depReturns }) {

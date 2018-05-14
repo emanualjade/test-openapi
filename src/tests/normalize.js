@@ -6,12 +6,20 @@ const { getOperation } = require('./operation')
 
 // Normalize tests to format easy to work with when tests are running
 const normalizeTests = function({ tests, spec }) {
+  validateTests({ tests })
+
   const testsA = Object.entries(tests).map(([testKey, testOpts]) =>
     normalizeTest({ testKey, testOpts, tests, spec }),
   )
   const testsB = addTitles({ tests: testsA })
   const testsC = addDeps({ tests: testsB })
   return testsC
+}
+
+const validateTests = function({ tests }) {
+  if (Object.keys(tests).length === 0) {
+    throw new Error('No tests were found')
+  }
 }
 
 const normalizeTest = function({ testKey, testOpts, tests, spec }) {

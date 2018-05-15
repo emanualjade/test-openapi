@@ -1,6 +1,6 @@
 'use strict'
 
-const { set, merge } = require('lodash')
+const { set } = require('lodash/fp')
 
 const { addErrorHandler, throwResponseError } = require('../errors')
 const { get } = require('../utils')
@@ -14,16 +14,27 @@ const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
   }
 
   const depReturns = await runDeps({ test, deps, opts, runTest })
-  const depsA = deps.map(dep => replaceDep({ dep, depReturns }))
-  const testA = mergeDeps({ test, deps: depsA })
+
+  const testA = setDeps({ test, deps, depReturns, opts })
   return testA
 }
 
-const replaceDep = function({ dep: { depKey, depPath, path }, depReturns }) {
+const setDeps = function({ test, deps, depReturns, opts }) {
+  return deps.reduce((testA, dep) => setDep({ test, dep, depReturns, opts }), test)
+}
+
+const setDep = function({
+  test,
+  test: { testOpts },
+  dep: { depKey, depPath, path },
+  depReturns,
+  opts,
+}) {
   const depReturn = depReturns[depKey]
-  const depValue = eGetDepValue({ depKey, depReturn, depPath, path })
-  const depValueA = set({}, path, depValue)
-  return depValueA
+  const depValue = eGetDepValue({ depKey, depReturn, depPath, path, opts })
+
+  const testOptsA = set(path, depValue, testOpts)
+  return { ...test, testOpts: testOptsA }
 }
 
 const getDepValue = function({ depReturn, depPath }) {
@@ -41,11 +52,6 @@ const getDepValueHandler = function(error, { depKey, depPath, path }) {
 }
 
 const eGetDepValue = addErrorHandler(getDepValue, getDepValueHandler)
-
-const mergeDeps = function({ test, test: { testOpts }, deps }) {
-  const testOptsA = merge({}, testOpts, ...deps)
-  return { ...test, testOpts: testOptsA }
-}
 
 module.exports = {
   replaceDeps,

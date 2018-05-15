@@ -9,7 +9,7 @@ const getOperation = function({ testKey, testOpts, spec }) {
   const operation = findOperation({ testKey, spec })
   const name = testKey.replace(`${operation.operationId}.`, '')
 
-  const response = findResponse({ operation, testOpts })
+  const response = findResponse({ operation, testOpts, testKey })
   const operationA = { ...operation, response }
 
   return { name, operation: operationA }
@@ -33,12 +33,19 @@ const findOperation = function({ testKey, spec: { operations } }) {
 const findResponse = function({
   operation: { responses },
   testOpts: { response: { status = DEFAULT_STATUS_CODE } = {} },
+  testKey,
 }) {
-  if (responses[String(status)] !== undefined) {
-    return responses[String(status)]
+  const response = responses[String(status)]
+
+  if (response !== undefined) {
+    return response
   }
 
-  return { body: {}, headers: [] }
+  const property = 'response.status'
+  throwTestError(
+    `Test named '${testKey}' cannot have 'response.status' ${status} because this status code is not present in the specification`,
+    { test: testKey, property },
+  )
 }
 
 module.exports = {

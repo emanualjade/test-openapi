@@ -6,7 +6,8 @@ const parseOpts = function({ yargs }) {
   const { _: posOpts, ...opts } = yargs.parse()
   // `yargs`-specific options
   const optsA = omit(opts, ['help', 'version', '$0'])
-  return { ...optsA, tests: posOpts }
+  const tests = posOpts.length === 0 ? undefined : posOpts
+  return { ...optsA, tests }
 }
 
 module.exports = {

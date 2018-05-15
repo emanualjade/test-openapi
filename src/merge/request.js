@@ -3,6 +3,7 @@
 const { KEY_TO_LOCATION } = require('../constants')
 
 const { mergeTestRequest } = require('./common')
+const { validateTestParam } = require('./validate')
 
 // Merge HTTP request parameters to specification
 const mergeRequest = function({
@@ -11,7 +12,7 @@ const mergeRequest = function({
     operation: { parameters },
   },
 }) {
-  const testRequest = getTestRequest({ request })
+  const testRequest = getTestRequest({ request, parameters })
 
   const requestA = mergeTestRequest([...parameters, ...testRequest])
 
@@ -19,15 +20,18 @@ const mergeRequest = function({
 }
 
 // Translate `test.request` into requests parameters
-const getTestRequest = function({ request }) {
-  return Object.entries(request).map(getTestParam)
+const getTestRequest = function({ request, parameters }) {
+  return Object.entries(request).map(([name, schema]) => getTestParam({ name, schema, parameters }))
 }
 
-const getTestParam = function([name, schema]) {
+const getTestParam = function({ name, schema, parameters }) {
   const location = getLocation({ name })
 
   // Parameters specified in `test.request.*` are always required (i.e. generated)
   const testParam = { schema, required: true, ...location }
+
+  validateTestParam({ testParam, parameters, name })
+
   return testParam
 }
 

@@ -70,4 +70,6 @@ module.exports = {
   mergeTestRequest,
   mergeTestResponse,
   mergeTestSchema,
+  isSameParam,
+  isSameHeader,
 }

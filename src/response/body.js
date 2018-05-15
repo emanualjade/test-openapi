@@ -2,8 +2,8 @@
 
 const { throwResponseError } = require('../errors')
 const { parseBody } = require('../format')
+const { validateFromSchema } = require('../utils')
 
-const { validateFromSchema } = require('./json_schema')
 const { validateRequiredBody } = require('./required')
 
 // Validates response body against OpenAPI specification
@@ -39,9 +39,9 @@ const trimBody = function({ fetchBody }) {
 }
 
 const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
-  const error = validateFromSchema({ schema: testBody, value: parsedBody })
+  const { error } = validateFromSchema({ schema: testBody, value: parsedBody })
 
-  if (!error) {
+  if (error === undefined) {
     return
   }
 

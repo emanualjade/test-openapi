@@ -8,4 +8,5 @@ module.exports = {
   ...require('./get'),
   ...require('./crawl'),
   ...require('./url'),
+  ...require('./json_schema'),
 }

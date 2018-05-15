@@ -2,8 +2,8 @@
 
 const { throwResponseError } = require('../errors')
 const { parseHeader } = require('../format')
+const { validateFromSchema } = require('../utils')
 
-const { validateFromSchema } = require('./json_schema')
 const { validateRequiredHeader } = require('./required')
 
 // Validates response headers against OpenAPI specification
@@ -46,9 +46,9 @@ const getFetchHeader = function({ fetchHeaders, name }) {
 
 // Validates response header against JSON schema from specification
 const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHeader }) {
-  const error = validateFromSchema({ schema: testHeader, value: parsedHeader })
+  const { error } = validateFromSchema({ schema: testHeader, value: parsedHeader })
 
-  if (!error) {
+  if (error === undefined) {
     return
   }
 

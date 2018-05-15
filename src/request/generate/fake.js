@@ -30,11 +30,27 @@ const getRequired = function({ request }) {
 
 // Transform OpenAPI parameter into a JSON schema of `type: object`
 const getProperties = function({ request }) {
-  const requestA = request.map(({ location, name, schema }) => ({
-    [`${location}.${name}`]: schema,
-  }))
+  const requestA = request.map(getSchema)
   const properties = Object.assign({}, ...requestA)
   return properties
+}
+
+const getSchema = function({ location, name, schema }) {
+  const nameA = `${location}.${name}`
+
+  const schemaA = fixArray({ schema })
+
+  return { [nameA]: schemaA }
+}
+
+// json-schema-faker does not work properly with array schema that do not have
+// an `items.type` property
+const fixArray = function({ schema, schema: { type, items = {} } }) {
+  if (type !== 'array' || items.type !== undefined) {
+    return schema
+  }
+
+  return { ...schema, items: { ...items, type: 'string' } }
 }
 
 // Merge generated values back to original request parameters as `param.value`

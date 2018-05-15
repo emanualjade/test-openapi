@@ -14,9 +14,13 @@ const validateTestParam = function({ testParam, parameters, name }) {
   }
 
   const property = `request.${name}`
-  throwTestError(`'${property}' does not match any request parameter in the specification`, {
-    property,
-  })
+  const parametersNames = getParameterNames({ parameters })
+  throwTestError(
+    `'${property}' does not match any request parameter in the specification\nPossible parameters: ${parametersNames}`,
+    {
+      property,
+    },
+  )
 }
 
 // Same for `test.response.headers.*`
@@ -27,9 +31,32 @@ const validateTestHeader = function({ testHeader, testHeader: { name }, headers 
   }
 
   const property = `response.headers.${name}`
-  throwTestError(`'${property}' does not match any response header in the specification`, {
-    property,
-  })
+  const headersNames = getHeadersNames({ headers })
+  throwTestError(
+    `'${property}' does not match any response header in the specification.\nPossible response headers: ${headersNames}`,
+    {
+      property,
+    },
+  )
+}
+
+const getParameterNames = function({ parameters }) {
+  return parameters
+    .map(getParameterName)
+    .map(name => `'${name}'`)
+    .join(', ')
+}
+
+const getParameterName = function({ location, name }) {
+  if (location === 'body') {
+    return 'body'
+  }
+
+  return `${location}.${name}`
+}
+
+const getHeadersNames = function({ headers }) {
+  return headers.map(({ name }) => `'${name}'`).join(', ')
 }
 
 // Validate request parameters and response headers are valid JSON schema v4

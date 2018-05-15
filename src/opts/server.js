@@ -2,12 +2,13 @@
 
 const { env } = require('process')
 
+const { throwConfigError, addErrorHandler } = require('../errors')
 const { normalizeUrl } = require('../utils')
 
 // Returns API base URL
 const getServer = function({ server, spec }) {
   const url = getUrl({ server, spec })
-  const serverA = normalizeServerUrl({ url })
+  const serverA = eNormalizeServerUrl({ url })
   return serverA
 }
 
@@ -49,6 +50,14 @@ const normalizeServerUrl = function({ url }) {
   const urlB = urlA.replace(TRAILING_SLASH_REGEXP, '')
   return urlB
 }
+
+const serverUrlHandler = function({ message }, { url }) {
+  throwConfigError(`Configuration server '${url}' is not a valid full URL: ${message}`, {
+    property: 'server',
+  })
+}
+
+const eNormalizeServerUrl = addErrorHandler(normalizeServerUrl, serverUrlHandler)
 
 // Remove trailing slashes in base URL
 const TRAILING_SLASH_REGEXP = /\/$/

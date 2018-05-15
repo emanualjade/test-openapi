@@ -3,22 +3,52 @@
 const yargs = require('yargs')
 
 const defineTopOptions = function() {
-  return (
-    yargs
-      .commandDir('./commands')
-      // There should be a single instruction, or none (default one)
-      .demandCommand(1, 1)
-      .usage(USAGE)
-      .help()
-      .version()
-      .recommendCommands()
-      .strict()
-  )
+  return yargs
+    .options(OPTIONS)
+    .usage(USAGE)
+    .example('Running tests:', RUN_EXAMPLE)
+    .help()
+    .version()
+    .strict()
 }
 
-const USAGE = `test-openapi [INSTRUCTION] [OPTS]
+const OPTIONS = {
+  spec: {
+    string: true,
+    alias: 's',
+    requiresArg: true,
+    demandOption: true,
+    describe: 'Path to the OpenAPI specification',
+  },
+  server: {
+    string: true,
+    requiresArg: true,
+    describe: 'URL of the server to test',
+  },
+  repeat: {
+    number: true,
+    alias: 'r',
+    requiresArg: true,
+    describe: 'Number of times each test is repeated',
+  },
+  timeout: {
+    number: true,
+    alias: 't',
+    requiresArg: true,
+    describe: 'Maximum time to wait for each HTTP request',
+  },
+}
 
-OpenAPI automatic integration testing`
+const USAGE = `test-openapi [OPTS] [TEST_FILES...]
+
+OpenAPI automatic integration testing
+
+TEST_FILES... are JSON or YAML files containing the tests to perform.
+Can include globbing patterns.
+Defaults to any file ending with 'spec.yml|json' or 'test.yml.json`
+
+const RUN_EXAMPLE =
+  'test-openapi --spec ./openapi.yml --server http://localhost:5001 ./tests/**/*.test.yml'
 
 module.exports = {
   defineTopOptions,

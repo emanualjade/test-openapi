@@ -17,7 +17,6 @@ const OPTIONS = {
     string: true,
     alias: 's',
     requiresArg: true,
-    demandOption: true,
     describe: 'Path to the OpenAPI specification',
   },
   server: {
@@ -25,12 +24,18 @@ const OPTIONS = {
     requiresArg: true,
     describe: 'URL of the server to test',
   },
+  // Number of times each `it()` is repeated (each time with new random parameters)
   repeat: {
     number: true,
     alias: 'r',
     requiresArg: true,
     describe: 'Number of times each test is repeated',
   },
+  // Timeout for both:
+  //  - sending and receiving each HTTP request
+  //  - parsing the HTTP response
+  // I.e. this is the timeout for a single test, but excluding the time its `deps` take
+  // 0 to disable
   timeout: {
     number: true,
     alias: 't',

@@ -7,7 +7,7 @@ const { launchRunner } = require('./runner')
 
 // Run integration testing
 const runIntegration = async function(opts) {
-  const optsA = await loadOpts(opts)
+  const optsA = await loadOpts({ opts })
 
   await launchRunner({ opts: optsA })
 

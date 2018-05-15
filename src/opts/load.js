@@ -1,20 +1,22 @@
 'use strict'
 
+const { omitBy } = require('lodash')
+
 const { loadNormalizedSpec } = require('../spec')
 const { loadTests, normalizeTests } = require('../tests')
 
+const { validateOpts } = require('./validate')
+const DEFAULT_OPTS = require('./defaults')
 const { getServer } = require('./server')
 
 // Load and normalize options
-const loadOpts = async function({
-  spec,
-  tests = DEFAULT_TESTS,
-  server,
-  repeat = DEFAULT_REPEAT,
-  timeout = DEFAULT_TIMEOUT,
-  maxParallel = DEFAULT_MAX_PARALLEL,
-  dry = false,
-}) {
+const loadOpts = async function({ opts }) {
+  validateOpts({ opts })
+
+  const optsA = addDefaults({ opts })
+
+  const { spec, tests, server } = optsA
+
   // Retrieve OpenAPI specification
   const specA = loadNormalizedSpec({ path: spec })
 
@@ -30,20 +32,15 @@ const loadOpts = async function({
   // Retrieve HTTP request's base URL
   const serverA = getServer({ server, spec: specB })
 
-  return { spec: specB, tests: testsC, server: serverA, repeat, timeout, maxParallel, dry }
+  return { ...optsA, spec: specB, tests: testsC, server: serverA }
 }
 
-const DEFAULT_TESTS = ['**/*.test.yml', '**/*.spec.yml', '**/*.test.json', '**/*.test.yml']
-// Number of times each `it()` is repeated (each time with new random parameters)
-const DEFAULT_REPEAT = 1e1
-// Timeout for both:
-//  - sending and receiving each HTTP request
-//  - parsing the HTTP response
-// I.e. this is the timeout for a single test, but excluding the time its `deps` take
-const DEFAULT_TIMEOUT = 1e4
-// Number of concurrent HTTP requests at once
-// I.e. number of parallel `it()` will be `maxParallel` / `repeat`
-const DEFAULT_MAX_PARALLEL = 1e2
+// Apply default values
+const addDefaults = function({ opts }) {
+  const optsA = omitBy(opts, value => value === undefined)
+  const optsB = { ...DEFAULT_OPTS, ...optsA }
+  return optsB
+}
 
 module.exports = {
   loadOpts,

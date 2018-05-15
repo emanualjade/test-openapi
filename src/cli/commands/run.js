@@ -20,6 +20,12 @@ const OPTIONS = {
     requiresArg: true,
     describe: 'Number of times each test is repeated',
   },
+  timeout: {
+    number: true,
+    alias: 't',
+    requiresArg: true,
+    describe: 'Maximum time to wait for each HTTP request',
+  },
 }
 
 const TESTS_OPTION = {

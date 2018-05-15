@@ -1,6 +1,8 @@
 'use strict'
 
 const Ajv = require('ajv')
+const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
+const { omit } = require('lodash')
 
 const { memoize } = require('./memoize')
 
@@ -22,7 +24,7 @@ const validateFromSchema = function({ schema, value, name }) {
 }
 
 // Human-friendly error
-const getError = function({ error, name }) {
+const getError = function({ error, name = '' }) {
   return validator.errorsText([error], { dataVar: name })
 }
 
@@ -41,6 +43,26 @@ const validator = getValidator()
 // Compilation is automatically memoized by `ajv` but not validation
 const mValidateFromSchema = memoize(validateFromSchema)
 
+const getJsonSchemaSchema = function() {
+  const schema = omit(JSON_SCHEMA_SCHEMA, ['id', '$schema'])
+
+  // `exclusiveMinimum` boolean is not valid in the JSON schema version used by `ajv`
+  const multipleOf = { type: 'number', exclusiveMinimum: 0 }
+
+  return {
+    ...schema,
+    properties: { ...schema.properties, multipleOf },
+    additionalProperties: false,
+  }
+}
+
+const jsonSchemaSchema = getJsonSchemaSchema()
+
+const validateIsSchema = function({ value }) {
+  return validateFromSchema({ schema: jsonSchemaSchema, value })
+}
+
 module.exports = {
   validateFromSchema: mValidateFromSchema,
+  validateIsSchema,
 }

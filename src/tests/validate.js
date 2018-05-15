@@ -4,7 +4,6 @@ const { throwTestError } = require('../errors')
 const { validateFromSchema } = require('../utils')
 
 const TEST_SCHEMA = require('./schema')
-const { validateJsonSchemas } = require('./json_schema')
 
 // Validate syntax of test files
 const validateTests = function({ tests }) {
@@ -22,11 +21,6 @@ const validateEmptyTests = function({ tests }) {
 }
 
 const validateTest = function([testName, test]) {
-  validateTestGeneral({ testName, test })
-  validateJsonSchemas({ testName, test })
-}
-
-const validateTestGeneral = function({ testName, test }) {
   const { error, path } = validateFromSchema({ schema: TEST_SCHEMA, value: test, name: testName })
   if (error === undefined) {
     return

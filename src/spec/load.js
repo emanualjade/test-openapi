@@ -2,12 +2,14 @@
 
 const { dirname, basename } = require('path')
 
+const { addErrorHandler, throwSpecificationError } = require('../errors')
+
 const { validateOpenApi } = require('./validate')
 
 // Parses an OpenAPI file (including JSON references)
 // Then validates its syntax
 const loadOpenApiSpec = async function({ path }) {
-  const spec = await loadSpec({ path })
+  const spec = await eLoadSpec({ path })
 
   validateOpenApi({ spec })
 
@@ -18,15 +20,16 @@ const loadSpec = async function({ path }) {
   const definition = basename(path)
   const relativeBase = dirname(path)
 
-  try {
-    const sway = getSway()
-    const specA = await sway.create({ definition, jsonRefs: { relativeBase } })
-    return specA
-  } catch (error) {
-    const message = `OpenAPI specification could not be loaded: ${error.message}`
-    throw new Error(message)
-  }
+  const sway = getSway()
+  const specA = await sway.create({ definition, jsonRefs: { relativeBase } })
+  return specA
 }
+
+const loadSpecHandler = function({ message }) {
+  throwSpecificationError(`OpenAPI specification could not be loaded: ${message}`)
+}
+
+const eLoadSpec = addErrorHandler(loadSpec, loadSpecHandler)
 
 // This is needed until https://github.com/whitlockjc/json-refs/pull/133
 // is merged.

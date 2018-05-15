@@ -14,8 +14,8 @@ const validateOpenApi = function({ spec }) {
 
 const reportOpenApiError = function({ problems }) {
   const message = problems.map(getErrorMessage).join(`\n${INDENT}`)
-  const messageA = `OpenAPI specification is invalid:\n${INDENT}${message}`
-  throw new Error(messageA)
+  // type: specification
+  throw new Error(`OpenAPI specification is invalid:\n${INDENT}${message}`)
 }
 
 const INDENT_LENGTH = 8

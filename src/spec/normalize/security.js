@@ -43,6 +43,7 @@ const getSecParamHandler = function({ type }) {
     return handler
   }
 
+  // type: test
   throw new Error(`Security definitions of type '${type}' are not implemented yet`)
 }
 

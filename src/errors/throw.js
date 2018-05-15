@@ -22,9 +22,9 @@ const PROPS = {
   bug: [],
   config: ['opts', 'property'],
   specification: ['opts', 'property'],
-  test: ['opts', 'property', 'test'],
+  test: ['opts', 'test', 'property'],
   connect: ['opts', 'test', 'request'],
-  response: ['opts', 'property', 'test', 'expected', 'actual', 'request', 'response'],
+  response: ['opts', 'test', 'property', 'expected', 'actual', 'request', 'response'],
 }
 
 // Allow distinguishing between bugs and validation errors

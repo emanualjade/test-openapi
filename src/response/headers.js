@@ -52,8 +52,8 @@ const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHead
     return
   }
 
-  const errorA = `Response header '${name}' with value '${fetchHeader}'${error}.`
-  throw new Error(errorA)
+  // type: response
+  throw new Error(`Response header '${name}' with value '${fetchHeader}'${error}.`)
 }
 
 module.exports = {

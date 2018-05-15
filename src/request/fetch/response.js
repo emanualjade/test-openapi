@@ -1,10 +1,12 @@
 'use strict'
 
+const { addErrorHandler } = require('../../errors')
+
 // Parse a HTTP response
 const handleResponse = async function({ fetchResponse }) {
   const status = getStatus({ fetchResponse })
   const headers = getHeaders({ fetchResponse })
-  const body = await getBody({ fetchResponse })
+  const body = await eGetBody({ fetchResponse })
 
   return { status, headers, body }
 }
@@ -22,13 +24,16 @@ const getHeaders = function({ fetchResponse: { headers } }) {
 }
 
 // We get the raw body. It will be parsed according to the `Content-Type` later
-const getBody = async function({ fetchResponse }) {
-  try {
-    return await fetchResponse.text()
-  } catch (error) {
-    throw new Error(`Could not read response body: ${error.message}`)
-  }
+const getBody = function({ fetchResponse }) {
+  return fetchResponse.text()
 }
+
+const getBodyHandler = function({ message }) {
+  // type: response
+  throw new Error(`Could not read response body: ${message}`)
+}
+
+const eGetBody = addErrorHandler(getBody, getBodyHandler)
 
 module.exports = {
   handleResponse,

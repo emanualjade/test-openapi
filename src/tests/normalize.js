@@ -19,6 +19,7 @@ const normalizeTests = function({ tests, spec }) {
 
 const validateTests = function({ tests }) {
   if (Object.keys(tests).length === 0) {
+    // type: test
     throw new Error('No tests were found')
   }
 }

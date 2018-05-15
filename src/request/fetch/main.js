@@ -2,6 +2,8 @@
 
 const fetch = require('cross-fetch')
 
+const { addErrorHandler } = require('../../errors')
+
 const { getRequestUrl } = require('./url')
 const { getRequestHeaders } = require('./headers')
 const { getRequestBody } = require('./body')
@@ -11,7 +13,7 @@ const { handleResponse } = require('./response')
 const doFetch = async function({ method, path, request, opts }) {
   const fetchRequest = getFetchRequest({ method, path, request, opts })
 
-  const fetchResponse = await fireFetch({ ...fetchRequest, opts })
+  const fetchResponse = await eFireFetch({ ...fetchRequest, opts })
 
   const fetchResponseA = await handleResponse({ fetchResponse })
 
@@ -28,13 +30,14 @@ const getFetchRequest = function({ method, path, request, opts }) {
 }
 
 // Actual HTTP request
-const fireFetch = async function({ url, method, headers, body, opts: { timeout } }) {
-  try {
-    return await fetch(url, { timeout, method, headers, body })
-  } catch (error) {
-    const message = getFetchError({ error, url, timeout })
-    throw new Error(message)
-  }
+const fireFetch = function({ url, method, headers, body, opts: { timeout } }) {
+  return fetch(url, { method, headers, body, timeout })
+}
+
+const fireFetchHandler = function(error, { url, opts: { timeout } }) {
+  const message = getFetchError({ error, url, timeout })
+  // type: connect
+  throw new Error(message)
 }
 
 const getFetchError = function({ error: { message, type }, url, timeout }) {
@@ -48,6 +51,8 @@ const getFetchError = function({ error: { message, type }, url, timeout }) {
 
   return `Could not connect to ${url}: ${message}`
 }
+
+const eFireFetch = addErrorHandler(fireFetch, fireFetchHandler)
 
 module.exports = {
   doFetch,

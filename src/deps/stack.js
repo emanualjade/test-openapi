@@ -1,15 +1,17 @@
 'use strict'
 
 // Handle errors coming from `deps`
-const handleDepError = function({ error, error: { message }, opts: { stack } }) {
+const handleDepError = function(error, { opts: { stack } }) {
+  const { message } = error
+
   // Avoid repeating the same message several times across the stack
   if (message.includes(DEP_ERROR_MESSAGE) || message.includes(RECURSION_ERROR_MESSAGE)) {
     throw error
   }
 
   const stackError = stringifyStack(stack.slice(1))
-  const messageA = `This test uses ${stackError} ${DEP_ERROR_MESSAGE}:\n\n${message}`
-  throw new Error(messageA)
+  // type: response
+  throw new Error(`This test uses ${stackError} ${DEP_ERROR_MESSAGE}:\n\n${message}`)
 }
 
 // Check for infinite recursions
@@ -22,6 +24,7 @@ const checkStack = function({ depKey, test: { testKey }, opts, opts: { stack = [
   }
 
   const stackError = stringifyStack(newStack)
+  // type: test
   throw new Error(`This test uses '${newStack[1]}' ${RECURSION_ERROR_MESSAGE}:\n${stackError}`)
 }
 

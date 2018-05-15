@@ -22,6 +22,7 @@ const validateForbidden = function({ value, message }) {
     return
   }
 
+  // type: response
   throw new Error(`${message} should be empty. However it is:\n${value}`)
 }
 
@@ -30,6 +31,7 @@ const validateRequired = function({ value, message }) {
     return
   }
 
+  // type: response
   throw new Error(`${message} should not be empty.`)
 }
 

@@ -2,10 +2,22 @@
 
 const { is: isMime } = require('type-is')
 
+const { addErrorHandler } = require('../errors')
+
 // Retrieve a parser and stringifier for a specific MIME type
 // TODO: replace by real body parsing library and add support for other content types
 const findBodyHandler = function({ mime }) {
   return BODY_HANDLERS.find(({ condition }) => condition({ mime })) || {}
+}
+
+const normalizeHandler = function({ name, condition, parse, stringify }) {
+  const parseA = addErrorHandler(parse, parseHandler.bind(null, name))
+  return { condition, parse: parseA, stringify }
+}
+
+const parseHandler = function(name, { message }, body) {
+  // type: response
+  throw new Error(`Could not read response body as ${name}: ${message}\n${body}`)
 }
 
 const isJson = function({ mime }) {
@@ -16,11 +28,12 @@ const JSON_MIMES = ['application/json', '+json']
 
 const BODY_HANDLERS = [
   {
+    name: 'JSON',
     condition: isJson,
     parse: JSON.parse,
     stringify: JSON.stringify,
   },
-]
+].map(normalizeHandler)
 
 module.exports = {
   findBodyHandler,

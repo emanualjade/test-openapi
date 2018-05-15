@@ -29,18 +29,14 @@ const parseHeader = function({ header, schema, collectionFormat }) {
 // Parses a response's body according to its `Content-Type`
 const parseBody = function({ body, headers }) {
   const mime = headers['content-type']
-  const { parse, name } = findBodyHandler({ mime })
+  const { parse } = findBodyHandler({ mime })
 
   // Defaults to leaving as is
   if (parse === undefined) {
     return body
   }
 
-  try {
-    return parse(body)
-  } catch (error) {
-    throw new Error(`Could not read response body as ${name}: ${error.message}\n${body}`)
-  }
+  return parse(body)
 }
 
 module.exports = {

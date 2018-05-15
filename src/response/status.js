@@ -1,5 +1,7 @@
 'use strict'
 
+const { throwResponseError } = require('../errors')
+
 // Validates response status code against OpenAPI specification
 const validateStatus = function({
   response: { status: testStatus },
@@ -9,7 +11,8 @@ const validateStatus = function({
     return fetchStatus
   }
 
-  throw new Error(`Status code ${fetchStatus} should be ${testStatus} instead.`)
+  const message = `Status code ${fetchStatus} should be ${testStatus} instead.`
+  throwResponseError(message)
 }
 
 module.exports = {

@@ -2,6 +2,12 @@
 
 // Since each test has random parameters, when a test fails,
 // we report them for easier debugging
+const validateResponseHandler = function(error, { fetchRequest }) {
+  const message = getValidateError({ error, fetchRequest })
+  // type: response
+  throw new Error(message)
+}
+
 const getValidateError = function({
   error: { message },
   fetchRequest: { method, url, headers, body },
@@ -33,5 +39,5 @@ const getBodyError = function({ body }) {
 }
 
 module.exports = {
-  getValidateError,
+  validateResponseHandler,
 }

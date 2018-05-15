@@ -1,24 +1,23 @@
 'use strict'
 
+const { addErrorHandler } = require('../errors')
+
 const { validateStatus } = require('./status')
 const { validateHeaders } = require('./headers')
 const { validateBody } = require('./body')
-const { getValidateError } = require('./message')
+const { validateResponseHandler } = require('./message')
 
 // Validates response against OpenAPI specification
-const validateResponse = function({ response, fetchRequest, fetchResponse }) {
-  try {
-    const status = validateStatus({ response, fetchResponse })
-    const headers = validateHeaders({ response, fetchResponse })
-    const body = validateBody({ response, fetchResponse })
+const validateResponse = function({ response, fetchResponse }) {
+  const status = validateStatus({ response, fetchResponse })
+  const headers = validateHeaders({ response, fetchResponse })
+  const body = validateBody({ response, fetchResponse })
 
-    return { status, ...headers, body }
-  } catch (error) {
-    const message = getValidateError({ error, fetchRequest })
-    throw new Error(message)
-  }
+  return { status, ...headers, body }
 }
 
+const eValidateResponse = addErrorHandler(validateResponse, validateResponseHandler)
+
 module.exports = {
-  validateResponse,
+  validateResponse: eValidateResponse,
 }

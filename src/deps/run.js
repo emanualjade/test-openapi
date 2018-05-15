@@ -2,7 +2,7 @@
 
 const { uniq } = require('lodash')
 
-const { handleDepError, checkStack } = require('./stack')
+const { checkStack } = require('./stack')
 
 // Run `deps` tests
 const runDeps = async function({ test, deps, opts, runTest }) {
@@ -25,16 +25,8 @@ const runDep = async function({ depKey, test, opts, opts: { tests }, runTest }) 
   const optsA = checkStack({ depKey, test, opts })
 
   const depTest = tests.find(({ testKey }) => testKey === depKey)
-  const depReturn = await runDepTest({ depTest, opts: optsA, runTest })
+  const depReturn = await runTest({ test: depTest, opts: optsA })
   return { [depKey]: depReturn }
-}
-
-const runDepTest = async function({ depTest, opts, runTest }) {
-  try {
-    return await runTest({ test: depTest, opts })
-  } catch (error) {
-    handleDepError({ error, opts })
-  }
 }
 
 module.exports = {

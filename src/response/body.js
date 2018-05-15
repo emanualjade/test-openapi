@@ -45,8 +45,8 @@ const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
     return
   }
 
-  const errorA = `Response body${error}.\nThe response body was:\n${fetchBody}`
-  throw new Error(errorA)
+  // type: response
+  throw new Error(`Response body${error}.\nThe response body was:\n${fetchBody}`)
 }
 
 module.exports = {

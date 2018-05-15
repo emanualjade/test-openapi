@@ -1,7 +1,7 @@
 'use strict'
 
 const { addErrorHandler, runTestsHandler } = require('./errors')
-const { replaceDeps } = require('./deps')
+const { replaceDeps, handleDepError } = require('./deps')
 const { mergeTest } = require('./merge')
 const { sendRequest } = require('./request')
 const { validateResponse } = require('./response')
@@ -30,7 +30,7 @@ const runTest = async function({
 }) {
   // Replace all `deps`, i.e. references to other tests.
   // Pass `runTest` for recursion.
-  const testA = await replaceDeps({ test, opts, runTest })
+  const testA = await replaceDeps({ test, opts, runTest: depsRunTest })
 
   // Merge test options with specification
   const { request, response } = mergeTest({ test: testA })
@@ -49,6 +49,8 @@ const runTest = async function({
   // Return value if this test was a `dep`
   return { request: requestA, response: responseA }
 }
+
+const depsRunTest = addErrorHandler(runTest, handleDepError)
 
 module.exports = {
   runTests: eRunTests,

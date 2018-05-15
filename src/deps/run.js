@@ -21,8 +21,12 @@ const getDepKeys = function({ deps }) {
   return depKeysA
 }
 
-const runDep = async function({ depKey, deps, test, opts, opts: { tests }, runTest }) {
+const runDep = async function({ depKey, deps, test, opts, opts: { tests, dry }, runTest }) {
   const optsA = checkStack({ depKey, deps, test, opts })
+
+  if (dry) {
+    return {}
+  }
 
   const depTest = tests.find(({ testKey }) => testKey === depKey)
   const depReturn = await runTest({ test: depTest, opts: optsA })

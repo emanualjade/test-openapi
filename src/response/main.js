@@ -8,7 +8,11 @@ const { validateBody } = require('./body')
 const { validateResponseHandler } = require('./message')
 
 // Validates response against OpenAPI specification
-const validateResponse = function({ response, fetchResponse }) {
+const validateResponse = function({ response, fetchResponse, opts: { dry } }) {
+  if (dry) {
+    return {}
+  }
+
   const status = validateStatus({ response, fetchResponse })
   const headers = validateHeaders({ response, fetchResponse })
   const body = validateBody({ response, fetchResponse })

@@ -13,6 +13,7 @@ const loadOpts = async function({
   repeat = DEFAULT_REPEAT,
   timeout = DEFAULT_TIMEOUT,
   maxParallel = DEFAULT_MAX_PARALLEL,
+  dry = false,
 }) {
   // Retrieve OpenAPI specification
   const specA = loadNormalizedSpec({ path: spec })
@@ -29,7 +30,7 @@ const loadOpts = async function({
   // Retrieve HTTP request's base URL
   const serverA = getServer({ server, spec: specB })
 
-  return { spec: specB, tests: testsC, server: serverA, repeat, timeout, maxParallel }
+  return { spec: specB, tests: testsC, server: serverA, repeat, timeout, maxParallel, dry }
 }
 
 const DEFAULT_TESTS = ['**/*.test.yml', '**/*.spec.yml', '**/*.test.json', '**/*.test.yml']

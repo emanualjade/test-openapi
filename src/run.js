@@ -49,6 +49,7 @@ const runTest = async function({
     response,
     fetchRequest,
     fetchResponse,
+    opts,
   })
 
   // Return value if this test was a `dep`

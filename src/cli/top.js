@@ -37,6 +37,11 @@ const OPTIONS = {
     requiresArg: true,
     describe: 'Maximum time to wait for each HTTP request',
   },
+  dry: {
+    boolean: true,
+    alias: 'd',
+    describe: 'Only validate tests syntax instead of performing them.',
+  },
 }
 
 const USAGE = `test-openapi [OPTS] [TEST_FILES...]

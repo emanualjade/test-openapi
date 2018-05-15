@@ -37,7 +37,11 @@ const setDep = function({
   return { ...test, testOpts: testOptsA }
 }
 
-const getDepValue = function({ depReturn, depPath }) {
+const getDepValue = function({ depReturn, depPath, opts: { dry } }) {
+  if (dry) {
+    return
+  }
+
   return get(depReturn, depPath)
 }
 

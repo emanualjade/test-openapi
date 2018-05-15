@@ -2,7 +2,7 @@
 
 const fetch = require('cross-fetch')
 
-const { addErrorHandler } = require('../../errors')
+const { addErrorHandler, throwConnectError } = require('../../errors')
 
 const { getRequestUrl } = require('./url')
 const { getRequestHeaders } = require('./headers')
@@ -10,12 +10,12 @@ const { getRequestBody } = require('./body')
 const { handleResponse } = require('./response')
 
 // Actual HTTP request
-const doFetch = async function({ method, path, request, opts }) {
+const doFetch = async function({ method, path, request, opts, depReturn }) {
   const fetchRequest = getFetchRequest({ method, path, request, opts })
 
   const fetchResponse = await eFireFetch({ ...fetchRequest, opts })
 
-  const fetchResponseA = await handleResponse({ fetchResponse })
+  const fetchResponseA = await handleResponse({ fetchResponse, depReturn })
 
   return { fetchResponse: fetchResponseA, fetchRequest }
 }
@@ -36,8 +36,7 @@ const fireFetch = function({ url, method, headers, body, opts: { timeout } }) {
 
 const fireFetchHandler = function(error, { url, opts: { timeout } }) {
   const message = getFetchError({ error, url, timeout })
-  // type: connect
-  throw new Error(message)
+  throwConnectError(message)
 }
 
 const getFetchError = function({ error: { message, type }, url, timeout }) {

@@ -2,7 +2,7 @@
 
 const { set, merge } = require('lodash')
 
-const { addErrorHandler } = require('../errors')
+const { addErrorHandler, throwResponseError } = require('../errors')
 const { get } = require('../utils')
 
 const { runDeps } = require('./run')
@@ -21,7 +21,7 @@ const replaceDeps = async function({ test, test: { deps }, opts, runTest }) {
 
 const replaceDep = function({ dep: { depKey, depPath, path }, depReturns }) {
   const depReturn = depReturns[depKey]
-  const depValue = eGetDepValue({ depKey, depReturn, depPath })
+  const depValue = eGetDepValue({ depKey, depReturn, depPath, path })
   const depValueA = set({}, path, depValue)
   return depValueA
 }
@@ -31,10 +31,12 @@ const getDepValue = function({ depReturn, depPath }) {
 }
 
 // eslint-disable-next-line handle-callback-err
-const getDepValueHandler = function(error, { depKey, depPath }) {
-  // type: response
-  throw new Error(
-    `This test targets another test '${depKey}.${depPath}' but this key could not be found`,
+const getDepValueHandler = function(error, { depKey, depPath, path }) {
+  const property = path.join('.')
+  const expected = `${depKey}.${depPath}`
+  throwResponseError(
+    `This test targets another test '${expected}' but this key could not be found`,
+    { property, expected },
   )
 }
 

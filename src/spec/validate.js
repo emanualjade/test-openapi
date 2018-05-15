@@ -1,5 +1,7 @@
 'use strict'
 
+const { throwSpecificationError } = require('../errors')
+
 // Validate OpenAPI specification syntax
 const validateOpenApi = function({ spec }) {
   const { errors, warnings } = spec.validate()
@@ -12,13 +14,13 @@ const validateOpenApi = function({ spec }) {
   reportOpenApiError({ problems })
 }
 
-const reportOpenApiError = function({ problems }) {
+const reportOpenApiError = function({ problems, problems: [{ path }] }) {
   const message = problems.map(getErrorMessage).join(`\n${INDENT}`)
-  // type: specification
-  throw new Error(`OpenAPI specification is invalid:\n${INDENT}${message}`)
+  const property = path.join('.')
+  throwSpecificationError(`OpenAPI specification is invalid:\n${INDENT}${message}`, { property })
 }
 
-const INDENT_LENGTH = 8
+const INDENT_LENGTH = 4
 const INDENT = ' '.repeat(INDENT_LENGTH)
 
 const getErrorMessage = function({ path, message }) {

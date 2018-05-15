@@ -11,8 +11,9 @@ const validateStatus = function({
     return fetchStatus
   }
 
+  const property = 'response.status'
   const message = `Status code ${fetchStatus} should be ${testStatus} instead.`
-  throwResponseError(message)
+  throwResponseError(message, { property, expected: testStatus, actual: fetchStatus })
 }
 
 module.exports = {

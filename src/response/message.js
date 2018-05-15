@@ -1,11 +1,15 @@
 'use strict'
 
+const { mapKeys } = require('lodash')
+
 // Since each test has random parameters, when a test fails,
 // we report them for easier debugging
-const validateResponseHandler = function(error, { fetchRequest }) {
+const validateResponseHandler = function(error, { request, fetchRequest, fetchResponse }) {
   const message = getValidateError({ error, fetchRequest })
-  // type: response
-  throw new Error(message)
+  const response = getResponse({ fetchResponse })
+  Object.assign(error, { message, request, response })
+
+  throw error
 }
 
 const getValidateError = function({
@@ -36,6 +40,11 @@ const getBodyError = function({ body }) {
   }
 
   return `\n\n${body}`
+}
+
+const getResponse = function({ fetchResponse: { status, headers, body } }) {
+  const headersA = mapKeys(headers, (value, name) => `headers.${name}`)
+  return { status, ...headersA, body }
 }
 
 module.exports = {

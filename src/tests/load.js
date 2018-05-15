@@ -6,7 +6,7 @@ const { readFile } = require('fs')
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 
-const { addErrorHandler } = require('../errors')
+const { addErrorHandler, throwTestError } = require('../errors')
 
 // Load YAML/JSON test files
 const loadTests = async function({ tests }) {
@@ -28,8 +28,7 @@ const loadTestFile = async function(path) {
 
 // File loading
 const readFileHandler = function({ message }, path) {
-  // type: test
-  throw new Error(`Could not load test file '${path}': ${message}`)
+  throwTestError(`Could not load test file '${path}': ${message}`)
 }
 
 const eReadFile = addErrorHandler(promisify(readFile), readFileHandler)
@@ -48,8 +47,7 @@ const YAML_OPTS = {
 }
 
 const parseTestFileHandler = function({ message }, { path }) {
-  // type: test
-  throw new Error(`Test file '${path}' is not valid YAML or JSON: ${message}`)
+  throwTestError(`Test file '${path}' is not valid YAML or JSON: ${message}`)
 }
 
 const eParseTestFile = addErrorHandler(parseTestFile, parseTestFileHandler)

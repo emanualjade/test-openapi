@@ -12,7 +12,7 @@ const throwError = function(type, message, props = {}) {
   const error = new Error(message)
 
   // We need to directly assign to keep `Error` prototype
-  Object.assign(error, props, { type, [ERROR_SYM]: true })
+  Object.assign(error, { type, [ERROR_SYM]: true }, props)
 
   throw error
 }

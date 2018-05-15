@@ -1,12 +1,12 @@
 'use strict'
 
-const { addErrorHandler } = require('../../errors')
+const { addErrorHandler, throwResponseError } = require('../../errors')
 
 // Parse a HTTP response
-const handleResponse = async function({ fetchResponse }) {
+const handleResponse = async function({ fetchResponse, depReturn }) {
   const status = getStatus({ fetchResponse })
   const headers = getHeaders({ fetchResponse })
-  const body = await eGetBody({ fetchResponse })
+  const body = await eGetBody({ fetchResponse, depReturn })
 
   return { status, headers, body }
 }
@@ -28,9 +28,9 @@ const getBody = function({ fetchResponse }) {
   return fetchResponse.text()
 }
 
-const getBodyHandler = function({ message }) {
-  // type: response
-  throw new Error(`Could not read response body: ${message}`)
+const getBodyHandler = function({ message, depReturn }) {
+  const property = 'response.body'
+  throwResponseError(`Could not read response body: ${message}`, { property, request: depReturn })
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)

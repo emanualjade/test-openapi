@@ -1,9 +1,10 @@
 'use strict'
 
+const { throwResponseError } = require('../errors')
 const { parseHeader } = require('../format')
 
 const { validateFromSchema } = require('./json_schema')
-const { validateRequiredness } = require('./required')
+const { validateRequiredHeader } = require('./required')
 
 // Validates response headers against OpenAPI specification
 const validateHeaders = function({
@@ -20,8 +21,7 @@ const validateHeaders = function({
 const validateHeader = function({ name, testHeader, collectionFormat, fetchHeaders }) {
   const fetchHeader = getFetchHeader({ fetchHeaders, name })
 
-  const message = `The response header '${name}'`
-  validateRequiredness({ schema: testHeader, value: fetchHeader, message })
+  validateRequiredHeader({ schema: testHeader, value: fetchHeader, name })
 
   if (fetchHeader === undefined) {
     return
@@ -52,8 +52,12 @@ const validateHeaderValue = function({ name, testHeader, parsedHeader, fetchHead
     return
   }
 
-  // type: response
-  throw new Error(`Response header '${name}' with value '${fetchHeader}'${error}.`)
+  const property = `response.headers.${name}`
+  throwResponseError(`Response header '${name}' with value '${fetchHeader}'${error}.`, {
+    property,
+    expected: testHeader,
+    actual: parsedHeader,
+  })
 }
 
 module.exports = {

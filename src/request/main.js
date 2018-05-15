@@ -1,5 +1,7 @@
 'use strict'
 
+const { addGenErrorHandler } = require('../errors')
+
 const { generateRequest } = require('./generate')
 const { doFetch } = require('./fetch')
 const { getDepReturn } = require('./dep_return')
@@ -8,12 +10,20 @@ const { getDepReturn } = require('./dep_return')
 const sendRequest = async function({ method, path, request, opts }) {
   const requestA = generateRequest({ request })
 
-  const { fetchRequest, fetchResponse } = await doFetch({ method, path, request: requestA, opts })
+  const depReturn = getDepReturn({ request: requestA })
 
-  const requestB = getDepReturn({ request: requestA })
+  const { fetchRequest, fetchResponse } = await eDoFetch({
+    method,
+    path,
+    request: requestA,
+    opts,
+    depReturn,
+  })
 
-  return { fetchRequest, fetchResponse, request: requestB }
+  return { fetchRequest, fetchResponse, request: depReturn }
 }
+
+const eDoFetch = addGenErrorHandler(doFetch, ({ depReturn }) => ({ request: depReturn }))
 
 module.exports = {
   sendRequest,

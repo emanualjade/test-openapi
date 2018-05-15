@@ -1,5 +1,7 @@
 'use strict'
 
+const { throwResponseError } = require('../errors')
+
 // Only response headers|body that are present either in the specification or
 // in test.response.* are validated.
 // `type: null` means the response header|body must not be present
@@ -7,34 +9,57 @@
 // Otherwise, it is required
 // TODO: this does not work when `type` is not top-level in the JSON-schema,
 // e.g. `{ not: { type } }`
-const validateRequiredness = function({ schema: { type = [] }, value, message }) {
+const validateRequiredBody = function({ schema, value }) {
+  const message = validateRequiredness({ schema, value })
+  if (message === undefined) {
+    return
+  }
+
+  const property = 'response.body'
+  throwResponseError(`Response body ${message}.`, { property, expected: schema, actual: value })
+}
+
+const validateRequiredHeader = function({ schema, value, name }) {
+  const message = validateRequiredness({ schema, value })
+  if (message === undefined) {
+    return
+  }
+
+  const property = `response.headers.${name}`
+  throwResponseError(`Response header '${name}' ${message}.`, {
+    property,
+    expected: schema,
+    actual: value,
+  })
+}
+
+const validateRequiredness = function({ schema: { type = [] }, value }) {
   if (type === 'null') {
-    return validateForbidden({ value, message })
+    return validateForbidden({ value })
   }
 
   if (!(Array.isArray(type) && type.includes('null'))) {
-    return validateRequired({ value, message })
+    return validateRequired({ value })
   }
 }
 
-const validateForbidden = function({ value, message }) {
+const validateForbidden = function({ value }) {
   if (value === undefined) {
     return
   }
 
-  // type: response
-  throw new Error(`${message} should be empty. However it is:\n${value}`)
+  return `should be empty. However it is:\n${value}`
 }
 
-const validateRequired = function({ value, message }) {
+const validateRequired = function({ value }) {
   if (value !== undefined) {
     return
   }
 
-  // type: response
-  throw new Error(`${message} should not be empty.`)
+  return 'should not be empty.'
 }
 
 module.exports = {
-  validateRequiredness,
+  validateRequiredBody,
+  validateRequiredHeader,
 }

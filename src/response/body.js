@@ -1,9 +1,10 @@
 'use strict'
 
+const { throwResponseError } = require('../errors')
 const { parseBody } = require('../format')
 
 const { validateFromSchema } = require('./json_schema')
-const { validateRequiredness } = require('./required')
+const { validateRequiredBody } = require('./required')
 
 // Validates response body against OpenAPI specification
 const validateBody = function({
@@ -12,8 +13,7 @@ const validateBody = function({
 }) {
   const fetchBodyA = trimBody({ fetchBody })
 
-  const message = 'The response body'
-  validateRequiredness({ schema: testBody, value: fetchBodyA, message })
+  validateRequiredBody({ schema: testBody, value: fetchBodyA })
 
   if (fetchBodyA === undefined) {
     return
@@ -45,8 +45,12 @@ const validateBodyValue = function({ testBody, parsedBody, fetchBody }) {
     return
   }
 
-  // type: response
-  throw new Error(`Response body${error}.\nThe response body was:\n${fetchBody}`)
+  const property = 'response.body'
+  throwResponseError(`Response body${error}.\nThe response body was:\n${fetchBody}`, {
+    property,
+    expected: testBody,
+    actual: parsedBody,
+  })
 }
 
 module.exports = {

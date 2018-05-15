@@ -8,7 +8,7 @@ const { checkStack } = require('./stack')
 const runDeps = async function({ test, deps, opts, runTest }) {
   const depKeys = getDepKeys({ deps })
   const depReturns = await Promise.all(
-    depKeys.map(depKey => runDep({ depKey, test, opts, runTest })),
+    depKeys.map(depKey => runDep({ depKey, deps, test, opts, runTest })),
   )
   const depReturnsA = Object.assign({}, ...depReturns)
   return depReturnsA
@@ -21,8 +21,8 @@ const getDepKeys = function({ deps }) {
   return depKeysA
 }
 
-const runDep = async function({ depKey, test, opts, opts: { tests }, runTest }) {
-  const optsA = checkStack({ depKey, test, opts })
+const runDep = async function({ depKey, deps, test, opts, opts: { tests }, runTest }) {
+  const optsA = checkStack({ depKey, deps, test, opts })
 
   const depTest = tests.find(({ testKey }) => testKey === depKey)
   const depReturn = await runTest({ test: depTest, opts: optsA })

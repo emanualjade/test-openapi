@@ -3,10 +3,17 @@
 const Jasmine = require('jasmine')
 const { SpecReporter } = require('jasmine-spec-reporter')
 
+const { addGenErrorHandler, createTestError } = require('../errors')
 const { defineTests } = require('../define')
 
 // Run Jasmine with `**/*.js` as the test files
-const launchRunner = function(opts, resolve, reject) {
+const launchRunner = async function({ opts }) {
+  await new Promise(launchJasmine.bind(null, opts))
+}
+
+const eLaunchRunner = addGenErrorHandler(launchRunner, ({ opts }) => ({ opts }))
+
+const launchJasmine = function(opts, resolve, reject) {
   const runner = new Jasmine()
 
   runner.loadConfig(JASMINE_CONFIG)
@@ -14,7 +21,10 @@ const launchRunner = function(opts, resolve, reject) {
   runner.env.clearReporters()
   runner.env.addReporter(new SpecReporter())
 
-  runner.onComplete(onComplete.bind(null, resolve, reject))
+  // Collect test errors since Jasmine does not return them
+  const errors = []
+
+  runner.onComplete(onComplete.bind(null, resolve, reject, errors))
 
   // Instead of calling `describe()` and `it()` when the test files are `require()`'d,
   // we defer it to now.
@@ -26,27 +36,25 @@ const launchRunner = function(opts, resolve, reject) {
   //    in Chrome devtools.
   //  - it allows us passing `opts` as argument (instead of using a global variable
   //    which would make running several `launchRunner` impossible)
-  defineTests({ opts })
+  defineTests({ opts, errors })
 
   runner.execute()
 }
 
 const JASMINE_CONFIG = {
   spec_files: [],
-  stopSpecOnExpectationFailure: true,
 }
 
 // Make Jasmine return a promise
-const onComplete = function(resolve, reject, passed) {
-  if (passed) {
+const onComplete = function(resolve, reject, errors, passed) {
+  if (passed && errors.length === 0) {
     return resolve()
   }
 
-  reject(new Error(ERROR_MESSAGE))
+  const error = createTestError({ errors })
+  reject(error)
 }
 
-const ERROR_MESSAGE = 'some tests failed'
-
 module.exports = {
-  launchRunner,
+  launchRunner: eLaunchRunner,
 }

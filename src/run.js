@@ -1,5 +1,6 @@
 'use strict'
 
+const { addErrorHandler, runTestsHandler } = require('./errors')
 const { replaceDeps } = require('./deps')
 const { mergeTest } = require('./merge')
 const { sendRequest } = require('./request')
@@ -16,6 +17,8 @@ const runTests = async function({ test, opts, opts: { repeat } }) {
   const runningTests = new Array(repeat).fill().map(() => runTest({ test, opts }))
   await Promise.all(runningTests)
 }
+
+const eRunTests = addErrorHandler(runTests, runTestsHandler)
 
 // Run an `it()` test
 const runTest = async function({
@@ -48,5 +51,5 @@ const runTest = async function({
 }
 
 module.exports = {
-  runTests,
+  runTests: eRunTests,
 }

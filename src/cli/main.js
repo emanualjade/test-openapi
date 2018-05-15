@@ -13,13 +13,13 @@ const runCli = async function() {
     const { command, opts, posOpts } = parseOpts({ yargs })
     await COMMANDS[command]({ opts, posOpts })
   } catch (error) {
-    cliErrorHandler(error)
+    cliErrorHandler({ error })
   }
 }
 
 // If an error is thrown, print error's description, then exit with exit code 1
-const cliErrorHandler = function(error) {
-  console.error(`Integration testing failed: ${error.message}`)
+const cliErrorHandler = function({ error: { message } }) {
+  console.error(`Integration testing failed: ${message}`)
 
   exit(1)
 }

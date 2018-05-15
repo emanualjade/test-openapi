@@ -19,7 +19,6 @@ const BODY_HANDLERS = [
     condition: isJson,
     parse: JSON.parse,
     stringify: JSON.stringify,
-    name: 'JSON',
   },
 ]
 

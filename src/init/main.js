@@ -1,6 +1,7 @@
 'use strict'
 
 const { loadOpts } = require('../opts')
+const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
 const { launchRunner } = require('./runner')
 
@@ -8,9 +9,13 @@ const { launchRunner } = require('./runner')
 const runIntegration = async function(opts) {
   const optsA = await loadOpts(opts)
 
-  await new Promise(launchRunner.bind(null, optsA))
+  await launchRunner({ opts: optsA })
+
+  return { opts: optsA }
 }
 
+const eRunIntegration = addErrorHandler(runIntegration, topNormalizeHandler)
+
 module.exports = {
-  runIntegration,
+  runIntegration: eRunIntegration,
 }

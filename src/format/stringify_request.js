@@ -28,15 +28,9 @@ const stringifyParamFlat = function({ param: { value, name, collectionFormat } }
 // Stringify the request body according to HTTP request header `Content-Type`
 const stringifyBody = function({ param: { value }, contentType }) {
   // Default stringifiers tries JSON.stringify()
-  const { stringify = stringifyFlat, name = DEFAULT_REQ_BODY_MIME.body } = findBodyHandler({
-    mime: contentType,
-  })
+  const { stringify = stringifyFlat } = findBodyHandler({ mime: contentType })
 
-  try {
-    return stringify(value)
-  } catch (error) {
-    throw new Error(`Could not send request body as ${name}: ${error.message}\n${value}`)
-  }
+  return stringify(value)
 }
 
 // TODO: not supported yet

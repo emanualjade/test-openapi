@@ -16,7 +16,14 @@
     },
     "dry": {
       "type": "boolean"
+    },
+    "tests": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
-  "required": ["spec"]
+  "required": ["spec"],
+  "additionalProperties": false
 }

@@ -4,7 +4,7 @@ const { difference, capitalize } = require('lodash')
 
 // Validation error
 const throwError = function(type, message, props = {}) {
-  const unknownProps = difference(Object.keys(props), Object.keys(PROPS))
+  const unknownProps = difference(Object.keys(props), PROPS[type])
   if (unknownProps.length > 0) {
     throwError('bug', `Unknown error properties ${unknownProps.join(', ')}`)
   }

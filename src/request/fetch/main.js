@@ -10,12 +10,12 @@ const { getRequestBody } = require('./body')
 const { handleResponse } = require('./response')
 
 // Actual HTTP request
-const doFetch = async function({ method, path, request, opts, depReturn }) {
+const doFetch = async function({ method, path, request, opts }) {
   const fetchRequest = getFetchRequest({ method, path, request, opts })
 
   const fetchResponse = await eFireFetch({ ...fetchRequest, opts })
 
-  const fetchResponseA = await handleResponse({ fetchResponse, depReturn })
+  const fetchResponseA = await handleResponse({ fetchResponse })
 
   return { fetchResponse: fetchResponseA, fetchRequest }
 }

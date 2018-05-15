@@ -4,26 +4,26 @@ const { addGenErrorHandler } = require('../errors')
 
 const { generateRequest } = require('./generate')
 const { doFetch } = require('./fetch')
-const { getDepReturn } = require('./dep_return')
+const { getNormRequest } = require('./norm_request')
 
 // Perform the main HTTP request of the test
 const sendRequest = async function({ method, path, request, opts }) {
   const requestA = generateRequest({ request })
 
-  const depReturn = getDepReturn({ request: requestA })
+  const normRequest = getNormRequest({ request: requestA })
 
   const { fetchRequest, fetchResponse } = await eDoFetch({
     method,
     path,
     request: requestA,
     opts,
-    depReturn,
+    normRequest,
   })
 
-  return { fetchRequest, fetchResponse, request: depReturn }
+  return { fetchRequest, fetchResponse, normRequest }
 }
 
-const eDoFetch = addGenErrorHandler(doFetch, ({ depReturn }) => ({ request: depReturn }))
+const eDoFetch = addGenErrorHandler(doFetch, ({ normRequest }) => ({ request: normRequest }))
 
 module.exports = {
   sendRequest,

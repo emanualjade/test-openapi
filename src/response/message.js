@@ -4,10 +4,10 @@ const { mapKeys } = require('lodash')
 
 // Since each test has random parameters, when a test fails,
 // we report them for easier debugging
-const validateResponseHandler = function(error, { request, fetchRequest, fetchResponse }) {
+const validateResponseHandler = function(error, { normRequest, fetchRequest, fetchResponse }) {
   const message = getValidateError({ error, fetchRequest })
   const response = getResponse({ fetchResponse })
-  Object.assign(error, { message, request, response })
+  Object.assign(error, { message, request: normRequest, response })
 
   throw error
 }

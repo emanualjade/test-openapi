@@ -3,10 +3,10 @@
 const { addErrorHandler, throwResponseError } = require('../../errors')
 
 // Parse a HTTP response
-const handleResponse = async function({ fetchResponse, depReturn }) {
+const handleResponse = async function({ fetchResponse }) {
   const status = getStatus({ fetchResponse })
   const headers = getHeaders({ fetchResponse })
-  const body = await eGetBody({ fetchResponse, depReturn })
+  const body = await eGetBody({ fetchResponse })
 
   return { status, headers, body }
 }
@@ -28,9 +28,9 @@ const getBody = function({ fetchResponse }) {
   return fetchResponse.text()
 }
 
-const getBodyHandler = function({ message, depReturn }) {
+const getBodyHandler = function({ message }) {
   const property = 'response.body'
-  throwResponseError(`Could not read response body: ${message}`, { property, request: depReturn })
+  throwResponseError(`Could not read response body: ${message}`, { property })
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)

@@ -36,7 +36,7 @@ const runTest = async function({
   const { request, response } = mergeTest({ test: testA })
 
   // Send an HTTP request to the endpoint
-  const { fetchRequest, fetchResponse, request: requestA } = await sendRequest({
+  const { fetchRequest, fetchResponse, normRequest } = await sendRequest({
     method,
     path,
     request,
@@ -44,10 +44,15 @@ const runTest = async function({
   })
 
   // Validates that the HTTP response matches the endpoint OpenAPI specification
-  const responseA = validateResponse({ request: requestA, response, fetchRequest, fetchResponse })
+  const normResponse = validateResponse({
+    request: normRequest,
+    response,
+    fetchRequest,
+    fetchResponse,
+  })
 
   // Return value if this test was a `dep`
-  return { request: requestA, response: responseA }
+  return { request: normRequest, response: normResponse }
 }
 
 const depsRunTest = addErrorHandler(runTest, handleDepError)

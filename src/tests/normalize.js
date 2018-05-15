@@ -1,8 +1,8 @@
 'use strict'
 
-const { throwTestError } = require('../errors')
 const { addDeps } = require('../deps')
 
+const { validateTests } = require('./validate')
 const { addTitles } = require('./title')
 const { getOperation } = require('./operation')
 
@@ -16,14 +16,6 @@ const normalizeTests = function({ tests, spec }) {
   const testsB = addTitles({ tests: testsA })
   const testsC = addDeps({ tests: testsB })
   return testsC
-}
-
-const validateTests = function({ tests }) {
-  if (Object.keys(tests).length !== 0) {
-    return
-  }
-
-  throwTestError('No tests were found')
 }
 
 const normalizeTest = function({ testKey, testOpts, spec }) {

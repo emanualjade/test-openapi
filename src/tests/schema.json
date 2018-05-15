@@ -1,0 +1,37 @@
+{
+  "type": "object",
+  "properties": {
+    "request": {
+      "type": "object",
+      "patternProperties": {
+        "^path\\..+": {},
+        "^query\\..+": {},
+        "^headers\\..+": {},
+        "^body": {}
+      },
+      "propertyNames": {
+        "pattern": "^(path\\..+)|(query\\..+)|(^headers\\..+)|(body)"
+      },
+      "additionalProperties": false
+    },
+    "response": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "minimum": 100,
+          "maximum": 599
+        },
+        "body": {}
+      },
+      "patternProperties": {
+        "^headers\\..+": {}
+      },
+      "propertyNames": {
+        "pattern": "^(status)|(headers\\..+)|(body)"
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

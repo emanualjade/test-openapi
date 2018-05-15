@@ -7,6 +7,7 @@ const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 
 const { addErrorHandler, throwTestError } = require('../errors')
+const { isObject } = require('../utils')
 
 // Load YAML/JSON test files
 const loadTests = async function({ tests }) {
@@ -23,6 +24,9 @@ const loadTests = async function({ tests }) {
 const loadTestFile = async function(path) {
   const content = await eReadFile(path)
   const tests = eParseTestFile({ path, content })
+
+  validateTests({ tests, path })
+
   return tests
 }
 
@@ -51,6 +55,14 @@ const parseTestFileHandler = function({ message }, { path }) {
 }
 
 const eParseTestFile = addErrorHandler(parseTestFile, parseTestFileHandler)
+
+const validateTests = function({ tests, path }) {
+  if (isObject(tests)) {
+    return
+  }
+
+  throwTestError(`Test file '${path}' should be an object not a ${typeof tests}`)
+}
 
 module.exports = {
   loadTests,

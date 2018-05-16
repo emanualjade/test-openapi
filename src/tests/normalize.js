@@ -3,6 +3,7 @@
 const { addDeps } = require('../deps')
 
 const { validateTests } = require('./validate')
+const { mergeEach } = require('./each')
 const { addTitles } = require('./title')
 const { getOperation } = require('./operation')
 
@@ -10,12 +11,14 @@ const { getOperation } = require('./operation')
 const normalizeTests = function({ tests, spec }) {
   validateTests({ tests })
 
-  const testsA = Object.entries(tests).map(([testKey, testOpts]) =>
+  const testsA = mergeEach({ tests })
+
+  const testsB = Object.entries(testsA).map(([testKey, testOpts]) =>
     normalizeTest({ testKey, testOpts, spec }),
   )
-  const testsB = addTitles({ tests: testsA })
-  const testsC = addDeps({ tests: testsB })
-  return testsC
+  const testsC = addTitles({ tests: testsB })
+  const testsD = addDeps({ tests: testsC })
+  return testsD
 }
 
 const normalizeTest = function({ testKey, testOpts, spec }) {

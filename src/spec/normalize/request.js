@@ -1,5 +1,7 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { mergeRequest } = require('../../merge')
 
 const { normalizeSchema } = require('./json_schema')
@@ -34,9 +36,14 @@ const getParameter = function({
   collectionFormat,
   ...schema
 }) {
-  const schemaA = getSchema({ schema })
-  const schemaB = normalizeSchema({ schema: schemaA })
-  return { name, location, required, schema: schemaB, collectionFormat }
+  // `allowEmptyValue` is deprecated and is ambiguous
+  // (https://github.com/OAI/OpenAPI-Specification/issues/1573)
+  // so we skip it
+  const schemaA = omit(schema, 'allowEmptyValue')
+
+  const schemaB = getSchema({ schema: schemaA })
+  const schemaC = normalizeSchema({ schema: schemaB })
+  return { name, location, required, schema: schemaC, collectionFormat }
 }
 
 // OpenAPI schema can be either a `schema` property, or is directly merged in

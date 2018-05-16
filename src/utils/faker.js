@@ -7,4 +7,9 @@ const generateFromSchema = function({ schema }) {
   return jsonSchemaFaker(schema)
 }
 
+jsonSchemaFaker.option({
+  // JSON format v4 allow custom formats
+  failOnInvalidFormat: false,
+})
+
 module.exports = { generateFromSchema }

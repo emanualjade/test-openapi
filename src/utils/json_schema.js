@@ -3,8 +3,7 @@
 const Ajv = require('ajv')
 const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
-
-const { memoize } = require('./memoize')
+const memoize = require('fast-memoize')
 
 // Validate a value against a JSON schema
 const validateFromSchema = function({ schema, value, name }) {

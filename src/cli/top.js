@@ -6,7 +6,7 @@ const defineTopOptions = function() {
   return yargs
     .options(OPTIONS)
     .usage(USAGE)
-    .example('Running tests:', RUN_EXAMPLE)
+    .example(RUN_EXAMPLE, 'Run tests')
     .help()
     .version()
     .strict()
@@ -49,16 +49,15 @@ const OPTIONS = {
   },
 }
 
-const USAGE = `test-openapi [OPTS] [TEST_FILES...]
+const USAGE = `$0 [OPTS] [TEST_FILES...]
 
 OpenAPI automatic integration testing
 
 TEST_FILES... are JSON or YAML files containing the tests to perform.
 Can include globbing patterns.
-Defaults to any file ending with 'spec.yml|json' or 'test.yml.json`
+Defaults to any file ending with 'spec.yml|json' or 'test.yml.json'`
 
-const RUN_EXAMPLE =
-  'test-openapi --spec ./openapi.yml --server http://localhost:5001 ./tests/**/*.test.yml'
+const RUN_EXAMPLE = '$0 --spec ./openapi.yml --server http://localhost:5001 ./tests/**/*.test.yml'
 
 module.exports = {
   defineTopOptions,

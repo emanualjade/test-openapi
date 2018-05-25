@@ -3,6 +3,7 @@
 const { addErrorHandler, runTestsHandler } = require('./errors')
 const { replaceDeps, handleDepError } = require('./deps')
 const { mergeTest } = require('./merge')
+const { generateRequest } = require('./generate')
 const { sendRequest } = require('./request')
 const { validateResponse } = require('./response')
 
@@ -35,11 +36,14 @@ const runTest = async function({
   // Merge test options with specification
   const { request, response } = mergeTest({ test: testA })
 
+  // Generates random request parameters based on JSON schema
+  const requestA = generateRequest({ request })
+
   // Send an HTTP request to the endpoint
   const { fetchRequest, fetchResponse, normRequest } = await sendRequest({
     method,
     path,
-    request,
+    request: requestA,
     opts,
   })
 

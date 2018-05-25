@@ -1,7 +1,7 @@
 'use strict'
 
-const { generateFromSchema } = require('../../utils')
-const { DEFAULT_REQ_BODY_MIME } = require('../../format')
+const { generateFromSchema } = require('../utils')
+const { DEFAULT_REQ_BODY_MIME } = require('../format')
 
 // `Content-Type` value generation has extra constraints:
 //  - it should be empty if no request body is going to be sent

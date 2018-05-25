@@ -1,6 +1,6 @@
 'use strict'
 
-const { stringifyRequest } = require('../../format')
+const { stringifyRequest } = require('../format')
 
 const { fakeValues } = require('./fake')
 const { fakeContentType } = require('./content_type')

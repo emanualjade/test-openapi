@@ -1,27 +1,26 @@
 'use strict'
 
-const { normalizeUrl } = require('../../../utils')
-
 const { getMethod } = require('./method')
-const { getPath } = require('./path')
+const { getServer } = require('./server')
+const { addPath } = require('./path')
 const { addUrlParams } = require('./params')
+const { normalizeUrl } = require('./normalize')
 const { addQueryParams } = require('./query')
-const { addServer } = require('./server')
 
 // Build request URL from request parameters
-const addFullUrl = function({ rawRequest, config }) {
+const addFullUrl = function({ rawRequest }) {
   const method = getMethod({ rawRequest })
-  const url = getFullUrl({ rawRequest, config })
+  const url = getFullUrl({ rawRequest })
   return { ...rawRequest, url, method }
 }
 
-const getFullUrl = function({ rawRequest, config }) {
-  const path = getPath({ rawRequest })
-  const pathA = addUrlParams({ path, rawRequest })
-  const pathB = addQueryParams({ path: pathA, rawRequest })
-  const url = addServer({ config, path: pathB })
-  const urlA = normalizeUrl({ url })
-  return urlA
+const getFullUrl = function({ rawRequest }) {
+  const url = getServer({ rawRequest })
+  const urlA = addPath({ url, rawRequest })
+  const urlB = addUrlParams({ url: urlA, rawRequest })
+  const urlC = normalizeUrl({ url: urlB })
+  const urlD = addQueryParams({ url: urlC, rawRequest })
+  return urlD
 }
 
 module.exports = {

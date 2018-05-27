@@ -2,7 +2,6 @@
 
 const { reduceAsync } = require('../utils')
 const { loadConfig, getTasks, loadNormalizedSpec, addDeps } = require('../plugins')
-const { getServer } = require('../plugins/config/server')
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
 const { launchRunner } = require('./runner')
@@ -30,7 +29,7 @@ const mergePlugin = function(configA, configB) {
   return { ...configA, ...configB }
 }
 
-const PLUGINS = [loadConfig, loadNormalizedSpec, getTasks, getServer, addDeps]
+const PLUGINS = [loadConfig, loadNormalizedSpec, getTasks, addDeps]
 
 module.exports = {
   runTasks: eRunTasks,

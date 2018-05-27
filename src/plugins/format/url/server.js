@@ -1,28 +1,44 @@
 'use strict'
 
+const { env } = require('process')
+
 // Add `task.parameters.server`
-const addServer = function({ config: { server: origin }, path }) {
-  const originA = escapeOrigin({ origin })
-  return `${originA}${path}`
+const getServer = function({ rawRequest: { server = getDefaultServer() } }) {
+  return server.replace(TRAILING_SLASH_REGEXP, '')
 }
 
-// According to RFC 3986, all characters should be escaped in origins except:
-//   [:alnum:]-.+_~!$&'()*,;=:@
-// However `encodeURI()` does not escape /#? so we escape them
-const escapeOrigin = function({ origin }) {
-  return (
-    encodeURI(origin)
-      .replace(/#/g, '%23')
-      .replace(/\?/g, '%3F')
-      .replace(/\//g, '%2F')
-      // We do not want to escape protocol slashes
-      .replace(SCHEME_REGEXP, '$1//')
-  )
+const getDefaultServer = function() {
+  const hostname = getHostname()
+  const port = getPort()
+  const server = `http://${hostname}${port}`
+  return server
 }
 
-// Matches URL scheme, e.g. `http://`
-const SCHEME_REGEXP = /^([\w-.+]+:)%2F%2F/
+// Defaults to environment variable HOST or to `localhost`
+const getHostname = function() {
+  return getEnv('host') || DEFAULT_HOSTNAME
+}
+
+const DEFAULT_HOSTNAME = 'localhost'
+
+// Defaults to environment variable PORT or the protocol's default port
+const getPort = function() {
+  const port = getEnv('port')
+
+  if (port) {
+    return `:${port}`
+  }
+
+  return ''
+}
+
+const getEnv = function(name) {
+  return env[name] || env[name.toUpperCase()] || env[name.toLowerCase()]
+}
+
+// Remove trailing slashes in base URL
+const TRAILING_SLASH_REGEXP = /\/$/
 
 module.exports = {
-  addServer,
+  getServer,
 }

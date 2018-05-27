@@ -7,10 +7,10 @@ const { findBodyHandler } = require('./body')
 const { addFullUrl } = require('./url')
 
 // Stringify request parameters
-const stringifyParams = function({ params, config }) {
+const stringifyParams = function({ params }) {
   const paramsA = params.map(param => stringifyParam({ param, params }))
   const rawRequest = Object.assign({}, ...paramsA)
-  const rawRequestA = addFullUrl({ rawRequest, config })
+  const rawRequestA = addFullUrl({ rawRequest })
   return { rawRequest: rawRequestA }
 }
 
@@ -58,6 +58,7 @@ const isContentTypeParam = function({ location, name }) {
 
 const PARAM_STRINGIFIERS = {
   method: stringifyParamFlat,
+  server: stringifyParamFlat,
   path: stringifyParamFlat,
   url: stringifyParamFlat,
   query: stringifyParamFlat,

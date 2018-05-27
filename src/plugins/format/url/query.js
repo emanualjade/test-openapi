@@ -1,16 +1,16 @@
 'use strict'
 
 // Add `query` request parameters to the request URL
-const addQueryParams = function({ path, rawRequest }) {
+const addQueryParams = function({ url, rawRequest }) {
   const query = Object.entries(rawRequest)
     .filter(([name]) => QUERY_PREFIX.test(name))
     .map(encodeQueryParam)
 
   if (query.length === 0) {
-    return path
+    return url
   }
 
-  return `${path}?${query.join('&')}`
+  return `${url}?${query.join('&')}`
 }
 
 // We cannot use `querystring` core module or `qs` library because they does

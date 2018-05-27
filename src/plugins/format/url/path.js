@@ -3,10 +3,10 @@
 const { throwTaskError } = require('../../../errors')
 
 // Retrieve `task.parameters.path`
-const getPath = function({ rawRequest: { path = '' } }) {
+const addPath = function({ url, rawRequest: { path = '' } }) {
   validatePath({ path })
 
-  return path
+  return `${url}${path}`
 }
 
 const validatePath = function({ path }) {
@@ -18,5 +18,5 @@ const validatePath = function({ path }) {
 }
 
 module.exports = {
-  getPath,
+  addPath,
 }

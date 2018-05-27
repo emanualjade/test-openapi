@@ -3,6 +3,6 @@
 const { repeatTasks } = require('./handle')
 
 module.exports = {
-  repeatTasks,
+  start: repeatTasks,
   dependencies: ['config', 'tasks'],
 }

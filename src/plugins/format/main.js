@@ -4,7 +4,7 @@ const { stringifyParams } = require('./stringify')
 const { parseResponse } = require('./parse')
 
 module.exports = {
-  stringifyParams,
-  parseResponse,
+  task: stringifyParams,
+  taskTwo: parseResponse,
   dependencies: ['tasks', 'request', 'validate'],
 }

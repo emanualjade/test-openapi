@@ -3,6 +3,6 @@
 const { loadConfig } = require('./load')
 
 module.exports = {
-  loadConfig,
+  start: loadConfig,
   dependencies: [],
 }

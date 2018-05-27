@@ -3,6 +3,6 @@
 const { replaceDeps } = require('./replace')
 
 module.exports = {
-  replaceDeps,
+  task: replaceDeps,
   dependencies: ['config', 'tasks'],
 }

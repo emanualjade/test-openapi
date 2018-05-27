@@ -3,6 +3,6 @@
 const { getTasks } = require('./get')
 
 module.exports = {
-  getTasks,
+  start: getTasks,
   dependencies: ['config'],
 }

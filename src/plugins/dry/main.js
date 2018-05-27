@@ -3,6 +3,6 @@
 const { handleDryRun } = require('./handle')
 
 module.exports = {
-  handleDryRun,
+  start: handleDryRun,
   dependencies: ['config', 'tasks'],
 }

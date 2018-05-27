@@ -4,7 +4,7 @@ const { normalizeGenerate } = require('./normalize')
 const { generateParams } = require('./create')
 
 module.exports = {
-  normalizeGenerate,
-  generateParams,
+  start: normalizeGenerate,
+  task: generateParams,
   dependencies: ['tasks', 'request'],
 }

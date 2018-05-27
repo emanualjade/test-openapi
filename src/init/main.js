@@ -41,15 +41,15 @@ const mergePlugin = function(configA, configB) {
 }
 
 const PLUGINS = [
-  config.loadConfig,
-  tasks.getTasks,
-  glob.mergeGlobTasks,
-  request.normalizeParams,
-  validate.normalizeValidate,
-  spec.loadNormalizedSpec,
-  generate.normalizeGenerate,
-  dry.handleDryRun,
-  repeat.repeatTasks,
+  config.start,
+  tasks.start,
+  glob.start,
+  request.start,
+  validate.start,
+  spec.start,
+  generate.start,
+  dry.start,
+  repeat.start,
 ]
 
 module.exports = {

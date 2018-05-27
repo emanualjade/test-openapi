@@ -3,6 +3,6 @@
 const { addFullUrl } = require('./add')
 
 module.exports = {
-  addFullUrl,
+  task: addFullUrl,
   dependencies: ['tasks', 'request'],
 }

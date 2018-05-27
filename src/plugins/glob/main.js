@@ -3,6 +3,6 @@
 const { mergeGlobTasks } = require('./merge')
 
 module.exports = {
-  mergeGlobTasks,
+  start: mergeGlobTasks,
   dependencies: ['tasks'],
 }

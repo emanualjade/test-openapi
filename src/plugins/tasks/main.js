@@ -1,8 +1,10 @@
 'use strict'
 
 const { loadTasks } = require('./load')
-const { validateTasks } = require('./validate')
+const { validateTasks } = require('./validation')
 const { normalizeTasks } = require('./normalize')
+const { normalizeTasksParams } = require('./params')
+const { normalizeTasksValidate } = require('./validate')
 
 // Retrieve list of tasks
 const getTasks = async function({ tasks, spec }) {
@@ -12,7 +14,11 @@ const getTasks = async function({ tasks, spec }) {
 
   const tasksB = normalizeTasks({ tasks: tasksA, spec })
 
-  return { tasks: tasksB }
+  const tasksC = normalizeTasksParams({ tasks: tasksB })
+
+  const tasksD = normalizeTasksValidate({ tasks: tasksC })
+
+  return { tasks: tasksD }
 }
 
 module.exports = {

@@ -2,6 +2,16 @@
 
 const { isDeepStrictEqual } = require('util')
 
+// Merge request parameters of same name and location
+const mergeParams = function(params, merge) {
+  return mergeValues(params, isSameParam, merge)
+}
+
+// Merge headers of same name
+const mergeHeaders = function(headers, merge) {
+  return mergeValues(headers, isSameHeader, merge)
+}
+
 // Merge array values with a custom merge function and condition function
 const mergeValues = function(array, condition = isDeepStrictEqual, merge = defaultMerge) {
   return array.map(mergeValue.bind(null, merge, condition)).filter(value => value !== undefined)
@@ -31,6 +41,23 @@ const defaultMerge = function(valueA, valueB) {
   return { ...valueA, ...valueB }
 }
 
+const isSameParam = function(paramA, paramB) {
+  if (paramA.location !== paramB.location) {
+    return false
+  }
+
+  if (paramA.location === 'headers') {
+    return paramA.name.toLowerCase() === paramB.name.toLowerCase()
+  }
+
+  return paramA.name === paramB.name
+}
+
+const isSameHeader = function(inputA, inputB) {
+  return inputA.name.toLowerCase() === inputB.name.toLowerCase()
+}
+
 module.exports = {
-  mergeValues,
+  mergeParams,
+  mergeHeaders,
 }

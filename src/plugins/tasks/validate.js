@@ -1,44 +1,43 @@
 'use strict'
 
-const { throwTaskError } = require('../../errors')
-const { validateFromSchema, isObject } = require('../../utils')
+const { DEFAULT_STATUS_CODE } = require('../../constants')
 
-const TASK_SCHEMA = require('./schema')
-
-// Make sure task files are not empty
-const validateTaskFile = function({ tasks, path }) {
-  if (isObject(tasks)) {
-    return
-  }
-
-  throwTaskError(`Task file '${path}' should be an object not a ${typeof tasks}`)
+// Normalize `task.validate.*`
+const normalizeTasksValidate = function({ tasks }) {
+  return tasks.map(normalizeValidate)
 }
 
-// Validate syntax of task files
-const validateTasks = function({ tasks }) {
-  validateEmptyTasks({ tasks })
-
-  Object.entries(tasks).forEach(validateTask)
+const normalizeValidate = function({
+  validate: { status = DEFAULT_STATUS_CODE, body, ...validate } = {},
+  ...task
+}) {
+  const headers = normalizeHeaders({ validate })
+  const validateA = { status, headers, body }
+  return { ...task, validate: validateA }
 }
 
-const validateEmptyTasks = function({ tasks }) {
-  if (Object.keys(tasks).length !== 0) {
-    return
-  }
-
-  throwTaskError('No tasks were found')
+// From `{ 'headers.NAME': schema, ... }` to array of `{ name: 'NAME', schema }`
+const normalizeHeaders = function({ validate }) {
+  return Object.entries(validate)
+    .filter(isHeader)
+    .map(getHeader)
 }
 
-const validateTask = function([taskName, task]) {
-  const { error, path } = validateFromSchema({ schema: TASK_SCHEMA, value: task, name: taskName })
-  if (error === undefined) {
-    return
-  }
-
-  throwTaskError(`Task '${taskName}' is invalid: ${error}`, { task: taskName, property: path })
+const isHeader = function([name]) {
+  return HEADERS_PREFIX_REGEXP.test(name)
 }
+
+const getHeader = function([name, schema]) {
+  const nameA = name.replace(HEADERS_PREFIX_REGEXP, '')
+  return { name: nameA, schema }
+}
+
+// We use the `task.validate['headers.NAME']` notation instead of
+// `task.validate.headers.NAME` because it aligns headers with other properties
+// of the same nesting level. It also prevents too much nesting, which makes
+// the file looks more complicated than it is
+const HEADERS_PREFIX_REGEXP = /^headers\./
 
 module.exports = {
-  validateTaskFile,
-  validateTasks,
+  normalizeTasksValidate,
 }

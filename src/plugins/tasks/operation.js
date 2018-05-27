@@ -5,7 +5,7 @@ const { DEFAULT_STATUS_CODE } = require('../../constants')
 
 // Find the operation related to a specific task, and add it
 // Does so by checking task key which should be `OperationId.taskName`
-const getOperation = function({ taskKey, validate, spec }) {
+const getOperation = function({ taskKey, task: { validate }, spec }) {
   const operation = findOperation({ taskKey, spec })
   const name = taskKey.replace(`${operation.operationId}.`, '')
 

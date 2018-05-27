@@ -1,17 +1,17 @@
 'use strict'
 
 // `task.parameters|validate.*: non-object` is shortcut for `{ enum: [value] }`
-const mergeShortcutSchema = function({ specSchema, taskSchema }) {
-  const type = getSchemaType({ taskSchema })
-  const schema = { ...specSchema, type, enum: [taskSchema] }
-  return schema
+const mergeShortcutSchema = function({ specSchema, schema }) {
+  const type = getSchemaType({ schema })
+  const schemaA = { ...specSchema, type, enum: [schema] }
+  return schemaA
 }
 
 // When using the shortcut notation, we need to set the `type` to make sure it
 // matches the value (in case it is not set, or set to several types, or set to
 // a different type)
-const getSchemaType = function({ taskSchema }) {
-  const [type] = TYPES.find(([, condition]) => condition(taskSchema))
+const getSchemaType = function({ schema }) {
+  const [type] = TYPES.find(([, condition]) => condition(schema))
   return type
 }
 

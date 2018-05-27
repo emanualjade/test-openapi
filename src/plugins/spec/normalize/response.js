@@ -3,7 +3,7 @@
 const { mapKeys, mapValues } = require('lodash')
 
 const { DEFAULT_STATUS_CODE } = require('../../../constants')
-const { mergeResponse } = require('../../merge')
+const { mergeHeaders } = require('../../../utils')
 
 const { normalizeSchema } = require('./json_schema')
 const { getNegotiationsResponse } = require('./content_negotiation')
@@ -40,7 +40,7 @@ const getResponseHeaders = function({ response: { headers = {} }, spec, operatio
 
   const contentNegotiations = getNegotiationsResponse({ spec, operation })
 
-  const headersB = mergeResponse([...contentNegotiations, ...headersA])
+  const headersB = mergeHeaders([...contentNegotiations, ...headersA])
 
   return headersB
 }

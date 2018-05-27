@@ -15,9 +15,9 @@ const normalizeTasks = function({ tasks, spec }) {
   return tasksC
 }
 
-const normalizeTask = function({ taskKey, task, task: { parameters, validate }, spec }) {
-  const { name, operation } = getOperation({ taskKey, validate, spec })
-  return { ...task, originalTask: task, params: parameters, taskKey, name, operation }
+const normalizeTask = function({ taskKey, task, spec }) {
+  const { name, operation } = getOperation({ taskKey, task, spec })
+  return { ...task, originalTask: task, taskKey, name, operation }
 }
 
 module.exports = {

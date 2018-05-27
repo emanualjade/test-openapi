@@ -1,6 +1,6 @@
 'use strict'
 
-const { replaceDeps } = require('./replace')
+const { replaceDeps } = require('./task')
 
 module.exports = {
   task: replaceDeps,

@@ -1,6 +1,6 @@
 'use strict'
 
-const { handleDryRun } = require('./handle')
+const { handleDryRun } = require('./start')
 
 module.exports = {
   start: handleDryRun,

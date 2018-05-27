@@ -1,8 +1,7 @@
 'use strict'
 
-const { normalizeParams } = require('./normalize')
-const { sendRequest } = require('./send')
-const { getReturnValue } = require('./return')
+const { normalizeParams } = require('./start')
+const { sendRequest, getReturnValue } = require('./task')
 
 module.exports = {
   start: normalizeParams,

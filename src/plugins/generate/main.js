@@ -1,7 +1,7 @@
 'use strict'
 
-const { normalizeGenerate } = require('./normalize')
-const { generateParams } = require('./create')
+const { normalizeGenerate } = require('./start')
+const { generateParams } = require('./task')
 
 module.exports = {
   start: normalizeGenerate,

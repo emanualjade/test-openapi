@@ -1,6 +1,6 @@
 'use strict'
 
-const { mergeGlobTasks } = require('./merge')
+const { mergeGlobTasks } = require('./start')
 
 module.exports = {
   start: mergeGlobTasks,

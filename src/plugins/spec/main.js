@@ -1,8 +1,7 @@
 'use strict'
 
-const { loadOpenApiSpec } = require('./load')
-const { loadNormalizedSpec } = require('./normalize')
-const { mergeSpecParams, mergeSpecValidate } = require('./merge')
+const { loadOpenApiSpec, loadNormalizedSpec } = require('./start')
+const { mergeSpecParams, mergeSpecValidate } = require('./task')
 
 module.exports = {
   loadOpenApiSpec,

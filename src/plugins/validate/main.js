@@ -1,7 +1,7 @@
 'use strict'
 
-const { normalizeValidate } = require('./normalize')
-const { validateResponse } = require('./check')
+const { normalizeValidate } = require('./start')
+const { validateResponse } = require('./task')
 
 module.exports = {
   start: normalizeValidate,

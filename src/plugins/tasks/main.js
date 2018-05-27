@@ -1,6 +1,6 @@
 'use strict'
 
-const { getTasks } = require('./get')
+const { getTasks } = require('./start')
 
 module.exports = {
   start: getTasks,

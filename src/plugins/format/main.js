@@ -1,7 +1,6 @@
 'use strict'
 
-const { stringifyParams } = require('./stringify')
-const { parseResponse } = require('./parse')
+const { stringifyParams, parseResponse } = require('./task')
 
 module.exports = {
   task: [stringifyParams, parseResponse],

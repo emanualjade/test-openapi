@@ -1,6 +1,6 @@
 'use strict'
 
-const { addFullUrl } = require('./add')
+const { addFullUrl } = require('./task')
 
 module.exports = {
   task: addFullUrl,

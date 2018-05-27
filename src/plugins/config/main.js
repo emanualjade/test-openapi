@@ -1,6 +1,6 @@
 'use strict'
 
-const { loadConfig } = require('./load')
+const { loadConfig } = require('./start')
 
 module.exports = {
   start: loadConfig,

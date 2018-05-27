@@ -1,6 +1,6 @@
 'use strict'
 
-const { repeatTasks } = require('./handle')
+const { repeatTasks } = require('./start')
 
 module.exports = {
   start: repeatTasks,

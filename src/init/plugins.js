@@ -151,18 +151,18 @@ const applyPluginsDefaults = function({
 const runHandlers = function(input, { handlers }, type, readOnlyArgs, errorHandler) {
   const handlersA = handlers
     .filter(({ type: typeA }) => typeA === type)
-    .map(({ handler }) => wrapHandler({ handler, errorHandler, readOnlyArgs }))
+    .map(handler => wrapHandler({ handler, errorHandler, readOnlyArgs }))
 
   return reduceAsync(handlersA, runHandler, input, mergeReturnValue)
 }
 
-const wrapHandler = function({ handler, errorHandler, readOnlyArgs }) {
-  const handlerA = passReadOnlyArgs.bind(null, { handler, readOnlyArgs })
+const wrapHandler = function({ handler: { handler }, errorHandler, readOnlyArgs }) {
+  const handlerA = callHandler.bind(null, { handler, readOnlyArgs })
   const handlerB = wrapErrorHandler({ handler: handlerA, errorHandler })
   return handlerB
 }
 
-const passReadOnlyArgs = function({ handler, readOnlyArgs }, input, ...args) {
+const callHandler = function({ handler, readOnlyArgs }, input, ...args) {
   const inputA = { ...input, ...readOnlyArgs }
   const maybePromise = handler(inputA, ...args)
   return maybePromise

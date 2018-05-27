@@ -2,7 +2,7 @@
 
 const { pick } = require('lodash')
 
-const { addErrorHandler, addGenErrorHandler, runTasksHandler } = require('../errors')
+const { addGenErrorHandler } = require('../errors')
 const { reduceAsync } = require('../utils')
 const {
   replaceDeps,
@@ -25,43 +25,43 @@ const {
 // TODO: we should cancel other tasks if any of them fails. At the moment, this is
 // not possible because `node-fetch` does not support `AbortController`:
 // a PR is ongoing to add support: https://github.com/bitinn/node-fetch/pull/437
-const runTasks = async function({ task, tasks, config, config: { repeat } }) {
-  // Passed as second argument to every plugin
-  const secondArg = { config, tasks }
-
-  const runningTasks = new Array(repeat).fill().map(() => runTask({ task, secondArg }))
+const runTask = async function(task, context) {
+  const {
+    config: { repeat },
+  } = context
+  const runningTasks = new Array(repeat).fill().map(() => realRunTask(task, context))
   await Promise.all(runningTasks)
 }
 
-const eRunTasks = addErrorHandler(runTasks, runTasksHandler)
-
 // Run an `it()` task
-const runTask = async function({ task: { originalTask, ...task }, secondArg }) {
-  const secondArgA = addRunTask({ secondArg })
+const realRunTask = async function({ originalTask, ...task }, context) {
+  const contextA = addRunTask({ context })
 
-  const { task: taskA } = await eRunPlugins({ task, secondArg: secondArgA })
+  const { task: taskA } = await eRunPlugins({ task, context: contextA })
 
   const taskB = getTaskReturn({ task: taskA, originalTask })
   return taskB
 }
 
 // Pass `runTask` for recursive tasks
-const addRunTask = function({ secondArg }) {
-  const runTaskA = task => runTask({ task, secondArg })
-  return { ...secondArg, runTask: runTaskA }
+// If some plugins (like the `repeat` plugin) monkey patch `runTask()`, the
+// non-monkey patched version is passed instead
+const addRunTask = function({ context }) {
+  const runTaskA = task => realRunTask(task, context)
+  return { ...context, runTask: runTaskA }
 }
 
-const runPlugins = function({ task, secondArg }) {
-  return reduceAsync(PLUGINS, eRunPlugin, { task, secondArg }, mergePlugin)
+const runPlugins = function({ task, context }) {
+  return reduceAsync(PLUGINS, eRunPlugin, { task, context }, mergePlugin)
 }
 
-const runPlugin = function({ task, secondArg }, plugin) {
-  return plugin(task, secondArg)
+const runPlugin = function({ task, context }, plugin) {
+  return plugin(task, context)
 }
 
 // We merge the return value of each plugin
-const mergePlugin = function({ task, secondArg }, taskA) {
-  return { task: { ...task, ...taskA }, secondArg }
+const mergePlugin = function({ task, context }, taskA) {
+  return { task: { ...task, ...taskA }, context }
 }
 
 // Task return value, returned to users and used by depReqs
@@ -107,6 +107,5 @@ const PLUGINS = [
 ]
 
 module.exports = {
-  runTasks: eRunTasks,
   runTask,
 }

@@ -14,11 +14,11 @@ const {
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
 const { launchRunner } = require('./runner')
-const { runTasks } = require('./run')
+const { runTask } = require('./run')
 
 // Main entry point
 const run = async function(config) {
-  const configA = { ...config, runTasks }
+  const configA = { ...config, runTask }
 
   const configB = await runPlugins({ config: configA })
 

@@ -3,19 +3,20 @@
 const { omit, omitBy } = require('lodash')
 
 const parseConfig = function({ yargs }) {
-  const { _: tasks, ...config } = yargs.parse()
+  const { _: tasks, plugin: plugins, ...config } = yargs.parse()
+  const configA = { ...config, plugins }
 
   // `yargs`-specific options
-  const configA = omit(config, ['help', 'version', '$0'])
+  const configB = omit(configA, ['help', 'version', '$0'])
 
   // Remove shortcuts
-  const configB = omitBy(configA, (value, name) => name.length === 1)
+  const configC = omitBy(configB, (value, name) => name.length === 1)
 
   const tasksA = tasks.length === 0 ? undefined : tasks
-  const configC = { ...configB, tasks: tasksA }
+  const configD = { ...configC, tasks: tasksA }
 
-  const configD = omitBy(configC, value => value === undefined)
-  return configD
+  const configE = omitBy(configD, value => value === undefined)
+  return configE
 }
 
 module.exports = {

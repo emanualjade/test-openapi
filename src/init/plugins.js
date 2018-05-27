@@ -66,12 +66,13 @@ const { addErrorHandler, TestOpenApiError } = require('../errors')
 // of the same `type`. Please look at the current available plugins and try
 // to find out where the best place is for your plugin.
 
-const getPlugins = function({ config }) {
-  const plugins = loadPlugins({ pluginNames: DEFAULT_PLUGINS })
+const getPlugins = function({ config: { plugins, ...config } }) {
+  const pluginNames = [...DEFAULT_PLUGINS, ...plugins]
+  const pluginsA = loadPlugins({ pluginNames })
 
-  validateUsedPlugins({ config, plugins })
+  validateUsedPlugins({ config, plugins: pluginsA })
 
-  return plugins
+  return { config, plugins: pluginsA }
 }
 
 // Plugins always included

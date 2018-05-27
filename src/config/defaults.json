@@ -1,3 +1,4 @@
 {
-  "tasks": ["**/*.tasks.yml", "**/*.tasks.json"]
+  "tasks": ["**/*.tasks.yml", "**/*.tasks.json"],
+  "plugins": []
 }

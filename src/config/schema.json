@@ -2,6 +2,12 @@
   "type": "object",
   "properties": {
     "runTask": {},
+    "plugins": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
     "tasks": {
       "oneOf": [
         {

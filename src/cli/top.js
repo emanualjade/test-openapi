@@ -13,6 +13,13 @@ const defineCli = function() {
 }
 
 const CONFIG = {
+  plugin: {
+    array: true,
+    string: true,
+    alias: 'p',
+    requiresArg: true,
+    describe: 'Plugin to extend the core features',
+  },
   call: {
     describe: 'HTTP call options',
   },

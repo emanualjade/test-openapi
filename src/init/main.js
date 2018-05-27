@@ -14,9 +14,9 @@ const run = async function(config = {}) {
 
   const configB = await getTasks({ config: configA })
 
-  const plugins = getPlugins({ config: configB })
+  const { config: configC, plugins } = getPlugins({ config: configB })
 
-  await eRunPlugins({ config: configB, plugins })
+  await eRunPlugins({ config: configC, plugins })
 }
 
 const eRun = addErrorHandler(run, topLevelHandler)

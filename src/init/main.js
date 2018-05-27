@@ -28,10 +28,7 @@ const runPlugins = async function({ config, pluginNames }) {
 
   const configB = applyPluginsConfig({ config: configA, plugins })
 
-  const {
-    handlers: { start: handlers },
-  } = plugins
-  const configC = await runHandlers(configB, handlers)
+  const configC = await runHandlers(configB, plugins, 'start')
 
   await launchRunner({ config: configC, plugins })
 }

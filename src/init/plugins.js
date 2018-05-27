@@ -42,14 +42,15 @@ const PLUGINS = require('../plugins')
 //      - `task` also has the following read-only properties:
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)
-//         - `tasks`: array of all tasks
 //         - `runTask(task)`: function allowing a task to fire another task
 //   - `complete`:
 //      - fired for each task, but after `task` type.
 //      - fired whether `task` has failed or not
-//      - arguments: `({ task, config })`
+//      - arguments: `(task)`
 //      - this type of handlers can modify the current `task`
-//      - `config` is read-only
+//      - `task` also has the following read-only properties:
+//         - `config`: the configuration object (after being modified by the
+//           `start` handlers)
 //   - `end`:
 //      - fired after all tasks
 //      - arguments: `({ tasks, config })`
@@ -84,36 +85,24 @@ const findPlugins = function({ pluginNames }) {
 }
 
 const getHandlers = function({ plugins }) {
-  const handlers = deepGetObject(plugins, 'handlers')
-  const handlersA = Object.entries(handlers).map(mapHandlers)
-  const handlersB = [].concat(...handlersA)
-
-  const handlersC = PLUGIN_TYPES.map(type => getHandlersByType({ type, handlers: handlersB }))
-  const handlersD = Object.assign({}, ...handlersC)
-
-  return handlersD
+  const handlers = plugins.map(mapHandlers)
+  const handlersA = [].concat(...handlers)
+  const handlersB = sortBy(handlersA, 'order')
+  return handlersB
 }
 
-const mapHandlers = function([pluginName, handlers]) {
-  return handlers.map(handler => ({ ...handler, pluginName }))
+const mapHandlers = function({ handlers, ...plugin }) {
+  return handlers.map(props => mapHandler({ plugin, props }))
 }
 
-const PLUGIN_TYPES = ['start', 'task', 'complete', 'end']
-
-const getHandlersByType = function({ type, handlers }) {
-  const handlersC = handlers.filter(({ type: typeA }) => typeA === type)
-  const handlersD = sortBy(handlersC, 'order')
-  const handlersE = handlersD.map(getHandler)
-  return { [type]: handlersE }
-}
-
-const getHandler = function({ handler, pluginName }) {
-  return addErrorHandler(handler, pluginErrorHandler.bind(null, pluginName))
+const mapHandler = function({ plugin, plugin: { name }, props: { handler, ...props } }) {
+  const handlerA = addErrorHandler(handler, pluginErrorHandler.bind(null, name))
+  return { ...plugin, ...props, handler: handlerA }
 }
 
 // Add `error.plugin` to every thrown error
-const pluginErrorHandler = function(pluginName, error) {
-  error.plugin = pluginName
+const pluginErrorHandler = function(name, error) {
+  error.plugin = name
   throw error
 }
 
@@ -154,8 +143,38 @@ const applyPluginsDefaults = function({
   return configB
 }
 
-const runHandlers = function(input, handlers) {
-  return reduceAsync(handlers, runHandler, input, mergeReturnValue)
+// Run plugin `handlers` of a given `type`
+// Handlers will reduce over `input`. Their return values gets shallowly merged
+// They also receive `readOnlyArgs` as input, but cannot modify it
+// An error handler can also be added to every handler
+// Handlers can be async
+const runHandlers = function(input, { handlers }, type, readOnlyArgs, errorHandler) {
+  const handlersA = handlers
+    .filter(({ type: typeA }) => typeA === type)
+    .map(({ handler }) => wrapHandler({ handler, errorHandler, readOnlyArgs }))
+
+  return reduceAsync(handlersA, runHandler, input, mergeReturnValue)
+}
+
+const wrapHandler = function({ handler, errorHandler, readOnlyArgs }) {
+  const handlerA = passReadOnlyArgs.bind(null, { handler, readOnlyArgs })
+  const handlerB = wrapErrorHandler({ handler: handlerA, errorHandler })
+  return handlerB
+}
+
+const passReadOnlyArgs = function({ handler, readOnlyArgs }, input, ...args) {
+  const inputA = { ...input, ...readOnlyArgs }
+  const maybePromise = handler(inputA, ...args)
+  return maybePromise
+}
+
+const wrapErrorHandler = function({ handler, errorHandler }) {
+  if (errorHandler === undefined) {
+    return handler
+  }
+
+  const handlerA = addErrorHandler(handler, errorHandler)
+  return handlerA
 }
 
 const runHandler = function(input, handler) {

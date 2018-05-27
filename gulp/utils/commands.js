@@ -1,29 +1,30 @@
 'use strict'
 
+const { env } = require('process')
 const { spawn } = require('child_process')
 
 const PluginError = require('plugin-error')
 
 // Execute a shell command
-const execCommand = function(command, opts) {
+const execCommand = function(command, { quiet = false, cwd } = {}) {
   const [commandA, ...args] = command.trim().split(/ +/)
-  const env = getEnv()
-  const stdio = getStdio({ opts })
-  const child = spawn(commandA, args, { env, stdio })
+  const envA = getEnv()
+  const stdio = getStdio({ quiet })
+  const child = spawn(commandA, args, { env: envA, stdio, cwd })
 
   return new Promise(execCommandPromise.bind(null, { child, command }))
 }
 
 // Adds local Node modules binary to `$PATH`
 const getEnv = function() {
-  const { env } = process
   const PATH = getPath({ env })
   const envA = { ...env, PATH }
   return envA
 }
 
 const getPath = function({ env: { PATH = '' } }) {
-  if (PATH.split(':').includes(LOCAL_NODE_BIN_DIR)) {
+  const hasLocalDir = PATH.split(':').includes(LOCAL_NODE_BIN_DIR)
+  if (hasLocalDir) {
     return PATH
   }
 

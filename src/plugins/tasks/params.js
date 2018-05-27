@@ -5,7 +5,8 @@ const { keyToLocation } = require('../../utils')
 // From `task.parameters.*` object to an array of `{ name, location, required, schema }`
 // Also rename `parameters` to `params`, and apply `config.server`
 const normalizeTasksParamsBefore = function({ tasks, server }) {
-  return tasks.map(task => normalizeParamsBefore({ task, server }))
+  const tasksA = tasks.map(task => normalizeParamsBefore({ task, server }))
+  return { tasks: tasksA }
 }
 
 const normalizeParamsBefore = function({ task: { parameters: params = {}, ...task }, server }) {

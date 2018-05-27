@@ -9,7 +9,7 @@ const { isMatch } = require('micromatch')
 const mergeGlob = function({ tasks }) {
   const { globTasks, nonGlobTasks } = splitTasks({ tasks })
   const tasksA = nonGlobTasks.map(task => mergeGlobTasks({ task, globTasks }))
-  return tasksA
+  return { tasks: tasksA }
 }
 
 const splitTasks = function({ tasks }) {

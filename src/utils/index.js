@@ -10,4 +10,5 @@ module.exports = {
   ...require('./location'),
   ...require('./json'),
   ...require('./json_schema'),
+  ...require('./shortcut'),
 }

@@ -14,9 +14,9 @@ const getTasks = async function({ tasks, server }) {
 
   const tasksB = normalizeTasks({ tasks: tasksA })
 
-  const tasksC = mergeGlob({ tasks: tasksB })
+  const { tasks: tasksC } = mergeGlob({ tasks: tasksB })
 
-  const tasksD = normalizeTasksParamsBefore({ tasks: tasksC, server })
+  const { tasks: tasksD } = normalizeTasksParamsBefore({ tasks: tasksC, server })
 
   return { tasks: tasksD }
 }

@@ -4,7 +4,7 @@ const METHODS = require('methods')
 
 const { TestOpenApiError } = require('../../../errors')
 
-// Retrieve `task.parameters.method`
+// Retrieve `task.call.method`
 const getMethod = function({ rawRequest: { method = DEFAULT_METHOD } }) {
   validateMethod({ method })
 
@@ -19,7 +19,7 @@ const validateMethod = function({ method }) {
   }
 
   throw new TestOpenApiError(`HTTP method '${method}' does not exist`, {
-    property: 'parameters.method',
+    property: 'call.method',
     actual: method,
   })
 }

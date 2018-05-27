@@ -4,7 +4,7 @@ const jsonSchemaFaker = require('json-schema-faker')
 
 const { locationToKey } = require('../../../utils')
 
-// Generates random values based on `task.parameters.*` JSON schemas
+// Generates random values based on `task.call.*` JSON schemas
 const generateParams = function({ params }) {
   const schema = getParamsJsonSchema({ params })
   const values = generateFromSchema({ schema })
@@ -80,7 +80,7 @@ const shouldIncludeParam = function({ value }) {
     // Specifying `type: 'null'` or `enum: ['null']` means 'do not send this parameter'
     // Specifying `type: ['null', ...]` means 'maybe send this parameter (or not, randomly)'
     // No matter what, only required parameters or parameters specified in
-    // `task.parameters.*` can be sent
+    // `task.call.*` can be sent
     value !== null
   )
 }

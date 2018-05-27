@@ -1,6 +1,6 @@
 'use strict'
 
-// Use dot notation for `task.parameters.*`, e.g. `task.parameters['query.VAR']`
+// Use dot notation for `task.call.*`, e.g. `task.call['query.VAR']`
 // to indicate both `location` and `name`
 const keyToLocation = function({ key }) {
   if (SINGLE_NAME_LOCATIONS.includes(key)) {

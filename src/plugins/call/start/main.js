@@ -2,34 +2,35 @@
 
 const { keyToLocation } = require('../../../utils')
 
-// From `task.parameters.*` object to an array of `{ name, location, required, value }`
-// Also rename `parameters` to `params`, and apply `config.call.server`
+// Set `task.params`, a normalized version of `task.call.*` object as an array
+// of `{ name, location, required, value }`
+// Also apply `config.call.server`
 const normalizeParams = function({ tasks, call: { server } }) {
   const tasksA = tasks.map(task => normalizeTaskParams({ task, server }))
   return { tasks: tasksA }
 }
 
-const normalizeTaskParams = function({ task: { parameters: params = {}, ...task }, server }) {
-  const paramsA = addServer({ params, server })
-  const paramsB = Object.entries(paramsA).map(normalizeParam)
-  return { ...task, params: paramsB }
+const normalizeTaskParams = function({ task: { call = {}, ...task }, server }) {
+  const callA = addServer({ call, server })
+  const params = Object.entries(callA).map(normalizeParam)
+  return { ...task, params }
 }
 
-// `config.call.server` is added as `task.parameters.server` for each task, unless
+// `config.call.server` is added as `task.call.server` for each task, unless
 // it already exists
-const addServer = function({ params, server }) {
+const addServer = function({ call, server }) {
   if (server === undefined) {
-    return params
+    return call
   }
 
-  return { server, ...params }
+  return { server, ...call }
 }
 
-// From `task.parameters.*` object to an array of `{ name, location, required, value }`
+// From `task.call.*` object to an array of `{ name, location, required, value }`
 const normalizeParam = function([key, value]) {
   const { location, name } = keyToLocation({ key })
 
-  // Parameters specified in `task.parameters.*` are always required (i.e. generated)
+  // Parameters specified in `task.call.*` are always required (i.e. generated)
   return { location, name, value, required: true }
 }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-// `task.parameters|validate.*: invalid` means we inverse re-use parameter's schema
+// `task.call|validate.*: invalid` means we inverse re-use parameter's schema
 const isInvalidValue = function({ value }) {
   return (
     value !== undefined &&

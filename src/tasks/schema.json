@@ -1,7 +1,7 @@
 {
   "type": "object",
   "properties": {
-    "parameters": {
+    "call": {
       "type": "object",
       "patternProperties": {
         "^method": {},

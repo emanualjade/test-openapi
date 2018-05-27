@@ -2,7 +2,7 @@
 
 const { env } = require('process')
 
-// Add `task.parameters.server`
+// Add `task.call.server`
 const getServer = function({ rawRequest: { server = getDefaultServer() } }) {
   return server.replace(TRAILING_SLASH_REGEXP, '')
 }

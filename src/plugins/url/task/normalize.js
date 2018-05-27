@@ -16,7 +16,7 @@ const normalizeUrl = function({ url: originalUrl }) {
 //   [:alnum:]-.+_~!$&'()*,;=:@/
 // However `encodeURI()` does not escape # and ? so we escape them
 // This is the same situation for origins, except RFC 3986 forbids slashes, but
-// we allow it since `task.parameters.server` can contain the base path.
+// we allow it since `task.call.server` can contain the base path.
 const escapeUrl = function(url) {
   return encodeURI(url)
     .replace(/#/g, '%23')
@@ -30,7 +30,7 @@ const parseUrl = function({ url }) {
 const parseUrlHandler = function({ message }, { originalUrl }) {
   throw new TestOpenApiError(`Request URL '${originalUrl}' is not valid: ${message}`, {
     // It could come from either `server` or `path`
-    property: 'parameters',
+    property: 'call',
     actual: originalUrl,
   })
 }

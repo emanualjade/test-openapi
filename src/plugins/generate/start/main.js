@@ -3,14 +3,14 @@
 const { TestOpenApiError } = require('../../../errors')
 const { validateIsSchema, normalizeShortcut, locationToKey } = require('../../../utils')
 
-// Normalize and validate `task.parameters.*` JSON schemas
+// Normalize and validate `task.call.*` JSON schemas
 const normalizeGenerate = function({ tasks }) {
   const tasksA = tasks.map(normalizeTaskGenerate)
   return { tasks: tasksA }
 }
 
 const normalizeTaskGenerate = function({ params, ...task }) {
-  // `task.parameters.*: non-object` is shortcut for `{ enum: [value] }`
+  // `task.call.*: non-object` is shortcut for `{ enum: [value] }`
   const paramsA = params.map(normalizeParamShortcut)
 
   validateJsonSchemas({ params: paramsA, task })
@@ -38,7 +38,7 @@ const validateJsonSchema = function({ task: { taskKey }, name, location, value }
   }
 
   const key = locationToKey({ location, name })
-  const property = `parameters.${key}`
+  const property = `call.${key}`
   throw new TestOpenApiError(
     `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
     {

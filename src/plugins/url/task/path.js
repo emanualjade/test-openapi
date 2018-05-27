@@ -2,7 +2,7 @@
 
 const { TestOpenApiError } = require('../../../errors')
 
-// Retrieve `task.parameters.path`
+// Retrieve `task.call.path`
 const addPath = function({ url, rawRequest: { path = '' } }) {
   validatePath({ path })
 
@@ -15,7 +15,7 @@ const validatePath = function({ path }) {
   }
 
   throw new TestOpenApiError('Request path must start with a slash', {
-    property: 'path',
+    property: 'call.path',
     actual: path,
   })
 }

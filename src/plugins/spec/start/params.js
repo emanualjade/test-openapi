@@ -55,7 +55,7 @@ const getSchema = function({ schema }) {
   return schemaC
 }
 
-// Operation's method, server and path as a `task.parameters.method|server|path` parameter
+// Operation's method, server and path as a `task.call.method|server|path` parameter
 const getConstParams = function({ spec, method, path }) {
   const methodParam = getConstParam({ value: method, location: 'method' })
   const serverParam = getServerParam({ spec })

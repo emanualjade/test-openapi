@@ -3,7 +3,7 @@
 const { TestOpenApiError } = require('../../../errors')
 
 // Replace `url` request parameters to the request URL
-// Can replace `{...}` in both `task.parameters.server` and `task.parameters.path`
+// Can replace `{...}` in both `task.call.server` and `task.call.path`
 const addUrlParams = function({ url, rawRequest }) {
   return url.replace(URL_PARAM_REGEXP, (urlA, name) => getUrlParam({ name, rawRequest }))
 }
@@ -14,7 +14,7 @@ const addUrlParams = function({ url, rawRequest }) {
 const URL_PARAM_REGEXP = /\{([^}]+)\}/g
 
 const getUrlParam = function({ name, rawRequest: { url = {} } }) {
-  const property = `url.${name}`
+  const property = `call.url.${name}`
   const value = url[name]
 
   if (value === undefined) {

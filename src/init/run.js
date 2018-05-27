@@ -5,10 +5,10 @@ const { pick } = require('lodash')
 const { reduceAsync } = require('../utils')
 
 // Run an `it()` task
-const runTask = async function({ originalTask, ...task }, handlers) {
+const runTask = async function({ originalTask, ...task }, handlers, plugins) {
   const taskA = await runTaskPlugins({ task, handlers })
 
-  const taskB = getTaskReturn({ task: taskA, originalTask })
+  const taskB = getTaskReturn({ task: taskA, originalTask, plugins })
   return taskB
 }
 
@@ -26,12 +26,16 @@ const mergePlugin = function(task, taskA) {
 }
 
 // Task return value, returned to users and used by depReqs
-const getTaskReturn = function({ task, originalTask }) {
-  // TODO: use `returnedProperties` instead
-  const taskA = pick(task, ['request', 'response'])
-
-  // Any value set on `task.*` by a plugin is returned, unless it already existed
-  // in original task
+// Re-use the original task, and add any `plugin.properties.success`
+// (unless it was already in original task)
+const getTaskReturn = function({
+  task,
+  originalTask,
+  plugins: {
+    properties: { success: successProperties },
+  },
+}) {
+  const taskA = pick(task, successProperties)
   return { ...taskA, ...originalTask }
 }
 

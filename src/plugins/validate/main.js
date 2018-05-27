@@ -6,4 +6,5 @@ const { validateResponse } = require('./check')
 module.exports = {
   normalizeValidate,
   validateResponse,
+  dependencies: ['tasks', 'request'],
 }

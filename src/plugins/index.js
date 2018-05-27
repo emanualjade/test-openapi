@@ -5,7 +5,6 @@ module.exports = {
   ...require('./tasks'),
   ...require('./deps'),
   ...require('./spec'),
-  ...require('./merge'),
   ...require('./generate'),
   ...require('./format'),
   ...require('./send'),

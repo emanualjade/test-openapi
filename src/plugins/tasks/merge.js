@@ -7,7 +7,11 @@ const { mergeParams, mergeHeaders } = require('../../utils')
 const { mergeInvalidSchema, isInvalidSchema } = require('./invalid')
 
 // Merge tasks to specification
-const mergeTask = function({ params, validate: { status, headers, body }, operation }) {
+const mergeTasksSpec = function({ tasks }) {
+  return tasks.map(mergeTask)
+}
+
+const mergeTask = function({ params, validate: { status, headers, body }, operation, ...task }) {
   // Merge `task.parameters.*` to specification
   const paramsA = mergeParams([...operation.params, ...params], mergeSpec)
   // Merge `task.validate.headers.*` to specification
@@ -16,7 +20,7 @@ const mergeTask = function({ params, validate: { status, headers, body }, operat
   const bodyA = mergeSpecSchema(operation.response.body, body)
 
   const validate = { status, headers: headersA, body: bodyA }
-  return { params: paramsA, validate }
+  return { ...task, params: paramsA, validate, operation }
 }
 
 // Merge a `task.*.*` value with the specification value
@@ -36,5 +40,5 @@ const mergeSpecSchema = function(specSchema, schema) {
 }
 
 module.exports = {
-  mergeTask,
+  mergeTasksSpec,
 }

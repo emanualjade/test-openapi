@@ -8,7 +8,6 @@ module.exports = {
   dependencies: ['format', 'url'],
   properties: {
     success: ['request', 'response'],
-    error: ['rawRequest', 'rawResponse'],
   },
   defaults: {
     general: {

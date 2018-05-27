@@ -1,32 +1,20 @@
 'use strict'
 
-const { pick } = require('lodash')
-
 const { normalizeError } = require('./normalize')
 
 // Error handler for `it()`
-const runTaskHandler = function({ errors, errorProperties }, error, task) {
-  const errorA = addTaskName({ error, task })
-
-  const errorB = addErrorProperties({ task, error: errorA, errorProperties })
+const runTaskHandler = function({ errors }, error, task) {
+  const errorA = addTask({ error, task })
 
   // Errors collection
-  errors.push(errorB)
+  errors.push(errorA)
 
-  throw errorB
+  throw errorA
 }
 
-// Add `error.task` name
-const addTaskName = function({ error, task: { taskKey } }) {
-  return normalizeError(error, { task: taskKey })
-}
-
-// Add each `plugin.properties.error`
-const addErrorProperties = function({ task, error, errorProperties }) {
-  const errorPropertiesA = pick(task, errorProperties)
-  Object.assign(error, errorPropertiesA)
-
-  return error
+// Add `error.task` and `error.taskName`
+const addTask = function({ error, task: { taskKey: taskName, ...task } }) {
+  return normalizeError(error, { taskName, task })
 }
 
 module.exports = {

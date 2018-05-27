@@ -65,9 +65,9 @@ const PLUGINS = require('../plugins')
 // of the same `type`. Please look at the current available plugins and try
 // to find out where the best place is for your plugin.
 
-// `plugin.properties.success|error` `{string[]}`
+// `plugin.properties.success` `{string[]}`
 // List of properties returned by a `task` handler that should be exposed to
-// the final `task` return value when it is successful or has failed.
+// the final `task` return value when it is successful.
 
 // TODO: use `config` instead
 const getPluginNames = function() {
@@ -107,8 +107,7 @@ const getHandlersByType = function({ type, handlers }) {
 
 const getProperties = function({ plugins }) {
   const success = deepGetArray(plugins, 'properties.success')
-  const error = deepGetArray(plugins, 'properties.error')
-  return { success, error }
+  return { success }
 }
 
 const getDefaults = function({ plugins }) {

@@ -34,7 +34,6 @@ const getHandlers = function({
   plugins,
   plugins: {
     handlers: { task: taskHandlers },
-    properties: { error: errorProperties },
   },
   config,
   tasks,
@@ -43,9 +42,7 @@ const getHandlers = function({
   // Those arguments are passed to each task, but cannot be modified
   const readOnlyArgs = { config, tasks }
 
-  const handlers = taskHandlers.map(handler =>
-    getHandler({ handler, readOnlyArgs, errors, errorProperties }),
-  )
+  const handlers = taskHandlers.map(handler => getHandler({ handler, readOnlyArgs, errors }))
 
   // Pass `runTask` for recursive tasks
   // If some plugins (like the `repeat` plugin) monkey patch `runTask()`, the
@@ -56,9 +53,9 @@ const getHandlers = function({
   return handlers
 }
 
-const getHandler = function({ handler, readOnlyArgs, errors, errorProperties }) {
+const getHandler = function({ handler, readOnlyArgs, errors }) {
   const handlerA = (task, ...args) => handler({ ...task, ...readOnlyArgs }, ...args)
-  const handlerB = addErrorHandler(handlerA, runTaskHandler.bind(null, { errors, errorProperties }))
+  const handlerB = addErrorHandler(handlerA, runTaskHandler.bind(null, { errors }))
   return handlerB
 }
 

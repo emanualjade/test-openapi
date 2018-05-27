@@ -9,4 +9,5 @@ module.exports = {
   loadNormalizedSpec,
   mergeSpecParams,
   mergeSpecValidate,
+  dependencies: ['config', 'tasks', 'request', 'generate', 'validate'],
 }

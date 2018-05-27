@@ -5,24 +5,24 @@ const { validateTasks } = require('./validation')
 const { normalizeTasks } = require('./normalize')
 const { normalizeTasksShortcuts } = require('./shortcut')
 const { validateTasksJsonSchemas } = require('./json_schema')
-const { normalizeTasksParams } = require('./params')
 const { normalizeTasksValidate } = require('./validate')
+const { normalizeTasksParams } = require('./params')
 
 // Retrieve list of tasks
-const getTasks = async function({ tasks }) {
+const getTasks = async function({ tasks, server }) {
   const tasksA = await loadTasks({ tasks })
 
   validateTasks({ tasks: tasksA })
 
-  const tasksB = normalizeTasks({ tasks: tasksA })
+  const tasksB = normalizeTasks({ tasks: tasksA, server })
 
   const tasksC = normalizeTasksShortcuts({ tasks: tasksB })
 
   validateTasksJsonSchemas({ tasks: tasksC })
 
-  const tasksD = normalizeTasksParams({ tasks: tasksC })
+  const tasksD = normalizeTasksValidate({ tasks: tasksC })
 
-  const tasksE = normalizeTasksValidate({ tasks: tasksD })
+  const tasksE = normalizeTasksParams({ tasks: tasksD })
 
   return { tasks: tasksE }
 }

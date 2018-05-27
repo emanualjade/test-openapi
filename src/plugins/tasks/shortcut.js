@@ -15,7 +15,7 @@ const normalizeTaskShortcuts = function(task) {
   return taskB
 }
 
-const PROPERTIES = ['parameters', 'validate']
+const PROPERTIES = ['params', 'validate']
 
 const normalizeShorcuts = function({ prop, task }) {
   const obj = task[prop]

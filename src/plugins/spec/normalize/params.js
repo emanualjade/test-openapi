@@ -12,7 +12,6 @@ const IN_TO_LOCATION = require('./in_to_location')
 // Normalize OpenAPI request parameters into specification-agnostic format
 const getParams = function({
   spec,
-  server,
   method,
   path,
   pathDef: { parameters: pathDefParams = [] },
@@ -27,7 +26,7 @@ const getParams = function({
 
   const secParams = getSecParams({ spec, operation })
 
-  const constParams = getConstParams({ spec, server, method, path })
+  const constParams = getConstParams({ spec, method, path })
 
   const paramsC = mergeParams([...contentNegotiations, ...secParams, ...paramsB, ...constParams])
 
@@ -54,25 +53,23 @@ const getSchema = function({ schema }) {
 }
 
 // Operation's method, server and path as a `task.parameters.method|server|path` parameter
-const getConstParams = function({ spec, server, method, path }) {
-  const serverA = getServer({ spec, server })
-
+const getConstParams = function({ spec, method, path }) {
   const methodParam = getConstParam({ value: method, location: 'method' })
-  const serverParam = getConstParam({ value: serverA, location: 'server' })
+  const serverParam = getServerParam({ spec })
   const pathParam = getConstParam({ value: path, location: 'path' })
 
-  return [serverParam, methodParam, pathParam]
+  return [methodParam, ...serverParam, pathParam]
 }
 
-const getServer = function({ spec: { host: hostname, basePath }, server }) {
-  if (server !== undefined) {
-    return server
+const getServerParam = function({ spec: { host: hostname, basePath } }) {
+  if (hostname === undefined) {
+    return []
   }
 
   // TODO: support `spec.schemes` instead of always using HTTP
-  if (hostname !== undefined) {
-    return `http://${hostname}${basePath}`
-  }
+  const value = `http://${hostname}${basePath}`
+  const serverParam = getConstParam({ value, location: 'server' })
+  return [serverParam]
 }
 
 const getConstParam = function({ value, location }) {

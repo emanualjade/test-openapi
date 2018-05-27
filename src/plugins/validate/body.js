@@ -7,6 +7,10 @@ const { validateRequiredBody } = require('./required')
 
 // Validates response body against OpenAPI specification
 const validateBody = function({ validate: { body: vBody }, response: { body } }) {
+  if (vBody === undefined) {
+    return
+  }
+
   validateRequiredBody({ schema: vBody, value: body })
 
   if (body === undefined) {

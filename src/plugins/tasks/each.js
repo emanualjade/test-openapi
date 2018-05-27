@@ -2,11 +2,11 @@
 
 const { mapValues, merge, pickBy, omitBy } = require('lodash')
 
-// Merge `each` to each task and `operationId.each` to each `operationId.*` task
+// Merge `each` to each task and `taskPrefix.each` to each `taskPrefix.*` task
 // I.e. `each` is a special task name to allow for shared properties
 const mergeEach = function({ tasks }) {
   const tasksA = mergeTopEach({ tasks })
-  const tasksB = mergeOperationsEach({ tasks: tasksA })
+  const tasksB = mergeTasksEach({ tasks: tasksA })
   return tasksB
 }
 
@@ -20,30 +20,26 @@ const mergeTopEach = function({ tasks: { each: eachTask, ...tasks } }) {
   return tasksA
 }
 
-// Merge `operationId.each`
-// Note that one can also use `operationId.taskPrefix.each` for all
-// `operationId.taskPrefix.*`
-const mergeOperationsEach = function({ tasks }) {
-  const operationsEach = pickBy(tasks, isOperationEach)
-  const tasksA = omitBy(tasks, isOperationEach)
-  const tasksB = mapValues(tasksA, (task, taskName) =>
-    mergeOperationEach({ task, taskName, operationsEach }),
-  )
+// Merge `taskPrefix.each` to each `taskPrefix.*`
+const mergeTasksEach = function({ tasks }) {
+  const tasksEach = pickBy(tasks, isTaskEach)
+  const tasksA = omitBy(tasks, isTaskEach)
+  const tasksB = mapValues(tasksA, (task, taskName) => mergeTaskEach({ task, taskName, tasksEach }))
   return tasksB
 }
 
-const mergeOperationEach = function({ task, taskName, operationsEach }) {
-  const operationEach = Object.entries(operationsEach).find(([eachName]) =>
+const mergeTaskEach = function({ task, taskName, tasksEach }) {
+  const taskEach = Object.entries(tasksEach).find(([eachName]) =>
     startWithEachPrefix({ taskName, eachName }),
   )
-  if (operationEach === undefined) {
+  if (taskEach === undefined) {
     return task
   }
 
-  return merge({}, operationEach[1], task)
+  return merge({}, taskEach[1], task)
 }
 
-const isOperationEach = function(value, taskName) {
+const isTaskEach = function(value, taskName) {
   return EACH_REGEXP.test(taskName)
 }
 

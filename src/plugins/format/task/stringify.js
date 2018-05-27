@@ -18,7 +18,7 @@ const stringifyParams = function({ call, call: { params } }) {
   const paramsB = paramsA.map(param => stringifyParam({ param, params: paramsA }))
   const rawRequest = merge({}, ...paramsB)
 
-  return { call: { ...call, request }, rawRequest }
+  return { call: { ...call, request, rawRequest } }
 }
 
 // Returned as `task.request`

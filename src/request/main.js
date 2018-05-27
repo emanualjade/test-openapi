@@ -1,27 +1,68 @@
 'use strict'
 
-const { addGenErrorHandler } = require('../errors')
+const fetch = require('cross-fetch')
 
-const { doFetch } = require('./fetch')
-const { getNormRequest } = require('./norm_request')
+const { addErrorHandler, addGenErrorHandler, throwConnectError } = require('../errors')
+const { normalizeRequest } = require('../normalize')
 
-// Perform the main HTTP request of the test
-const sendRequest = async function({ method, path, request, opts }) {
-  const normRequest = getNormRequest({ request })
+const { getRequestUrl } = require('./url')
+const { getRequestHeaders } = require('./headers')
+const { getRequestBody } = require('./body')
+const { handleResponse } = require('./response')
 
-  const { fetchRequest, fetchResponse } = await eDoFetch({
-    method,
-    path,
-    request,
-    opts,
-    normRequest,
-  })
+// Actual HTTP request
+const sendRequest = async function({ method, path, request, opts, opts: { dry } }) {
+  const fetchRequest = getFetchRequest({ method, path, request, opts })
 
-  return { fetchRequest, fetchResponse, normRequest }
+  if (dry) {
+    return { fetchRequest }
+  }
+
+  const fetchResponse = await eFireFetch({ ...fetchRequest, opts })
+
+  const fetchResponseA = await handleResponse({ fetchResponse })
+
+  return { fetchResponse: fetchResponseA, fetchRequest }
 }
 
-const eDoFetch = addGenErrorHandler(doFetch, ({ normRequest }) => ({ request: normRequest }))
+const eSendRequest = addGenErrorHandler(sendRequest, function({ request }) {
+  const requestA = normalizeRequest({ request })
+  return { request: requestA }
+})
+
+// Retrieve HTTP request's URL, headers and body
+const getFetchRequest = function({ method, path, request, opts }) {
+  const url = getRequestUrl({ path, request, opts })
+  const headers = getRequestHeaders({ request })
+  const body = getRequestBody({ request })
+
+  return { url, method, headers, body }
+}
+
+// Actual HTTP request
+const fireFetch = function({ url, method, headers, body, opts: { timeout } }) {
+  return fetch(url, { method, headers, body, timeout })
+}
+
+const fireFetchHandler = function(error, { url, opts: { timeout } }) {
+  const message = getFetchError({ error, url, timeout })
+  throwConnectError(message)
+}
+
+const getFetchError = function({ error: { message, type }, url, timeout }) {
+  if (type === 'request-timeout') {
+    return `The request took more than ${timeout} milliseconds`
+  }
+
+  if (type === 'body-timeout') {
+    return `Parsing the response took more than ${timeout} milliseconds`
+  }
+
+  return `Could not connect to ${url}: ${message}`
+}
+
+const eFireFetch = addErrorHandler(fireFetch, fireFetchHandler)
 
 module.exports = {
-  sendRequest,
+  sendRequest: eSendRequest,
 }

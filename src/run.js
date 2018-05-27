@@ -5,6 +5,7 @@ const { replaceDeps, handleDepError } = require('./deps')
 const { mergeTest } = require('./merge')
 const { generateRequest } = require('./generate')
 const { sendRequest } = require('./request')
+const { normalizeRequest } = require('./normalize')
 const { validateResponse } = require('./response')
 
 // Repeat each test `opts.repeat` times, each time with different random parameters
@@ -40,12 +41,14 @@ const runTest = async function({
   const requestA = generateRequest({ request })
 
   // Send an HTTP request to the endpoint
-  const { fetchRequest, fetchResponse, normRequest } = await sendRequest({
+  const { fetchRequest, fetchResponse } = await sendRequest({
     method,
     path,
     request: requestA,
     opts,
   })
+
+  const normRequest = normalizeRequest({ request })
 
   // Validates that the HTTP response matches the endpoint OpenAPI specification
   const normResponse = validateResponse({

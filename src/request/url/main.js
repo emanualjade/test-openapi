@@ -1,6 +1,6 @@
 'use strict'
 
-const { normalizeUrl } = require('../../../utils')
+const { normalizeUrl } = require('../../utils')
 
 const { addPathRequest } = require('./path')
 const { addQueryRequest } = require('./query')

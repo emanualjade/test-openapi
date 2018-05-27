@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, throwResponseError } = require('../../errors')
+const { addErrorHandler, throwResponseError } = require('../errors')
 
 // Parse a HTTP response
 const handleResponse = async function({ fetchResponse }) {

@@ -3,6 +3,7 @@
 const { get, has, merge } = require('lodash')
 
 const { sortBy, reduceAsync } = require('../utils')
+const { addErrorHandler } = require('../errors')
 const PLUGINS = require('../plugins')
 
 // Plugins are the way most functionalities is implemented.
@@ -88,12 +89,18 @@ const findPlugins = function({ pluginNames }) {
 }
 
 const getHandlers = function({ plugins }) {
-  const handlers = deepGetArray(plugins, 'handlers')
+  const handlers = deepGetObject(plugins, 'handlers')
+  const handlersA = Object.entries(handlers).map(mapHandlers)
+  const handlersB = [].concat(...handlersA)
 
-  const handlersA = PLUGIN_TYPES.map(type => getHandlersByType({ type, handlers }))
-  const handlersB = Object.assign({}, ...handlersA)
+  const handlersC = PLUGIN_TYPES.map(type => getHandlersByType({ type, handlers: handlersB }))
+  const handlersD = Object.assign({}, ...handlersC)
 
-  return handlersB
+  return handlersD
+}
+
+const mapHandlers = function([pluginName, handlers]) {
+  return handlers.map(handler => ({ ...handler, pluginName }))
 }
 
 const PLUGIN_TYPES = ['start', 'task', 'complete', 'end']
@@ -101,8 +108,18 @@ const PLUGIN_TYPES = ['start', 'task', 'complete', 'end']
 const getHandlersByType = function({ type, handlers }) {
   const handlersC = handlers.filter(({ type: typeA }) => typeA === type)
   const handlersD = sortBy(handlersC, 'order')
-  const handlersE = handlersD.map(({ handler }) => handler)
+  const handlersE = handlersD.map(getHandler)
   return { [type]: handlersE }
+}
+
+const getHandler = function({ handler, pluginName }) {
+  return addErrorHandler(handler, pluginErrorHandler.bind(null, pluginName))
+}
+
+// Add `error.plugin` to every thrown error
+const pluginErrorHandler = function(pluginName, error) {
+  error.plugin = pluginName
+  throw error
 }
 
 const getProperties = function({ plugins }) {

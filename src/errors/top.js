@@ -14,7 +14,8 @@ const topLevelHandler = function(error, config = {}) {
   const errorA = Object.assign(error, { config })
   const errorB = bundleSingleError({ error: errorA })
   const errorC = handleBugs({ error: errorB })
-  throw errorC
+  const errorD = addDefaultPlugin({ error: errorC })
+  throw errorD
 }
 
 // Bundle single error with `bundleErrors()` unless it's already bundled
@@ -46,6 +47,18 @@ Please report this bug on https://github.com/Cardero-X/test-openapi/issues and p
 OS: ${platform()}
 node.js: ${nodeVersion}
 test-openapi: ${libraryVersion}`
+
+// Default `error.plugin` (i.e. when it is not a plugin error nor a bug) is `config`
+const addDefaultPlugin = function({ error, error: { plugin } }) {
+  if (plugin !== undefined) {
+    return error
+  }
+
+  error.plugin = DEFAULT_PLUGIN
+  return error
+}
+
+const DEFAULT_PLUGIN = 'config'
 
 module.exports = {
   topLevelHandler,

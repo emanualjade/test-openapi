@@ -4,6 +4,9 @@
 // Properties often assigned:
 //  - `config` `{object}`: initial configuration object
 //  - `plugins` `{string[]}`: list of loaded plugins
+//  - `plugin` `{string}`: plugin that triggered the error.
+//    Will be `bug` if it was a bug in the library.
+//    Will be `config` if it was outside of any plugin
 //  - `taskName` `{string}`: current task name
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in the current task (if `task`

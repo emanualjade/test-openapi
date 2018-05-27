@@ -31,12 +31,15 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Number of times each task is repeated',
   },
+  request: {
+    describe: 'HTTP request options',
+  },
   // Timeout for both:
   //  - sending and receiving each HTTP request
   //  - parsing the HTTP response
   // I.e. this is the timeout for a single task, but excluding the time its `deps` take
   // 0 to disable
-  timeout: {
+  'request.timeout': {
     number: true,
     alias: 't',
     requiresArg: true,

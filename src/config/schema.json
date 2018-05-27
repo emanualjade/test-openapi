@@ -12,8 +12,14 @@
       "type": "integer",
       "minimum": 1
     },
-    "timeout": {
-      "type": "integer"
+    "request": {
+      "type": "object",
+      "properties": {
+        "timeout": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
     },
     "dry": {
       "type": "boolean"

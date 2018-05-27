@@ -4,7 +4,9 @@ const { pickBy, mapKeys } = require('lodash')
 
 const getFetchParams = function({
   rawRequest: { method, url, body, ...rawRequest },
-  config: { timeout },
+  config: {
+    request: { timeout },
+  },
 }) {
   const headers = getFetchHeaders({ rawRequest })
   const fetchParams = { method, headers, body, timeout }

@@ -2,7 +2,15 @@
 
 const { throwConnectError } = require('../../../../errors')
 
-const sendRequestHandler = function(error, { rawRequest: { url }, config: { timeout } }) {
+const sendRequestHandler = function(
+  error,
+  {
+    rawRequest: { url },
+    config: {
+      request: { timeout },
+    },
+  },
+) {
   const message = getFetchError({ error, url, timeout })
   throwConnectError(message)
 }

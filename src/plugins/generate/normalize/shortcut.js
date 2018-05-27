@@ -2,12 +2,11 @@
 
 const { mapValues } = require('lodash')
 
-const { isObject } = require('../../utils')
+const { isObject } = require('../../../utils')
 
 // `task.parameters|validate.*: non-object` is shortcut for `{ enum: [value] }`
 const normalizeTasksShortcuts = function({ tasks }) {
-  const tasksA = tasks.map(normalizeTaskShortcuts)
-  return { tasks: tasksA }
+  return tasks.map(normalizeTaskShortcuts)
 }
 
 const normalizeTaskShortcuts = function(task) {

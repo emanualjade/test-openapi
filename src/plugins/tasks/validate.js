@@ -31,10 +31,6 @@ const validateJsonSchemas = function({ task, validate }) {
 }
 
 const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
-  if (value === undefined) {
-    return
-  }
-
   const { error } = validateIsSchema({ value })
   if (error === undefined) {
     return

@@ -1,6 +1,6 @@
 'use strict'
 
-const { generateFromSchema } = require('../../utils')
+const { generateFromSchema } = require('../../../utils')
 
 // `Content-Type` value generation has extra constraints:
 //  - it should be empty if no request body is going to be sent

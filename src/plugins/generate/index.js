@@ -1,5 +1,6 @@
 'use strict'
 
 module.exports = {
-  ...require('./main'),
+  ...require('./create'),
+  ...require('./normalize'),
 }

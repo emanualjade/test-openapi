@@ -1,6 +1,6 @@
 'use strict'
 
-const { generateFromSchema, locationToKey } = require('../../utils')
+const { generateFromSchema, locationToKey } = require('../../../utils')
 
 // Generates random values based on JSON schema
 const fakeValues = function({ params }) {

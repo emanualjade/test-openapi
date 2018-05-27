@@ -2,6 +2,7 @@
 
 const { loadTasks } = require('./load')
 const { validateTasks } = require('./validate')
+const { mergeGlob } = require('./glob')
 const { normalizeTasks } = require('./normalize')
 
 const getTasks = async function({ tasks, server }) {
@@ -9,9 +10,11 @@ const getTasks = async function({ tasks, server }) {
 
   validateTasks({ tasks: tasksA })
 
-  const tasksB = normalizeTasks({ tasks: tasksA, server })
+  const tasksB = mergeGlob({ tasks: tasksA })
 
-  return { tasks: tasksB }
+  const tasksC = normalizeTasks({ tasks: tasksB, server })
+
+  return { tasks: tasksC }
 }
 
 module.exports = {

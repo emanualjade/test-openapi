@@ -1,15 +1,8 @@
 'use strict'
 
-const { mergeGlob } = require('./glob')
-
 // Normalize tasks to format easy to work with when tasks are running
 const normalizeTasks = function({ tasks, server }) {
-  const tasksA = mergeGlob({ tasks })
-
-  const tasksB = Object.entries(tasksA).map(([taskKey, task]) =>
-    normalizeTask({ taskKey, task, server }),
-  )
-  return tasksB
+  return Object.entries(tasks).map(([taskKey, task]) => normalizeTask({ taskKey, task, server }))
 }
 
 const normalizeTask = function({ taskKey, task, task: originalTask, server }) {

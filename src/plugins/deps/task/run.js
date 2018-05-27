@@ -4,7 +4,7 @@ const { uniq } = require('lodash')
 
 const { addErrorHandler } = require('../../../errors')
 
-const { checkStack, handleDepError } = require('./stack')
+const { checkStack, handleDepError, STACK_INFO_SYM } = require('./stack')
 
 // Run `deps` tasks
 const runDeps = async function({ task, tasks, refs, runTask }) {
@@ -26,11 +26,11 @@ const getDepKeys = function({ refs }) {
   return depKeysA
 }
 
-const runDep = async function({ task: { taskKey, stackInfo }, tasks, refs, depKey, runDepTask }) {
-  const stackInfoA = checkStack({ depKey, taskKey, refs, stackInfo })
+const runDep = async function({ task, tasks, refs, depKey, runDepTask }) {
+  const stackInfo = checkStack({ depKey, task, refs })
 
   const depTask = tasks.find(({ taskKey }) => taskKey === depKey)
-  const depTaskA = { ...depTask, stackInfo: stackInfoA }
+  const depTaskA = { ...depTask, [STACK_INFO_SYM]: stackInfo }
 
   const depReturn = await runDepTask(depTaskA)
   return { [depKey]: depReturn }

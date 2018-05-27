@@ -6,9 +6,8 @@ const { TestOpenApiError } = require('../../../errors')
 // A new stack is created for each task
 const checkStack = function({
   depKey,
-  taskKey,
+  task: { taskKey, [STACK_INFO_SYM]: { stack = [taskKey], stackPath } = {} },
   refs,
-  stackInfo: { stack = [taskKey], stackPath } = {},
 }) {
   const newStack = [...stack, depKey]
   const stackPathA = getStackPath({ depKey, stackPath, refs })
@@ -38,7 +37,7 @@ const getStackPath = function({ depKey, stackPath, refs }) {
 }
 
 // Handle errors coming from `deps`
-const handleDepError = function(error, { stackInfo: { stack, stackPath } }) {
+const handleDepError = function(error, { [STACK_INFO_SYM]: { stack, stackPath } }) {
   const { message } = error
 
   // Avoid repeating the same message several times across the stack
@@ -60,7 +59,10 @@ const stringifyStack = function(stack) {
 const DEP_ERROR_MESSAGE = 'but this last task failed with the following error'
 const RECURSION_ERROR_MESSAGE = 'but this results in an infinite recursion'
 
+const STACK_INFO_SYM = Symbol('stackInfo')
+
 module.exports = {
   checkStack,
   handleDepError,
+  STACK_INFO_SYM,
 }

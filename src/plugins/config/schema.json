@@ -1,6 +1,7 @@
 {
   "type": "object",
   "properties": {
+    "runTasks": {},
     "spec": {
       "type": ["string", "object"]
     },

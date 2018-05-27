@@ -9,12 +9,12 @@ const { defineTasks } = require('./define')
 
 // Run Jasmine with `**/*.js` as the task files
 const launchRunner = async function({ config }) {
-  await new Promise(launchJasmine.bind(null, config))
+  await new Promise(launchJasmine.bind(null, { config }))
 }
 
 const eLaunchRunner = addGenErrorHandler(launchRunner, ({ config }) => ({ config }))
 
-const launchJasmine = function(config, resolve, reject) {
+const launchJasmine = function({ config }, resolve, reject) {
   const runner = new Jasmine()
 
   runner.loadConfig(JASMINE_CONFIG)

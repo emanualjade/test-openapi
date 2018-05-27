@@ -9,21 +9,23 @@ const {
   normalizeGenerate,
   normalizeValidate,
   loadNormalizedSpec,
+  handleDryRun,
 } = require('../plugins')
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
 const { launchRunner } = require('./runner')
+const { runTasks } = require('./run')
 
 // Main entry point
-const runTasks = async function(config) {
-  const configA = await runPlugins({ config })
+const run = async function(config) {
+  const configA = { ...config, runTasks }
 
-  await launchRunner({ config: configA })
+  const configB = await runPlugins({ config: configA })
 
-  return { config: configA }
+  await launchRunner({ config: configB })
 }
 
-const eRunTasks = addErrorHandler(runTasks, topNormalizeHandler)
+const eRun = addErrorHandler(run, topNormalizeHandler)
 
 const runPlugins = function({ config }) {
   return reduceAsync(PLUGINS, runPlugin, config, mergePlugin)
@@ -45,8 +47,9 @@ const PLUGINS = [
   normalizeGenerate,
   normalizeValidate,
   loadNormalizedSpec,
+  handleDryRun,
 ]
 
 module.exports = {
-  runTasks: eRunTasks,
+  run: eRun,
 }

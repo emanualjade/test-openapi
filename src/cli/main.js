@@ -3,7 +3,7 @@
 const { exit } = require('process')
 
 const { addErrorHandler } = require('../errors')
-const { runTasks } = require('../init')
+const { run } = require('../init')
 
 const { defineCli } = require('./top')
 const { parseConfig } = require('./parse')
@@ -12,7 +12,7 @@ const { parseConfig } = require('./parse')
 const runCli = async function() {
   const yargs = defineCli()
   const config = parseConfig({ yargs })
-  await runTasks(config)
+  await run(config)
 }
 
 // If an error is thrown, print error's description, then exit with exit code 1

@@ -11,4 +11,5 @@ module.exports = {
   ...require('./url'),
   ...require('./request'),
   ...require('./validate'),
+  ...require('./dry'),
 }

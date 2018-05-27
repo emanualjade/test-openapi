@@ -3,8 +3,8 @@
 const { keyToLocation } = require('../../../utils')
 
 // From `task.parameters.*` object to an array of `{ name, location, required, value }`
-// Also rename `parameters` to `params`, and apply `config.server`
-const normalizeParams = function({ tasks, server }) {
+// Also rename `parameters` to `params`, and apply `config.request.server`
+const normalizeParams = function({ tasks, request: { server } }) {
   const tasksA = tasks.map(task => normalizeTaskParams({ task, server }))
   return { tasks: tasksA }
 }
@@ -15,7 +15,7 @@ const normalizeTaskParams = function({ task: { parameters: params = {}, ...task 
   return { ...task, params: paramsB }
 }
 
-// `config.server` is added as `task.parameters.server` for each task, unless
+// `config.request.server` is added as `task.parameters.server` for each task, unless
 // it already exists
 const addServer = function({ params, server }) {
   if (server === undefined) {

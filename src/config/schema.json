@@ -5,9 +5,6 @@
     "spec": {
       "type": ["string", "object"]
     },
-    "server": {
-      "type": "string"
-    },
     "repeat": {
       "type": "integer",
       "minimum": 1
@@ -15,6 +12,9 @@
     "request": {
       "type": "object",
       "properties": {
+        "server": {
+          "type": "string"
+        },
         "timeout": {
           "type": "integer"
         }

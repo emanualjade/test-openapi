@@ -13,26 +13,14 @@ const defineCli = function() {
 }
 
 const CONFIG = {
-  spec: {
-    string: true,
-    alias: 's',
-    requiresArg: true,
-    describe: 'File path or URL to the OpenAPI specification',
-  },
-  server: {
-    string: true,
-    requiresArg: true,
-    describe: 'Server URL',
-  },
-  // Number of times each `it()` is repeated (each time with new random parameters)
-  repeat: {
-    number: true,
-    alias: 'r',
-    requiresArg: true,
-    describe: 'Number of times each task is repeated',
-  },
   request: {
     describe: 'HTTP request options',
+  },
+  'request.server': {
+    string: true,
+    alias: 'u',
+    requiresArg: true,
+    describe: 'Server URL',
   },
   // Timeout for both:
   //  - sending and receiving each HTTP request
@@ -44,6 +32,19 @@ const CONFIG = {
     alias: 't',
     requiresArg: true,
     describe: 'Maximum time to wait for each HTTP request',
+  },
+  spec: {
+    string: true,
+    alias: 's',
+    requiresArg: true,
+    describe: 'File path or URL to the OpenAPI specification',
+  },
+  // Number of times each `it()` is repeated (each time with new random parameters)
+  repeat: {
+    number: true,
+    alias: 'r',
+    requiresArg: true,
+    describe: 'Number of times each task is repeated',
   },
   dry: {
     boolean: true,
@@ -62,7 +63,8 @@ TASKS_FILES... are JSON or YAML files containing the tasks to perform.
 Can include globbing patterns.
 Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
 
-const RUN_EXAMPLE = '$0 --spec ./openapi.yml --server http://localhost:5001 ./**/*.tasks.yml'
+const RUN_EXAMPLE =
+  '$0 --spec ./openapi.yml --request.server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
   defineCli,

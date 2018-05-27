@@ -1,5 +1,7 @@
 'use strict'
 
+const { promiseThen } = require('./promise')
+
 // Like Array.reduce(), but supports async
 const reduceAsync = function(array, mapFunc, prevVal, secondMapFunc) {
   return asyncReducer(prevVal, { array, mapFunc, secondMapFunc })
@@ -24,17 +26,6 @@ const applySecondMap = function(prevVal, input, nextVal) {
 
   const nextValA = input.secondMapFunc(prevVal, nextVal)
   return asyncReducer(nextValA, input)
-}
-
-// Similar to `await retVal` and `Promise.resolve(retVal).then()`
-// As opposed to them, this does not create a new promise callback if the
-// return value is synchronous, i.e. it avoids unnecessary new microtasks
-const promiseThen = function(retVal, func) {
-  if (!retVal || typeof retVal.then !== 'function') {
-    return func(retVal)
-  }
-
-  return retVal.then(func)
 }
 
 module.exports = {

@@ -5,27 +5,8 @@ const { set } = require('lodash/fp')
 const { addErrorHandler, throwResponseError } = require('../../errors')
 const { get } = require('../../utils')
 
-const { runDeps } = require('./run')
-
-// Replace all `deps`, i.e. references to other tasks.
-const replaceDeps = async function(task, { runTask }) {
-  if (task.dep.refs.length === 0) {
-    return
-  }
-
-  const depReturns = await runDeps({ task, runTask })
-
-  const taskA = setRefs({ task, depReturns })
-  return taskA
-}
-
-const setRefs = function({
-  task,
-  task: {
-    dep: { refs },
-  },
-  depReturns,
-}) {
+// Set `dep` value to current task after it has been retrieved
+const setRefs = function({ task, refs, depReturns }) {
   return refs.reduce((taskA, ref) => setRef({ task: taskA, ref, depReturns }), task)
 }
 
@@ -58,5 +39,5 @@ const getDepValueHandler = function(error, { depKey, depPath, path }) {
 const eGetDepValue = addErrorHandler(getDepValue, getDepValueHandler)
 
 module.exports = {
-  replaceDeps,
+  setRefs,
 }

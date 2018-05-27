@@ -9,7 +9,6 @@ const {
   normalizeGenerate,
   normalizeValidate,
   loadNormalizedSpec,
-  addDeps,
 } = require('../plugins')
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
@@ -46,7 +45,6 @@ const PLUGINS = [
   normalizeGenerate,
   normalizeValidate,
   loadNormalizedSpec,
-  addDeps,
 ]
 
 module.exports = {

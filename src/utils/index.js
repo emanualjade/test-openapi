@@ -5,6 +5,7 @@ module.exports = {
   ...require('./faker'),
   ...require('./merge'),
   ...require('./get'),
+  ...require('./promise'),
   ...require('./reduce'),
   ...require('./crawl'),
   ...require('./location'),

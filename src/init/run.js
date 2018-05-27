@@ -27,32 +27,38 @@ const runTasks = async function({
   task: {
     config: { repeat },
   },
+  tasks,
 }) {
-  const runningTasks = new Array(repeat).fill().map(() => runTask({ task }))
+  const runningTasks = new Array(repeat).fill().map(() => runTask({ task, tasks }))
   await Promise.all(runningTasks)
 }
 
 const eRunTasks = addErrorHandler(runTasks, runTasksHandler)
 
 // Run an `it()` task
-const runTask = async function({ task, task: { originalTask } }) {
-  const { request, response } = await eRunPlugins({ task })
+const runTask = async function({ task, task: { originalTask }, tasks }) {
+  const {
+    task: { request, response },
+  } = await eRunPlugins({ task, tasks })
   // `task` will be the initial value before any plugin transformation
   return { request, response, ...originalTask }
 }
 
-const runPlugins = function({ task }) {
-  return reduceAsync(PLUGINS, eRunPlugin, task, mergePlugin)
+const runPlugins = function({ task, tasks }) {
+  return reduceAsync(PLUGINS, eRunPlugin, { task, tasks }, mergePlugin)
 }
 
-const runPlugin = function(task, plugin) {
+const runPlugin = function({ task, tasks }, plugin) {
   // Pass `runTask` for recursive tasks
-  return plugin(task, { runTask })
+  const runTaskA = taskA => runTask({ task: taskA, tasks })
+
+  return plugin(task, { tasks, runTask: runTaskA })
 }
 
 // We merge the return value of each plugin
-const mergePlugin = function(task, taskA) {
-  return { ...task, ...taskA }
+const mergePlugin = function({ task, tasks }, taskA) {
+  const taskB = { ...task, ...taskA }
+  return { task: taskB, tasks }
 }
 
 // Add initial `task` to every thrown error

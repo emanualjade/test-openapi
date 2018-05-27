@@ -4,22 +4,17 @@ const { omit } = require('lodash')
 
 const { crawl } = require('../../utils')
 
-// Add all `deps`, i.e. references to other tasks as `taskName.*`
-const addDeps = function({ tasks }) {
-  const tasksA = tasks.map(task => addRefs({ task, tasks }))
-  return { tasks: tasksA }
-}
-
-const addRefs = function({ task, tasks }) {
+// Find all `deps`, i.e. references to other tasks as `taskName.*`
+const findRefs = function({ task, tasks }) {
   const cleanTask = omit(task, CLEAN_PROPERTIES)
   const nodes = crawl(cleanTask)
 
   const refs = nodes.map(node => getRef({ node, tasks })).filter(dep => dep !== undefined)
-  return { ...task, dep: { refs } }
+  return refs
 }
 
 // Do not crawl some `task.*` properties for `deps`
-const CLEAN_PROPERTIES = ['originalTask']
+const CLEAN_PROPERTIES = ['originalTask', 'config', 'taskKey', 'stackInfo']
 
 // Return each `dep` as an object with:
 //   depKey: 'taskName'
@@ -30,10 +25,7 @@ const getRef = function({ node: { value, path }, tasks }) {
     return
   }
 
-  const depKey = tasks
-    .map(({ taskKey }) => taskKey)
-    .find(taskKey => value.startsWith(`${taskKey}.`))
-
+  const depKey = getDepKey({ tasks, value })
   if (depKey === undefined) {
     return
   }
@@ -43,9 +35,13 @@ const getRef = function({ node: { value, path }, tasks }) {
   return { depKey, depPath, path }
 }
 
+const getDepKey = function({ tasks, value }) {
+  return tasks.map(({ taskKey }) => taskKey).find(taskKey => value.startsWith(`${taskKey}.`))
+}
+
 // Converts `a.b[0].c` to `a.b.0.c`
 const BRACKETS_TO_DOTS = /\[(\d+)\]/g
 
 module.exports = {
-  addDeps,
+  findRefs,
 }

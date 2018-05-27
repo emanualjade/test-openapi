@@ -2,27 +2,21 @@
 
 const { merge } = require('lodash')
 
-const { isObject } = require('../../../utils')
+const { mergeInvalidSchema, isInvalidSchema } = require('./invalid')
 
-const { mergeInvalidSchema } = require('./invalid')
-const { mergeShortcutSchema } = require('./shortcut')
-
-// Deep merge a `task.*.*` value with the specification value
+// Merge a `task.*.*` value with the specification value
 const mergeSpec = function({ schema: specSchema, ...specValue }, { schema, ...value }) {
   const schemaA = mergeSpecSchema(specSchema, schema)
   return { ...specValue, ...value, schema: schemaA }
 }
 
+// Deep merge the JSON schemas
+// Both `specSchema` and `schema` might be `undefined`
 const mergeSpecSchema = function(specSchema, schema) {
-  if (schema === 'invalid') {
-    return mergeInvalidSchema({ specSchema, schema })
+  if (isInvalidSchema({ schema })) {
+    return mergeInvalidSchema({ specSchema })
   }
 
-  if (!isObject(schema)) {
-    return mergeShortcutSchema({ specSchema, schema })
-  }
-
-  // Otherwise it is a JSON schema that we deep merge
   return merge({}, specSchema, schema)
 }
 

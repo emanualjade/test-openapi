@@ -20,20 +20,11 @@ const mergeTask = function({ params, validate, operation }) {
 const mergeValidate = function({ operation, validate: { status, headers, body } }) {
   // Merge `task.validate.headers.*` to specification
   const headersA = mergeHeaders([...operation.response.headers, ...headers], mergeSpec)
-  const bodyA = mergeBody({ operation, body })
+  // Merge `task.validate.body` to specification
+  const bodyA = mergeSpecSchema(operation.response.body, body)
 
   const validateA = { status, headers: headersA, body: bodyA }
   return validateA
-}
-
-// Merge `task.validate.body` to specification
-const mergeBody = function({ operation, body }) {
-  if (body === undefined) {
-    return operation.response.body
-  }
-
-  const schema = mergeSpecSchema(operation.response.body, body)
-  return schema
 }
 
 module.exports = {

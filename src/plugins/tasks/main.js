@@ -3,6 +3,7 @@
 const { loadTasks } = require('./load')
 const { validateTasks } = require('./validation')
 const { normalizeTasks } = require('./normalize')
+const { normalizeTasksShortcuts } = require('./shortcut')
 const { normalizeTasksParams } = require('./params')
 const { normalizeTasksValidate } = require('./validate')
 
@@ -14,11 +15,13 @@ const getTasks = async function({ tasks, spec }) {
 
   const tasksB = normalizeTasks({ tasks: tasksA, spec })
 
-  const tasksC = normalizeTasksParams({ tasks: tasksB })
+  const tasksC = normalizeTasksShortcuts({ tasks: tasksB })
 
-  const tasksD = normalizeTasksValidate({ tasks: tasksC })
+  const tasksD = normalizeTasksParams({ tasks: tasksC })
 
-  return { tasks: tasksD }
+  const tasksE = normalizeTasksValidate({ tasks: tasksD })
+
+  return { tasks: tasksE }
 }
 
 module.exports = {

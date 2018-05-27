@@ -3,5 +3,5 @@
 module.exports = {
   ...require('./throw'),
   ...require('./handler'),
-  ...require('./test'),
+  ...require('./task'),
 }

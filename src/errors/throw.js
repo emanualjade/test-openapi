@@ -20,11 +20,11 @@ const throwError = function(type, message, props = {}) {
 // Allowed properties for each error type
 const PROPS = {
   bug: [],
-  config: ['opts', 'property'],
-  specification: ['opts', 'property'],
-  test: ['opts', 'test', 'property'],
-  connect: ['opts', 'test', 'request'],
-  response: ['opts', 'test', 'property', 'expected', 'actual', 'request', 'response'],
+  config: ['config', 'property'],
+  specification: ['config', 'property'],
+  task: ['config', 'task', 'property'],
+  connect: ['config', 'task', 'request'],
+  response: ['config', 'task', 'property', 'expected', 'actual', 'request', 'response'],
 }
 
 // Allow distinguishing between bugs and validation errors

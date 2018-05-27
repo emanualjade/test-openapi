@@ -1,7 +1,0 @@
-{
-  "tests": ["**/*.test.yml", "**/*.spec.yml", "**/*.test.json", "**/*.test.yml"],
-  "repeat": 1e1,
-  "timeout": 1e4,
-  "maxParallel": 1e2,
-  "dry": false
-}

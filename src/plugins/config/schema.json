@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "properties": {
+    "spec": {
+      "type": "string"
+    },
+    "server": {
+      "type": "string"
+    },
+    "repeat": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "timeout": {
+      "type": "integer"
+    },
+    "dry": {
+      "type": "boolean"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": ["spec"],
+  "additionalProperties": false
+}

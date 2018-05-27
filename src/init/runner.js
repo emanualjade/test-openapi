@@ -3,17 +3,18 @@
 const Jasmine = require('jasmine')
 const { SpecReporter } = require('jasmine-spec-reporter')
 
-const { addGenErrorHandler, createTestError } = require('../errors')
-const { defineTests } = require('../define')
+const { addGenErrorHandler, createTaskError } = require('../errors')
 
-// Run Jasmine with `**/*.js` as the test files
-const launchRunner = async function({ opts }) {
-  await new Promise(launchJasmine.bind(null, opts))
+const { defineTasks } = require('./define')
+
+// Run Jasmine with `**/*.js` as the task files
+const launchRunner = async function({ config }) {
+  await new Promise(launchJasmine.bind(null, config))
 }
 
-const eLaunchRunner = addGenErrorHandler(launchRunner, ({ opts }) => ({ opts }))
+const eLaunchRunner = addGenErrorHandler(launchRunner, ({ config }) => ({ config }))
 
-const launchJasmine = function(opts, resolve, reject) {
+const launchJasmine = function(config, resolve, reject) {
   const runner = new Jasmine()
 
   runner.loadConfig(JASMINE_CONFIG)
@@ -21,12 +22,12 @@ const launchJasmine = function(opts, resolve, reject) {
   runner.env.clearReporters()
   runner.env.addReporter(new SpecReporter())
 
-  // Collect test errors since Jasmine does not return them
+  // Collect task errors since Jasmine does not return them
   const errors = []
 
   runner.onComplete(onComplete.bind(null, resolve, reject, errors))
 
-  // Instead of calling `describe()` and `it()` when the test files are `require()`'d,
+  // Instead of calling `describe()` and `it()` when the task files are `require()`'d,
   // we defer it to now.
   // I.e. `spec_files` is an empty array and we manually call the define function.
   // The reason is:
@@ -34,9 +35,9 @@ const launchJasmine = function(opts, resolve, reject) {
   //    one Jasmine is doing.
   //    This has several advantages, including allowing the files to be available
   //    in Chrome devtools.
-  //  - it allows us passing `opts` as argument (instead of using a global variable
+  //  - it allows us passing `config` as argument (instead of using a global variable
   //    which would make running several `launchRunner` impossible)
-  defineTests({ opts, errors })
+  defineTasks({ config, errors })
 
   runner.execute()
 }
@@ -51,7 +52,7 @@ const onComplete = function(resolve, reject, errors, passed) {
     return resolve()
   }
 
-  const error = createTestError({ errors })
+  const error = createTaskError({ errors })
   reject(error)
 }
 

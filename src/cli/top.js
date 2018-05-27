@@ -2,17 +2,17 @@
 
 const yargs = require('yargs')
 
-const defineTopOptions = function() {
+const defineCli = function() {
   return yargs
-    .options(OPTIONS)
+    .options(CONFIG)
     .usage(USAGE)
-    .example(RUN_EXAMPLE, 'Run tests')
+    .example(RUN_EXAMPLE, 'Run tasks')
     .help()
     .version()
     .strict()
 }
 
-const OPTIONS = {
+const CONFIG = {
   spec: {
     string: true,
     alias: 's',
@@ -22,19 +22,19 @@ const OPTIONS = {
   server: {
     string: true,
     requiresArg: true,
-    describe: 'URL of the server to test',
+    describe: 'Server URL',
   },
   // Number of times each `it()` is repeated (each time with new random parameters)
   repeat: {
     number: true,
     alias: 'r',
     requiresArg: true,
-    describe: 'Number of times each test is repeated',
+    describe: 'Number of times each task is repeated',
   },
   // Timeout for both:
   //  - sending and receiving each HTTP request
   //  - parsing the HTTP response
-  // I.e. this is the timeout for a single test, but excluding the time its `deps` take
+  // I.e. this is the timeout for a single task, but excluding the time its `deps` take
   // 0 to disable
   timeout: {
     number: true,
@@ -45,20 +45,20 @@ const OPTIONS = {
   dry: {
     boolean: true,
     alias: 'd',
-    describe: 'Only validate tests syntax instead of performing them.',
+    describe: 'Only validate tasks syntax instead of performing them.',
   },
 }
 
-const USAGE = `$0 [OPTS] [TEST_FILES...]
+const USAGE = `$0 [OPTS] [TASKS_FILES...]
 
-OpenAPI automatic integration testing
+Automated client requests
 
-TEST_FILES... are JSON or YAML files containing the tests to perform.
+TASKS_FILES... are JSON or YAML files containing the tasks to perform.
 Can include globbing patterns.
-Defaults to any file ending with 'spec.yml|json' or 'test.yml.json'`
+Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
 
-const RUN_EXAMPLE = '$0 --spec ./openapi.yml --server http://localhost:5001 ./tests/**/*.test.yml'
+const RUN_EXAMPLE = '$0 --spec ./openapi.yml --server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
-  defineTopOptions,
+  defineCli,
 }

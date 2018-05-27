@@ -6,7 +6,6 @@ module.exports = {
   ...require('./get'),
   ...require('./promise'),
   ...require('./reduce'),
-  ...require('./crawl'),
   ...require('./location'),
   ...require('./json'),
   ...require('./json_schema'),

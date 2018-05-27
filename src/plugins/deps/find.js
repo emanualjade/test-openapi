@@ -2,7 +2,7 @@
 
 const { omit } = require('lodash')
 
-const { crawl } = require('../../utils')
+const { crawl } = require('./crawl')
 
 // Find all `deps`, i.e. references to other tasks as `taskName.*`
 const findRefs = function({ task, config }) {

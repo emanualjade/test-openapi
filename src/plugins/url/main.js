@@ -4,4 +4,5 @@ const { addFullUrl } = require('./add')
 
 module.exports = {
   addFullUrl,
+  dependencies: ['tasks', 'request'],
 }

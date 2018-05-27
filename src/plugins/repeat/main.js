@@ -4,4 +4,5 @@ const { repeatTasks } = require('./handle')
 
 module.exports = {
   repeatTasks,
+  dependencies: ['config', 'tasks'],
 }

@@ -8,5 +8,6 @@ module.exports = {
   normalizeParams,
   sendRequest,
   getReturnValue,
+  dependencies: ['config', 'tasks', 'format', 'url'],
   returnedProperties: ['request', 'response'],
 }

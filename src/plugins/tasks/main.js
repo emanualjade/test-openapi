@@ -4,4 +4,5 @@ const { getTasks } = require('./get')
 
 module.exports = {
   getTasks,
+  dependencies: ['config'],
 }

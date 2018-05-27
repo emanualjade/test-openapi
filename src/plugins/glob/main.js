@@ -4,4 +4,5 @@ const { mergeGlobTasks } = require('./merge')
 
 module.exports = {
   mergeGlobTasks,
+  dependencies: ['tasks'],
 }

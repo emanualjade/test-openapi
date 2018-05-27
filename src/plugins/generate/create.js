@@ -1,15 +1,15 @@
 'use strict'
 
-const { locationToKey } = require('../../../utils')
+const jsonSchemaFaker = require('json-schema-faker')
 
-const { generateFromSchema } = require('./faker')
+const { locationToKey } = require('../../utils')
 
 // Generates random values based on JSON schema
-const fakeValues = function({ params }) {
+const generateParams = function({ params }) {
   const schema = getParamsJsonSchema({ params })
   const values = generateFromSchema({ schema })
   const paramsA = addGeneratedValues({ values, params })
-  return paramsA
+  return { params: paramsA }
 }
 
 // Transform OpenAPI parameters into a single JSON schema
@@ -52,6 +52,16 @@ const fixArray = function({ value, value: { type, items = {} } }) {
   return { ...value, items: { ...items, type: 'string' } }
 }
 
+// Generate random values from a JSON schema
+const generateFromSchema = function({ schema }) {
+  return jsonSchemaFaker(schema)
+}
+
+jsonSchemaFaker.option({
+  // JSON format v4 allow custom formats
+  failOnInvalidFormat: false,
+})
+
 // Merge generated values back to original request parameters as `param.value`
 const addGeneratedValues = function({ values, params }) {
   return params.map(param => addGeneratedValue({ values, param })).filter(shouldIncludeParam)
@@ -76,5 +86,5 @@ const shouldIncludeParam = function({ value }) {
 }
 
 module.exports = {
-  fakeValues,
+  generateParams,
 }

@@ -14,7 +14,10 @@ const mergeHeaders = function(headers, merge) {
 
 // Merge array values with a custom merge function and condition function
 const mergeValues = function(array, condition = isDeepStrictEqual, merge = defaultMerge) {
-  return array.map(mergeValue.bind(null, merge, condition)).filter(value => value !== undefined)
+  return array
+    .filter(value => value !== undefined)
+    .map(mergeValue.bind(null, merge, condition))
+    .filter(value => value !== undefined)
 }
 
 const mergeValue = function(merge, condition, value, index, array) {

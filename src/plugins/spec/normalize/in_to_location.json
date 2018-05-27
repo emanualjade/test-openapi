@@ -3,5 +3,5 @@
   "query": "query",
   "header": "headers",
   "body": "body",
-  "formData": "body"
+  "formData": "formData"
 }

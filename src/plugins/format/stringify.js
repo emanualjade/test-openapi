@@ -2,14 +2,17 @@
 
 const { locationToKey } = require('../../utils')
 
+const { normalizeContentType, getContentTypeParam } = require('./content_type')
 const { stringifyFlat } = require('./json')
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
 const stringifyParams = function({ params }) {
-  const paramsA = params.map(param => stringifyParam({ param, params }))
-  const rawRequest = Object.assign({}, ...paramsA)
+  const paramsA = normalizeContentType({ params })
+
+  const paramsB = paramsA.map(param => stringifyParam({ param, params: paramsA }))
+  const rawRequest = Object.assign({}, ...paramsB)
   return { rawRequest }
 }
 
@@ -32,27 +35,12 @@ const stringifyParamFlat = function({ param: { value, name, collectionFormat } }
 
 // Stringify the request body according to HTTP request header `Content-Type`
 const stringifyBody = function({ param: { value }, params }) {
-  const mime = getBodyMime({ params })
+  const { value: mime } = getContentTypeParam({ params })
 
   // Default stringifiers tries JSON.stringify()
   const { stringify = stringifyFlat } = findBodyHandler({ mime })
 
   return stringify(value)
-}
-
-// Retrieve the `Content-Type` header to set in the request
-const getBodyMime = function({ params }) {
-  const contentTypeParam = params.find(isContentTypeParam)
-
-  if (contentTypeParam === undefined) {
-    return
-  }
-
-  return contentTypeParam.value
-}
-
-const isContentTypeParam = function({ location, name }) {
-  return location === 'headers' && name.toLowerCase() === 'content-type'
 }
 
 const PARAM_STRINGIFIERS = {

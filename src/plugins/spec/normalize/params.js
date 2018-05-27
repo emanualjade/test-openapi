@@ -4,10 +4,11 @@ const { omit } = require('lodash')
 
 const { mergeParams } = require('../../../utils')
 
+const IN_TO_LOCATION = require('./in_to_location')
 const { normalizeSchema } = require('./json_schema')
+const { normalizeFormData } = require('./form_data')
 const { getNegotiationsParams } = require('./content_negotiation')
 const { getSecParams } = require('./security')
-const IN_TO_LOCATION = require('./in_to_location')
 
 // Normalize OpenAPI request parameters into specification-agnostic format
 const getParams = function({
@@ -22,15 +23,17 @@ const getParams = function({
 
   const paramsB = paramsA.map(getParam)
 
+  const paramsC = normalizeFormData({ params: paramsB })
+
   const contentNegotiations = getNegotiationsParams({ spec, operation })
 
   const secParams = getSecParams({ spec, operation })
 
   const constParams = getConstParams({ spec, method, path })
 
-  const paramsC = mergeParams([...contentNegotiations, ...secParams, ...paramsB, ...constParams])
+  const paramsD = mergeParams([...contentNegotiations, ...secParams, ...paramsC, ...constParams])
 
-  return paramsC
+  return paramsD
 }
 
 // From OpenAPI request `parameters` to normalized format

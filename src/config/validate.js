@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../errors')
+const { TestOpenApiError } = require('../errors')
 const { validateFromSchema } = require('../utils')
 
 const CONFIG_SCHEMA = require('./schema')
@@ -16,7 +16,7 @@ const validateConfig = function({ config }) {
     return
   }
 
-  throwError(`Configuration is invalid: ${error}`, { property: path })
+  throw new TestOpenApiError(`Configuration is invalid: ${error}`, { property: path })
 }
 
 module.exports = {

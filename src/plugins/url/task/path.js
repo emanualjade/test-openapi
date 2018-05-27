@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 
 // Retrieve `task.parameters.path`
 const addPath = function({ url, rawRequest: { path = '' } }) {
@@ -14,7 +14,10 @@ const validatePath = function({ path }) {
     return
   }
 
-  throwError('Request path must start with a slash', { property: 'path', actual: path })
+  throw new TestOpenApiError('Request path must start with a slash', {
+    property: 'path',
+    actual: path,
+  })
 }
 
 module.exports = {

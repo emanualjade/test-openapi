@@ -17,11 +17,6 @@ class TestOpenApiError extends Error {
   }
 }
 
-const throwError = function(message, properties) {
-  throw new TestOpenApiError(message, properties)
-}
-
 module.exports = {
   TestOpenApiError,
-  throwError,
 }

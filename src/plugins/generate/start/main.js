@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../../utils')
 
 const normalizeGenerate = function({ tasks }) {
@@ -37,10 +37,13 @@ const validateJsonSchema = function({ task: { taskKey }, name, value }) {
   }
 
   const property = `parameters.${name}`
-  throwError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
-    property,
-    task: taskKey,
-  })
+  throw new TestOpenApiError(
+    `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
+    {
+      property,
+      task: taskKey,
+    },
+  )
 }
 
 module.exports = {

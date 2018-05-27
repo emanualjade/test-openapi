@@ -5,7 +5,7 @@ const { platform } = require('os')
 
 const { version: libraryVersion } = require('../../package')
 
-const { TestOpenApiError } = require('./throw')
+const { TestOpenApiError } = require('./error')
 
 // Normalize any error to our specific format
 const normalizeError = function(error, properties) {

@@ -2,7 +2,7 @@
 
 const SwaggerParser = require('swagger-parser')
 
-const { addErrorHandler, throwError } = require('../../../errors')
+const { addErrorHandler, TestOpenApiError } = require('../../../errors')
 
 // Parses an OpenAPI file (including JSON references)
 // Can also be a URL or directly an object
@@ -21,14 +21,14 @@ const loadSpecHandler = function({ message, details }) {
 
 // Validate OpenAPI file exists and can be fetched
 const fetchSpecHandler = function({ message }) {
-  throwError(`OpenAPI specification could not be loaded: ${message}`)
+  throw new TestOpenApiError(`OpenAPI specification could not be loaded: ${message}`)
 }
 
 // Validate OpenAPI specification syntax
 const invalidSpecHandler = function({ details, details: [{ path }] }) {
   const message = details.map(getErrorMessage).join(`\n${INDENT}`)
   const property = path.join('.')
-  throwError(`OpenAPI specification is invalid:\n${INDENT}${message}`, { property })
+  throw new TestOpenApiError(`OpenAPI specification is invalid:\n${INDENT}${message}`, { property })
 }
 
 const INDENT_LENGTH = 4

@@ -2,7 +2,7 @@
 
 const { is: isMime } = require('type-is')
 
-const { addErrorHandler, throwError } = require('../../../errors')
+const { addErrorHandler, TestOpenApiError } = require('../../../errors')
 
 // Retrieve a parser and stringifier for a specific MIME type
 // TODO: replace by real body parsing library and add support for other content types
@@ -17,7 +17,9 @@ const normalizeHandler = function({ name, condition, parse, stringify }) {
 
 const parseHandler = function(name, { message }, body) {
   const property = 'response.body'
-  throwError(`Could not read response body as ${name}: ${message}\n${body}`, { property })
+  throw new TestOpenApiError(`Could not read response body as ${name}: ${message}\n${body}`, {
+    property,
+  })
 }
 
 const isJson = function({ mime }) {

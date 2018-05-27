@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 const { validateFromSchema } = require('../../../utils')
 
 // Validates response status code against OpenAPI specification
@@ -12,7 +12,11 @@ const validateStatus = function({ validate: { status: vStatus }, response: { sta
   }
 
   const property = 'response.status'
-  throwError(`Status code${error}.`, { property, expected: vStatus, actual: status })
+  throw new TestOpenApiError(`Status code${error}.`, {
+    property,
+    expected: vStatus,
+    actual: status,
+  })
 }
 
 module.exports = {

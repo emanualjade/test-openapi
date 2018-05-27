@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, throwError } = require('../../../../errors')
+const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response
 const getFetchResponse = async function({ rawResponse, rawResponse: { status } }) {
@@ -25,7 +25,7 @@ const getBody = function({ rawResponse }) {
 
 const getBodyHandler = function({ message }) {
   const property = 'response.body'
-  throwError(`Could not read response body: ${message}`, { property })
+  throw new TestOpenApiError(`Could not read response body: ${message}`, { property })
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)

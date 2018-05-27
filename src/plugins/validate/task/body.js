@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 const { validateFromSchema } = require('../../../utils')
 
 const { validateRequiredBody } = require('./required')
@@ -28,7 +28,7 @@ const validateBodyValue = function({ vBody, body }) {
   }
 
   const property = 'response.body'
-  throwError(`Response body${error}.`, { property, expected: vBody, actual: body })
+  throw new TestOpenApiError(`Response body${error}.`, { property, expected: vBody, actual: body })
 }
 
 module.exports = {

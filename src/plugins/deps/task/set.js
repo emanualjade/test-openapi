@@ -2,7 +2,7 @@
 
 const { set } = require('lodash/fp')
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 
 // Set `dep` value to current task after it has been retrieved
 const setRefs = function({ task, refs, depReturns }) {
@@ -36,10 +36,13 @@ const get = function({ obj, path, depKey, propPath }) {
 const throwGetError = function({ depKey, propPath, path }) {
   const property = propPath.join('.')
   const expected = `${depKey}.${path}`
-  throwError(`This task targets another task '${expected}' but this key could not be found`, {
-    property,
-    expected,
-  })
+  throw TestOpenApiError(
+    `This task targets another task '${expected}' but this key could not be found`,
+    {
+      property,
+      expected,
+    },
+  )
 }
 
 module.exports = {

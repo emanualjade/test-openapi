@@ -2,7 +2,7 @@
 
 const { URL } = require('url')
 
-const { throwError, addErrorHandler } = require('../../../errors')
+const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
 // Escape, normalize and validate the request URL
 const normalizeUrl = function({ url }) {
@@ -24,7 +24,7 @@ const escapeUrl = function({ url }) {
 }
 
 const normalizeUrlHandler = function({ message }, { url }) {
-  throwError(`Request URL '${url}' is not valid: ${message}`, {
+  throw new TestOpenApiError(`Request URL '${url}' is not valid: ${message}`, {
     // It could come from either `server` or `path`
     property: 'parameters',
     actual: url,

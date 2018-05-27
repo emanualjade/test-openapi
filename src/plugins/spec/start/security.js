@@ -2,7 +2,7 @@
 
 const { flatten, uniqBy } = require('lodash')
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 
 const IN_TO_LOCATION = require('./in_to_location')
 
@@ -48,7 +48,7 @@ const getSecParamHandler = function({ securityDef: { type }, secName }) {
   }
 
   const property = `securityDefinitions.${secName}`
-  throwError(
+  throw new TestOpenApiError(
     `In '${property}', security definition has type '${type}' but this has not been implemented yet`,
     { property },
   )

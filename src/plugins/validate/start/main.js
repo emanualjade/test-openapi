@@ -2,7 +2,7 @@
 
 const { mapValues } = require('lodash')
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../../utils')
 
 // Normalize `task.validate.*`
@@ -47,10 +47,13 @@ const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
   }
 
   const property = `validate.${prop}`
-  throwError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
-    property,
-    task: taskKey,
-  })
+  throw new TestOpenApiError(
+    `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
+    {
+      property,
+      task: taskKey,
+    },
+  )
 }
 
 // From `{ 'headers.NAME': value, ... }` to array of `{ name: 'NAME', value }`

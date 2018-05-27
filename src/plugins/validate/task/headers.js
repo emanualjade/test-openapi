@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 const { validateFromSchema } = require('../../../utils')
 
 const { validateRequiredHeader } = require('./required')
@@ -41,7 +41,11 @@ const validateHeaderValue = function({ name, vHeader, header }) {
   }
 
   const property = `response.headers.${name}`
-  throwError(`Response header '${name}'${error}.`, { property, expected: vHeader, actual: header })
+  throw new TestOpenApiError(`Response header '${name}'${error}.`, {
+    property,
+    expected: vHeader,
+    actual: header,
+  })
 }
 
 module.exports = {

@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  ...require('./throw'),
+  ...require('./error'),
   ...require('./handler'),
   ...require('./top'),
   ...require('./task'),

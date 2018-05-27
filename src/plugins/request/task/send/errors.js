@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../../errors')
+const { TestOpenApiError } = require('../../../../errors')
 
 const sendRequestHandler = function(
   error,
@@ -12,7 +12,7 @@ const sendRequestHandler = function(
   },
 ) {
   const message = getFetchError({ error, url, timeout })
-  throwError(message)
+  throw new TestOpenApiError(message)
 }
 
 const getFetchError = function({ error: { message, type }, url, timeout }) {

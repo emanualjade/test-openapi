@@ -2,7 +2,7 @@
 
 const { pick, omit } = require('lodash')
 
-const { TestOpenApiError } = require('./throw')
+const { TestOpenApiError } = require('./error')
 const { normalizeError } = require('./normalize')
 
 // Error handler for `it()`

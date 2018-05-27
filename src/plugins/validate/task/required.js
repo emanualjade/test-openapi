@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 
 // Only `response headers|body` that are present either in the specification or
 // in `task.validate.*` are validated.
@@ -16,7 +16,11 @@ const validateRequiredBody = function({ schema, value }) {
   }
 
   const property = 'response.body'
-  throwError(`Response body ${message}.`, { property, expected: schema, actual: value })
+  throw new TestOpenApiError(`Response body ${message}.`, {
+    property,
+    expected: schema,
+    actual: value,
+  })
 }
 
 const validateRequiredHeader = function({ schema, value, name }) {
@@ -26,7 +30,11 @@ const validateRequiredHeader = function({ schema, value, name }) {
   }
 
   const property = `response.headers.${name}`
-  throwError(`Response header '${name}' ${message}.`, { property, expected: schema, actual: value })
+  throw new TestOpenApiError(`Response header '${name}' ${message}.`, {
+    property,
+    expected: schema,
+    actual: value,
+  })
 }
 
 const validateRequiredness = function({ schema: { type = [] }, value }) {

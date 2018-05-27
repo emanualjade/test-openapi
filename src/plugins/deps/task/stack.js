@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../errors')
 
 // Check for infinite recursions
 // A new stack is created for each task
@@ -18,12 +18,10 @@ const checkStack = function({
   }
 
   const stackError = stringifyStack(newStack)
-  throwError(
-    `At '${stackPathA}', this task uses '${
-      newStack[1]
-    }' ${RECURSION_ERROR_MESSAGE}:\n${stackError}`,
-    { property: stackPath },
-  )
+  const message = `At '${stackPathA}', this task uses '${
+    newStack[1]
+  }' ${RECURSION_ERROR_MESSAGE}:\n${stackError}`
+  throw TestOpenApiError(message, { property: stackPath })
 }
 
 // Property path to first `dep`
@@ -49,7 +47,7 @@ const handleDepError = function(error, { stackInfo: { stack, stackPath } }) {
   }
 
   const stackError = stringifyStack(stack.slice(1))
-  throwError(
+  throw new TestOpenApiError(
     `At '${stackPath}', this task uses ${stackError} ${DEP_ERROR_MESSAGE}:\n\n${message}`,
     { property: stackPath },
   )

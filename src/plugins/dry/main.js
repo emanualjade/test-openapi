@@ -7,6 +7,9 @@ module.exports = {
   dependencies: [],
   conf: {
     general: {
+      schema: {
+        type: 'boolean',
+      },
       default: false,
     },
   },

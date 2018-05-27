@@ -3,9 +3,7 @@
 const { isEqual } = require('lodash')
 
 const { TestOpenApiError, addErrorHandler } = require('../errors')
-const { validateFromSchema, isObject } = require('../utils')
-
-const TASK_SCHEMA = require('./schema')
+const { isObject } = require('../utils')
 
 // Make sure task files are not empty
 const validateTaskFile = function({ tasks, path }) {
@@ -20,7 +18,7 @@ const validateTaskFile = function({ tasks, path }) {
 const validateTasks = function({ tasks }) {
   validateEmptyTasks({ tasks })
 
-  Object.entries(tasks).forEach(validateTask)
+  Object.entries(tasks).forEach(validateJson)
 }
 
 const validateEmptyTasks = function({ tasks }) {
@@ -31,14 +29,9 @@ const validateEmptyTasks = function({ tasks }) {
   throw new TestOpenApiError('No tasks were found')
 }
 
-const validateTask = function([taskKey, task]) {
-  validateJson({ taskKey, task })
-  validateTaskSchema({ taskKey, task })
-}
-
 // Tasks are constrained to JSON
 // This also validates against circular references
-const validateJson = function({ taskKey, task }) {
+const validateJson = function([taskKey, task]) {
   const copy = eCloneTask({ task, taskKey })
   // TODO: replace with util.isDeepStrictEqual() when we upgrade Node.js
   if (isEqual(task, copy)) {
@@ -57,15 +50,6 @@ const cloneTaskHandler = function({ message }, { taskKey }) {
 }
 
 const eCloneTask = addErrorHandler(cloneTask, cloneTaskHandler)
-
-const validateTaskSchema = function({ taskKey, task }) {
-  const { error, path } = validateFromSchema({ schema: TASK_SCHEMA, value: task, name: taskKey })
-  if (error === undefined) {
-    return
-  }
-
-  throw new TestOpenApiError(`Task '${taskKey}' is invalid: ${error}`, { taskKey, property: path })
-}
 
 module.exports = {
   validateTaskFile,

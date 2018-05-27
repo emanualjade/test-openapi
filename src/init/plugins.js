@@ -1,9 +1,9 @@
 'use strict'
 
-const { set, merge } = require('lodash')
+const { get, set, merge } = require('lodash')
 
-const { sortBy, reduceAsync } = require('../utils')
-const { addErrorHandler } = require('../errors')
+const { sortBy, reduceAsync, isObject, validateFromSchema } = require('../utils')
+const { addErrorHandler, TestOpenApiError } = require('../errors')
 const PLUGINS = require('../plugins')
 
 // Plugins are the way most functionalities is implemented.
@@ -79,8 +79,76 @@ const getPlugins = function({ pluginNames }) {
 
 // Apply plugin-specific configuration
 const applyPluginsConfig = function({ config, plugins }) {
+  validatePluginsConfig({ config, plugins })
   const configA = applyPluginsDefaults({ config, plugins })
   return configA
+}
+
+// Validate plugin-specific configuration
+const validatePluginsConfig = function({ config, plugins }) {
+  plugins.forEach(plugin => validatePluginConfig({ config, plugin }))
+}
+
+const validatePluginConfig = function({ config, plugin: { conf = {}, name } }) {
+  Object.entries(conf).forEach(([propName, { schema }]) =>
+    validatePropConfig({ config, propName, schema, name }),
+  )
+}
+
+const validatePropConfig = function({ config, propName, schema, name }) {
+  // Validation not set for that property
+  if (!isObject(schema)) {
+    return
+  }
+
+  const { path, type } = getPropPath({ propName, name })
+
+  VALIDATORS[type]({ config, path, schema })
+}
+
+// From `general.example` to `{ path: 'pluginName.example', type: 'general' }`
+const getPropPath = function({ propName, name }) {
+  const [type, ...propNameA] = propName.split('.')
+  const path = [name, ...propNameA].join('.')
+  return { path, type }
+}
+
+// `conf.general.*` validate against top-level configuration
+const validateGeneral = function({ config, path, schema }) {
+  validateProp({ value: config, path, schema, name: 'config' })
+}
+
+// `conf.task.*` validate against each task
+const validateTask = function({ config: { tasks }, path, schema }) {
+  tasks.forEach((task, taskKey) =>
+    validateProp({ value: task, path, schema, name: 'task', taskKey }),
+  )
+}
+
+const VALIDATORS = {
+  general: validateGeneral,
+  task: validateTask,
+}
+
+// Validate plugin-specific configuration against a JSON schema specified in
+// plugin's `conf`
+const validateProp = function({ value, path, schema, name, taskKey }) {
+  const valueA = get(value, path)
+  if (valueA === undefined) {
+    return
+  }
+
+  const { error } = validateFromSchema({ schema, value: valueA, name: `${name}.${path}` })
+  if (error === undefined) {
+    return
+  }
+
+  throw new TestOpenApiError(`Configuration is invalid: ${error}`, {
+    property: path,
+    taskKey,
+    expected: schema,
+    actual: valueA,
+  })
 }
 
 // Apply plugin-specific configuration default values

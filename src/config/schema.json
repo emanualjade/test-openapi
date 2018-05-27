@@ -2,28 +2,6 @@
   "type": "object",
   "properties": {
     "runTask": {},
-    "spec": {
-      "type": ["string", "object"]
-    },
-    "repeat": {
-      "type": "integer",
-      "minimum": 1
-    },
-    "call": {
-      "type": "object",
-      "properties": {
-        "server": {
-          "type": "string"
-        },
-        "timeout": {
-          "type": "integer"
-        }
-      },
-      "additionalProperties": false
-    },
-    "dry": {
-      "type": "boolean"
-    },
     "tasks": {
       "oneOf": [
         {
@@ -37,6 +15,5 @@
         }
       ]
     }
-  },
-  "additionalProperties": false
+  }
 }

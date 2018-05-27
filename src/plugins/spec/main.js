@@ -6,6 +6,13 @@ const { mergeSpecParams, mergeSpecValidate } = require('./task')
 module.exports = {
   name: 'spec',
   dependencies: ['call', 'generate', 'validate'],
+  conf: {
+    general: {
+      schema: {
+        type: ['string', 'object'],
+      },
+    },
+  },
   handlers: [
     {
       type: 'start',

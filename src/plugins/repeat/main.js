@@ -7,6 +7,10 @@ module.exports = {
   dependencies: [],
   conf: {
     general: {
+      schema: {
+        type: 'integer',
+        minimum: 1,
+      },
       default: 10,
     },
   },

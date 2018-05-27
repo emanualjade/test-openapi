@@ -16,8 +16,8 @@ const runTask = async function({ originalTask, ...task }, { config, plugins, err
     readOnlyArgs,
     runTaskHandler.bind(null, { errors }),
   )
-  // Task return value, returned to users and used by depReqs
-  const taskB = mapValues(taskA, (newTask, prop) => shallowMerge(originalTask[prop], newTask))
+
+  const taskB = mergeReturnValue({ task: taskA, originalTask })
   return taskB
 }
 
@@ -41,6 +41,11 @@ const runTaskHandler = function({ errors }, error, { taskKey, ...task }) {
   errors.push(error)
 
   throw error
+}
+
+// Task return value, returned to users and used by depReqs
+const mergeReturnValue = function({ task, originalTask }) {
+  return mapValues(task, (newTask, prop) => shallowMerge(originalTask[prop], newTask))
 }
 
 // Do a shallow merge on each plugin value

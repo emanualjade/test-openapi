@@ -37,7 +37,7 @@ const normalizeShortcut = function(value) {
   // `undefined` is ignored.
   // object means it's not a shortcut notation.
   if (value === undefined || isObject(value)) {
-    return
+    return value
   }
 
   const type = guessType(value)

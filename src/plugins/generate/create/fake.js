@@ -52,25 +52,27 @@ const fixArray = function({ schema, schema: { type, items = {} } }) {
   return { ...schema, items: { ...items, type: 'string' } }
 }
 
-// Merge generated values back to original request parameters as `param.value`
+// Merge generated values back to original request parameters as `param.schema`
 const addGeneratedValues = function({ values, params }) {
-  return (
-    params
-      .map(param => addGeneratedValue({ values, param }))
-      // Optional request parameters that have not been picked
-      .filter(({ value }) => value !== undefined)
-      // Specifying `type: 'null'` or `enum: ['null']` means 'do not send this parameter'
-      // Specifying `type: ['null', ...]` means 'maybe send this parameter (or not, randomly)'
-      // No matter what, only required parameters or parameters specified in
-      // `task.parameters.*` can be sent
-      .filter(({ value }) => value !== null)
-  )
+  return params.map(param => addGeneratedValue({ values, param })).filter(shouldIncludeParam)
 }
 
 const addGeneratedValue = function({ values, param, param: { location, name } }) {
   const key = locationToKey({ location, name })
-  const value = values[key]
-  return { ...param, value }
+  const schema = values[key]
+  return { ...param, schema }
+}
+
+const shouldIncludeParam = function({ schema }) {
+  return (
+    // Optional request parameters that have not been picked
+    schema !== undefined &&
+    // Specifying `type: 'null'` or `enum: ['null']` means 'do not send this parameter'
+    // Specifying `type: ['null', ...]` means 'maybe send this parameter (or not, randomly)'
+    // No matter what, only required parameters or parameters specified in
+    // `task.parameters.*` can be sent
+    schema !== null
+  )
 }
 
 module.exports = {

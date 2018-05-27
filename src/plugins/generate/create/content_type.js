@@ -110,8 +110,8 @@ const DEFAULT_REQ_BODY_MIME = {
 
 // Generate random `Content-Type`
 const generateContentType = function({ contentTypeParam, contentTypeParam: { schema } }) {
-  const value = generateFromSchema({ schema })
-  return { ...contentTypeParam, value }
+  const schemaA = generateFromSchema({ schema })
+  return { ...contentTypeParam, schema: schemaA }
 }
 
 module.exports = {

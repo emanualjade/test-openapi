@@ -22,22 +22,22 @@ const stringifyParam = function({ param, param: { location, name }, params }) {
 // `url`, `query` and `header` values might not be strings.
 // In which case they are JSON stringified
 // Unless a `collectionFormat` is used
-const stringifyParamFlat = function({ param: { value, name, collectionFormat } }) {
-  if (Array.isArray(value)) {
-    return stringifyCollFormat({ value, collectionFormat, name })
+const stringifyParamFlat = function({ param: { schema, name, collectionFormat } }) {
+  if (Array.isArray(schema)) {
+    return stringifyCollFormat({ value: schema, collectionFormat, name })
   }
 
-  return stringifyFlat(value)
+  return stringifyFlat(schema)
 }
 
 // Stringify the request body according to HTTP request header `Content-Type`
-const stringifyBody = function({ param: { value }, params }) {
+const stringifyBody = function({ param: { schema }, params }) {
   const mime = getBodyMime({ params })
 
   // Default stringifiers tries JSON.stringify()
   const { stringify = stringifyFlat } = findBodyHandler({ mime })
 
-  return stringify(value)
+  return stringify(schema)
 }
 
 // Retrieve the `Content-Type` header to set in the request
@@ -48,7 +48,7 @@ const getBodyMime = function({ params }) {
     return
   }
 
-  return contentTypeParam.value
+  return contentTypeParam.schema
 }
 
 const isContentTypeParam = function({ location, name }) {

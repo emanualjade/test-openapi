@@ -6,7 +6,6 @@ module.exports = {
   ...require('./promise'),
   ...require('./reduce'),
   ...require('./location'),
-  ...require('./json'),
   ...require('./json_schema'),
   ...require('./shortcut'),
 }

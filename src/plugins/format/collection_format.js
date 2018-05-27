@@ -1,6 +1,6 @@
 'use strict'
 
-const { stringifyFlat, parseFlat } = require('../../utils')
+const { stringifyFlat, parseFlat } = require('./json')
 
 // Whether a specific value should be parsed according to `collectionFormat`
 // using information from its OpenAPI schema

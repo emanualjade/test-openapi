@@ -1,7 +1,8 @@
 'use strict'
 
-const { stringifyFlat, locationToKey } = require('../../utils')
+const { locationToKey } = require('../../utils')
 
+const { stringifyFlat } = require('./json')
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 

@@ -9,12 +9,12 @@ const { normalizeTasksParams } = require('./params')
 const { normalizeTasksValidate } = require('./validate')
 
 // Retrieve list of tasks
-const getTasks = async function({ tasks, spec }) {
+const getTasks = async function({ tasks }) {
   const tasksA = await loadTasks({ tasks })
 
   validateTasks({ tasks: tasksA })
 
-  const tasksB = normalizeTasks({ tasks: tasksA, spec })
+  const tasksB = normalizeTasks({ tasks: tasksA })
 
   const tasksC = normalizeTasksShortcuts({ tasks: tasksB })
 

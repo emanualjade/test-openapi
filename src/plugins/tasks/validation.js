@@ -29,13 +29,13 @@ const validateEmptyTasks = function({ tasks }) {
   throwTaskError('No tasks were found')
 }
 
-const validateTask = function([taskName, task]) {
-  const { error, path } = validateFromSchema({ schema: TASK_SCHEMA, value: task, name: taskName })
+const validateTask = function([taskKey, task]) {
+  const { error, path } = validateFromSchema({ schema: TASK_SCHEMA, value: task, name: taskKey })
   if (error === undefined) {
     return
   }
 
-  throwTaskError(`Task '${taskName}' is invalid: ${error}`, { task: taskName, property: path })
+  throwTaskError(`Task '${taskKey}' is invalid: ${error}`, { task: taskKey, property: path })
 }
 
 module.exports = {

@@ -4,20 +4,26 @@ const { merge } = require('lodash')
 
 const { mergeParams, mergeHeaders } = require('../../../utils')
 
+const { getOperation } = require('./operation')
 const { mergeInvalidSchema, isInvalidSchema } = require('./invalid')
 
 // Merge `task.parameters.*` to specification
-const mergeSpecParams = function({ params, operation }) {
+const mergeSpecParams = function({ taskKey, config: { spec }, params }) {
+  const operation = getOperation({ taskKey, spec })
   const paramsA = mergeParams([...operation.params, ...params], mergeSpec)
   return { params: paramsA }
 }
 
 // Merge `task.validate.*` to specification
 const mergeSpecValidate = function({
+  taskKey,
+  config: { spec },
   validate: { status, headers, body },
-  operation: { responses },
   rawResponse,
 }) {
+  const operation = getOperation({ taskKey, spec })
+  const { responses } = operation
+
   // Find the specification response matching both the current operation and
   // the received status code
   const specResponse = responses[String(rawResponse.status)] || responses.default

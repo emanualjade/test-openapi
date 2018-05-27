@@ -29,7 +29,7 @@ const mergePlugin = function(configA, configB) {
   return { ...configA, ...configB }
 }
 
-const PLUGINS = [loadConfig, loadNormalizedSpec, getTasks, addDeps]
+const PLUGINS = [loadConfig, getTasks, loadNormalizedSpec, addDeps]
 
 module.exports = {
   runTasks: eRunTasks,

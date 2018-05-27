@@ -4,7 +4,7 @@ const { omit } = require('lodash')
 
 const { crawl } = require('../../utils')
 
-// Add all `deps`, i.e. references to other tasks as `operationId.taskName.*`
+// Add all `deps`, i.e. references to other tasks as `taskName.*`
 const addDeps = function({ tasks }) {
   const tasksA = tasks.map(task => addRefs({ task, tasks }))
   return { tasks: tasksA }
@@ -19,10 +19,10 @@ const addRefs = function({ task, tasks }) {
 }
 
 // Do not crawl some `task.*` properties for `deps`
-const CLEAN_PROPERTIES = ['operation', 'originalTask']
+const CLEAN_PROPERTIES = ['originalTask']
 
 // Return each `dep` as an object with:
-//   depKey: 'operationId.taskName'
+//   depKey: 'taskName'
 //   depPath: 'request|response|...'
 //   path: 'request|response...'
 const getRef = function({ node: { value, path }, tasks }) {

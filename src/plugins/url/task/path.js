@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwTaskError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 
 // Retrieve `task.parameters.path`
 const addPath = function({ url, rawRequest: { path = '' } }) {
@@ -14,7 +14,7 @@ const validatePath = function({ path }) {
     return
   }
 
-  throwTaskError('Request path must start with a slash', { property: 'path', actual: path })
+  throwError('Request path must start with a slash', { property: 'path', actual: path })
 }
 
 module.exports = {

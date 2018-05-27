@@ -2,7 +2,7 @@
 
 const { isDeepStrictEqual } = require('util')
 
-const { throwTaskError, addErrorHandler } = require('../errors')
+const { throwError, addErrorHandler } = require('../errors')
 const { validateFromSchema, isObject } = require('../utils')
 
 const TASK_SCHEMA = require('./schema')
@@ -13,7 +13,7 @@ const validateTaskFile = function({ tasks, path }) {
     return
   }
 
-  throwTaskError(`Task file '${path}' should be an object not a ${typeof tasks}`)
+  throwError(`Task file '${path}' should be an object not a ${typeof tasks}`)
 }
 
 // Validate syntax of task files
@@ -28,7 +28,7 @@ const validateEmptyTasks = function({ tasks }) {
     return
   }
 
-  throwTaskError('No tasks were found')
+  throwError('No tasks were found')
 }
 
 const validateTask = function([taskKey, task]) {
@@ -44,11 +44,11 @@ const validateJson = function({ taskKey, task }) {
     return
   }
 
-  throwTaskError(`Task '${taskKey}' is not valid JSON`, { task: taskKey })
+  throwError(`Task '${taskKey}' is not valid JSON`, { task: taskKey })
 }
 
 const validateJsonHandler = function({ message }, { taskKey }) {
-  throwTaskError(`Task '${taskKey}' is not valid JSON: ${message}`, { task: taskKey })
+  throwError(`Task '${taskKey}' is not valid JSON: ${message}`, { task: taskKey })
 }
 
 const eValidateJson = addErrorHandler(validateJson, validateJsonHandler)
@@ -59,7 +59,7 @@ const validateTaskSchema = function({ taskKey, task }) {
     return
   }
 
-  throwTaskError(`Task '${taskKey}' is invalid: ${error}`, { task: taskKey, property: path })
+  throwError(`Task '${taskKey}' is invalid: ${error}`, { task: taskKey, property: path })
 }
 
 module.exports = {

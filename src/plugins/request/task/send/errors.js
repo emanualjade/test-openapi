@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwConnectError } = require('../../../../errors')
+const { throwError } = require('../../../../errors')
 
 const sendRequestHandler = function(
   error,
@@ -12,7 +12,7 @@ const sendRequestHandler = function(
   },
 ) {
   const message = getFetchError({ error, url, timeout })
-  throwConnectError(message)
+  throwError(message)
 }
 
 const getFetchError = function({ error: { message, type }, url, timeout }) {

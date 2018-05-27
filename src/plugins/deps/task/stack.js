@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwTaskError, throwResponseError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 
 // Check for infinite recursions
 // A new stack is created for each task
@@ -18,7 +18,7 @@ const checkStack = function({
   }
 
   const stackError = stringifyStack(newStack)
-  throwTaskError(
+  throwError(
     `At '${stackPathA}', this task uses '${
       newStack[1]
     }' ${RECURSION_ERROR_MESSAGE}:\n${stackError}`,
@@ -49,7 +49,7 @@ const handleDepError = function(error, { stackInfo: { stack, stackPath } }) {
   }
 
   const stackError = stringifyStack(stack.slice(1))
-  throwResponseError(
+  throwError(
     `At '${stackPath}', this task uses ${stackError} ${DEP_ERROR_MESSAGE}:\n\n${message}`,
     { property: stackPath },
   )

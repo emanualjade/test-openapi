@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwResponseError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 
 // Only `response headers|body` that are present either in the specification or
 // in `task.validate.*` are validated.
@@ -16,7 +16,7 @@ const validateRequiredBody = function({ schema, value }) {
   }
 
   const property = 'response.body'
-  throwResponseError(`Response body ${message}.`, { property, expected: schema, actual: value })
+  throwError(`Response body ${message}.`, { property, expected: schema, actual: value })
 }
 
 const validateRequiredHeader = function({ schema, value, name }) {
@@ -26,11 +26,7 @@ const validateRequiredHeader = function({ schema, value, name }) {
   }
 
   const property = `response.headers.${name}`
-  throwResponseError(`Response header '${name}' ${message}.`, {
-    property,
-    expected: schema,
-    actual: value,
-  })
+  throwError(`Response header '${name}' ${message}.`, { property, expected: schema, actual: value })
 }
 
 const validateRequiredness = function({ schema: { type = [] }, value }) {

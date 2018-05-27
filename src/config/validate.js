@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwConfigError } = require('../errors')
+const { throwError } = require('../errors')
 const { validateFromSchema } = require('../utils')
 
 const CONFIG_SCHEMA = require('./schema')
@@ -16,7 +16,7 @@ const validateConfig = function({ config }) {
     return
   }
 
-  throwConfigError(`Configuration is invalid: ${error}`, { property: path })
+  throwError(`Configuration is invalid: ${error}`, { property: path })
 }
 
 module.exports = {

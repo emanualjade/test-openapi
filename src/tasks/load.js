@@ -7,7 +7,7 @@ const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 
 const { isObject } = require('../utils')
-const { addErrorHandler, throwTaskError } = require('../errors')
+const { addErrorHandler, throwError } = require('../errors')
 
 const { validateTaskFile } = require('./validate')
 
@@ -39,7 +39,7 @@ const loadTaskFile = async function(path) {
 
 // File loading
 const readFileHandler = function({ message }, path) {
-  throwTaskError(`Could not load task file '${path}': ${message}`)
+  throwError(`Could not load task file '${path}': ${message}`)
 }
 
 const eReadFile = addErrorHandler(promisify(readFile), readFileHandler)
@@ -58,7 +58,7 @@ const YAML_OPTS = {
 }
 
 const parseTaskFileHandler = function({ message }, { path }) {
-  throwTaskError(`Task file '${path}' is not valid YAML or JSON: ${message}`)
+  throwError(`Task file '${path}' is not valid YAML or JSON: ${message}`)
 }
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)

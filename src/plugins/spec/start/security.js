@@ -2,7 +2,7 @@
 
 const { flatten, uniqBy } = require('lodash')
 
-const { throwSpecificationError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 
 const IN_TO_LOCATION = require('./in_to_location')
 
@@ -48,7 +48,7 @@ const getSecParamHandler = function({ securityDef: { type }, secName }) {
   }
 
   const property = `securityDefinitions.${secName}`
-  throwSpecificationError(
+  throwError(
     `In '${property}', security definition has type '${type}' but this has not been implemented yet`,
     { property },
   )

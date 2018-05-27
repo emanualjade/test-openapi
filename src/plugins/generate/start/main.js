@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwTaskError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../../utils')
 
 const normalizeGenerate = function({ tasks }) {
@@ -37,7 +37,7 @@ const validateJsonSchema = function({ task: { taskKey }, name, value }) {
   }
 
   const property = `parameters.${name}`
-  throwTaskError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
+  throwError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
     property,
     task: taskKey,
   })

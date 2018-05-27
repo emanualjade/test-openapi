@@ -2,7 +2,7 @@
 
 const { mapValues } = require('lodash')
 
-const { throwTaskError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../../utils')
 
 // Normalize `task.validate.*`
@@ -47,7 +47,7 @@ const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
   }
 
   const property = `validate.${prop}`
-  throwTaskError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
+  throwError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
     property,
     task: taskKey,
   })

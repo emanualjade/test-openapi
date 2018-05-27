@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwTaskError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 
 // Replace `url` request parameters to the request URL
 // Can replace `{...}` in both `task.parameters.server` and `task.parameters.path`
@@ -18,7 +18,7 @@ const getUrlParam = function({ name, rawRequest }) {
   const value = rawRequest[property]
 
   if (value === undefined) {
-    throwTaskError(`The URL parameter '${name}' must be defined`, { property })
+    throwError(`The URL parameter '${name}' must be defined`, { property })
   }
 
   return value

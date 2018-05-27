@@ -2,7 +2,7 @@
 
 const METHODS = require('methods')
 
-const { throwTaskError } = require('../../../errors')
+const { throwError } = require('../../../errors')
 
 // Retrieve `task.parameters.method`
 const getMethod = function({ rawRequest: { method = DEFAULT_METHOD } }) {
@@ -18,7 +18,7 @@ const validateMethod = function({ method }) {
     return
   }
 
-  throwTaskError(`HTTP method '${method}' does not exist`, {
+  throwError(`HTTP method '${method}' does not exist`, {
     property: 'parameters.method',
     actual: method,
   })

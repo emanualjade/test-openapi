@@ -2,7 +2,7 @@
 
 const { set } = require('lodash/fp')
 
-const { addErrorHandler, throwResponseError } = require('../../../errors')
+const { addErrorHandler, throwError } = require('../../../errors')
 
 const { get } = require('./get')
 
@@ -27,10 +27,10 @@ const getDepValue = function({ depReturn, depPath }) {
 const getDepValueHandler = function(error, { depKey, depPath, path }) {
   const property = path.join('.')
   const expected = `${depKey}.${depPath}`
-  throwResponseError(
-    `This task targets another task '${expected}' but this key could not be found`,
-    { property, expected },
-  )
+  throwError(`This task targets another task '${expected}' but this key could not be found`, {
+    property,
+    expected,
+  })
 }
 
 const eGetDepValue = addErrorHandler(getDepValue, getDepValueHandler)

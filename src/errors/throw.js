@@ -9,19 +9,19 @@
 //    is defined) or in `config`
 //  - `expected` `{value}`: expected value
 //  - `actual` `{value}`: actual value
-const throwError = function(message, properties) {
-  const error = new Error(message)
+class TestOpenApiError extends Error {
+  constructor(message, properties) {
+    super(message)
 
-  // We need to directly assign to keep `Error` prototype
-  Object.assign(error, { [ERROR_SYM]: true }, properties)
-
-  throw error
+    Object.assign(this, properties)
+  }
 }
 
-// Allow distinguishing between bugs and validation errors
-const ERROR_SYM = Symbol('isValidationError')
+const throwError = function(message, properties) {
+  throw new TestOpenApiError(message, properties)
+}
 
 module.exports = {
+  TestOpenApiError,
   throwError,
-  ERROR_SYM,
 }

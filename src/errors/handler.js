@@ -5,7 +5,7 @@ const { keepFuncName } = require('./func_name')
 
 // Wrap a function with a error handler
 // Allow passing an empty error handler, i.e. ignoring any error thrown
-const addErrorHandler = function(func, errorHandler = () => undefined) {
+const addErrorHandler = function(func, errorHandler = () => {}) {
   return errorHandledFunc.bind(null, func, errorHandler)
 }
 
@@ -31,7 +31,7 @@ const addGenErrorHandler = function(func, properties) {
 
 const genErrorHandler = function({ properties }, error, ...args) {
   const propertiesA = typeof properties === 'function' ? properties(...args) : properties
-  throw normalizeError({ error, properties: propertiesA })
+  throw normalizeError(error, propertiesA)
 }
 
 module.exports = {

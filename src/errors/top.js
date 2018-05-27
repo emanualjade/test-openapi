@@ -5,7 +5,7 @@ const { normalizeError } = require('./normalize')
 // Make sure every top-level exception has an `errors` property
 const topNormalizeHandler = function(error, config = {}) {
   // Add `error.config` to every error
-  const errorA = normalizeError({ error, properties: { config } })
+  const errorA = normalizeError(error, { config })
   if (Array.isArray(errorA.errors)) {
     throw errorA
   }

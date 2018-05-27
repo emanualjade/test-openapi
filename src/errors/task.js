@@ -1,11 +1,12 @@
 'use strict'
 
-const { pick } = require('lodash')
+const { pick, omit } = require('lodash')
 
+const { TestOpenApiError } = require('./throw')
 const { normalizeError } = require('./normalize')
 
 // Error handler for `it()`
-const runTaskHandler = async function({ errors, errorProperties }, error, task) {
+const runTaskHandler = function({ errors, errorProperties }, error, task) {
   const errorA = addTaskName({ error, task })
 
   const errorB = addErrorProperties({ task, error: errorA, errorProperties })
@@ -18,7 +19,7 @@ const runTaskHandler = async function({ errors, errorProperties }, error, task) 
 
 // Add `error.task` name
 const addTaskName = function({ error, task: { taskKey } }) {
-  return normalizeError({ error, properties: { task: taskKey } })
+  return normalizeError(error, { task: taskKey })
 }
 
 // Add each `plugin.properties.error`
@@ -31,38 +32,39 @@ const addErrorProperties = function({ task, error, errorProperties }) {
 
 // Error thrown during task running
 const createTaskError = function({ errors }) {
-  const error = new Error()
-
   const firstError = getTopError({ errors })
 
-  const errorsA = errors.map(convertPlainObject)
+  const errorsA = errors.map(convertError)
 
-  Object.assign(error, { ...firstError, errors: errorsA })
-
+  const error = new TestOpenApiError('', { ...firstError, errors: errorsA })
   return error
 }
 
-// Top-level error's properties (including `type`) are copied among one of the `errors` thrown
+// Top-level error's properties are copied among one of the `errors` thrown
 const getTopError = function({ errors }) {
   const bugError = errors.find(({ type }) => type === 'bug')
   if (bugError !== undefined) {
     return bugError
   }
 
-  const [{ name, message, stack, type, ...firstError }] = errors
+  const [firstError] = errors
 
-  if (type === undefined) {
-    return { ...firstError, name, message, stack, type: 'bug' }
-  }
-
-  return { ...firstError, name, message: ERROR_MESSAGE, stack, type }
+  const firstErrorA = convertPlainObject(firstError)
+  return { ...firstErrorA, message: ERROR_MESSAGE }
 }
 
 const ERROR_MESSAGE = 'Some tasks failed'
 
 // Convert ot plain object. Discard `error.name|stack` but not `error.message`
-const convertPlainObject = function({ message, ...error }) {
-  return { ...error, message }
+const convertError = function(error) {
+  const errorA = convertPlainObject(error)
+  const errorB = omit(errorA, ['name', 'stack'])
+  return errorB
+}
+
+// Convert ot plain object. Must do it like this to keep `error.name|stack|message`
+const convertPlainObject = function({ message, name, stack, ...error }) {
+  return { ...error, message, name, stack }
 }
 
 module.exports = {

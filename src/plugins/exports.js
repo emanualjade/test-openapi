@@ -1,6 +1,6 @@
 'use strict'
 
-const { validateFromSchema } = require('../utils')
+const { validateFromSchema, validateIsSchema } = require('../utils')
 
 const EXPORT_SCHEMA = require('./export_schema')
 
@@ -11,6 +11,7 @@ const validateExports = function({ plugins }) {
 
 const validateExport = function(plugin) {
   validateSchema({ plugin })
+  validateJsonSchemas({ plugin })
 }
 
 const validateSchema = function({ plugin, plugin: { name } }) {
@@ -19,14 +20,32 @@ const validateSchema = function({ plugin, plugin: { name } }) {
     return
   }
 
-  // Throw a `bug` error
-  throwPluginError({ plugin: name, error })
+  const message = `Plugin '${plugin}' is invalid:${error}`
+  throwPluginError({ plugin: name, message })
 }
 
-const throwPluginError = function({ plugin, error }) {
-  const errorA = new Error(`Plugin '${plugin}' is invalid: ${error}`)
-  Object.assign(errorA, { plugin })
-  throw errorA
+const validateJsonSchemas = function({ plugin: { name: plugin, config: pluginConfig = {} } }) {
+  Object.entries(pluginConfig).forEach(([propName, { schema }]) =>
+    validateJsonSchema({ schema, plugin, propName }),
+  )
+}
+
+const validateJsonSchema = function({ schema, plugin, propName }) {
+  const name = `config.${propName}`
+  const { error } = validateIsSchema({ value: schema, name })
+  if (error === undefined) {
+    return
+  }
+
+  const message = `Plugin '${plugin}' is invalid: '${name}' is not a valid JSON schema:${error}`
+  throwPluginError({ plugin, message })
+}
+
+// Throw a `bug` error
+const throwPluginError = function({ plugin, message }) {
+  const error = new Error(message)
+  Object.assign(error, { plugin })
+  throw error
 }
 
 module.exports = {

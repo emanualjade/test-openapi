@@ -9,9 +9,6 @@
       "patternProperties": {
         "^headers\\..+": {}
       },
-      "propertyNames": {
-        "pattern": "^(status)|(headers\\..+)|(body)"
-      },
       "additionalProperties": false
     }
   }

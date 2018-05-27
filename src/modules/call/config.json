@@ -32,9 +32,6 @@
         "^headers\\..+": {},
         "^body": {}
       },
-      "propertyNames": {
-        "pattern": "^(method)|(server)|(path)|(url\\..+)|(query\\..+)|(^headers\\..+)|(body)"
-      },
       "additionalProperties": false
     }
   }

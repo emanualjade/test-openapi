@@ -40,9 +40,9 @@ const mergePlugin = function(configA, configB) {
 const PLUGINS = [
   loadConfig,
   getTasks,
+  normalizeTasksParams,
   normalizeTasksGenerate,
   normalizeTasksValidate,
-  normalizeTasksParams,
   loadNormalizedSpec,
   addDeps,
 ]

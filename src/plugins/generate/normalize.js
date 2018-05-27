@@ -1,7 +1,5 @@
 'use strict'
 
-const { mapValues } = require('lodash')
-
 const { throwTaskError } = require('../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../utils')
 
@@ -12,11 +10,16 @@ const normalizeTasksGenerate = function({ tasks }) {
 
 const normalizeTaskGenerate = function({ params, ...task }) {
   // `task.parameters.*: non-object` is shortcut for `{ enum: [value] }`
-  const paramsA = mapValues(params, normalizeShortcut)
+  const paramsA = params.map(normalizeParamShortcut)
 
   validateJsonSchemas({ params: paramsA, task })
 
   return { ...task, params: paramsA }
+}
+
+const normalizeParamShortcut = function({ schema, ...param }) {
+  const schemaA = normalizeShortcut(schema)
+  return { ...param, schema: schemaA }
 }
 
 // Validate request parameters and response headers are valid JSON schema v4
@@ -24,11 +27,11 @@ const normalizeTaskGenerate = function({ params, ...task }) {
 // We cannot use later versions because json-schema-faker does not support them
 // Must be done after merged to specification, and `deps` have been resolved
 const validateJsonSchemas = function({ params, task }) {
-  Object.entries(params).forEach(([name, value]) => validateJsonSchema({ task, name, value }))
+  params.forEach(({ name, schema }) => validateJsonSchema({ task, name, schema }))
 }
 
-const validateJsonSchema = function({ task: { taskKey }, name, value }) {
-  const { error } = validateIsSchema({ value })
+const validateJsonSchema = function({ task: { taskKey }, name, schema }) {
+  const { error } = validateIsSchema({ value: schema })
   if (error === undefined) {
     return
   }

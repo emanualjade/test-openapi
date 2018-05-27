@@ -7,7 +7,6 @@ const { normalizeTasksShortcuts } = require('./shortcut')
 const { validateTasksJsonSchemas } = require('./json_schema')
 const { normalizeTasksParams } = require('./params')
 const { normalizeTasksValidate } = require('./validate')
-const { mergeTasksSpec } = require('./merge')
 
 // Retrieve list of tasks
 const getTasks = async function({ tasks, spec }) {
@@ -25,9 +24,7 @@ const getTasks = async function({ tasks, spec }) {
 
   const tasksE = normalizeTasksValidate({ tasks: tasksD })
 
-  const tasksF = mergeTasksSpec({ tasks: tasksE })
-
-  return { tasks: tasksF }
+  return { tasks: tasksE }
 }
 
 module.exports = {

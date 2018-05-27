@@ -12,4 +12,5 @@ module.exports = {
   ...require('./request'),
   ...require('./validate'),
   ...require('./dry'),
+  ...require('./repeat'),
 }

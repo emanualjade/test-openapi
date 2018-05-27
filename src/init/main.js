@@ -10,6 +10,7 @@ const {
   normalizeValidate,
   loadNormalizedSpec,
   handleDryRun,
+  repeatTasks,
 } = require('../plugins')
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
@@ -48,6 +49,7 @@ const PLUGINS = [
   normalizeValidate,
   loadNormalizedSpec,
   handleDryRun,
+  repeatTasks,
 ]
 
 module.exports = {

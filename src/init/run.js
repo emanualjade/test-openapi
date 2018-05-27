@@ -18,23 +18,8 @@ const {
   returnedProperties,
 } = require('../plugins')
 
-// Repeat each task `config.repeat` times, each time with different random parameters
-// It will only show as a single `it()`
-// Run all tasks in parallel for performance reason
-// If a single one fails though, whole `it()` will stop and report that one failure
-// TODO: we should cancel other tasks if any of them fails. At the moment, this is
-// not possible because `node-fetch` does not support `AbortController`:
-// a PR is ongoing to add support: https://github.com/bitinn/node-fetch/pull/437
-const runTask = async function(task, context) {
-  const {
-    config: { repeat },
-  } = context
-  const runningTasks = new Array(repeat).fill().map(() => realRunTask(task, context))
-  await Promise.all(runningTasks)
-}
-
 // Run an `it()` task
-const realRunTask = async function({ originalTask, ...task }, context) {
+const runTask = async function({ originalTask, ...task }, context) {
   const contextA = addRunTask({ context })
 
   const { task: taskA } = await eRunPlugins({ task, context: contextA })
@@ -47,7 +32,7 @@ const realRunTask = async function({ originalTask, ...task }, context) {
 // If some plugins (like the `repeat` plugin) monkey patch `runTask()`, the
 // non-monkey patched version is passed instead
 const addRunTask = function({ context }) {
-  const runTaskA = task => realRunTask(task, context)
+  const runTaskA = task => runTask(task, context)
   return { ...context, runTask: runTaskA }
 }
 

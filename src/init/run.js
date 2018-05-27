@@ -7,8 +7,9 @@ const {
   mergeSpecParams,
   generateParams,
   stringifyParams,
-  parseResponse,
+  addFullUrl,
   sendRequest,
+  parseResponse,
   mergeSpecValidate,
   validateResponse,
   normalizeReturnValue,
@@ -73,6 +74,8 @@ const PLUGINS = [
   generateParams,
   // Stringify request parameters
   stringifyParams,
+  // Retrieve full URL from request parameters
+  addFullUrl,
   // Send an HTTP request to the endpoint
   sendRequest,
   // Parse response

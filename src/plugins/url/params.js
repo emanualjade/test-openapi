@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwTaskError } = require('../../../errors')
+const { throwTaskError } = require('../../errors')
 
 // Replace `url` request parameters to the request URL
 // Can replace `{...}` in both `task.parameters.server` and `task.parameters.path`

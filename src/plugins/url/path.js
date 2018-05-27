@@ -1,6 +1,6 @@
 'use strict'
 
-const { throwTaskError } = require('../../../errors')
+const { throwTaskError } = require('../../errors')
 
 // Retrieve `task.parameters.path`
 const addPath = function({ url, rawRequest: { path = '' } }) {

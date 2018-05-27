@@ -2,7 +2,7 @@
 
 const METHODS = require('methods')
 
-const { throwTaskError } = require('../../../errors')
+const { throwTaskError } = require('../../errors')
 
 // Retrieve `task.parameters.method`
 const getMethod = function({ rawRequest: { method = DEFAULT_METHOD } }) {

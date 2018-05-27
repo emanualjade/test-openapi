@@ -4,14 +4,12 @@ const { stringifyFlat, locationToKey } = require('../../utils')
 
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
-const { addFullUrl } = require('./url')
 
 // Stringify request parameters
 const stringifyParams = function({ params }) {
   const paramsA = params.map(param => stringifyParam({ param, params }))
   const rawRequest = Object.assign({}, ...paramsA)
-  const rawRequestA = addFullUrl({ rawRequest })
-  return { rawRequest: rawRequestA }
+  return { rawRequest }
 }
 
 const stringifyParam = function({ param, param: { location, name }, params }) {

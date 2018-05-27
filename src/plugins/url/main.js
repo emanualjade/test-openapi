@@ -11,7 +11,8 @@ const { addQueryParams } = require('./query')
 const addFullUrl = function({ rawRequest }) {
   const method = getMethod({ rawRequest })
   const url = getFullUrl({ rawRequest })
-  return { ...rawRequest, url, method }
+  const rawRequestA = { ...rawRequest, url, method }
+  return { rawRequest: rawRequestA }
 }
 
 const getFullUrl = function({ rawRequest }) {

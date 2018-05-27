@@ -2,7 +2,7 @@
 
 const { URL } = require('url')
 
-const { throwTaskError, addErrorHandler } = require('../../../errors')
+const { throwTaskError, addErrorHandler } = require('../../errors')
 
 // Escape, normalize and validate the request URL
 const normalizeUrl = function({ url }) {

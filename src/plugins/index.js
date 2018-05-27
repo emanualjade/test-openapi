@@ -7,6 +7,7 @@ module.exports = {
   ...require('./spec'),
   ...require('./generate'),
   ...require('./format'),
+  ...require('./url'),
   ...require('./send'),
   ...require('./validate'),
   ...require('./normalize'),

@@ -1,7 +1,6 @@
 'use strict'
 
-const { loadOpenApiSpec } = require('../load')
-
+const { loadOpenApiSpec } = require('./load')
 const { getOperations } = require('./operations')
 
 // Parses an OpenAPI file (including JSON references)

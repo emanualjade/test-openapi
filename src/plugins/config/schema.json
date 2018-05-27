@@ -2,7 +2,7 @@
   "type": "object",
   "properties": {
     "spec": {
-      "type": "string"
+      "type": ["string", "object"]
     },
     "server": {
       "type": "string"

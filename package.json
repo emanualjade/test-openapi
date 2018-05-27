@@ -38,7 +38,7 @@
     "methods": "^1.1.2",
     "nodemon": "^1.17.5",
     "openapi-schema-to-json-schema": "^2.1.0",
-    "sway": "^1.0.0",
+    "swagger-parser": "^5.0.0",
     "type-is": "^1.6.16",
     "yargs": "^11.0.0"
   },

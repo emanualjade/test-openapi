@@ -3,7 +3,6 @@
 module.exports = {
   ...require('./types'),
   ...require('./merge'),
-  ...require('./get'),
   ...require('./promise'),
   ...require('./reduce'),
   ...require('./location'),

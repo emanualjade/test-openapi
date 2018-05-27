@@ -3,7 +3,8 @@
 const { set } = require('lodash/fp')
 
 const { addErrorHandler, throwResponseError } = require('../../errors')
-const { get } = require('../../utils')
+
+const { get } = require('./get')
 
 // Set `dep` value to current task after it has been retrieved
 const setRefs = function({ task, config, refs, depReturns }) {

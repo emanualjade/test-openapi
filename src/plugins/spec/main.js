@@ -10,17 +10,17 @@ module.exports = {
     {
       type: 'start',
       handler: loadNormalizedSpec,
-      order: 130,
+      order: 1300,
     },
     {
       type: 'task',
       handler: mergeSpecParams,
-      order: 110,
+      order: 1100,
     },
     {
       type: 'task',
       handler: mergeSpecValidate,
-      order: 170,
+      order: 1700,
     },
   ],
   loadOpenApiSpec,

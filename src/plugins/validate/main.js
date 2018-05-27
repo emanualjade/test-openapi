@@ -10,12 +10,12 @@ module.exports = {
     {
       type: 'start',
       handler: normalizeValidate,
-      order: 120,
+      order: 1200,
     },
     {
       type: 'task',
       handler: validateResponse,
-      order: 180,
+      order: 1800,
     },
   ],
 }

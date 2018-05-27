@@ -10,12 +10,12 @@ module.exports = {
     {
       type: 'start',
       handler: normalizeGenerate,
-      order: 140,
+      order: 1400,
     },
     {
       type: 'task',
       handler: generateParams,
-      order: 120,
+      order: 1200,
     },
   ],
 }

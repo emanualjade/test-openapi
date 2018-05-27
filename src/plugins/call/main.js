@@ -15,12 +15,12 @@ module.exports = {
     {
       type: 'start',
       handler: normalizeParams,
-      order: 110,
+      order: 1100,
     },
     {
       type: 'task',
       handler: fireHttpCall,
-      order: 150,
+      order: 1500,
     },
   ],
 }

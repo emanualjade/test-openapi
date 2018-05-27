@@ -9,7 +9,7 @@ module.exports = {
     {
       type: 'task',
       handler: replaceDeps,
-      order: 100,
+      order: 1000,
     },
   ],
 }

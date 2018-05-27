@@ -9,7 +9,7 @@ module.exports = {
     {
       type: 'start',
       handler: mergeGlobTasks,
-      order: 100,
+      order: 1000,
     },
   ],
 }

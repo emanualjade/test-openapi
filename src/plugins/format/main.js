@@ -9,12 +9,12 @@ module.exports = {
     {
       type: 'task',
       handler: stringifyParams,
-      order: 130,
+      order: 1300,
     },
     {
       type: 'task',
       handler: parseResponse,
-      order: 160,
+      order: 1600,
     },
   ],
 }

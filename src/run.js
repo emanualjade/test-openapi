@@ -7,7 +7,7 @@ const { generateRequest } = require('./generate')
 const { stringifyRequest } = require('./format')
 const { sendRequest } = require('./send')
 const { normalizeRequest } = require('./normalize')
-const { validateResponse } = require('./response')
+const { validateResponse } = require('./validate')
 
 // Repeat each test `opts.repeat` times, each time with different random parameters
 // It will only show as a single `it()`

@@ -15,11 +15,7 @@ const validateRequiredBody = function({ schema, value }) {
   }
 
   const property = 'call.response.body'
-  throw new TestOpenApiError(`Response body ${message}`, {
-    property,
-    expected: schema,
-    actual: value,
-  })
+  throw new TestOpenApiError(`Response body ${message}`, { property, schema, actual: value })
 }
 
 const validateRequiredHeader = function({ schema, value, name }) {
@@ -31,7 +27,7 @@ const validateRequiredHeader = function({ schema, value, name }) {
   const property = `call.response.headers.${name}`
   throw new TestOpenApiError(`Response header '${name}' ${message}`, {
     property,
-    expected: schema,
+    schema,
     actual: value,
   })
 }

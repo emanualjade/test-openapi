@@ -6,29 +6,29 @@ const { validateFromSchema } = require('../../../utils')
 const { validateRequiredBody } = require('./required')
 
 // Validates response body against OpenAPI specification
-const validateBody = function({ validate: { body: vBody }, response: { body } }) {
-  if (vBody === undefined) {
+const validateBody = function({ validate: { body: schema }, response: { body } }) {
+  if (schema === undefined) {
     return
   }
 
-  validateRequiredBody({ schema: vBody, value: body })
+  validateRequiredBody({ schema, value: body })
 
   if (body === undefined) {
     return
   }
 
-  validateBodyValue({ vBody, body })
+  validateBodyValue({ schema, body })
 }
 
-const validateBodyValue = function({ vBody, body }) {
-  const { error } = validateFromSchema({ schema: vBody, value: body })
+const validateBodyValue = function({ schema, body }) {
+  const { error } = validateFromSchema({ schema, value: body })
 
   if (error === undefined) {
     return
   }
 
   const property = 'call.response.body'
-  throw new TestOpenApiError(`Response body${error}.`, { property, expected: vBody, actual: body })
+  throw new TestOpenApiError(`Response body${error}.`, { property, schema, actual: body })
 }
 
 module.exports = {

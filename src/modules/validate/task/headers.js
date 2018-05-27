@@ -7,19 +7,19 @@ const { validateRequiredHeader } = require('./required')
 
 // Validates response headers against OpenAPI specification
 const validateHeaders = function({ validate: { headers: vHeaders }, response: { headers } }) {
-  vHeaders.forEach(({ name, value: vHeader }) => validateHeader({ name, vHeader, headers }))
+  vHeaders.forEach(({ name, value: schema }) => validateHeader({ name, schema, headers }))
 }
 
-const validateHeader = function({ name, vHeader, headers }) {
+const validateHeader = function({ name, schema, headers }) {
   const header = getFetchHeader({ headers, name })
 
-  validateRequiredHeader({ schema: vHeader, value: header, name })
+  validateRequiredHeader({ schema, value: header, name })
 
   if (header === undefined) {
     return
   }
 
-  validateHeaderValue({ name, vHeader, header })
+  validateHeaderValue({ name, schema, header })
 }
 
 const getFetchHeader = function({ headers, name }) {
@@ -33,8 +33,8 @@ const getFetchHeader = function({ headers, name }) {
 }
 
 // Validates response header against JSON schema from specification
-const validateHeaderValue = function({ name, vHeader, header }) {
-  const { error } = validateFromSchema({ schema: vHeader, value: header })
+const validateHeaderValue = function({ name, schema, header }) {
+  const { error } = validateFromSchema({ schema, value: header })
 
   if (error === undefined) {
     return
@@ -43,7 +43,7 @@ const validateHeaderValue = function({ name, vHeader, header }) {
   const property = `call.response.headers.${name}`
   throw new TestOpenApiError(`Response header '${name}'${error}.`, {
     property,
-    expected: vHeader,
+    schema,
     actual: header,
   })
 }

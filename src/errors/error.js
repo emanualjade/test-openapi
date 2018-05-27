@@ -10,14 +10,32 @@
 //  - `taskName` `{string}`: current task name
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in `task`, `actual` or `config`
-//  - `expected` `{value}`: expected value
 //  - `actual` `{value}`: actual value
+//  - `expected` `{value}`: expected value
+//  - `schema` `{object}`: JSON schema v4 matched against `actual`
 class TestOpenApiError extends Error {
-  constructor(message, properties) {
+  constructor(message, properties = {}) {
     super(message)
 
     Object.assign(this, properties, { name: 'TestOpenApiError' })
+
+    addExpected({ obj: this, properties })
   }
+}
+
+// Tries to guess `error.expected` from simple `error.schema`
+const addExpected = function({ obj, properties: { schema, expected } }) {
+  if (schema === undefined || expected !== undefined) {
+    return
+  }
+
+  const { enum: enumVal } = schema
+  if (!Array.isArray(enumVal) || enumVal.length !== 1) {
+    return
+  }
+
+  const [expectedA] = enumVal
+  obj.expected = expectedA
 }
 
 module.exports = {

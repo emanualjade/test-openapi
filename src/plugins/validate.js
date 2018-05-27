@@ -67,7 +67,7 @@ const validateProp = function({ taskOrConfig, path, schema, name }) {
   throw new TestOpenApiError(`Configuration ${taskMessage}is invalid: ${error}`, {
     property: path,
     taskKey,
-    expected: schema,
+    schema,
     actual: value,
   })
 }

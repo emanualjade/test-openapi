@@ -1,5 +1,7 @@
 'use strict'
 
+const { isObject } = require('../../../utils')
+
 const { generateFromSchema } = require('./faker')
 
 // `Content-Type` value generation has extra constraints:
@@ -42,11 +44,15 @@ const getReqBodyType = function({ params }) {
     return
   }
 
-  if (param.name === 'body') {
-    return 'body'
+  if (param.name !== 'body') {
+    return 'formData'
   }
 
-  return 'formData'
+  if (isObject(param.value) || Array.isArray(param.value)) {
+    return 'objectBody'
+  }
+
+  return 'body'
 }
 
 const normalizeContentType = function({ contentTypeParam, reqBodyType }) {
@@ -105,6 +111,7 @@ const addDefaultReqBodyMime = function({ reqBodyType, mimes }) {
 
 const DEFAULT_REQ_BODY_MIME = {
   formData: 'application/x-www-form-urlencoded',
+  objectBody: 'application/json',
   body: 'application/octet-stream',
 }
 

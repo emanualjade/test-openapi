@@ -14,7 +14,7 @@ const {
   parseResponse,
   mergeSpecValidate,
   validateResponse,
-  normalizeReturnValue,
+  getReturnValue,
   returnedProperties,
 } = require('../plugins')
 
@@ -103,7 +103,7 @@ const PLUGINS = [
   // Validates the HTTP response
   validateResponse,
   // Returns final normalized value
-  normalizeReturnValue,
+  getReturnValue,
 ]
 
 module.exports = {

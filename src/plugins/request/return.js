@@ -2,10 +2,10 @@
 
 const { mapKeys } = require('lodash')
 
-const { locationToKey } = require('../utils')
+const { locationToKey } = require('../../utils')
 
 // Return final value
-const normalizeReturnValue = function({ params, response }) {
+const getReturnValue = function({ params, response }) {
   const request = normalizeRequest({ params })
   const responseA = normalizeResponse({ response })
   return { request, response: responseA }
@@ -33,5 +33,5 @@ const normalizeResponse = function({ response: { headers, ...response } = {} }) 
 }
 
 module.exports = {
-  normalizeReturnValue,
+  getReturnValue,
 }

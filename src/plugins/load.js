@@ -52,7 +52,7 @@ const eRequirePlugin = addErrorHandler(requirePlugin, requirePluginHandler)
 
 // `require()` all the plugins dependencies (from `plugin.dependencies`)
 const loadChildPlugins = function({ parentPlugins, loaded }) {
-  const dependenciesA = parentPlugins.map(({ dependencies }) => dependencies)
+  const dependenciesA = parentPlugins.map(({ dependencies = [] }) => dependencies)
   const dependenciesB = [].concat(...dependenciesA)
 
   // Make sure dependencies do not require already loaded plugins

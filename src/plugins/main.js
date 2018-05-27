@@ -2,6 +2,7 @@
 
 const { getConfigPlugins } = require('./config')
 const { loadAllPlugins } = require('./load')
+const { validateExports } = require('./exports')
 const { removeOverrides } = require('./overrides')
 const { validateMissingPlugins } = require('./missing')
 const { validatePluginsConfig } = require('./validate')
@@ -21,6 +22,7 @@ const applyReducer = function(input, reducer) {
 const REDUCERS = [
   getConfigPlugins,
   loadAllPlugins,
+  validateExports,
   removeOverrides,
   validateMissingPlugins,
   validatePluginsConfig,

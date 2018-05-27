@@ -114,7 +114,7 @@ const loadPlugin = function({ pluginName, loaded }) {
     return
   }
 
-  const plugin = requirePlugin({ pluginName })
+  const plugin = eRequirePlugin({ pluginName })
   return plugin
 }
 
@@ -123,6 +123,14 @@ const requirePlugin = function({ pluginName }) {
   // eslint-disable-next-line import/no-dynamic-require
   return require(`../plugins/${pluginName}`)
 }
+
+const requirePluginHandler = function(_, { pluginName }) {
+  throw new TestOpenApiError(
+    `The plugin '${pluginName}' is used in the configuration but is not installed. Please run 'npm install test-openapi-plugin-${pluginName}'.`,
+  )
+}
+
+const eRequirePlugin = addErrorHandler(requirePlugin, requirePluginHandler)
 
 // Make sure the user did not forget to include some plugins
 const validateUsedPlugins = function({ config, plugins }) {

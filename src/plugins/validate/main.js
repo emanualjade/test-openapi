@@ -2,28 +2,12 @@
 
 const { normalizeValidate } = require('./start')
 const { validateResponse } = require('./task')
+const conf = require('./conf')
 
 module.exports = {
   name: 'validate',
   dependencies: ['call'],
-  conf: {
-    task: {
-      schema: {
-        type: 'object',
-        properties: {
-          status: {},
-          body: {},
-        },
-        patternProperties: {
-          '^headers\\..+': {},
-        },
-        propertyNames: {
-          pattern: '^(status)|(headers\\..+)|(body)',
-        },
-        additionalProperties: false,
-      },
-    },
-  },
+  conf,
   handlers: [
     {
       type: 'start',

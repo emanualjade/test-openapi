@@ -1,0 +1,8 @@
+{
+  "general": {
+    "schema": {
+      "type": "boolean"
+    },
+    "default": false
+  }
+}

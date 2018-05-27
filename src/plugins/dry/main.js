@@ -1,18 +1,12 @@
 'use strict'
 
 const { handleDryRun } = require('./start')
+const conf = require('./conf')
 
 module.exports = {
   name: 'dry',
   dependencies: [],
-  conf: {
-    general: {
-      schema: {
-        type: 'boolean',
-      },
-      default: false,
-    },
-  },
+  conf,
   handlers: [
     {
       type: 'start',

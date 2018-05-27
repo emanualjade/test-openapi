@@ -1,0 +1,18 @@
+{
+  "task": {
+    "schema": {
+      "type": "object",
+      "properties": {
+        "status": {},
+        "body": {}
+      },
+      "patternProperties": {
+        "^headers\\..+": {}
+      },
+      "propertyNames": {
+        "pattern": "^(status)|(headers\\..+)|(body)"
+      },
+      "additionalProperties": false
+    }
+  }
+}

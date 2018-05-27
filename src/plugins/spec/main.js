@@ -2,17 +2,12 @@
 
 const { loadOpenApiSpec, loadNormalizedSpec } = require('./start')
 const { mergeSpecParams, mergeSpecValidate } = require('./task')
+const conf = require('./conf')
 
 module.exports = {
   name: 'spec',
   dependencies: ['call', 'generate', 'validate'],
-  conf: {
-    general: {
-      schema: {
-        type: ['string', 'object'],
-      },
-    },
-  },
+  conf,
   handlers: [
     {
       type: 'start',

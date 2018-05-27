@@ -1,5 +1,7 @@
 'use strict'
 
+const { pick } = require('lodash')
+
 const { addErrorHandler, addGenErrorHandler, runTasksHandler } = require('../errors')
 const { reduceAsync } = require('../utils')
 const {
@@ -13,6 +15,7 @@ const {
   mergeSpecValidate,
   validateResponse,
   normalizeReturnValue,
+  returnedProperties,
 } = require('../plugins')
 
 // Repeat each task `config.repeat` times, each time with different random parameters
@@ -37,9 +40,9 @@ const runTask = async function({ task: { originalTask, ...task }, secondArg }) {
   const secondArgA = addRunTask({ secondArg })
 
   const { task: taskA } = await eRunPlugins({ task, secondArg: secondArgA })
-  const { request, response } = taskA
-  // `task` will be the initial value before any plugin transformation
-  return { request, response, ...originalTask }
+
+  const taskB = getTaskReturn({ task: taskA, originalTask })
+  return taskB
 }
 
 // Pass `runTask` for recursive tasks
@@ -59,6 +62,15 @@ const runPlugin = function({ task, secondArg }, plugin) {
 // We merge the return value of each plugin
 const mergePlugin = function({ task, secondArg }, taskA) {
   return { task: { ...task, ...taskA }, secondArg }
+}
+
+// Task return value, returned to users and used by depReqs
+const getTaskReturn = function({ task, originalTask }) {
+  const taskA = pick(task, returnedProperties)
+
+  // Any value set on `task.*` by a plugin is returned, unless it already existed
+  // in original task
+  return { ...taskA, ...originalTask }
 }
 
 // Add initial `task` to every thrown error

@@ -4,7 +4,7 @@ const { mapKeys } = require('lodash')
 
 const { locationToKey } = require('../../../utils')
 
-// Return final value
+// Return `request` and `response` values
 const getReturnValue = function({ params, response }) {
   const request = normalizeRequest({ params })
   const responseA = normalizeResponse({ response })

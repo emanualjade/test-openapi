@@ -3,6 +3,7 @@
 const { TestOpenApiError } = require('../../../errors')
 const { validateIsSchema, normalizeShortcut, locationToKey } = require('../../../utils')
 
+// Normalize and validate `task.parameters.*` JSON schemas
 const normalizeGenerate = function({ tasks }) {
   const tasksA = tasks.map(normalizeTaskGenerate)
   return { tasks: tasksA }

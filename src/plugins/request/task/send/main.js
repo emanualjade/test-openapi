@@ -4,7 +4,7 @@ const { getFetchParams } = require('./params')
 const { fireFetch } = require('./fetch')
 const { getFetchResponse } = require('./response')
 
-// Actual HTTP request
+// Fire actual HTTP request
 const sendRequest = async function({ rawRequest, config }) {
   const { url, fetchParams } = getFetchParams({ rawRequest, config })
 

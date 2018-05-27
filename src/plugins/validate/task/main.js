@@ -4,7 +4,7 @@ const { validateStatus } = require('./status')
 const { validateHeaders } = require('./headers')
 const { validateBody } = require('./body')
 
-// Validates response against OpenAPI specification
+// Validate response against `task.validate.*` JSON schemas
 const validateResponse = function({ validate, response }) {
   validateStatus({ validate, response })
   validateHeaders({ validate, response })

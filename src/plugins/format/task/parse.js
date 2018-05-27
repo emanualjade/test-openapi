@@ -5,6 +5,7 @@ const { mapValues } = require('lodash')
 const { findBodyHandler } = require('./body')
 const { parseFlat } = require('./json')
 
+// Parse response
 const parseResponse = function({ rawResponse: { status, headers, body } }) {
   const headersA = parseHeaders({ headers })
   const bodyA = parseBody({ body, headers })

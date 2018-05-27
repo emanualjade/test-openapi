@@ -43,6 +43,29 @@ const runPluginsHandler = function(error, { pluginNames }) {
 
 const eRunPlugins = addErrorHandler(runPlugins, runPluginsHandler)
 
+// The following plugins can be run (order in parenthesis).
+// `start`, i.e. before any tasks:
+//   - `glob` (100): merge tasks whose name include globbing matching other task names.
+//   - `request` (110): normalize `task.parameters.*` object to an array
+//   - `validate` (120): normalize `task.validate.*`
+//   - `spec` (130): parse, validate and normalize an OpenAPI specification
+//   - `generate` (140): normalize and validate `task.parameters.*` JSON schemas
+//   - `dry` (150): `config.dry: true` makes everything stop just before the
+//     first task run
+//   - `repeat` (160): repeat each task `config.repeat` times
+// `task`, i.e. for each task:
+//   - `deps` (100): replace all `deps`, i.e. references to other tasks
+//   - `spec` (110): merge OpenAPI specification to `task.parameters.*`
+//   - `generate` (120): generates random values based on `request.parameters.*`
+//     JSON schemas
+//   - `format` (130): stringify request parameters
+//   - `url` (140): build request URL from request parameters
+//   - `request` (150): fire actual HTTP request
+//   - `format` (160): parse response
+//   - `spec` (170): merge OpenAPI specification to `task.validate.*`
+//   - `validate` (180): validate response against `task.validate.*` JSON schemas
+//   - `request` (190): return `request` and `response` values
+
 module.exports = {
   run: eRun,
 }

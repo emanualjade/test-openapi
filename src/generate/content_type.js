@@ -15,19 +15,17 @@ const fakeContentType = function({ request }) {
   const contentTypeParamA = normalizeContentType({ contentTypeParam, reqBodyType })
   const requestB = [...contentTypeParamA, ...requestA]
 
-  const contentType = getReqContentType({ contentTypeParam: contentTypeParamA })
-  return { request: requestB, contentType }
+  return requestB
 }
 
 // Extract the `Content-Type` header request parameter from others
 const extractContentTypeParam = function({ request }) {
-  const contentTypeParam =
-    request.find(param => isContentTypeParam({ param })) || DEFAULT_CONTENT_TYPE
-  const requestA = request.filter(param => !isContentTypeParam({ param }))
+  const contentTypeParam = request.find(isContentTypeParam) || DEFAULT_CONTENT_TYPE
+  const requestA = request.filter(param => !isContentTypeParam(param))
   return [contentTypeParam, requestA]
 }
 
-const isContentTypeParam = function({ param: { location, name } }) {
+const isContentTypeParam = function({ location, name }) {
   return location === 'header' && name.toLowerCase() === 'content-type'
 }
 
@@ -108,16 +106,6 @@ const addDefaultReqBodyMime = function({ reqBodyType, mimes }) {
 const generateContentType = function({ contentTypeParam, contentTypeParam: { schema } }) {
   const value = generateFromSchema({ schema })
   return { ...contentTypeParam, value }
-}
-
-// Retrieve the `Content-Type` header to set in the request
-const getReqContentType = function({ contentTypeParam }) {
-  if (contentTypeParam.length === 0) {
-    return
-  }
-
-  const [{ value: contentType }] = contentTypeParam
-  return contentType
 }
 
 module.exports = {

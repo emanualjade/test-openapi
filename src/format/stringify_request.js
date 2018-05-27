@@ -4,13 +4,13 @@ const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 const { stringifyFlat } = require('./json')
 
-// Stringify a request's parameters according to OpenAPI's specification
-const stringifyRequest = function({ request, contentType }) {
-  return request.map(param => stringifyParam({ param, contentType }))
+// Stringify request's parameters
+const stringifyRequest = function({ request }) {
+  return request.map(param => stringifyParam({ param, request }))
 }
 
-const stringifyParam = function({ param, param: { location }, contentType }) {
-  const value = PARAM_STRINGIFIERS[location]({ param, contentType })
+const stringifyParam = function({ param, param: { location }, request }) {
+  const value = PARAM_STRINGIFIERS[location]({ param, request })
   return { ...param, value }
 }
 
@@ -26,11 +26,28 @@ const stringifyParamFlat = function({ param: { value, name, collectionFormat } }
 }
 
 // Stringify the request body according to HTTP request header `Content-Type`
-const stringifyBody = function({ param: { value }, contentType }) {
+const stringifyBody = function({ param: { value }, request }) {
+  const mime = getBodyMime({ request })
+
   // Default stringifiers tries JSON.stringify()
-  const { stringify = stringifyFlat } = findBodyHandler({ mime: contentType })
+  const { stringify = stringifyFlat } = findBodyHandler({ mime })
 
   return stringify(value)
+}
+
+// Retrieve the `Content-Type` header to set in the request
+const getBodyMime = function({ request }) {
+  const contentTypeParam = request.find(isContentTypeParam)
+
+  if (contentTypeParam === undefined) {
+    return
+  }
+
+  return contentTypeParam.value
+}
+
+const isContentTypeParam = function({ location, name }) {
+  return location === 'header' && name.toLowerCase() === 'content-type'
 }
 
 // TODO: not supported yet

@@ -1,7 +1,5 @@
 'use strict'
 
-const { stringifyRequest } = require('../format')
-
 const { fakeValues } = require('./fake')
 const { fakeContentType } = require('./content_type')
 
@@ -9,11 +7,9 @@ const { fakeContentType } = require('./content_type')
 const generateRequest = function({ request }) {
   const requestA = fakeValues({ request })
 
-  const { request: requestB, contentType } = fakeContentType({ request: requestA })
+  const requestB = fakeContentType({ request: requestA })
 
-  const requestC = stringifyRequest({ request: requestB, contentType })
-
-  return requestC
+  return requestB
 }
 
 module.exports = {

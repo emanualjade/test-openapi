@@ -2,7 +2,6 @@
 
 module.exports = {
   ...require('./types'),
-  ...require('./faker'),
   ...require('./merge'),
   ...require('./get'),
   ...require('./promise'),

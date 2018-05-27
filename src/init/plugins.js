@@ -1,6 +1,6 @@
 'use strict'
 
-const { sortBy } = require('../utils')
+const { sortBy, reduceAsync } = require('../utils')
 const PLUGINS = require('../plugins')
 
 // Plugins are the way most functionalities is implemented.
@@ -117,7 +117,20 @@ const getPropertiesByType = function({ type, plugins }) {
   return { [type]: propertiesB }
 }
 
+const runHandlers = function(input, handlers) {
+  return reduceAsync(handlers, runHandler, input, mergeReturnValue)
+}
+
+const runHandler = function(input, handler) {
+  return handler(input)
+}
+
+const mergeReturnValue = function(input, newInput) {
+  return { ...input, ...newInput }
+}
+
 module.exports = {
   getPluginNames,
   getPlugins,
+  runHandlers,
 }

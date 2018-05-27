@@ -1,11 +1,10 @@
 'use strict'
 
-const { reduceAsync } = require('../utils')
 const { addErrorHandler, addGenErrorHandler, topNormalizeHandler } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 
-const { getPluginNames, getPlugins } = require('./plugins')
+const { getPluginNames, getPlugins, runHandlers } = require('./plugins')
 const { launchRunner } = require('./runner')
 const { runTask } = require('./run')
 
@@ -27,29 +26,15 @@ const runPlugins = async function({ config, pluginNames }) {
 
   const configA = { ...config, runTask }
 
-  const configB = await runStartPlugins({ config: configA, plugins })
+  const {
+    handlers: { start: handlers },
+  } = plugins
+  const configB = await runHandlers(configA, handlers)
 
   await launchRunner({ config: configB, plugins })
 }
 
 const eRunPlugins = addGenErrorHandler(runPlugins, ({ pluginNames }) => ({ plugins: pluginNames }))
-
-const runStartPlugins = function({
-  config,
-  plugins: {
-    handlers: { start: startHandlers },
-  },
-}) {
-  return reduceAsync(startHandlers, runPlugin, config, mergePlugin)
-}
-
-const runPlugin = function(config, plugin) {
-  return plugin(config)
-}
-
-const mergePlugin = function(configA, configB) {
-  return { ...configA, ...configB }
-}
 
 module.exports = {
   run: eRun,

@@ -4,19 +4,7 @@ const { pick } = require('lodash')
 
 const { addGenErrorHandler } = require('../errors')
 const { reduceAsync } = require('../utils')
-const {
-  replaceDeps,
-  mergeSpecParams,
-  generateParams,
-  stringifyParams,
-  addFullUrl,
-  sendRequest,
-  parseResponse,
-  mergeSpecValidate,
-  validateResponse,
-  getReturnValue,
-  returnedProperties,
-} = require('../plugins')
+const { deps, spec, generate, format, url, request, validate } = require('../plugins')
 
 // Run an `it()` task
 const runTask = async function({ originalTask, ...task }, context) {
@@ -51,7 +39,7 @@ const mergePlugin = function({ task, context }, taskA) {
 
 // Task return value, returned to users and used by depReqs
 const getTaskReturn = function({ task, originalTask }) {
-  const taskA = pick(task, returnedProperties)
+  const taskA = pick(task, request.returnedProperties)
 
   // Any value set on `task.*` by a plugin is returned, unless it already existed
   // in original task
@@ -69,26 +57,16 @@ const eRunPlugin = addGenErrorHandler(runPlugin, ({ task: { rawRequest, rawRespo
 }))
 
 const PLUGINS = [
-  // Replace all `deps`, i.e. references to other tasks.
-  replaceDeps,
-  // Merge `task.parameters.*` to specification
-  mergeSpecParams,
-  // Generates random request parameters based on JSON schema
-  generateParams,
-  // Stringify request parameters
-  stringifyParams,
-  // Retrieve full URL from request parameters
-  addFullUrl,
-  // Send an HTTP request to the endpoint
-  sendRequest,
-  // Parse response
-  parseResponse,
-  // Merge `task.validate.*` to specification
-  mergeSpecValidate,
-  // Validates the HTTP response
-  validateResponse,
-  // Returns final normalized value
-  getReturnValue,
+  deps.replaceDeps,
+  spec.mergeSpecParams,
+  generate.generateParams,
+  format.stringifyParams,
+  url.addFullUrl,
+  request.sendRequest,
+  format.parseResponse,
+  spec.mergeSpecValidate,
+  validate.validateResponse,
+  request.getReturnValue,
 ]
 
 module.exports = {

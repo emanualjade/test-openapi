@@ -2,15 +2,15 @@
 
 const { reduceAsync } = require('../utils')
 const {
-  loadConfig,
-  getTasks,
-  mergeGlobTasks,
-  normalizeParams,
-  normalizeGenerate,
-  normalizeValidate,
-  loadNormalizedSpec,
-  handleDryRun,
-  repeatTasks,
+  config,
+  tasks,
+  glob,
+  spec,
+  generate,
+  request,
+  validate,
+  dry,
+  repeat,
 } = require('../plugins')
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
@@ -41,15 +41,15 @@ const mergePlugin = function(configA, configB) {
 }
 
 const PLUGINS = [
-  loadConfig,
-  getTasks,
-  mergeGlobTasks,
-  normalizeParams,
-  normalizeValidate,
-  loadNormalizedSpec,
-  normalizeGenerate,
-  handleDryRun,
-  repeatTasks,
+  config.loadConfig,
+  tasks.getTasks,
+  glob.mergeGlobTasks,
+  request.normalizeParams,
+  validate.normalizeValidate,
+  spec.loadNormalizedSpec,
+  generate.normalizeGenerate,
+  dry.handleDryRun,
+  repeat.repeatTasks,
 ]
 
 module.exports = {

@@ -5,7 +5,7 @@ const { replaceDeps, handleDepError } = require('./deps')
 const { mergeTest } = require('./merge')
 const { generateRequest } = require('./generate')
 const { stringifyRequest } = require('./format')
-const { sendRequest } = require('./request')
+const { sendRequest } = require('./send')
 const { normalizeRequest } = require('./normalize')
 const { validateResponse } = require('./response')
 

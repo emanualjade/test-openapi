@@ -126,7 +126,7 @@ const loadPlugin = function({ pluginName, loaded }) {
 // TODO: separate plugins in their own node modules instead
 const requirePlugin = function({ pluginName }) {
   // eslint-disable-next-line import/no-dynamic-require
-  return require(`../plugins/${pluginName}`)
+  return require(`../modules/${pluginName}`)
 }
 
 const requirePluginHandler = function(_, { pluginName }) {

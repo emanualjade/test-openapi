@@ -89,8 +89,8 @@ const validatePluginsConfig = function({ config, plugins }) {
   plugins.forEach(plugin => validatePluginConfig({ config, plugin }))
 }
 
-const validatePluginConfig = function({ config, plugin: { conf = {}, name } }) {
-  Object.entries(conf).forEach(([propName, { schema }]) =>
+const validatePluginConfig = function({ config, plugin: { config: pluginConfig = {}, name } }) {
+  Object.entries(pluginConfig).forEach(([propName, { schema }]) =>
     validatePropConfig({ config, propName, schema, name }),
   )
 }
@@ -113,12 +113,12 @@ const getPropPath = function({ propName, name }) {
   return { path, type }
 }
 
-// `conf.general.*` validate against top-level configuration
+// `plugin.config.general.*` validate against top-level configuration
 const validateGeneral = function({ config, path, schema }) {
   validateProp({ value: config, path, schema, name: 'config' })
 }
 
-// `conf.task.*` validate against each task
+// `plugin.config.task.*` validate against each task
 const validateTask = function({ config: { tasks }, path, schema }) {
   tasks.forEach(task => validateProp({ value: task, path, schema, name: 'task' }))
 }
@@ -129,7 +129,7 @@ const VALIDATORS = {
 }
 
 // Validate plugin-specific configuration against a JSON schema specified in
-// plugin's `conf`
+// `plugin.config`
 const validateProp = function({ value, path, schema, name }) {
   const valueA = get(value, path)
   if (valueA === undefined) {
@@ -184,18 +184,18 @@ const getPluginsDefaults = function({ plugins, type }) {
   return defaultValuesA
 }
 
-const getPluginDefaults = function({ plugin: { name, conf = {} }, type }) {
-  return Object.entries(conf)
-    .filter(confEntry => hasDefaults(type, confEntry))
-    .map(confEntry => getDefaults(type, confEntry, name))
+const getPluginDefaults = function({ plugin: { name, config: pluginConfig = {} }, type }) {
+  return Object.entries(pluginConfig)
+    .filter(configEntry => hasDefaults(type, configEntry))
+    .map(configEntry => getDefaults(type, configEntry, name))
 }
 
-const hasDefaults = function(type, [confName, { default: defaultValue }]) {
-  return confName.startsWith(type) && defaultValue !== undefined
+const hasDefaults = function(type, [configName, { default: defaultValue }]) {
+  return configName.startsWith(type) && defaultValue !== undefined
 }
 
-const getDefaults = function(type, [confName, { default: defaultValue }], name) {
-  const path = confName.replace(type, name)
+const getDefaults = function(type, [configName, { default: defaultValue }], name) {
+  const path = configName.replace(type, name)
   return set({}, path, defaultValue)
 }
 

@@ -2,12 +2,12 @@
 
 const { normalizeValidate } = require('./start')
 const { validateResponse } = require('./task')
-const conf = require('./conf')
+const config = require('./config')
 
 module.exports = {
   name: 'validate',
   dependencies: ['call'],
-  conf,
+  config,
   handlers: [
     {
       type: 'start',

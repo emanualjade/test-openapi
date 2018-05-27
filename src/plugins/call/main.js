@@ -2,12 +2,12 @@
 
 const { normalizeParams } = require('./start')
 const { fireHttpCall } = require('./task')
-const conf = require('./conf')
+const config = require('./config')
 
 module.exports = {
   name: 'call',
   dependencies: ['format', 'url'],
-  conf,
+  config,
   handlers: [
     {
       type: 'start',

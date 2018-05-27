@@ -10,11 +10,11 @@ const { TestOpenApiError } = require('./error')
 // Normalize any error to our specific format
 const normalizeError = function(error, properties) {
   if (!(error instanceof Error)) {
-    return createBugError(error)
+    return createBugError(new Error(error))
   }
 
   if (!(error instanceof TestOpenApiError)) {
-    return createBugError(error.stack)
+    return createBugError(error)
   }
 
   // Bug errors do not have `properties`
@@ -24,8 +24,8 @@ const normalizeError = function(error, properties) {
 }
 
 // Any error not using `TestOpenApiError` is a bug
-const createBugError = function(message) {
-  return new TestOpenApiError(`${BUG_MESSAGE}${message}`, { type: 'bug' })
+const createBugError = function({ stack }) {
+  return new TestOpenApiError(`${BUG_MESSAGE}\n\n${stack}`, { type: 'bug' })
 }
 
 const BUG_MESSAGE = `A bug in 'test-openapi' occured.

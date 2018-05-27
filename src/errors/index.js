@@ -2,7 +2,8 @@
 
 module.exports = {
   ...require('./error'),
+  ...require('./normalize'),
   ...require('./handler'),
-  ...require('./top'),
   ...require('./task'),
+  ...require('./bundle'),
 }

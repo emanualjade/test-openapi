@@ -1,6 +1,11 @@
 'use strict'
 
-const { addErrorHandler, addGenErrorHandler, topNormalizeHandler } = require('../errors')
+const {
+  addErrorHandler,
+  addGenErrorHandler,
+  normalizeError,
+  bundleSingleError,
+} = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 
@@ -19,7 +24,14 @@ const run = async function(config = {}) {
   await eRunPlugins({ config: configB, pluginNames })
 }
 
-const eRun = addErrorHandler(run, topNormalizeHandler)
+// Add `error.config` and `error.errors` to every error
+const runHandler = function(error, config = {}) {
+  const errorA = normalizeError(error, { config })
+  const errorB = bundleSingleError({ error: errorA })
+  throw errorB
+}
+
+const eRun = addErrorHandler(run, runHandler)
 
 const runPlugins = async function({ config, pluginNames }) {
   const plugins = getPlugins({ pluginNames })

@@ -3,7 +3,7 @@
 const Jasmine = require('jasmine')
 const { SpecReporter } = require('jasmine-spec-reporter')
 
-const { createTaskError } = require('../errors')
+const { bundleErrors } = require('../errors')
 
 const { defineTasks } = require('./define')
 
@@ -50,7 +50,7 @@ const onComplete = function(resolve, reject, errors, passed) {
     return resolve()
   }
 
-  const error = createTaskError({ errors })
+  const error = bundleErrors({ errors })
   reject(error)
 }
 

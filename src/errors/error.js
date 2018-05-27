@@ -13,7 +13,7 @@ class TestOpenApiError extends Error {
   constructor(message, properties) {
     super(message)
 
-    Object.assign(this, properties)
+    Object.assign(this, properties, { name: 'TestOpenApiError' })
   }
 }
 

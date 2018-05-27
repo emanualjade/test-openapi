@@ -2,7 +2,7 @@
 
 const { omit } = require('lodash')
 
-const { mergeParams } = require('../../utils')
+const { mergeParams } = require('../../../utils')
 
 const { normalizeSchema } = require('./json_schema')
 const { getNegotiationsParams } = require('./content_negotiation')

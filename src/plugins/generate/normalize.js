@@ -3,7 +3,7 @@
 const { throwTaskError } = require('../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../utils')
 
-const normalizeTasksGenerate = function({ tasks }) {
+const normalizeGenerate = function({ tasks }) {
   const tasksA = tasks.map(normalizeTaskGenerate)
   return { tasks: tasksA }
 }
@@ -44,5 +44,5 @@ const validateJsonSchema = function({ task: { taskKey }, name, schema }) {
 }
 
 module.exports = {
-  normalizeTasksGenerate,
+  normalizeGenerate,
 }

@@ -2,7 +2,7 @@
 
 const { mapValues } = require('lodash')
 
-const { mergeHeaders } = require('../../utils')
+const { mergeHeaders } = require('../../../utils')
 
 const { normalizeSchema } = require('./json_schema')
 const { getNegotiationsResponse } = require('./content_negotiation')

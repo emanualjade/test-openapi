@@ -6,12 +6,12 @@ const { throwTaskError } = require('../../errors')
 const { validateIsSchema, normalizeShortcut } = require('../../utils')
 
 // Normalize `task.validate.*`
-const normalizeTasksValidate = function({ tasks }) {
-  const tasksA = tasks.map(normalizeValidate)
+const normalizeValidate = function({ tasks }) {
+  const tasksA = tasks.map(normalizeTaskValidate)
   return { tasks: tasksA }
 }
 
-const normalizeValidate = function({
+const normalizeTaskValidate = function({
   validate = {},
   validate: { status = DEFAULT_STATUS_CODE } = {},
   ...task
@@ -76,5 +76,5 @@ const getHeader = function([name, schema]) {
 const HEADERS_PREFIX_REGEXP = /^headers\./
 
 module.exports = {
-  normalizeTasksValidate,
+  normalizeValidate,
 }

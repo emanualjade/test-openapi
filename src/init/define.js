@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, runTaskHandler } = require('../errors')
+const { addErrorHandler, normalizeError } = require('../errors')
 
 const { runTask: originalRunTask } = require('./run')
 
@@ -57,6 +57,21 @@ const getHandler = function({ handler, readOnlyArgs, errors }) {
   const handlerA = (task, ...args) => handler({ ...task, ...readOnlyArgs }, ...args)
   const handlerB = addErrorHandler(handlerA, runTaskHandler.bind(null, { errors }))
   return handlerB
+}
+
+// Error handler for `it()`
+const runTaskHandler = function({ errors }, error, task) {
+  const errorA = addTask({ error, task })
+
+  // Errors collection
+  errors.push(errorA)
+
+  throw errorA
+}
+
+// Add `error.task` and `error.taskName`
+const addTask = function({ error, task: { taskKey: taskName, ...task } }) {
+  return normalizeError(error, { taskName, task })
 }
 
 module.exports = {

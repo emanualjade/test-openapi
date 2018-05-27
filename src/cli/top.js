@@ -17,7 +17,7 @@ const CONFIG = {
     string: true,
     alias: 's',
     requiresArg: true,
-    describe: 'Path to the OpenAPI specification',
+    describe: 'File path or URL to the OpenAPI specification',
   },
   server: {
     string: true,

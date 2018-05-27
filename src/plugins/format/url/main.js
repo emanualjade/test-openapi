@@ -2,23 +2,23 @@
 
 const { normalizeUrl } = require('../../../utils')
 
-const { addPathParam } = require('./path')
-const { addQueryParam } = require('./query')
+const { addUrlParams } = require('./params')
+const { addQueryParams } = require('./query')
 
-// Build request URL from OpenAPI specification request `parameters`
-const addUrlParam = function({ rawRequest, config: { server }, operation: { path } }) {
-  const url = getUrlParam({ rawRequest, server, path })
+// Build request URL from request parameters
+const addFullUrl = function({ rawRequest, config, operation }) {
+  const url = getFullUrl({ rawRequest, config, operation })
   return { ...rawRequest, url }
 }
 
-const getUrlParam = function({ rawRequest, server, path }) {
-  const pathA = addPathParam({ path, rawRequest })
-  const pathB = addQueryParam({ path: pathA, rawRequest })
+const getFullUrl = function({ rawRequest, config: { server }, operation: { path } }) {
+  const pathA = addUrlParams({ path, rawRequest })
+  const pathB = addQueryParams({ path: pathA, rawRequest })
   const url = `${server}${pathB}`
   const urlA = normalizeUrl({ url })
   return urlA
 }
 
 module.exports = {
-  addUrlParam,
+  addFullUrl,
 }

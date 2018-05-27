@@ -1,6 +1,6 @@
 'use strict'
 
-// From an array of parameters to { `path.*`: ..., `body`: ..., `headers.*`: ... }
+// From an array of parameters to { `url.*`: ..., `body`: ..., `headers.*`: ... }
 const objectifyParams = function({ params }) {
   const paramsA = params.map(mapLocationToKey)
   const request = Object.assign({}, ...paramsA)
@@ -39,7 +39,7 @@ const locationToKey = function({ name, location }) {
 }
 
 const LOCATION_TO_KEY = {
-  path: 'path',
+  path: 'url',
   query: 'query',
   header: 'headers',
   body: 'body',
@@ -62,7 +62,7 @@ const keyToLocation = function({ key }) {
 }
 
 const KEY_TO_LOCATION = {
-  path: 'path',
+  url: 'path',
   query: 'query',
   headers: 'header',
   body: 'formData',

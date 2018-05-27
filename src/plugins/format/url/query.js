@@ -1,7 +1,7 @@
 'use strict'
 
-// Add `query` request parameters to request URL
-const addQueryParam = function({ path, rawRequest }) {
+// Add `query` request parameters to the request URL
+const addQueryParams = function({ path, rawRequest }) {
   const query = Object.entries(rawRequest)
     .filter(([name]) => QUERY_PREFIX.test(name))
     .map(encodeQueryParam)
@@ -24,5 +24,5 @@ const encodeQueryParam = function([name, value]) {
 const QUERY_PREFIX = /^query\./
 
 module.exports = {
-  addQueryParam,
+  addQueryParams,
 }

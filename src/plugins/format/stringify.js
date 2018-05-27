@@ -4,13 +4,13 @@ const { objectifyParams, stringifyFlat } = require('../../utils')
 
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
-const { addUrlParam } = require('./url')
+const { addFullUrl } = require('./url')
 
 // Stringify request parameters
 const stringifyParams = function({ params, operation, config }) {
   const paramsA = params.map(param => stringifyParam({ param, params }))
   const rawRequest = objectifyParams({ params: paramsA })
-  const rawRequestA = addUrlParam({ rawRequest, operation, config })
+  const rawRequestA = addFullUrl({ rawRequest, operation, config })
   return { rawRequest: rawRequestA }
 }
 
@@ -19,7 +19,7 @@ const stringifyParam = function({ param, param: { location }, params }) {
   return { ...param, value }
 }
 
-// `path`, `query` and `header` values might not be strings.
+// `url`, `query` and `header` values might not be strings.
 // In which case they are JSON stringified
 // Unless a `collectionFormat` is used
 const stringifyParamFlat = function({ param: { value, name, collectionFormat } }) {

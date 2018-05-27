@@ -11,11 +11,11 @@ const { getSecParams } = require('./security')
 // Normalize OpenAPI request parameters into specification-agnostic format
 const getParams = function({
   spec,
-  pathDef: { parameters: pathParams = [] },
+  pathDef: { parameters: urlParams = [] },
   operation,
   operation: { parameters: params = [] },
 }) {
-  const paramsA = [...pathParams, ...params]
+  const paramsA = [...urlParams, ...params]
 
   const paramsB = paramsA.map(getParam)
 

@@ -4,13 +4,13 @@
     "parameters": {
       "type": "object",
       "patternProperties": {
-        "^path\\..+": {},
+        "^url\\..+": {},
         "^query\\..+": {},
         "^headers\\..+": {},
         "^body": {}
       },
       "propertyNames": {
-        "pattern": "^(path\\..+)|(query\\..+)|(^headers\\..+)|(body)"
+        "pattern": "^(url\\..+)|(query\\..+)|(^headers\\..+)|(body)"
       },
       "additionalProperties": false
     },

@@ -9,7 +9,7 @@ module.exports = {
   ...require('./generate'),
   ...require('./format'),
   ...require('./url'),
-  ...require('./send'),
+  ...require('./request'),
   ...require('./validate'),
   ...require('./normalize'),
 }

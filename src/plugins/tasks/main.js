@@ -4,6 +4,7 @@ const { loadTasks } = require('./load')
 const { validateTasks } = require('./validate')
 const { normalizeTasks } = require('./normalize')
 
+// Retrieve tasks files as an array of normalized task objects
 const getTasks = async function({ tasks }) {
   const tasksA = await loadTasks({ tasks })
 

@@ -2,7 +2,7 @@
 
 const fetch = require('cross-fetch')
 
-const { addErrorHandler } = require('../../errors')
+const { addErrorHandler } = require('../../../errors')
 
 const { getFetchParams } = require('./params')
 const { getFetchResponse } = require('./response')

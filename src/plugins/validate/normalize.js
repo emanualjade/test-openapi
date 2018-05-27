@@ -1,7 +1,9 @@
 'use strict'
 
+const { mapValues } = require('lodash')
+
 const { throwTaskError } = require('../../errors')
-const { validateIsSchema } = require('../../utils')
+const { validateIsSchema, normalizeShortcut } = require('../../utils')
 
 // Normalize `task.validate.*`
 const normalizeTasksValidate = function({ tasks }) {
@@ -11,19 +13,27 @@ const normalizeTasksValidate = function({ tasks }) {
 
 const normalizeValidate = function({
   validate = {},
-  validate: { status = DEFAULT_STATUS_CODE, body, ...headers } = {},
+  validate: { status = DEFAULT_STATUS_CODE } = {},
   ...task
 }) {
-  validateJsonSchemas({ task, validate })
+  // Default status code
+  const validateA = { ...validate, status }
 
+  // `task.validate.*: non-object` is shortcut for `{ enum: [value] }`
+  const validateB = mapValues(validateA, normalizeShortcut)
+
+  validateJsonSchemas({ task, validate: validateB })
+
+  const { status: statusA, body, ...headers } = validateB
   const headersA = normalizeHeaders({ headers })
-  const validateA = { status, headers: headersA, body }
-  return { ...task, validate: validateA }
+  const validateC = { status: statusA, headers: headersA, body }
+
+  return { ...task, validate: validateC }
 }
 
 // Unless `task.validate.status` is overriden, will validate that response's
 // status code is `200`
-const DEFAULT_STATUS_CODE = { type: 'integer', enum: [200] }
+const DEFAULT_STATUS_CODE = 200
 
 // Make sure `task.validate.*.*` are valid JSON schemas
 const validateJsonSchemas = function({ task, validate }) {

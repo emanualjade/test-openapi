@@ -1,7 +1,7 @@
 'use strict'
 
 // Find the operation related to a specific task, and add it
-// Does so by checking task key which should be `OperationId.taskName`
+// Does so by checking task key which should be `OperationId.taskKey`
 const getSpecOperation = function({ taskKey, config: { spec } }) {
   if (spec === undefined) {
     return

@@ -51,8 +51,12 @@ const onComplete = function(resolve, reject, errors, passed) {
   }
 
   const error = bundleErrors({ errors })
+  error.message = ERROR_MESSAGE
+
   reject(error)
 }
+
+const ERROR_MESSAGE = 'Some tasks failed'
 
 module.exports = {
   launchRunner,

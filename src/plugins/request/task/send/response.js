@@ -3,9 +3,9 @@
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response
-const getFetchResponse = async function({ rawResponse, rawResponse: { status } }) {
+const getFetchResponse = async function({ rawResponse, rawResponse: { status }, config }) {
   const headers = getHeaders({ rawResponse })
-  const body = await eGetBody({ rawResponse })
+  const body = await eGetBody({ rawResponse, config })
 
   return { status, headers, body }
 }
@@ -23,9 +23,24 @@ const getBody = function({ rawResponse }) {
   return rawResponse.text()
 }
 
-const getBodyHandler = function({ message }) {
-  const property = 'response.body'
-  throw new TestOpenApiError(`Could not read response body: ${message}`, { property })
+const getBodyHandler = function(
+  { message, type },
+  {
+    config: {
+      request: { timeout },
+    },
+  },
+) {
+  const properties = { property: 'response.body' }
+
+  if (type === 'body-timeout') {
+    throw new TestOpenApiError(
+      `Parsing the response body took more than ${timeout} milliseconds`,
+      properties,
+    )
+  }
+
+  throw new TestOpenApiError(`Could not read response body: ${message}`, properties)
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)

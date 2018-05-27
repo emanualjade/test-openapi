@@ -51,7 +51,7 @@ const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
     `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
     {
       property,
-      task: taskKey,
+      taskKey,
     },
   )
 }

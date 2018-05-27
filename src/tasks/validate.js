@@ -1,6 +1,6 @@
 'use strict'
 
-const { isDeepStrictEqual } = require('util')
+const { isEqual } = require('lodash')
 
 const { TestOpenApiError, addErrorHandler } = require('../errors')
 const { validateFromSchema, isObject } = require('../utils')
@@ -32,26 +32,31 @@ const validateEmptyTasks = function({ tasks }) {
 }
 
 const validateTask = function([taskKey, task]) {
-  eValidateJson({ taskKey, task })
+  validateJson({ taskKey, task })
   validateTaskSchema({ taskKey, task })
 }
 
 // Tasks are constrained to JSON
 // This also validates against circular references
 const validateJson = function({ taskKey, task }) {
-  const copy = JSON.parse(JSON.stringify(task))
-  if (isDeepStrictEqual(task, copy)) {
+  const copy = eCloneTask({ task, taskKey })
+  // TODO: replace with util.isDeepStrictEqual() when we upgrade Node.js
+  if (isEqual(task, copy)) {
     return
   }
 
-  throw new TestOpenApiError(`Task '${taskKey}' is not valid JSON`, { task: taskKey })
+  throw new TestOpenApiError(`Task '${taskKey}' is not valid JSON`, { taskKey })
 }
 
-const validateJsonHandler = function({ message }, { taskKey }) {
-  throw new TestOpenApiError(`Task '${taskKey}' is not valid JSON: ${message}`, { task: taskKey })
+const cloneTask = function({ task }) {
+  return JSON.parse(JSON.stringify(task))
 }
 
-const eValidateJson = addErrorHandler(validateJson, validateJsonHandler)
+const cloneTaskHandler = function({ message }, { taskKey }) {
+  throw new TestOpenApiError(`Task '${taskKey}' is not valid JSON: ${message}`, { taskKey })
+}
+
+const eCloneTask = addErrorHandler(cloneTask, cloneTaskHandler)
 
 const validateTaskSchema = function({ taskKey, task }) {
   const { error, path } = validateFromSchema({ schema: TASK_SCHEMA, value: task, name: taskKey })
@@ -59,10 +64,7 @@ const validateTaskSchema = function({ taskKey, task }) {
     return
   }
 
-  throw new TestOpenApiError(`Task '${taskKey}' is invalid: ${error}`, {
-    task: taskKey,
-    property: path,
-  })
+  throw new TestOpenApiError(`Task '${taskKey}' is invalid: ${error}`, { taskKey, property: path })
 }
 
 module.exports = {

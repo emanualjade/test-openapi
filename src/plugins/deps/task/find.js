@@ -4,7 +4,7 @@ const { omit } = require('lodash')
 
 const { crawl } = require('./crawl')
 
-// Find all `deps`, i.e. references to other tasks as `taskName.*`
+// Find all `deps`, i.e. references to other tasks as `taskKey.*`
 const findRefs = function({ task, tasks }) {
   const cleanTask = omit(task, CLEAN_PROPERTIES)
   const nodes = crawl(cleanTask)
@@ -17,7 +17,7 @@ const findRefs = function({ task, tasks }) {
 const CLEAN_PROPERTIES = ['taskKey', 'stackInfo', 'config']
 
 // Return each `dep` as an object with:
-//   depKey: 'taskName'
+//   depKey: 'taskKey'
 //   depPath: 'request|response|...'
 //   path: 'request|response...'
 const getRef = function({ node: { value, path }, tasks }) {

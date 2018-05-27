@@ -4,7 +4,8 @@
 // Properties often assigned:
 //  - `config` `{object}`: initial configuration object
 //  - `plugins` `{string[]}`: list of loaded plugins
-//  - `task` `{string}`: current task name
+//  - `taskName` `{string}`: current task name
+//  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in the current task (if `task`
 //    is defined) or in `config`
 //  - `expected` `{value}`: expected value

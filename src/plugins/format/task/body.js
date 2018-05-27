@@ -11,14 +11,13 @@ const findBodyHandler = function({ mime }) {
 }
 
 const normalizeHandler = function({ name, condition, parse, stringify }) {
-  const parseA = addErrorHandler(parse, parseHandler.bind(null, name))
+  const parseA = addErrorHandler(parse, bodyHandler.bind(null, name))
   return { condition, parse: parseA, stringify }
 }
 
-const parseHandler = function(name, { message }, body) {
-  const property = 'response.body'
-  throw new TestOpenApiError(`Could not read response body as ${name}: ${message}\n${body}`, {
-    property,
+const bodyHandler = function(name, { message }) {
+  throw new TestOpenApiError(`Could not read response body as ${name}: ${message}`, {
+    property: 'response.body',
   })
 }
 

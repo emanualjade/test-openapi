@@ -1,26 +1,20 @@
 'use strict'
 
-const fetch = require('cross-fetch')
-
-const { addErrorHandler } = require('../../../../errors')
-
 const { getFetchParams } = require('./params')
+const { fireFetch } = require('./fetch')
 const { getFetchResponse } = require('./response')
-const { sendRequestHandler } = require('./errors')
 
 // Actual HTTP request
 const sendRequest = async function({ rawRequest, config }) {
   const { url, fetchParams } = getFetchParams({ rawRequest, config })
 
-  const rawResponse = await fetch(url, fetchParams)
+  const rawResponse = await fireFetch({ url, fetchParams, config })
 
-  const rawResponseA = await getFetchResponse({ rawResponse })
+  const rawResponseA = await getFetchResponse({ rawResponse, config })
 
   return { rawResponse: rawResponseA }
 }
 
-const eSendRequest = addErrorHandler(sendRequest, sendRequestHandler)
-
 module.exports = {
-  sendRequest: eSendRequest,
+  sendRequest,
 }

@@ -1,11 +1,6 @@
 'use strict'
 
-const {
-  addErrorHandler,
-  addGenErrorHandler,
-  normalizeError,
-  bundleSingleError,
-} = require('../errors')
+const { addErrorHandler, topLevelHandler } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 
@@ -24,14 +19,7 @@ const run = async function(config = {}) {
   await eRunPlugins({ config: configB, pluginNames })
 }
 
-// Add `error.config` and `error.errors` to every error
-const runHandler = function(error, config = {}) {
-  const errorA = normalizeError(error, { config })
-  const errorB = bundleSingleError({ error: errorA })
-  throw errorB
-}
-
-const eRun = addErrorHandler(run, runHandler)
+const eRun = addErrorHandler(run, topLevelHandler)
 
 const runPlugins = async function({ config, pluginNames }) {
   const plugins = getPlugins({ pluginNames })
@@ -48,7 +36,12 @@ const runPlugins = async function({ config, pluginNames }) {
   await launchRunner({ config: configC, plugins })
 }
 
-const eRunPlugins = addGenErrorHandler(runPlugins, ({ pluginNames }) => ({ plugins: pluginNames }))
+const runPluginsHandler = function(error, { pluginNames }) {
+  error.plugins = pluginNames
+  throw error
+}
+
+const eRunPlugins = addErrorHandler(runPlugins, runPluginsHandler)
 
 module.exports = {
   run: eRun,

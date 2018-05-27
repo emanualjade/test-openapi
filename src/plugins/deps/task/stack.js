@@ -21,7 +21,7 @@ const checkStack = function({
   const message = `At '${stackPathA}', this task uses '${
     newStack[1]
   }' ${RECURSION_ERROR_MESSAGE}:\n${stackError}`
-  throw TestOpenApiError(message, { property: stackPath })
+  throw new TestOpenApiError(message, { property: stackPath })
 }
 
 // Property path to first `dep`

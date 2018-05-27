@@ -36,7 +36,7 @@ const get = function({ obj, path, depKey, propPath }) {
 const throwGetError = function({ depKey, propPath, path }) {
   const property = propPath.join('.')
   const expected = `${depKey}.${path}`
-  throw TestOpenApiError(
+  throw new TestOpenApiError(
     `This task targets another task '${expected}' but this key could not be found`,
     {
       property,

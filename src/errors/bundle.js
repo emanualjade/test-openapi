@@ -1,54 +1,23 @@
 'use strict'
 
-const { omit } = require('lodash')
-
 const { TestOpenApiError } = require('./error')
 
 // Bundle several errors into one
 const bundleErrors = function({ errors }) {
-  const bugError = errors.find(({ type }) => type === 'bug')
-  if (bugError !== undefined) {
-    return bugError
-  }
+  const errorsA = errors.map(convertPlainObject)
 
-  const firstError = getTopError({ errors })
+  // Top-level error's properties are copied among one of the `errors` thrown
+  const [firstError] = errorsA
 
-  const errorsA = errors.map(convertError)
-
-  const error = new TestOpenApiError('', { ...firstError, errors: errorsA })
-  return error
+  return new TestOpenApiError('', { ...firstError, errors: errorsA })
 }
 
-// Top-level error's properties are copied among one of the `errors` thrown
-const getTopError = function({ errors: [firstError] }) {
-  const firstErrorA = convertPlainObject(firstError)
-  return { ...firstErrorA, message: ERROR_MESSAGE }
-}
-
-const ERROR_MESSAGE = 'Some tasks failed'
-
-// Convert ot plain object. Discard `error.name|stack` but not `error.message`
-const convertError = function(error) {
-  const errorA = convertPlainObject(error)
-  const errorB = omit(errorA, 'stack')
-  return errorB
-}
-
-// Convert ot plain object. Must do it like this to keep `error.stack|message`
-const convertPlainObject = function({ message, stack, ...error }) {
-  return { ...error, message, stack }
-}
-
-// Bundle single error with `bundleErrors()` unless it's already bundled
-const bundleSingleError = function({ error }) {
-  if (error.errors) {
-    return error
-  }
-
-  return bundleErrors({ errors: [error] })
+// Must do this to convert to plain object while keeping non-enumerable
+// properties `error.name|message|stack`
+const convertPlainObject = function({ name, message, stack, ...error }) {
+  return { ...error, name, message, stack }
 }
 
 module.exports = {
   bundleErrors,
-  bundleSingleError,
 }

@@ -1,7 +1,7 @@
 'use strict'
 
 const { TestOpenApiError } = require('../../../errors')
-const { validateIsSchema, normalizeShortcut } = require('../../../utils')
+const { validateIsSchema, normalizeShortcut, locationToKey } = require('../../../utils')
 
 const normalizeGenerate = function({ tasks }) {
   const tasksA = tasks.map(normalizeTaskGenerate)
@@ -27,21 +27,22 @@ const normalizeParamShortcut = function({ value, ...param }) {
 // We cannot use later versions because json-schema-faker does not support them
 // Must be done after merged to specification, and `deps` have been resolved
 const validateJsonSchemas = function({ params, task }) {
-  params.forEach(({ name, value }) => validateJsonSchema({ task, name, value }))
+  params.forEach(({ name, location, value }) => validateJsonSchema({ task, name, location, value }))
 }
 
-const validateJsonSchema = function({ task: { taskKey }, name, value }) {
+const validateJsonSchema = function({ task: { taskKey }, name, location, value }) {
   const { error } = validateIsSchema({ value })
   if (error === undefined) {
     return
   }
 
-  const property = `parameters.${name}`
+  const key = locationToKey({ location, name })
+  const property = `parameters.${key}`
   throw new TestOpenApiError(
     `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
     {
       property,
-      task: taskKey,
+      taskKey,
     },
   )
 }

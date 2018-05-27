@@ -17,7 +17,9 @@ const validateFromSchema = function({ schema, value, name }) {
     errors: [error],
   } = validator
   const errorA = getError({ error, name })
-  const { dataPath: path } = error
+
+  const { dataPath } = error
+  const path = dataPath.replace(/^./, '')
 
   return { error: errorA, path }
 }

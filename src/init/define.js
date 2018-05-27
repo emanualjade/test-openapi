@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, normalizeError } = require('../errors')
+const { addErrorHandler } = require('../errors')
 
 const { runTask: originalRunTask } = require('./run')
 
@@ -69,9 +69,9 @@ const runTaskHandler = function({ errors }, error, task) {
   throw errorA
 }
 
-// Add `error.task` and `error.taskName`
-const addTask = function({ error, task: { taskKey: taskName, ...task } }) {
-  return normalizeError(error, { taskName, task })
+// Add `error.task` and `error.taskKey`
+const addTask = function({ error, task: { taskKey, ...task } }) {
+  return Object.assign(error, { taskKey, task })
 }
 
 module.exports = {

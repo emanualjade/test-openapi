@@ -37,7 +37,6 @@ const loadTaskFile = async function(path) {
   return tasks
 }
 
-// File loading
 const readFileHandler = function({ message }, path) {
   throw new TestOpenApiError(`Could not load task file '${path}': ${message}`)
 }
@@ -58,7 +57,7 @@ const YAML_OPTS = {
 }
 
 const parseTaskFileHandler = function({ message }, { path }) {
-  throw new TestOpenApiError(`Task file '${path}' is not valid YAML or JSON: ${message}`)
+  throw new TestOpenApiError(`Task file '${path}' is not valid YAML nor JSON: ${message}`)
 }
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)

@@ -5,7 +5,7 @@ const { merge } = require('lodash')
 const { mergeParams, mergeHeaders } = require('../../../utils')
 
 const { getSpecOperation, getSpecResponse } = require('./operation')
-const { mergeInvalidSchema, isInvalidSchema } = require('./invalid')
+const { mergeInvalidValue, isInvalidValue } = require('./invalid')
 
 // Merge `task.parameters.*` to specification
 const mergeSpecParams = function({ taskKey, params }, { config }) {
@@ -29,25 +29,25 @@ const mergeSpecValidate = function(
   }
 
   const headersA = mergeHeaders([...specResponse.headers, ...headers], mergeSpec)
-  const bodyA = mergeSpecSchema(specResponse.body, body)
+  const bodyA = mergeSpecValue(specResponse.body, body)
 
   return { validate: { status, headers: headersA, body: bodyA } }
 }
 
 // Merge a `task.*.*` value with the specification value
-const mergeSpec = function({ schema: specSchema, ...specValue }, { schema, ...value }) {
-  const schemaA = mergeSpecSchema(specSchema, schema)
-  return { ...specValue, ...value, schema: schemaA }
+const mergeSpec = function({ value: specValue, ...specRest }, { value, ...rest }) {
+  const valueA = mergeSpecValue(specValue, value)
+  return { ...specRest, ...rest, value: valueA }
 }
 
 // Deep merge the JSON schemas
-// Both `specSchema` and `schema` might be `undefined`
-const mergeSpecSchema = function(specSchema, schema) {
-  if (isInvalidSchema({ schema })) {
-    return mergeInvalidSchema({ specSchema })
+// Both `specValue` and `value` might be `undefined`
+const mergeSpecValue = function(specValue, value) {
+  if (isInvalidValue({ value })) {
+    return mergeInvalidValue({ specValue })
   }
 
-  return merge({}, specSchema, schema)
+  return merge({}, specValue, value)
 }
 
 module.exports = {

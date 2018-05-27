@@ -17,9 +17,9 @@ const normalizeTaskGenerate = function({ params, ...task }) {
   return { ...task, params: paramsA }
 }
 
-const normalizeParamShortcut = function({ schema, ...param }) {
-  const schemaA = normalizeShortcut(schema)
-  return { ...param, schema: schemaA }
+const normalizeParamShortcut = function({ value, ...param }) {
+  const valueA = normalizeShortcut(value)
+  return { ...param, value: valueA }
 }
 
 // Validate request parameters and response headers are valid JSON schema v4
@@ -27,11 +27,11 @@ const normalizeParamShortcut = function({ schema, ...param }) {
 // We cannot use later versions because json-schema-faker does not support them
 // Must be done after merged to specification, and `deps` have been resolved
 const validateJsonSchemas = function({ params, task }) {
-  params.forEach(({ name, schema }) => validateJsonSchema({ task, name, schema }))
+  params.forEach(({ name, value }) => validateJsonSchema({ task, name, value }))
 }
 
-const validateJsonSchema = function({ task: { taskKey }, name, schema }) {
-  const { error } = validateIsSchema({ value: schema })
+const validateJsonSchema = function({ task: { taskKey }, name, value }) {
+  const { error } = validateIsSchema({ value })
   if (error === undefined) {
     return
   }

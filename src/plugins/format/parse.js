@@ -29,23 +29,23 @@ const parseHeader = function({ name, header, vHeaders }) {
     return header
   }
 
-  const { schema, collectionFormat } = vHeader
-  const headerA = parseHeaderValue({ header, schema, collectionFormat })
+  const { value, collectionFormat } = vHeader
+  const headerA = parseHeaderValue({ header, value, collectionFormat })
   return headerA
 }
 
 // Try to parse header value if its JSON schema `type` is not `string`
-const parseHeaderValue = function({ header, schema, collectionFormat }) {
+const parseHeaderValue = function({ header, value, collectionFormat }) {
   const headerA = header.trim()
 
   // Response header values that are arrays can either use JSON or OpenAPI `collectionFormat`
-  if (usesCollFormat({ value: headerA, schema })) {
+  if (usesCollFormat({ value: headerA, schema: value })) {
     return parseCollFormat({ value: headerA, collectionFormat })
   }
 
-  // If `schema.type` is an array including `string`, it will still work when
+  // If `value.type` is an array including `string`, it will still work when
   // trying to JSON.parse() first
-  if (schema.type === 'string') {
+  if (value.type === 'string') {
     return headerA
   }
 

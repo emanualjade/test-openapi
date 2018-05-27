@@ -53,7 +53,7 @@ const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
   })
 }
 
-// From `{ 'headers.NAME': schema, ... }` to array of `{ name: 'NAME', schema }`
+// From `{ 'headers.NAME': value, ... }` to array of `{ name: 'NAME', value }`
 const normalizeHeaders = function({ headers }) {
   return Object.entries(headers)
     .filter(isHeader)
@@ -64,9 +64,9 @@ const isHeader = function([name]) {
   return HEADERS_PREFIX_REGEXP.test(name)
 }
 
-const getHeader = function([name, schema]) {
+const getHeader = function([name, value]) {
   const nameA = name.replace(HEADERS_PREFIX_REGEXP, '')
-  return { name: nameA, schema }
+  return { name: nameA, value }
 }
 
 // We use the `task.validate['headers.NAME']` notation instead of

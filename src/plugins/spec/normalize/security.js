@@ -57,7 +57,7 @@ const getSecParamHandler = function({ securityDef: { type }, secName }) {
 // `apiKey` security definitions -> `headers|query` request parameter
 const getDefApiKey = function({ name, in: paramIn }) {
   const location = IN_TO_LOCATION[paramIn]
-  return { name, location, schema: { type: 'string' } }
+  return { name, location, value: { type: 'string' } }
 }
 
 const SECURITY_DEFS = {

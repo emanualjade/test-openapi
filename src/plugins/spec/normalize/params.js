@@ -36,8 +36,8 @@ const getParams = function({
 // From OpenAPI request `parameters` to normalized format
 const getParam = function({ name, in: paramIn, required = false, collectionFormat, ...schema }) {
   const location = IN_TO_LOCATION[paramIn]
-  const schemaA = getSchema({ schema })
-  return { name, location, required, schema: schemaA, collectionFormat }
+  const value = getSchema({ schema })
+  return { name, location, required, value, collectionFormat }
 }
 
 // Normalize OpenAPI `in` to the same keys as `task.params.*`
@@ -73,8 +73,8 @@ const getServerParam = function({ spec: { host: hostname, basePath } }) {
 }
 
 const getConstParam = function({ value, location }) {
-  const schema = { type: 'string', enum: [value] }
-  return { name: location, location, required: true, schema }
+  const valueA = { type: 'string', enum: [value] }
+  return { name: location, location, required: true, value: valueA }
 }
 
 module.exports = {

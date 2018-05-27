@@ -32,7 +32,7 @@ const isContentTypeParam = function({ location, name }) {
 const DEFAULT_CONTENT_TYPE = {
   name: 'Content-Type',
   location: 'headers',
-  schema: { type: 'string', enum: ['application/octet-stream'] },
+  value: { type: 'string', enum: ['application/octet-stream'] },
 }
 
 // Retrieve whether there is a request body and whether it is of `body` or `formData` type
@@ -69,14 +69,14 @@ const normalizeContentType = function({ contentTypeParam, reqBodyType }) {
 const filterReqBodyMimes = function({
   contentTypeParam,
   contentTypeParam: {
-    schema,
-    schema: { enum: mimes = [] },
+    value,
+    value: { enum: mimes = [] },
   },
   reqBodyType,
 }) {
   const mimesA = filterFormDataMime({ reqBodyType, mimes })
   const mimesB = addDefaultReqBodyMime({ reqBodyType, mimes: mimesA })
-  const contentTypeParamA = { ...contentTypeParam, schema: { ...schema, enum: mimesB } }
+  const contentTypeParamA = { ...contentTypeParam, value: { ...value, enum: mimesB } }
   return contentTypeParamA
 }
 
@@ -109,9 +109,9 @@ const DEFAULT_REQ_BODY_MIME = {
 }
 
 // Generate random `Content-Type`
-const generateContentType = function({ contentTypeParam, contentTypeParam: { schema } }) {
-  const schemaA = generateFromSchema({ schema })
-  return { ...contentTypeParam, schema: schemaA }
+const generateContentType = function({ contentTypeParam, contentTypeParam: { value } }) {
+  const valueA = generateFromSchema({ schema: value })
+  return { ...contentTypeParam, value: valueA }
 }
 
 module.exports = {

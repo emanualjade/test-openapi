@@ -1,28 +1,28 @@
 'use strict'
 
 // `task.parameters|validate.*: invalid` means we inverse re-use parameter's schema
-const isInvalidSchema = function({ schema }) {
+const isInvalidValue = function({ value }) {
   return (
-    schema !== undefined &&
-    Array.isArray(schema.enum) &&
-    schema.enum.length === 1 &&
-    schema.enum[0] === 'invalid'
+    value !== undefined &&
+    Array.isArray(value.enum) &&
+    value.enum.length === 1 &&
+    value.enum[0] === 'invalid'
   )
 }
 
-const mergeInvalidSchema = function({ specSchema }) {
+const mergeInvalidValue = function({ specValue }) {
   // If `invalid` but the specification does not define this property, ignore it
-  if (specSchema === undefined) {
+  if (specValue === undefined) {
     return {}
   }
 
-  const type = addNullType({ specSchema })
-  return { not: { ...specSchema, type } }
+  const type = addNullType({ specValue })
+  return { not: { ...specValue, type } }
 }
 
 // When using 'invalid', we want to make sure the value is generated, i.e. it
 // should never be `null`
-const addNullType = function({ specSchema: { type = [] } }) {
+const addNullType = function({ specValue: { type = [] } }) {
   if (type === 'null') {
     return type
   }
@@ -39,6 +39,6 @@ const addNullType = function({ specSchema: { type = [] } }) {
 }
 
 module.exports = {
-  isInvalidSchema,
-  mergeInvalidSchema,
+  isInvalidValue,
+  mergeInvalidValue,
 }

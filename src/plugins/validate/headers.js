@@ -7,7 +7,7 @@ const { validateRequiredHeader } = require('./required')
 
 // Validates response headers against OpenAPI specification
 const validateHeaders = function({ validate: { headers: vHeaders }, response: { headers } }) {
-  vHeaders.forEach(({ name, schema: vHeader }) => validateHeader({ name, vHeader, headers }))
+  vHeaders.forEach(({ name, value: vHeader }) => validateHeader({ name, vHeader, headers }))
 }
 
 const validateHeader = function({ name, vHeader, headers }) {

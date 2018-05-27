@@ -7,7 +7,7 @@ const { addErrorHandler, TestOpenApiError } = require('../../../errors')
 const fireFetch = function({
   rawRequest: { method, url, body, headers },
   config: {
-    request: { timeout },
+    call: { timeout },
   },
 }) {
   return fetch(url, { method, headers, body, timeout })
@@ -18,7 +18,7 @@ const fireFetchHandler = function(
   {
     rawRequest: { url },
     config: {
-      request: { timeout },
+      call: { timeout },
     },
   },
 ) {

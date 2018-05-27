@@ -7,7 +7,7 @@ module.exports = [
   require('./generate'),
   require('./format'),
   require('./url'),
-  require('./request'),
+  require('./call'),
   require('./validate'),
   require('./dry'),
   require('./repeat'),

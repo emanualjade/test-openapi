@@ -13,10 +13,10 @@ const defineCli = function() {
 }
 
 const CONFIG = {
-  request: {
-    describe: 'HTTP request options',
+  call: {
+    describe: 'HTTP call options',
   },
-  'request.server': {
+  'call.server': {
     string: true,
     alias: 'u',
     requiresArg: true,
@@ -27,11 +27,11 @@ const CONFIG = {
   //  - parsing the HTTP response
   // I.e. this is the timeout for a single task, but excluding the time its `deps` take
   // 0 to disable
-  'request.timeout': {
+  'call.timeout': {
     number: true,
     alias: 't',
     requiresArg: true,
-    describe: 'Maximum time to wait for each HTTP request',
+    describe: 'Maximum time to wait for each HTTP call',
   },
   spec: {
     string: true,
@@ -63,8 +63,7 @@ TASKS_FILES... are JSON or YAML files containing the tasks to perform.
 Can include globbing patterns.
 Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
 
-const RUN_EXAMPLE =
-  '$0 --spec ./openapi.yml --request.server http://localhost:5001 ./**/*.tasks.yml'
+const RUN_EXAMPLE = '$0 --spec ./openapi.yml --call.server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
   defineCli,

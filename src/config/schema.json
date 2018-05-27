@@ -9,7 +9,7 @@
       "type": "integer",
       "minimum": 1
     },
-    "request": {
+    "call": {
       "type": "object",
       "properties": {
         "server": {

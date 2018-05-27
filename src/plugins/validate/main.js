@@ -5,7 +5,7 @@ const { validateResponse } = require('./task')
 
 module.exports = {
   name: 'validate',
-  dependencies: ['request'],
+  dependencies: ['call'],
   handlers: [
     {
       type: 'start',

@@ -27,7 +27,7 @@ const getBodyHandler = function(
   { message, type },
   {
     config: {
-      request: { timeout },
+      call: { timeout },
     },
   },
 ) {

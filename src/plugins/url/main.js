@@ -4,7 +4,7 @@ const { addFullUrl } = require('./task')
 
 module.exports = {
   name: 'url',
-  dependencies: ['request'],
+  dependencies: ['call'],
   handlers: [
     {
       type: 'task',

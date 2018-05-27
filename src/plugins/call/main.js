@@ -1,10 +1,10 @@
 'use strict'
 
 const { normalizeParams } = require('./start')
-const { sendRequest } = require('./task')
+const { fireHttpCall } = require('./task')
 
 module.exports = {
-  name: 'request',
+  name: 'call',
   dependencies: ['format', 'url'],
   defaults: {
     general: {
@@ -19,7 +19,7 @@ module.exports = {
     },
     {
       type: 'task',
-      handler: sendRequest,
+      handler: fireHttpCall,
       order: 150,
     },
   ],

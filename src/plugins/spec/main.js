@@ -5,7 +5,7 @@ const { mergeSpecParams, mergeSpecValidate } = require('./task')
 
 module.exports = {
   name: 'spec',
-  dependencies: ['request', 'generate', 'validate'],
+  dependencies: ['call', 'generate', 'validate'],
   handlers: [
     {
       type: 'start',

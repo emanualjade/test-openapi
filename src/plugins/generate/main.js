@@ -5,7 +5,7 @@ const { generateParams } = require('./task')
 
 module.exports = {
   name: 'generate',
-  dependencies: ['request'],
+  dependencies: ['call'],
   handlers: [
     {
       type: 'start',

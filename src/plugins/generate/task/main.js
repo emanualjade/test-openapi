@@ -4,7 +4,7 @@ const jsonSchemaFaker = require('json-schema-faker')
 
 const { locationToKey } = require('../../../utils')
 
-// Generates random values based on `request.parameters.*` JSON schemas
+// Generates random values based on `task.parameters.*` JSON schemas
 const generateParams = function({ params }) {
   const schema = getParamsJsonSchema({ params })
   const values = generateFromSchema({ schema })

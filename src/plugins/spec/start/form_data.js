@@ -1,6 +1,6 @@
 'use strict'
 
-// Merge `formData` parameters into a single `request.parameters.body` parameter
+// Merge `formData` parameters into a single `task.parameters.body` parameter
 const normalizeFormData = function({ params }) {
   const { formDataParams, params: paramsA } = splitParams({ params })
 

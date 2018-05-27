@@ -4,11 +4,12 @@ const { addErrorHandler, addGenErrorHandler, runTasksHandler } = require('../err
 const { reduceAsync } = require('../utils')
 const {
   replaceDeps,
-  mergeTask,
+  mergeSpecParams,
   generateParams,
   stringifyParams,
   parseResponse,
   sendRequest,
+  mergeSpecValidate,
   validateResponse,
   normalizeReturnValue,
 } = require('../plugins')
@@ -66,8 +67,8 @@ const eRunPlugin = addGenErrorHandler(runPlugin, ({ rawRequest, rawResponse }) =
 const PLUGINS = [
   // Replace all `deps`, i.e. references to other tasks.
   replaceDeps,
-  // Merge task with specification
-  mergeTask,
+  // Merge `task.parameters.*` to specification
+  mergeSpecParams,
   // Generates random request parameters based on JSON schema
   generateParams,
   // Stringify request parameters
@@ -76,6 +77,8 @@ const PLUGINS = [
   sendRequest,
   // Parse response
   parseResponse,
+  // Merge `task.validate.*` to specification
+  mergeSpecValidate,
   // Validates the HTTP response
   validateResponse,
   // Returns final normalized value

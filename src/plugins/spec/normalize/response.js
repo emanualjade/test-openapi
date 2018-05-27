@@ -1,8 +1,7 @@
 'use strict'
 
-const { mapKeys, mapValues } = require('lodash')
+const { mapValues } = require('lodash')
 
-const { DEFAULT_STATUS_CODE } = require('../../../constants')
 const { mergeHeaders } = require('../../../utils')
 
 const { normalizeSchema } = require('./json_schema')
@@ -10,19 +9,7 @@ const { getNegotiationsResponse } = require('./content_negotiation')
 
 // Normalize OpenAPI responses into specification-agnostic format
 const normalizeResponses = function({ responses, spec, operation }) {
-  const responsesA = mapKeys(responses, normalizeStatusCode)
-  const responsesB = mapValues(responsesA, response =>
-    normalizeResponse({ response, spec, operation }),
-  )
-  return responsesB
-}
-
-const normalizeStatusCode = function(response, statusCode) {
-  if (statusCode === 'default') {
-    return String(DEFAULT_STATUS_CODE)
-  }
-
-  return statusCode
+  return mapValues(responses, response => normalizeResponse({ response, spec, operation }))
 }
 
 const normalizeResponse = function({ response, spec, operation }) {

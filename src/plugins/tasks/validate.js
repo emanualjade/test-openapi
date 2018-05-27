@@ -1,7 +1,5 @@
 'use strict'
 
-const { DEFAULT_STATUS_CODE } = require('../../constants')
-
 // Normalize `task.validate.*`
 const normalizeTasksValidate = function({ tasks }) {
   return tasks.map(normalizeValidate)
@@ -15,6 +13,10 @@ const normalizeValidate = function({
   const validateA = { status, headers, body }
   return { ...task, validate: validateA }
 }
+
+// Unless `task.validate.status` is overriden, will validate that response's
+// status code is `200`
+const DEFAULT_STATUS_CODE = { type: 'integer', enum: [200] }
 
 // From `{ 'headers.NAME': schema, ... }` to array of `{ name: 'NAME', schema }`
 const normalizeHeaders = function({ validate }) {

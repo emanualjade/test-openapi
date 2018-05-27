@@ -1,5 +1,7 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { crawl } = require('../../utils')
 
 // Add all `deps`, i.e. references to other tasks as `operationId.taskName.*`
@@ -9,10 +11,15 @@ const addDeps = function({ tasks }) {
 }
 
 const addRefs = function({ task, tasks }) {
-  const nodes = crawl(task)
+  const cleanTask = omit(task, CLEAN_PROPERTIES)
+  const nodes = crawl(cleanTask)
+
   const refs = nodes.map(node => getRef({ node, tasks })).filter(dep => dep !== undefined)
   return { ...task, dep: { refs } }
 }
+
+// Do not crawl some `task.*` properties for `deps`
+const CLEAN_PROPERTIES = ['operation', 'originalTask']
 
 // Return each `dep` as an object with:
 //   depKey: 'operationId.taskName'

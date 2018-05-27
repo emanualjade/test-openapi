@@ -16,7 +16,7 @@ const normalizeTasks = function({ tasks, spec }) {
 }
 
 const normalizeTask = function({ taskKey, task, spec }) {
-  const { name, operation } = getOperation({ taskKey, task, spec })
+  const { name, operation } = getOperation({ taskKey, spec })
   return { ...task, originalTask: task, taskKey, name, operation }
 }
 

@@ -32,11 +32,6 @@ const validateJsonSchema = function({ task: { taskKey }, prop, name, value }) {
     return
   }
 
-  // TODO: temp fixup
-  if (name === 'status') {
-    return
-  }
-
   const property = `${prop}.${name}`
   throwTaskError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
     property,

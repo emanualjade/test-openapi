@@ -12,12 +12,6 @@ const normalizeTasksShortcuts = function({ tasks }) {
 const normalizeTaskShortcuts = function(task) {
   const taskA = PROPERTIES.map(prop => normalizeShorcuts({ prop, task }))
   const taskB = Object.assign({}, task, ...taskA)
-
-  // TODO: temp fixup
-  if (taskB.validate && taskB.validate.status) {
-    taskB.validate.status = taskB.validate.status.enum[0]
-  }
-
   return taskB
 }
 

@@ -1,6 +1,6 @@
 'use strict'
 
-const { omitBy, merge } = require('lodash')
+const { omitBy } = require('lodash')
 
 const { validateConfig } = require('./validate')
 const DEFAULT_CONFIG = require('./defaults')
@@ -11,11 +11,8 @@ const loadConfig = function({ config }) {
 
   const configA = omitBy(config, value => value === undefined)
 
-  // TODO: fix
-  const request = merge({}, DEFAULT_CONFIG.request, configA && configA.request)
-
   // Apply default values
-  const configB = { ...DEFAULT_CONFIG, ...configA, request }
+  const configB = { ...DEFAULT_CONFIG, ...configA }
 
   return configB
 }

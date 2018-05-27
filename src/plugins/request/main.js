@@ -10,6 +10,11 @@ module.exports = {
     success: ['request', 'response'],
     error: ['rawRequest', 'rawResponse'],
   },
+  defaults: {
+    general: {
+      timeout: 1e4,
+    },
+  },
   handlers: [
     {
       type: 'start',

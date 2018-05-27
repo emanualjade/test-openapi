@@ -1,6 +1,6 @@
 'use strict'
 
-const { get, has } = require('lodash')
+const { get, has, merge } = require('lodash')
 
 const { sortBy, reduceAsync } = require('../utils')
 const PLUGINS = require('../plugins')
@@ -133,6 +133,28 @@ const deepGetObject = function(array, prop) {
   return valuesA
 }
 
+// Apply plugin-specific configuration
+const applyPluginsConfig = function({ config, plugins }) {
+  const configA = applyPluginsDefaults({ config, plugins })
+  return configA
+}
+
+// Apply plugin-specific configuration default values
+const applyPluginsDefaults = function({
+  config,
+  config: { tasks },
+  plugins: {
+    defaults: { general: generalDefaults, task: taskDefaults },
+  },
+}) {
+  const configA = merge({}, generalDefaults, config)
+
+  const tasksA = tasks.map(task => merge({}, taskDefaults, task))
+  const configB = { ...configA, tasks: tasksA }
+
+  return configB
+}
+
 const runHandlers = function(input, handlers) {
   return reduceAsync(handlers, runHandler, input, mergeReturnValue)
 }
@@ -148,5 +170,6 @@ const mergeReturnValue = function(input, newInput) {
 module.exports = {
   getPluginNames,
   getPlugins,
+  applyPluginsConfig,
   runHandlers,
 }

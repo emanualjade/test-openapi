@@ -5,6 +5,9 @@ const { repeatTasks } = require('./start')
 module.exports = {
   name: 'repeat',
   dependencies: [],
+  defaults: {
+    general: 10,
+  },
   handlers: [
     {
       type: 'start',

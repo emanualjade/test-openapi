@@ -4,7 +4,7 @@ const { addErrorHandler, addGenErrorHandler, topNormalizeHandler } = require('..
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 
-const { getPluginNames, getPlugins, runHandlers } = require('./plugins')
+const { getPluginNames, getPlugins, applyPluginsConfig, runHandlers } = require('./plugins')
 const { launchRunner } = require('./runner')
 const { runTask } = require('./run')
 
@@ -26,12 +26,14 @@ const runPlugins = async function({ config, pluginNames }) {
 
   const configA = { ...config, runTask }
 
+  const configB = applyPluginsConfig({ config: configA, plugins })
+
   const {
     handlers: { start: handlers },
   } = plugins
-  const configB = await runHandlers(configA, handlers)
+  const configC = await runHandlers(configB, handlers)
 
-  await launchRunner({ config: configB, plugins })
+  await launchRunner({ config: configC, plugins })
 }
 
 const eRunPlugins = addGenErrorHandler(runPlugins, ({ pluginNames }) => ({ plugins: pluginNames }))

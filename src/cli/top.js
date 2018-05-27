@@ -49,6 +49,8 @@ const CONFIG = {
     boolean: true,
     alias: 'd',
     describe: 'Only validate tasks syntax instead of performing them.',
+    // Otherwises defaults to `false`
+    default: undefined,
   },
 }
 

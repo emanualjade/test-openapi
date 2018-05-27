@@ -1,40 +1,10 @@
 'use strict'
 
-const { stringifyFlat, parseFlat } = require('./json')
-
-// Whether a specific value should be parsed according to `collectionFormat`
-// using information from its OpenAPI schema
-const usesCollFormat = function({ value, schema }) {
-  return (
-    hasType({ schema, type: 'array' }) &&
-    typeof value === 'string' &&
-    (!value.startsWith('[') || !value.endsWith(']'))
-  )
-}
-
-const hasType = function({ schema, type }) {
-  // JSON schema `type` can be an array
-  if (Array.isArray(schema.type)) {
-    return schema.type.includes(type)
-  }
-
-  return schema.type === type
-}
-
-// Parses an array according to OpenAPI's `collectionFormat`
-const parseCollFormat = function({ value, collectionFormat = 'csv' }) {
-  const { parse } = COLLECTION_FORMAT[collectionFormat]
-  return parse(value)
-}
-
-const parseGeneric = function(separator, value) {
-  return value.split(separator).map(parseFlat)
-}
+const { stringifyFlat } = require('./json')
 
 // Stringify an array according to OpenAPI's `collectionFormat`
 const stringifyCollFormat = function({ value, collectionFormat = 'csv', name }) {
-  const { stringify } = COLLECTION_FORMAT[collectionFormat]
-  return stringify({ value, name })
+  return COLLECTION_FORMAT[collectionFormat]({ value, name })
 }
 
 const stringifyGeneric = function(separator, { value }) {
@@ -50,30 +20,14 @@ const stringifyPair = function({ val, name }) {
 }
 
 const COLLECTION_FORMAT = {
-  csv: {
-    parse: parseGeneric.bind(null, ','),
-    stringify: stringifyGeneric.bind(null, ','),
-  },
-  ssv: {
-    parse: parseGeneric.bind(null, /\s+/),
-    stringify: stringifyGeneric.bind(null, /\s+/),
-  },
-  tsv: {
-    parse: parseGeneric.bind(null, '\t'),
-    stringify: stringifyGeneric.bind(null, '\t'),
-  },
-  pipes: {
-    parse: parseGeneric.bind(null, '|'),
-    stringify: stringifyGeneric.bind(null, '|'),
-  },
+  csv: stringifyGeneric.bind(null, ','),
+  ssv: stringifyGeneric.bind(null, /\s+/),
+  tsv: stringifyGeneric.bind(null, '\t'),
+  pipes: stringifyGeneric.bind(null, '|'),
   // No parser because it can only be used in request parameters not response headers
-  multi: {
-    stringify: stringifyMulti,
-  },
+  multi: stringifyMulti,
 }
 
 module.exports = {
-  usesCollFormat,
-  parseCollFormat,
   stringifyCollFormat,
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-const { mapValues } = require('lodash')
+const { mapValues, omit } = require('lodash')
 
 const { mergeHeaders } = require('../../../utils')
 
@@ -32,10 +32,13 @@ const getResponseHeaders = function({ response: { headers = {} }, spec, operatio
   return headersB
 }
 
-const getResponseHeader = function([name, { collectionFormat, ...schema }]) {
+const getResponseHeader = function([name, header]) {
+  // We do not support `header` `collectionFormat`
+  const schema = omit(header, ['collectionFormat'])
+
   const value = normalizeSchema({ schema })
 
-  return { name, value, collectionFormat }
+  return { name, value }
 }
 
 module.exports = {

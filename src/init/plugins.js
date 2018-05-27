@@ -1,5 +1,7 @@
 'use strict'
 
+const { get, has } = require('lodash')
+
 const { sortBy, reduceAsync } = require('../utils')
 const PLUGINS = require('../plugins')
 
@@ -76,7 +78,8 @@ const getPlugins = function({ pluginNames }) {
   const plugins = findPlugins({ pluginNames })
   const handlers = getHandlers({ plugins })
   const properties = getProperties({ plugins })
-  return { handlers, properties }
+  const defaults = getDefaults({ plugins })
+  return { handlers, properties, defaults }
 }
 
 // TODO: use `require()` instead
@@ -85,13 +88,12 @@ const findPlugins = function({ pluginNames }) {
 }
 
 const getHandlers = function({ plugins }) {
-  const handlersA = plugins.map(({ handlers }) => handlers)
-  const handlersB = [].concat(...handlersA)
+  const handlers = deepGetArray(plugins, 'handlers')
 
-  const handlersC = PLUGIN_TYPES.map(type => getHandlersByType({ type, handlers: handlersB }))
-  const handlersD = Object.assign({}, ...handlersC)
+  const handlersA = PLUGIN_TYPES.map(type => getHandlersByType({ type, handlers }))
+  const handlersB = Object.assign({}, ...handlersA)
 
-  return handlersD
+  return handlersB
 }
 
 const PLUGIN_TYPES = ['start', 'task', 'complete', 'end']
@@ -104,17 +106,31 @@ const getHandlersByType = function({ type, handlers }) {
 }
 
 const getProperties = function({ plugins }) {
-  const properties = PROPERTIES_TYPES.map(type => getPropertiesByType({ type, plugins }))
-  const propertiesA = Object.assign({}, ...properties)
-  return propertiesA
+  const success = deepGetArray(plugins, 'properties.success')
+  const error = deepGetArray(plugins, 'properties.error')
+  return { success, error }
 }
 
-const PROPERTIES_TYPES = ['success', 'error']
+const getDefaults = function({ plugins }) {
+  const general = deepGetObject(plugins, 'defaults.general')
+  const task = deepGetObject(plugins, 'defaults.task')
+  return { general, task }
+}
 
-const getPropertiesByType = function({ type, plugins }) {
-  const propertiesA = plugins.map(({ properties: { [type]: properties = [] } = {} }) => properties)
-  const propertiesB = [].concat(...propertiesA)
-  return { [type]: propertiesB }
+// From array of `object` to flattened array of 'object[prop]'
+const deepGetArray = function(array, prop) {
+  const values = array.map(object => get(object, prop) || [])
+  const valuesA = [].concat(...values)
+  return valuesA
+}
+
+// From array of `{ name, ...object }` to `{ [name]: object[prop], ... }`
+const deepGetObject = function(array, prop) {
+  const values = array
+    .filter(object => has(object, prop))
+    .map(({ name, ...object }) => ({ [name]: get(object, prop) }))
+  const valuesA = Object.assign({}, ...values)
+  return valuesA
 }
 
 const runHandlers = function(input, handlers) {

@@ -3,8 +3,7 @@
 const { mapValues } = require('lodash')
 
 const { isObject } = require('../utils')
-
-const { runHandlers } = require('./plugins')
+const { runHandlers } = require('../plugins')
 
 // Run an `it()` task
 const runTask = async function({ originalTask, ...task }, { config, plugins, errors }) {

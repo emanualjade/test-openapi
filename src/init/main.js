@@ -3,8 +3,8 @@
 const { addErrorHandler, topLevelHandler } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
+const { getPlugins, runHandlers } = require('../plugins')
 
-const { getPlugins, runHandlers } = require('./plugins')
 const { launchRunner } = require('./runner')
 const { runTask } = require('./run')
 

@@ -6,9 +6,9 @@ const { isMatch } = require('micromatch')
 
 // Merge tasks whose name include globbing matching other task names.
 // I.e. special task name to allow for shared properties
-const mergeGlob = function({ tasks }) {
+const mergeGlobTasks = function({ tasks }) {
   const { globTasks, nonGlobTasks } = splitTasks({ tasks })
-  const tasksA = nonGlobTasks.map(task => mergeGlobTasks({ task, globTasks }))
+  const tasksA = nonGlobTasks.map(task => mergeGlob({ task, globTasks }))
   return { tasks: tasksA }
 }
 
@@ -22,7 +22,7 @@ const isGlobTask = function({ taskKey }) {
   return isGlob(taskKey)
 }
 
-const mergeGlobTasks = function({ task, globTasks }) {
+const mergeGlob = function({ task, globTasks }) {
   const globTasksA = findGlobTasks({ task, globTasks })
   if (globTasksA.length === 0) {
     return task
@@ -36,5 +36,5 @@ const findGlobTasks = function({ task: { taskKey }, globTasks }) {
 }
 
 module.exports = {
-  mergeGlob,
+  mergeGlobTasks,
 }

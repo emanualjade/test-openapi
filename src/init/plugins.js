@@ -120,9 +120,7 @@ const validateGeneral = function({ config, path, schema }) {
 
 // `conf.task.*` validate against each task
 const validateTask = function({ config: { tasks }, path, schema }) {
-  tasks.forEach((task, taskKey) =>
-    validateProp({ value: task, path, schema, name: 'task', taskKey }),
-  )
+  tasks.forEach(task => validateProp({ value: task, path, schema, name: 'task' }))
 }
 
 const VALIDATORS = {
@@ -132,7 +130,7 @@ const VALIDATORS = {
 
 // Validate plugin-specific configuration against a JSON schema specified in
 // plugin's `conf`
-const validateProp = function({ value, path, schema, name, taskKey }) {
+const validateProp = function({ value, path, schema, name }) {
   const valueA = get(value, path)
   if (valueA === undefined) {
     return
@@ -143,12 +141,22 @@ const validateProp = function({ value, path, schema, name, taskKey }) {
     return
   }
 
-  throw new TestOpenApiError(`Configuration is invalid: ${error}`, {
+  const { taskKey, taskMessage } = getTaskProps({ task: value, name })
+
+  throw new TestOpenApiError(`Configuration ${taskMessage}is invalid: ${error}`, {
     property: path,
     taskKey,
     expected: schema,
     actual: valueA,
   })
+}
+
+const getTaskProps = function({ task: { taskKey }, name }) {
+  if (name !== 'task') {
+    return { taskMessage: '' }
+  }
+
+  return { taskKey, taskMessage: `for task '${taskKey}' ` }
 }
 
 // Apply plugin-specific configuration default values

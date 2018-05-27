@@ -12,9 +12,9 @@ const getTasks = async function({ tasks, server }) {
 
   validateTasks({ tasks: tasksA })
 
-  const tasksB = mergeGlob({ tasks: tasksA })
+  const tasksB = normalizeTasks({ tasks: tasksA })
 
-  const tasksC = normalizeTasks({ tasks: tasksB })
+  const tasksC = mergeGlob({ tasks: tasksB })
 
   const tasksD = normalizeTasksParamsBefore({ tasks: tasksC, server })
 

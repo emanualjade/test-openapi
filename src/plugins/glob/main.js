@@ -1,6 +1,6 @@
 'use strict'
 
-const { mapValues, merge, pickBy } = require('lodash')
+const { merge } = require('lodash')
 const isGlob = require('is-glob')
 const { isMatch } = require('micromatch')
 
@@ -8,24 +8,22 @@ const { isMatch } = require('micromatch')
 // I.e. special task name to allow for shared properties
 const mergeGlob = function({ tasks }) {
   const { globTasks, nonGlobTasks } = splitTasks({ tasks })
-  const tasksA = mapValues(nonGlobTasks, (task, taskName) =>
-    mergeGlobTasks({ task, taskName, globTasks }),
-  )
+  const tasksA = nonGlobTasks.map(task => mergeGlobTasks({ task, globTasks }))
   return tasksA
 }
 
 const splitTasks = function({ tasks }) {
-  const globTasks = Object.entries(tasks).filter(([taskName]) => isGlobTask({ taskName }))
-  const nonGlobTasks = pickBy(tasks, (value, taskName) => !isGlobTask({ taskName }))
+  const globTasks = tasks.filter(isGlobTask)
+  const nonGlobTasks = tasks.filter(({ taskKey }) => !isGlobTask({ taskKey }))
   return { globTasks, nonGlobTasks }
 }
 
-const isGlobTask = function({ taskName }) {
-  return isGlob(taskName)
+const isGlobTask = function({ taskKey }) {
+  return isGlob(taskKey)
 }
 
-const mergeGlobTasks = function({ task, taskName, globTasks }) {
-  const globTasksA = findGlobTasks({ taskName, globTasks })
+const mergeGlobTasks = function({ task, globTasks }) {
+  const globTasksA = findGlobTasks({ task, globTasks })
   if (globTasksA.length === 0) {
     return task
   }
@@ -33,10 +31,8 @@ const mergeGlobTasks = function({ task, taskName, globTasks }) {
   return merge({}, ...globTasksA, task)
 }
 
-const findGlobTasks = function({ taskName, globTasks }) {
-  return globTasks
-    .filter(([taskPattern]) => isMatch(taskName, taskPattern))
-    .map(([, globTask]) => globTask)
+const findGlobTasks = function({ task: { taskKey }, globTasks }) {
+  return globTasks.filter(({ taskKey: taskPattern }) => isMatch(taskKey, taskPattern))
 }
 
 module.exports = {

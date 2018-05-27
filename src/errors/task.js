@@ -3,9 +3,9 @@
 const { normalizeError } = require('./normalize')
 
 // Error handler for `it()`
-const runTaskHandler = function(error, task, { config }, errors) {
-  const properties = getProperties({ task, config })
-  const errorA = normalizeError({ error, properties })
+const runTaskHandler = function(error, { taskKey }, context, plugins, errors) {
+  const errorA = normalizeError({ error, properties: { task: taskKey } })
+
   // Convert to plain object
   const errorB = { ...errorA, message: errorA.message }
 
@@ -15,15 +15,11 @@ const runTaskHandler = function(error, task, { config }, errors) {
   throw errorA
 }
 
-const getProperties = function({ task: { taskKey }, config: { originalConfig } }) {
-  return { config: originalConfig, task: taskKey }
-}
-
 // Error thrown during task running
 const createTaskError = function({ errors }) {
   const error = new Error()
 
-  const firstError = getFirstError({ errors })
+  const firstError = getTopError({ errors })
 
   Object.assign(error, { ...firstError, errors })
 
@@ -31,41 +27,24 @@ const createTaskError = function({ errors }) {
 }
 
 // Top-level error's properties (including `type`) are copied among one of the `errors` thrown
-const getFirstError = function({ errors }) {
-  const type = TYPES.find(type => findError({ errors, type }) !== undefined) || DEFAULT_TYPE
-  const error = findError({ errors, type })
-  const message = type === 'bug' ? error.message : ERROR_MESSAGE
-  return { ...error, message }
-}
-
-const TYPES = ['bug', 'config', 'specification', 'task', 'connect', 'response']
-
-const DEFAULT_TYPE = 'bug'
-
-const ERROR_MESSAGE = 'Some tasks failed'
-
-const findError = function({ errors, type }) {
-  return errors.find(({ type: typeA }) => typeA === type)
-}
-
-// Make sure every top-level exception has an `errors` property
-const topNormalizeHandler = function(error) {
-  const errorA = normalizeError({ error })
-  if (Array.isArray(errorA.errors)) {
-    throw errorA
+const getTopError = function({ errors }) {
+  const bugError = errors.find(({ type }) => type === 'bug')
+  if (bugError !== undefined) {
+    return bugError
   }
 
-  // If only one error was thrown, use it in `errors`
-  // Convert to plain object and make a shallow copy to avoid circular references
-  const errorB = { ...errorA, message: errorA.message }
-  // Make it the same shape as errors throw during task running
-  errorA.errors = [errorB]
+  const [firstError] = errors
 
-  throw errorA
+  if (firstError.type === undefined) {
+    return { ...firstError, type: 'bug' }
+  }
+
+  return { ...firstError, message: ERROR_MESSAGE }
 }
+
+const ERROR_MESSAGE = 'Some tasks failed'
 
 module.exports = {
   runTaskHandler,
   createTaskError,
-  topNormalizeHandler,
 }

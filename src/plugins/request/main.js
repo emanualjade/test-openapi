@@ -5,8 +5,23 @@ const { sendRequest, getReturnValue } = require('./task')
 
 module.exports = {
   name: 'request',
-  start: normalizeParams,
-  task: [sendRequest, getReturnValue],
-  dependencies: ['config', 'tasks', 'format', 'url'],
+  handlers: [
+    {
+      type: 'start',
+      handler: normalizeParams,
+      order: 110,
+    },
+    {
+      type: 'task',
+      handler: sendRequest,
+      order: 1150,
+    },
+    {
+      type: 'task',
+      handler: getReturnValue,
+      order: 1190,
+    },
+  ],
+  dependencies: ['format', 'url'],
   returnedProperties: ['request', 'response'],
 }

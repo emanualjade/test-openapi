@@ -1,7 +1,7 @@
 'use strict'
 
-const { throwConfigError } = require('../../../errors')
-const { validateFromSchema } = require('../../../utils')
+const { throwConfigError } = require('../errors')
+const { validateFromSchema } = require('../utils')
 
 const CONFIG_SCHEMA = require('./schema')
 

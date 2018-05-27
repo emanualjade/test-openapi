@@ -1,35 +1,46 @@
 'use strict'
 
 const { reduceAsync } = require('../utils')
-const {
-  config,
-  tasks,
-  glob,
-  spec,
-  generate,
-  request,
-  validate,
-  dry,
-  repeat,
-} = require('../plugins')
-const { addErrorHandler, topNormalizeHandler } = require('../errors')
+const { addErrorHandler, addGenErrorHandler, topNormalizeHandler } = require('../errors')
+const { loadConfig } = require('../config')
+const { getTasks } = require('../tasks')
 
+const { getPluginNames, getPlugins } = require('./plugins')
 const { launchRunner } = require('./runner')
 const { runTask } = require('./run')
 
 // Main entry point
-const run = async function(config) {
-  const configA = { ...config, runTask }
+const run = async function(config = {}) {
+  const configA = loadConfig({ config })
 
-  const configB = await runPlugins({ config: configA })
+  const configB = await getTasks({ config: configA })
 
-  await launchRunner({ config: configB })
+  const pluginNames = getPluginNames({ config: configB })
+
+  await eRunPlugins({ config: configB, pluginNames })
 }
 
 const eRun = addErrorHandler(run, topNormalizeHandler)
 
-const runPlugins = function({ config }) {
-  return reduceAsync(PLUGINS, runPlugin, config, mergePlugin)
+const runPlugins = async function({ config, pluginNames }) {
+  const plugins = getPlugins({ pluginNames })
+
+  const configA = { ...config, runTask }
+
+  const configB = await runStartPlugins({ config: configA, plugins })
+
+  await launchRunner({ config: configB, plugins })
+}
+
+const eRunPlugins = addGenErrorHandler(runPlugins, ({ pluginNames }) => ({ plugins: pluginNames }))
+
+const runStartPlugins = function({
+  config,
+  plugins: {
+    handlers: { start: startHandlers },
+  },
+}) {
+  return reduceAsync(startHandlers, runPlugin, config, mergePlugin)
 }
 
 const runPlugin = function(config, plugin) {
@@ -39,18 +50,6 @@ const runPlugin = function(config, plugin) {
 const mergePlugin = function(configA, configB) {
   return { ...configA, ...configB }
 }
-
-const PLUGINS = [
-  config.start,
-  tasks.start,
-  glob.start,
-  request.start,
-  validate.start,
-  spec.start,
-  generate.start,
-  dry.start,
-  repeat.start,
-]
 
 module.exports = {
   run: eRun,

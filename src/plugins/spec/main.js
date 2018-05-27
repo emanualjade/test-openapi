@@ -5,8 +5,23 @@ const { mergeSpecParams, mergeSpecValidate } = require('./task')
 
 module.exports = {
   name: 'spec',
-  start: loadNormalizedSpec,
-  task: [mergeSpecParams, mergeSpecValidate],
-  dependencies: ['config', 'tasks', 'request', 'generate', 'validate'],
+  handlers: [
+    {
+      type: 'start',
+      handler: loadNormalizedSpec,
+      order: 130,
+    },
+    {
+      type: 'task',
+      handler: mergeSpecParams,
+      order: 1110,
+    },
+    {
+      type: 'task',
+      handler: mergeSpecValidate,
+      order: 1170,
+    },
+  ],
+  dependencies: ['request', 'generate', 'validate'],
   loadOpenApiSpec,
 }

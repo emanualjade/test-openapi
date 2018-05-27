@@ -4,6 +4,12 @@ const { handleDryRun } = require('./start')
 
 module.exports = {
   name: 'dry',
-  start: handleDryRun,
-  dependencies: ['config', 'tasks'],
+  handlers: [
+    {
+      type: 'start',
+      handler: handleDryRun,
+      order: 150,
+    },
+  ],
+  dependencies: [],
 }

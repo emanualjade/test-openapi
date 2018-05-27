@@ -5,7 +5,17 @@ const { validateResponse } = require('./task')
 
 module.exports = {
   name: 'validate',
-  start: normalizeValidate,
-  task: validateResponse,
-  dependencies: ['tasks', 'request'],
+  handlers: [
+    {
+      type: 'start',
+      handler: normalizeValidate,
+      order: 120,
+    },
+    {
+      type: 'task',
+      handler: validateResponse,
+      order: 1180,
+    },
+  ],
+  dependencies: ['request'],
 }

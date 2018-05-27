@@ -6,8 +6,8 @@ const { readFile } = require('fs')
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 
-const { isObject } = require('../../../utils')
-const { addErrorHandler, throwTaskError } = require('../../../errors')
+const { isObject } = require('../utils')
+const { addErrorHandler, throwTaskError } = require('../errors')
 
 const { validateTaskFile } = require('./validate')
 

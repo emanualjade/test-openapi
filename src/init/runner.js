@@ -3,18 +3,16 @@
 const Jasmine = require('jasmine')
 const { SpecReporter } = require('jasmine-spec-reporter')
 
-const { addGenErrorHandler, createTaskError } = require('../errors')
+const { createTaskError } = require('../errors')
 
 const { defineTasks } = require('./define')
 
 // Run Jasmine with `**/*.js` as the task files
-const launchRunner = async function({ config }) {
-  await new Promise(launchJasmine.bind(null, { config }))
+const launchRunner = async function({ config, plugins }) {
+  await new Promise(launchJasmine.bind(null, { config, plugins }))
 }
 
-const eLaunchRunner = addGenErrorHandler(launchRunner, ({ config }) => ({ config }))
-
-const launchJasmine = function({ config }, resolve, reject) {
+const launchJasmine = function({ config, plugins }, resolve, reject) {
   const runner = new Jasmine()
 
   runner.loadConfig(JASMINE_CONFIG)
@@ -37,7 +35,7 @@ const launchJasmine = function({ config }, resolve, reject) {
   //    in Chrome devtools.
   //  - it allows us passing `config` as argument (instead of using a global variable
   //    which would make running several `launchRunner` impossible)
-  defineTasks({ config, errors })
+  defineTasks({ config, plugins, errors })
 
   runner.execute()
 }
@@ -57,5 +55,5 @@ const onComplete = function(resolve, reject, errors, passed) {
 }
 
 module.exports = {
-  launchRunner: eLaunchRunner,
+  launchRunner,
 }

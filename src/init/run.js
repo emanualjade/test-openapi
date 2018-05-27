@@ -4,13 +4,12 @@ const { pick } = require('lodash')
 
 const { addGenErrorHandler } = require('../errors')
 const { reduceAsync } = require('../utils')
-const { deps, spec, generate, format, url, request, validate } = require('../plugins')
 
 // Run an `it()` task
-const runTask = async function({ originalTask, ...task }, context) {
-  const contextA = addRunTask({ context })
+const runTask = async function({ originalTask, ...task }, context, plugins) {
+  const contextA = addRunTask({ context, plugins })
 
-  const { task: taskA } = await eRunPlugins({ task, context: contextA })
+  const { task: taskA } = await runTaskPlugins({ task, context: contextA, plugins })
 
   const taskB = getTaskReturn({ task: taskA, originalTask })
   return taskB
@@ -19,13 +18,19 @@ const runTask = async function({ originalTask, ...task }, context) {
 // Pass `runTask` for recursive tasks
 // If some plugins (like the `repeat` plugin) monkey patch `runTask()`, the
 // non-monkey patched version is passed instead
-const addRunTask = function({ context }) {
-  const runTaskA = task => runTask(task, context)
+const addRunTask = function({ context, plugins }) {
+  const runTaskA = task => runTask(task, context, plugins)
   return { ...context, runTask: runTaskA }
 }
 
-const runPlugins = function({ task, context }) {
-  return reduceAsync(PLUGINS, eRunPlugin, { task, context }, mergePlugin)
+const runTaskPlugins = function({
+  task,
+  context,
+  plugins: {
+    handlers: { task: taskHandlers },
+  },
+}) {
+  return reduceAsync(taskHandlers, eRunPlugin, { task, context }, mergePlugin)
 }
 
 const runPlugin = function({ task, context }, plugin) {
@@ -39,15 +44,13 @@ const mergePlugin = function({ task, context }, taskA) {
 
 // Task return value, returned to users and used by depReqs
 const getTaskReturn = function({ task, originalTask }) {
-  const taskA = pick(task, request.returnedProperties)
+  // TODO: use `returnedProperties` instead
+  const taskA = pick(task, ['request', 'response'])
 
   // Any value set on `task.*` by a plugin is returned, unless it already existed
   // in original task
   return { ...taskA, ...originalTask }
 }
-
-// Add initial `task` to every thrown error
-const eRunPlugins = addGenErrorHandler(runPlugins, ({ task: { taskKey } }) => ({ task: taskKey }))
 
 // Add `rawRequest` and `rawResponse` (named `request` and `response`) to every
 // thrown error, if available
@@ -55,19 +58,6 @@ const eRunPlugin = addGenErrorHandler(runPlugin, ({ task: { rawRequest, rawRespo
   request: rawRequest,
   response: rawResponse,
 }))
-
-const PLUGINS = [
-  deps.task,
-  spec.task[0],
-  generate.task,
-  format.task[0],
-  url.task,
-  request.task[0],
-  format.task[1],
-  spec.task[1],
-  validate.task,
-  request.task[1],
-]
 
 module.exports = {
   runTask,

@@ -5,14 +5,15 @@ const { validateTasks } = require('./validate')
 const { normalizeTasks } = require('./normalize')
 
 // Retrieve tasks files as an array of normalized task objects
-const getTasks = async function({ tasks }) {
+const getTasks = async function({ config, config: { tasks } }) {
   const tasksA = await loadTasks({ tasks })
 
   validateTasks({ tasks: tasksA })
 
   const tasksB = normalizeTasks({ tasks: tasksA })
 
-  return { tasks: tasksB }
+  const configA = { ...config, tasks: tasksB }
+  return configA
 }
 
 module.exports = {

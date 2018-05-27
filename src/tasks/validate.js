@@ -2,8 +2,8 @@
 
 const { isDeepStrictEqual } = require('util')
 
-const { throwTaskError, addErrorHandler } = require('../../../errors')
-const { validateFromSchema, isObject } = require('../../../utils')
+const { throwTaskError, addErrorHandler } = require('../errors')
+const { validateFromSchema, isObject } = require('../utils')
 
 const TASK_SCHEMA = require('./schema')
 

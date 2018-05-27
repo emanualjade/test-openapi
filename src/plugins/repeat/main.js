@@ -4,6 +4,12 @@ const { repeatTasks } = require('./start')
 
 module.exports = {
   name: 'repeat',
-  start: repeatTasks,
-  dependencies: ['config', 'tasks'],
+  handlers: [
+    {
+      type: 'start',
+      handler: repeatTasks,
+      order: 160,
+    },
+  ],
+  dependencies: [],
 }

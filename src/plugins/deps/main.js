@@ -4,6 +4,12 @@ const { replaceDeps } = require('./task')
 
 module.exports = {
   name: 'deps',
-  task: replaceDeps,
-  dependencies: ['config', 'tasks'],
+  handlers: [
+    {
+      type: 'task',
+      handler: replaceDeps,
+      order: 1100,
+    },
+  ],
+  dependencies: [],
 }

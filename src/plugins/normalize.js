@@ -2,6 +2,8 @@
 
 const { mapKeys } = require('lodash')
 
+const { locationToKey } = require('../utils')
+
 // Return final value
 const normalizeReturnValue = function({ params, response }) {
   const request = normalizeRequest({ params })
@@ -10,9 +12,14 @@ const normalizeReturnValue = function({ params, response }) {
 }
 
 const normalizeRequest = function({ params }) {
-  const paramsA = params.map(({ location, name, value }) => ({ [`${location}.${name}`]: value }))
+  const paramsA = params.map(normalizeParam)
   const request = Object.assign({}, ...paramsA)
   return request
+}
+
+const normalizeParam = function({ location, name, value }) {
+  const key = locationToKey({ location, name })
+  return { [key]: value }
 }
 
 // From `{ status, headers, body }` to `{ status, 'headers.*': ..., body }`

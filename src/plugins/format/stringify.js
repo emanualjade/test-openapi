@@ -1,22 +1,23 @@
 'use strict'
 
-const { stringifyFlat } = require('../../utils')
+const { stringifyFlat, locationToKey } = require('../../utils')
 
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 const { addFullUrl } = require('./url')
 
 // Stringify request parameters
-const stringifyParams = function({ params, operation, config }) {
+const stringifyParams = function({ params, config }) {
   const paramsA = params.map(param => stringifyParam({ param, params }))
   const rawRequest = Object.assign({}, ...paramsA)
-  const rawRequestA = addFullUrl({ rawRequest, operation, config })
+  const rawRequestA = addFullUrl({ rawRequest, config })
   return { rawRequest: rawRequestA }
 }
 
 const stringifyParam = function({ param, param: { location, name }, params }) {
+  const key = locationToKey({ location, name })
   const value = PARAM_STRINGIFIERS[location]({ param, params })
-  return { [`${location}.${name}`]: value }
+  return { [key]: value }
 }
 
 // `url`, `query` and `header` values might not be strings.
@@ -56,6 +57,7 @@ const isContentTypeParam = function({ location, name }) {
 }
 
 const PARAM_STRINGIFIERS = {
+  path: stringifyParamFlat,
   url: stringifyParamFlat,
   query: stringifyParamFlat,
   headers: stringifyParamFlat,

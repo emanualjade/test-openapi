@@ -2,19 +2,22 @@
 
 const { normalizeUrl } = require('../../../utils')
 
+const { getPath } = require('./path')
 const { addUrlParams } = require('./params')
 const { addQueryParams } = require('./query')
+const { addServer } = require('./server')
 
 // Build request URL from request parameters
-const addFullUrl = function({ rawRequest, config, operation }) {
-  const url = getFullUrl({ rawRequest, config, operation })
+const addFullUrl = function({ rawRequest, config }) {
+  const url = getFullUrl({ rawRequest, config })
   return { ...rawRequest, url }
 }
 
-const getFullUrl = function({ rawRequest, config: { server }, operation: { path } }) {
+const getFullUrl = function({ rawRequest, config }) {
+  const path = getPath({ rawRequest })
   const pathA = addUrlParams({ path, rawRequest })
   const pathB = addQueryParams({ path: pathA, rawRequest })
-  const url = `${server}${pathB}`
+  const url = addServer({ config, path: pathB })
   const urlA = normalizeUrl({ url })
   return urlA
 }

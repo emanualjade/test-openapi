@@ -8,6 +8,7 @@ module.exports = {
   ...require('./reduce'),
   ...require('./crawl'),
   ...require('./url'),
+  ...require('./location'),
   ...require('./json'),
   ...require('./json_schema'),
 }

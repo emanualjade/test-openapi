@@ -1,7 +1,6 @@
 'use strict'
 
 const { mergeEach } = require('./each')
-const { addTitles } = require('./title')
 const { getOperation } = require('./operation')
 
 // Normalize tasks to format easy to work with when tasks are running
@@ -11,8 +10,7 @@ const normalizeTasks = function({ tasks, spec }) {
   const tasksB = Object.entries(tasksA).map(([taskKey, task]) =>
     normalizeTask({ taskKey, task, spec }),
   )
-  const tasksC = addTitles({ tasks: tasksB })
-  return tasksC
+  return tasksB
 }
 
 const normalizeTask = function({ taskKey, task, spec }) {

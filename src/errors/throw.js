@@ -22,7 +22,7 @@ const PROPS = {
   bug: [],
   config: ['config', 'property'],
   specification: ['config', 'property'],
-  task: ['config', 'task', 'property'],
+  task: ['config', 'task', 'property', 'actual'],
   connect: ['config', 'task', 'request'],
   response: ['config', 'task', 'property', 'expected', 'actual', 'request', 'response'],
 }

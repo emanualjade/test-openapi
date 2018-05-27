@@ -17,7 +17,10 @@ const addQueryParams = function({ path, rawRequest }) {
 // not support OpenAPI's `collectionFormat`
 const encodeQueryParam = function([name, value]) {
   const nameA = name.replace(QUERY_PREFIX, '')
+
+  // Matches what RFC 3986 prescribes
   const valueA = encodeURIComponent(value)
+
   return `${nameA}=${valueA}`
 }
 

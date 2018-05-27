@@ -33,10 +33,10 @@ const getOperation = function({
   method,
 }) {
   const methodA = method.toUpperCase()
-  const params = getParams({ spec, pathDef, operation })
+  const params = getParams({ spec, path, pathDef, operation })
   const responsesA = normalizeResponses({ responses, spec, operation })
 
-  return { method: methodA, path, operationId, params, responses: responsesA }
+  return { method: methodA, operationId, params, responses: responsesA }
 }
 
 module.exports = {

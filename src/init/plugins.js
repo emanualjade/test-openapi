@@ -66,10 +66,6 @@ const PLUGINS = require('../plugins')
 // of the same `type`. Please look at the current available plugins and try
 // to find out where the best place is for your plugin.
 
-// `plugin.properties.success` `{string[]}`
-// List of properties returned by a `task` handler that should be exposed to
-// the final `task` return value when it is successful.
-
 // TODO: use `config` instead
 const getPluginNames = function() {
   return PLUGINS.map(({ name }) => name)
@@ -78,9 +74,8 @@ const getPluginNames = function() {
 const getPlugins = function({ pluginNames }) {
   const plugins = findPlugins({ pluginNames })
   const handlers = getHandlers({ plugins })
-  const properties = getProperties({ plugins })
   const defaults = getDefaults({ plugins })
-  return { handlers, properties, defaults }
+  return { handlers, defaults }
 }
 
 // TODO: use `require()` instead
@@ -122,22 +117,10 @@ const pluginErrorHandler = function(pluginName, error) {
   throw error
 }
 
-const getProperties = function({ plugins }) {
-  const success = deepGetArray(plugins, 'properties.success')
-  return { success }
-}
-
 const getDefaults = function({ plugins }) {
   const general = deepGetObject(plugins, 'defaults.general')
   const task = deepGetObject(plugins, 'defaults.task')
   return { general, task }
-}
-
-// From array of `object` to flattened array of 'object[prop]'
-const deepGetArray = function(array, prop) {
-  const values = array.map(object => get(object, prop) || [])
-  const valuesA = [].concat(...values)
-  return valuesA
 }
 
 // From array of `{ name, ...object }` to `{ [name]: object[prop], ... }`

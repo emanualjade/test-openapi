@@ -6,9 +6,6 @@ const { sendRequest, getReturnValue } = require('./task')
 module.exports = {
   name: 'request',
   dependencies: ['format', 'url'],
-  properties: {
-    success: ['request', 'response'],
-  },
   defaults: {
     general: {
       timeout: 1e4,

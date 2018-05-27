@@ -23,9 +23,9 @@ const getParams = function({
 
   const paramsB = paramsA.map(getParam)
 
-  const paramsC = normalizeFormData({ params: paramsB })
+  const contentNegotiations = getNegotiationsParams({ spec, operation, params: paramsB })
 
-  const contentNegotiations = getNegotiationsParams({ spec, operation })
+  const paramsC = normalizeFormData({ params: paramsB })
 
   const secParams = getSecParams({ spec, operation })
 

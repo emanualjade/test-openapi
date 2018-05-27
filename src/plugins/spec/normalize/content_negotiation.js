@@ -1,8 +1,10 @@
 'use strict'
 
+const { filterFormDataMimes } = require('./form_data')
+
 // Get OpenAPI `consumes` and `produces` properties as request headers
-const getNegotiationsParams = function({ spec, operation }) {
-  const contentType = getContentTypeParam({ spec, operation })
+const getNegotiationsParams = function({ spec, operation, params }) {
+  const contentType = getContentTypeParam({ spec, operation, params })
   const accept = getAcceptParam({ spec, operation })
   const headers = [contentType, accept].filter(header => header !== undefined)
   return headers
@@ -15,9 +17,10 @@ const getNegotiationsResponse = function({ spec, operation }) {
   return headers
 }
 
-const getContentTypeParam = function({ spec, operation }) {
+const getContentTypeParam = function({ spec, operation, params }) {
   const consumes = getConsumes({ spec, operation })
-  const header = getContentTypeHeader(consumes)
+  const consumesA = filterFormDataMimes({ mimes: consumes, params })
+  const header = getContentTypeHeader(consumesA)
   const headerA = addParamInfo(header)
   return headerA
 }
@@ -52,8 +55,8 @@ const getProduces = function({
 // Get `consumes` and `produces` OpenAPI properties as header parameters instead
 // Also works when merging with response header schemas
 // A random request Content-Type will be picked
-const getContentTypeHeader = function(mimes = []) {
-  if (mimes.length === 0) {
+const getContentTypeHeader = function(mimes) {
+  if (mimes === undefined) {
     return
   }
 
@@ -61,8 +64,8 @@ const getContentTypeHeader = function(mimes = []) {
 }
 
 // But the Accept header is always the same
-const getAcceptHeader = function(mimes = []) {
-  if (mimes.length === 0) {
+const getAcceptHeader = function(mimes) {
+  if (mimes === undefined) {
     return
   }
 

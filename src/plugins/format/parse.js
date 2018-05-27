@@ -64,7 +64,9 @@ const parseBody = function({ body, headers }) {
     return bodyA
   }
 
+  // On bad servers, this could be undefined
   const mime = headers['content-type']
+
   const { parse } = findBodyHandler({ mime })
 
   // Defaults to leaving as is

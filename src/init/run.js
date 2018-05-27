@@ -55,8 +55,8 @@ const getTaskReturn = function({ task, originalTask }) {
 // Add `rawRequest` and `rawResponse` (named `request` and `response`) to every
 // thrown error, if available
 const eRunPlugin = addGenErrorHandler(runPlugin, ({ task: { rawRequest, rawResponse } }) => ({
-  request: rawRequest,
-  response: rawResponse,
+  rawRequest,
+  rawResponse,
 }))
 
 module.exports = {

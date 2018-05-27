@@ -1,6 +1,6 @@
 'use strict'
 
-const { get, has, merge } = require('lodash')
+const { set, merge } = require('lodash')
 
 const { sortBy, reduceAsync } = require('../utils')
 const { addErrorHandler } = require('../errors')
@@ -72,53 +72,9 @@ const getPluginNames = function() {
   return PLUGINS.map(({ name }) => name)
 }
 
-const getPlugins = function({ pluginNames }) {
-  const plugins = findPlugins({ pluginNames })
-  const handlers = getHandlers({ plugins })
-  const defaults = getDefaults({ plugins })
-  return { handlers, defaults }
-}
-
 // TODO: use `require()` instead
-const findPlugins = function({ pluginNames }) {
+const getPlugins = function({ pluginNames }) {
   return PLUGINS.filter(({ name }) => pluginNames.includes(name))
-}
-
-const getHandlers = function({ plugins }) {
-  const handlers = plugins.map(mapHandlers)
-  const handlersA = [].concat(...handlers)
-  const handlersB = sortBy(handlersA, 'order')
-  return handlersB
-}
-
-const mapHandlers = function({ handlers, ...plugin }) {
-  return handlers.map(props => mapHandler({ plugin, props }))
-}
-
-const mapHandler = function({ plugin, plugin: { name }, props: { handler, ...props } }) {
-  const handlerA = addErrorHandler(handler, pluginErrorHandler.bind(null, name))
-  return { ...plugin, ...props, handler: handlerA }
-}
-
-// Add `error.plugin` to every thrown error
-const pluginErrorHandler = function(name, error) {
-  error.plugin = name
-  throw error
-}
-
-const getDefaults = function({ plugins }) {
-  const general = deepGetObject(plugins, 'defaults.general')
-  const task = deepGetObject(plugins, 'defaults.task')
-  return { general, task }
-}
-
-// From array of `{ name, ...object }` to `{ [name]: object[prop], ... }`
-const deepGetObject = function(array, prop) {
-  const values = array
-    .filter(object => has(object, prop))
-    .map(({ name, ...object }) => ({ [name]: get(object, prop) }))
-  const valuesA = Object.assign({}, ...values)
-  return valuesA
 }
 
 // Apply plugin-specific configuration
@@ -128,19 +84,43 @@ const applyPluginsConfig = function({ config, plugins }) {
 }
 
 // Apply plugin-specific configuration default values
-const applyPluginsDefaults = function({
-  config,
-  config: { tasks },
-  plugins: {
-    defaults: { general: generalDefaults, task: taskDefaults },
-  },
-}) {
-  const configA = merge({}, generalDefaults, config)
-
-  const tasksA = tasks.map(task => merge({}, taskDefaults, task))
-  const configB = { ...configA, tasks: tasksA }
-
+const applyPluginsDefaults = function({ config, plugins }) {
+  const configA = applyGeneralDefaults({ config, plugins })
+  const configB = applyTaskDefaults({ config: configA, plugins })
   return configB
+}
+
+const applyGeneralDefaults = function({ config, plugins }) {
+  const generalDefaults = getPluginsDefaults({ plugins, type: 'general' })
+  const configA = merge({}, ...generalDefaults, config)
+  return configA
+}
+
+const applyTaskDefaults = function({ config, config: { tasks }, plugins }) {
+  const taskDefaults = getPluginsDefaults({ plugins, type: 'task' })
+  const tasksA = tasks.map(task => merge({}, ...taskDefaults, task))
+  return { ...config, tasks: tasksA }
+}
+
+const getPluginsDefaults = function({ plugins, type }) {
+  const defaultValues = plugins.map(plugin => getPluginDefaults({ plugin, type }))
+  const defaultValuesA = [].concat(...defaultValues)
+  return defaultValuesA
+}
+
+const getPluginDefaults = function({ plugin: { name, conf = {} }, type }) {
+  return Object.entries(conf)
+    .filter(confEntry => hasDefaults(type, confEntry))
+    .map(confEntry => getDefaults(type, confEntry, name))
+}
+
+const hasDefaults = function(type, [confName, { default: defaultValue }]) {
+  return confName.startsWith(type) && defaultValue !== undefined
+}
+
+const getDefaults = function(type, [confName, { default: defaultValue }], name) {
+  const path = confName.replace(type, name)
+  return set({}, path, defaultValue)
 }
 
 // Run plugin `handlers` of a given `type`
@@ -148,18 +128,43 @@ const applyPluginsDefaults = function({
 // They also receive `readOnlyArgs` as input, but cannot modify it
 // An error handler can also be added to every handler
 // Handlers can be async
-const runHandlers = function(input, { handlers }, type, readOnlyArgs, errorHandler) {
-  const handlersA = handlers
-    .filter(({ type: typeA }) => typeA === type)
-    .map(handler => wrapHandler({ handler, errorHandler, readOnlyArgs }))
+const runHandlers = function(input, plugins, type, readOnlyArgs, errorHandler) {
+  const handlers = getHandlers({ plugins, type, readOnlyArgs, errorHandler })
 
-  return reduceAsync(handlersA, runHandler, input, mergeReturnValue)
+  return reduceAsync(handlers, runHandler, input, mergeReturnValue)
 }
 
-const wrapHandler = function({ handler: { handler }, errorHandler, readOnlyArgs }) {
+const getHandlers = function({ plugins, type, errorHandler, readOnlyArgs }) {
+  const handlers = plugins.map(plugin => mapHandlers({ plugin, type, errorHandler, readOnlyArgs }))
+  const handlersA = [].concat(...handlers)
+
+  const handlersB = sortBy(handlersA, 'order')
+  const handlersC = handlersB.map(({ handler }) => handler)
+
+  return handlersC
+}
+
+const mapHandlers = function({
+  plugin: { handlers, ...plugin },
+  type,
+  errorHandler,
+  readOnlyArgs,
+}) {
+  return handlers
+    .filter(({ type: typeA }) => typeA === type)
+    .map(handler => mapHandler({ plugin, handler, errorHandler, readOnlyArgs }))
+}
+
+const mapHandler = function({
+  plugin: { name },
+  handler: { handler, order },
+  errorHandler,
+  readOnlyArgs,
+}) {
   const handlerA = callHandler.bind(null, { handler, readOnlyArgs })
-  const handlerB = wrapErrorHandler({ handler: handlerA, errorHandler })
-  return handlerB
+  const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, name))
+  const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
+  return { handler: handlerC, order }
 }
 
 const callHandler = function({ handler, readOnlyArgs }, input, ...args) {
@@ -168,6 +173,13 @@ const callHandler = function({ handler, readOnlyArgs }, input, ...args) {
   return maybePromise
 }
 
+// Add `error.plugin` to every thrown error
+const pluginErrorHandler = function(name, error) {
+  error.plugin = name
+  throw error
+}
+
+// Extra error handling logic
 const wrapErrorHandler = function({ handler, errorHandler }) {
   if (errorHandler === undefined) {
     return handler

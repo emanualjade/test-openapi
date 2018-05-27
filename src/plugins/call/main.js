@@ -6,9 +6,9 @@ const { fireHttpCall } = require('./task')
 module.exports = {
   name: 'call',
   dependencies: ['format', 'url'],
-  defaults: {
-    general: {
-      timeout: 1e4,
+  conf: {
+    'general.timeout': {
+      default: 1e4,
     },
   },
   handlers: [

@@ -3,6 +3,7 @@
 module.exports = {
   ...require('./config'),
   ...require('./tasks'),
+  ...require('./glob'),
   ...require('./deps'),
   ...require('./spec'),
   ...require('./generate'),

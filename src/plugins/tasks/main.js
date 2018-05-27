@@ -1,8 +1,9 @@
 'use strict'
 
+const { mergeGlob } = require('../glob')
+
 const { loadTasks } = require('./load')
 const { validateTasks } = require('./validate')
-const { mergeGlob } = require('./glob')
 const { normalizeTasks } = require('./normalize')
 
 const getTasks = async function({ tasks, server }) {

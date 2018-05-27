@@ -12,6 +12,7 @@ const IN_TO_LOCATION = require('./in_to_location')
 // Normalize OpenAPI request parameters into specification-agnostic format
 const getParams = function({
   spec,
+  method,
   path,
   pathDef: { parameters: pathDefParams = [] },
   operation,
@@ -25,9 +26,9 @@ const getParams = function({
 
   const secParams = getSecParams({ spec, operation })
 
-  const pathParam = getPathParam({ path })
+  const pathParams = getConstParams({ method, path })
 
-  const paramsC = mergeParams([...contentNegotiations, ...secParams, ...paramsB, pathParam])
+  const paramsC = mergeParams([...contentNegotiations, ...secParams, ...paramsB, ...pathParams])
 
   return paramsC
 }
@@ -51,10 +52,16 @@ const getSchema = function({ schema }) {
   return schemaC
 }
 
-// Operation's path as a `task.parameters.path` parameter
-const getPathParam = function({ path }) {
-  const schema = { type: 'string', enum: [path] }
-  return { name: 'path', location: 'path', required: true, schema }
+// Operation's method, server and path as a `task.parameters.method|server|path` parameter
+const getConstParams = function({ method, path }) {
+  const methodParam = getConstParam({ value: method, location: 'method' })
+  const pathParam = getConstParam({ value: path, location: 'path' })
+  return [methodParam, pathParam]
+}
+
+const getConstParam = function({ value, location }) {
+  const schema = { type: 'string', enum: [value] }
+  return { name: location, location, required: true, schema }
 }
 
 module.exports = {

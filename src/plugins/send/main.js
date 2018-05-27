@@ -9,12 +9,12 @@ const { getFetchResponse } = require('./response')
 const { sendRequestHandler } = require('./errors')
 
 // Actual HTTP request
-const sendRequest = async function({ config, config: { dry }, rawRequest, operation }) {
+const sendRequest = async function({ config, config: { dry }, rawRequest }) {
   if (dry) {
     return
   }
 
-  const { url, fetchParams } = getFetchParams({ operation, rawRequest, config })
+  const { url, fetchParams } = getFetchParams({ rawRequest, config })
 
   const rawResponse = await fetch(url, fetchParams)
 

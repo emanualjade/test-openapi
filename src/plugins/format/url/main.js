@@ -2,6 +2,7 @@
 
 const { normalizeUrl } = require('../../../utils')
 
+const { getMethod } = require('./method')
 const { getPath } = require('./path')
 const { addUrlParams } = require('./params')
 const { addQueryParams } = require('./query')
@@ -9,8 +10,9 @@ const { addServer } = require('./server')
 
 // Build request URL from request parameters
 const addFullUrl = function({ rawRequest, config }) {
+  const method = getMethod({ rawRequest })
   const url = getFullUrl({ rawRequest, config })
-  return { ...rawRequest, url }
+  return { ...rawRequest, url, method }
 }
 
 const getFullUrl = function({ rawRequest, config }) {

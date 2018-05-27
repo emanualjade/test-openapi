@@ -22,7 +22,7 @@ const locationToKey = function({ location, name }) {
 }
 
 // Those locations do not use dot notations
-const SINGLE_NAME_LOCATIONS = ['path', 'body']
+const SINGLE_NAME_LOCATIONS = ['method', 'path', 'body']
 
 module.exports = {
   keyToLocation,

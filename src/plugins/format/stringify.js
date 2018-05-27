@@ -57,6 +57,7 @@ const isContentTypeParam = function({ location, name }) {
 }
 
 const PARAM_STRINGIFIERS = {
+  method: stringifyParamFlat,
   path: stringifyParamFlat,
   url: stringifyParamFlat,
   query: stringifyParamFlat,

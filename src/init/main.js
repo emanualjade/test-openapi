@@ -23,10 +23,9 @@ const eRun = addErrorHandler(run, topLevelHandler)
 
 const runPlugins = async function({ config, plugins }) {
   const configA = { ...config, runTask }
+  const configB = await runHandlers(configA, plugins, 'start')
 
-  const configC = await runHandlers(configA, plugins, 'start')
-
-  await launchRunner({ config: configC, plugins })
+  await launchRunner({ config: configB, plugins })
 }
 
 const runPluginsHandler = function(error, { plugins }) {

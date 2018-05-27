@@ -1,7 +1,6 @@
 {
   "type": "object",
   "properties": {
-    "runTask": {},
     "plugins": {
       "type": "array",
       "items": {

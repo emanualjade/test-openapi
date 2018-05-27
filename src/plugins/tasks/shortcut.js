@@ -6,7 +6,8 @@ const { isObject } = require('../../utils')
 
 // `task.parameters|validate.*: non-object` is shortcut for `{ enum: [value] }`
 const normalizeTasksShortcuts = function({ tasks }) {
-  return tasks.map(normalizeTaskShortcuts)
+  const tasksA = tasks.map(normalizeTaskShortcuts)
+  return { tasks: tasksA }
 }
 
 const normalizeTaskShortcuts = function(task) {

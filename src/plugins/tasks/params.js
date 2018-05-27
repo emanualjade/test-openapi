@@ -4,7 +4,8 @@ const { keyToLocation } = require('../../utils')
 
 // From `task.parameters.*` object to an array of `{ name, location, required, schema }`
 const normalizeTasksParams = function({ tasks }) {
-  return tasks.map(normalizeParams)
+  const tasksA = tasks.map(normalizeParams)
+  return { tasks: tasksA }
 }
 
 const normalizeParams = function({ params, ...task }) {

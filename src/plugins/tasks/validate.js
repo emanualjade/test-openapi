@@ -2,7 +2,8 @@
 
 // Normalize `task.validate.*`
 const normalizeTasksValidate = function({ tasks }) {
-  return tasks.map(normalizeValidate)
+  const tasksA = tasks.map(normalizeValidate)
+  return { tasks: tasksA }
 }
 
 const normalizeValidate = function({

@@ -1,7 +1,18 @@
 'use strict'
 
 const { reduceAsync } = require('../utils')
-const { loadConfig, getTasks, loadNormalizedSpec, addDeps } = require('../plugins')
+const {
+  loadConfig,
+  loadTasks,
+  validateTasks,
+  normalizeTasks,
+  normalizeTasksShortcuts,
+  validateTasksJsonSchemas,
+  normalizeTasksValidate,
+  normalizeTasksParams,
+  loadNormalizedSpec,
+  addDeps,
+} = require('../plugins')
 const { addErrorHandler, topNormalizeHandler } = require('../errors')
 
 const { launchRunner } = require('./runner')
@@ -29,7 +40,18 @@ const mergePlugin = function(configA, configB) {
   return { ...configA, ...configB }
 }
 
-const PLUGINS = [loadConfig, getTasks, loadNormalizedSpec, addDeps]
+const PLUGINS = [
+  loadConfig,
+  loadTasks,
+  validateTasks,
+  normalizeTasks,
+  normalizeTasksShortcuts,
+  validateTasksJsonSchemas,
+  normalizeTasksValidate,
+  normalizeTasksParams,
+  loadNormalizedSpec,
+  addDeps,
+]
 
 module.exports = {
   runTasks: eRunTasks,

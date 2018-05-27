@@ -24,7 +24,7 @@ const loadTasks = async function({ tasks }) {
   const tasksB = await Promise.all(tasksA.map(loadTaskFile))
   const tasksC = Object.assign({}, ...tasksB)
 
-  return tasksC
+  return { tasks: tasksC }
 }
 
 // Load and parse each task file in parallel

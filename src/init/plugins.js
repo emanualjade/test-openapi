@@ -1,10 +1,9 @@
 'use strict'
 
-const { get, set, merge } = require('lodash')
+const { get, set, merge, uniq, difference } = require('lodash')
 
 const { sortBy, reduceAsync, isObject, validateFromSchema } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
-const PLUGINS = require('../plugins')
 
 // Plugins are the way most functionalities is implemented.
 // A plugin is a plain object that exports the following properties.
@@ -67,15 +66,107 @@ const PLUGINS = require('../plugins')
 // of the same `type`. Please look at the current available plugins and try
 // to find out where the best place is for your plugin.
 
-// TODO: use `config` instead
-const getPluginNames = function() {
-  return PLUGINS.map(({ name }) => name)
+const getPlugins = function({ config }) {
+  const plugins = loadPlugins({ pluginNames: DEFAULT_PLUGINS })
+
+  validateUsedPlugins({ config, plugins })
+
+  return plugins
 }
 
-// TODO: use `require()` instead
-const getPlugins = function({ pluginNames }) {
-  return PLUGINS.filter(({ name }) => pluginNames.includes(name))
+// Plugins always included
+const DEFAULT_PLUGINS = ['call', 'generate', 'validate', 'spec', 'repeat', 'glob', 'deps', 'dry']
+
+// `require()` all the plugins
+const loadPlugins = function({ pluginNames = [], loaded = [] }) {
+  if (pluginNames.length === 0) {
+    return []
+  }
+
+  const parentPlugins = loadParentPlugins({ pluginNames, loaded })
+  const childPlugins = loadChildPlugins({ parentPlugins, loaded })
+  return [...parentPlugins, ...childPlugins]
 }
+
+const loadParentPlugins = function({ pluginNames, loaded }) {
+  return uniq(pluginNames)
+    .map(pluginName => loadPlugin({ pluginName, loaded }))
+    .filter(plugin => plugin !== undefined)
+}
+
+// `require()` all the plugins dependencies (from `plugin.dependencies`)
+const loadChildPlugins = function({ parentPlugins, loaded }) {
+  const dependenciesA = parentPlugins.map(({ dependencies }) => dependencies)
+  const dependenciesB = [].concat(...dependenciesA)
+
+  // Make sure dependencies do not require already loaded plugins
+  const loadedA = [...loaded, ...parentPlugins]
+
+  // Recursion
+  const childPlugins = loadPlugins({ pluginNames: dependenciesB, loaded: loadedA })
+  return childPlugins
+}
+
+const loadPlugin = function({ pluginName, loaded }) {
+  const alreadyLoaded = loaded.some(({ name }) => name === pluginName)
+  if (alreadyLoaded) {
+    return
+  }
+
+  const plugin = requirePlugin({ pluginName })
+  return plugin
+}
+
+// TODO: separate plugins in their own node modules instead
+const requirePlugin = function({ pluginName }) {
+  // eslint-disable-next-line import/no-dynamic-require
+  return require(`../plugins/${pluginName}`)
+}
+
+// Make sure the user did not forget to include some plugins
+const validateUsedPlugins = function({ config, plugins }) {
+  const missingPlugins = getMissingPlugins({ config, plugins })
+  if (missingPlugins.length === 0) {
+    return
+  }
+
+  const missingPluginsA = missingPlugins.join(', ')
+  throw new TestOpenApiError(
+    `The configuration uses the following plugins but they are not specified in 'configuration.plugins': ${missingPluginsA}`,
+    { property: 'plugins' },
+  )
+}
+
+const getMissingPlugins = function({ config, plugins }) {
+  const usedPlugins = findUsedPlugins({ config })
+  const pluginNames = plugins.map(({ name }) => name)
+
+  const missingPlugins = difference(usedPlugins, pluginNames)
+  return missingPlugins
+}
+
+// Guess which plugins are used by the current configuration
+const findUsedPlugins = function({ config }) {
+  const usedPlugins = findUsedPluginNames({ config })
+  const usedPluginsA = cleanUsedPlugins({ usedPlugins })
+  return usedPluginsA
+}
+
+const findUsedPluginNames = function({ config, config: { tasks } }) {
+  const generalPluginNames = Object.keys(config)
+  const taskPluginNamesA = tasks.map(Object.keys)
+  const usedPlugins = [].concat(...taskPluginNamesA, ...generalPluginNames)
+  return usedPlugins
+}
+
+const cleanUsedPlugins = function({ usedPlugins }) {
+  const usedPluginsA = uniq(usedPlugins)
+  const usedPluginsB = usedPluginsA.filter(name => !CORE_PROPS.includes(name))
+  return usedPluginsB
+}
+
+// Those properties are not plugin-related
+const CORE_PROPS = ['tasks', 'originalTask', 'taskKey']
 
 // Apply plugin-specific configuration
 const applyPluginsConfig = function({ config, plugins }) {
@@ -274,7 +365,6 @@ const mergeReturnValue = function(input, newInput) {
 }
 
 module.exports = {
-  getPluginNames,
   getPlugins,
   applyPluginsConfig,
   runHandlers,

@@ -6,8 +6,7 @@ const { getReturnValue } = require('./return')
 
 module.exports = {
   start: normalizeParams,
-  task: sendRequest,
-  taskTwo: getReturnValue,
+  task: [sendRequest, getReturnValue],
   dependencies: ['config', 'tasks', 'format', 'url'],
   returnedProperties: ['request', 'response'],
 }

@@ -58,15 +58,15 @@ const eRunPlugin = addGenErrorHandler(runPlugin, ({ task: { rawRequest, rawRespo
 
 const PLUGINS = [
   deps.task,
-  spec.task,
+  spec.task[0],
   generate.task,
-  format.task,
+  format.task[0],
   url.task,
-  request.task,
-  format.taskTwo,
-  spec.taskTwo,
+  request.task[0],
+  format.task[1],
+  spec.task[1],
   validate.task,
-  request.taskTwo,
+  request.task[1],
 ]
 
 module.exports = {

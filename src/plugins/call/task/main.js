@@ -4,12 +4,12 @@ const { fireFetch } = require('./fetch')
 const { getFetchResponse } = require('./response')
 
 // Fire actual HTTP call
-const fireHttpCall = async function({ call: { rawRequest }, config }) {
+const fireHttpCall = async function({ call, call: { rawRequest }, config }) {
   const rawResponse = await fireFetch({ rawRequest, config })
 
   const rawResponseA = await getFetchResponse({ rawResponse, config })
 
-  return { rawResponse: rawResponseA }
+  return { call: { ...call, rawResponse: rawResponseA } }
 }
 
 module.exports = {

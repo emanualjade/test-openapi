@@ -6,7 +6,12 @@ const { findBodyHandler } = require('./body')
 const { parseFlat } = require('./json')
 
 // Parse response
-const parseResponse = function({ call, rawResponse: { status, headers, body } }) {
+const parseResponse = function({
+  call,
+  call: {
+    rawResponse: { status, headers, body },
+  },
+}) {
   const headersA = parseHeaders({ headers })
   const bodyA = parseBody({ body, headers })
 

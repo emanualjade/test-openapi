@@ -22,7 +22,7 @@ const mergeSpecParams = function({ call: { params, ...call }, taskKey, config })
 const mergeSpecValidate = function({
   taskKey,
   validate: { status, headers, body },
-  rawResponse,
+  call: { rawResponse },
   config,
 }) {
   const specResponse = getSpecResponse({ taskKey, config, rawResponse })

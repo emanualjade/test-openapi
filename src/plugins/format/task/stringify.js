@@ -10,7 +10,7 @@ const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
-const stringifyParams = function({ call: { params } }) {
+const stringifyParams = function({ call, call: { params } }) {
   const request = getRequest({ params })
 
   const paramsA = normalizeContentType({ params })
@@ -18,7 +18,7 @@ const stringifyParams = function({ call: { params } }) {
   const paramsB = paramsA.map(param => stringifyParam({ param, params: paramsA }))
   const rawRequest = merge({}, ...paramsB)
 
-  return { request, rawRequest }
+  return { call: { ...call, request }, rawRequest }
 }
 
 // Returned as `task.request`

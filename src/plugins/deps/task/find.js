@@ -18,8 +18,8 @@ const CLEAN_PROPERTIES = ['taskKey', 'stackInfo', 'config']
 
 // Return each `dep` as an object with:
 //   depKey: 'taskKey'
-//   depPath: 'request|response|...'
-//   path: 'request|response...'
+//   depPath: 'call.request|response|...'
+//   path: 'call.request|response...'
 const getRef = function({ node: { value, path }, tasks }) {
   if (typeof value !== 'string') {
     return

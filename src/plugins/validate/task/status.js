@@ -11,7 +11,7 @@ const validateStatus = function({ validate: { status: vStatus }, response: { sta
     return
   }
 
-  const property = 'response.status'
+  const property = 'call.response.status'
   throw new TestOpenApiError(`Status code${error}.`, {
     property,
     expected: vStatus,

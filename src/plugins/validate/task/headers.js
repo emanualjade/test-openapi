@@ -40,7 +40,7 @@ const validateHeaderValue = function({ name, vHeader, header }) {
     return
   }
 
-  const property = `response.headers.${name}`
+  const property = `call.response.headers.${name}`
   throw new TestOpenApiError(`Response header '${name}'${error}.`, {
     property,
     expected: vHeader,

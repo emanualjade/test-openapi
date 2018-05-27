@@ -9,8 +9,7 @@
 //    Will be `config` if it was outside of any plugin
 //  - `taskName` `{string}`: current task name
 //  - `task` `{object}`: current task
-//  - `property` `{string}`: path to the property in the current task (if `task`
-//    is defined) or in `config`
+//  - `property` `{string}`: path to the property in `task`, `actual` or `config`
 //  - `expected` `{value}`: expected value
 //  - `actual` `{value}`: actual value
 class TestOpenApiError extends Error {

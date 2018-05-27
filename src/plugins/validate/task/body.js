@@ -27,7 +27,7 @@ const validateBodyValue = function({ vBody, body }) {
     return
   }
 
-  const property = 'response.body'
+  const property = 'call.response.body'
   throw new TestOpenApiError(`Response body${error}.`, { property, expected: vBody, actual: body })
 }
 

@@ -2,8 +2,7 @@
 
 const { TestOpenApiError } = require('../../../errors')
 
-// Only `response headers|body` that are present either in the specification or
-// in `task.validate.*` are validated.
+// Only response headers|body that are present in `task.validate.*` are validated.
 // `type: null` means the response header|body must not be present
 // `type: [null, ...]` means it is optional
 // Otherwise, it is required
@@ -15,7 +14,7 @@ const validateRequiredBody = function({ schema, value }) {
     return
   }
 
-  const property = 'response.body'
+  const property = 'call.response.body'
   throw new TestOpenApiError(`Response body ${message}`, {
     property,
     expected: schema,
@@ -29,7 +28,7 @@ const validateRequiredHeader = function({ schema, value, name }) {
     return
   }
 
-  const property = `response.headers.${name}`
+  const property = `call.response.headers.${name}`
   throw new TestOpenApiError(`Response header '${name}' ${message}`, {
     property,
     expected: schema,

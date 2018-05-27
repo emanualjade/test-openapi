@@ -31,7 +31,7 @@ const getBodyHandler = function(
     },
   },
 ) {
-  const properties = { property: 'response.body' }
+  const properties = { property: 'call.response.body' }
 
   if (type === 'body-timeout') {
     throw new TestOpenApiError(

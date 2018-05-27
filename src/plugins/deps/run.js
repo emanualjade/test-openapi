@@ -7,12 +7,12 @@ const { addErrorHandler } = require('../../errors')
 const { checkStack, handleDepError } = require('./stack')
 
 // Run `deps` tasks
-const runDeps = async function({ task, tasks, refs, runTask }) {
+const runDeps = async function({ task, config, refs, runTask }) {
   const runDepTask = addErrorHandler(runTask, handleDepError)
 
   const depKeys = getDepKeys({ refs })
 
-  const depReturns = depKeys.map(depKey => runDep({ task, tasks, refs, depKey, runDepTask }))
+  const depReturns = depKeys.map(depKey => runDep({ task, config, refs, depKey, runDepTask }))
   const depReturnsA = await Promise.all(depReturns)
   const depReturnsB = Object.assign({}, ...depReturnsA)
 
@@ -27,12 +27,8 @@ const getDepKeys = function({ refs }) {
 }
 
 const runDep = async function({
-  task: {
-    config: { dry },
-    taskKey,
-    stackInfo,
-  },
-  tasks,
+  task: { taskKey, stackInfo },
+  config: { dry, tasks },
   refs,
   depKey,
   runDepTask,

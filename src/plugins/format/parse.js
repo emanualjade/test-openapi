@@ -5,11 +5,10 @@ const { mapValues } = require('lodash')
 const { usesCollFormat, parseCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 
-const parseResponse = function({
-  rawResponse: { status, headers, body },
-  validate: { headers: vHeaders },
-  config: { dry },
-}) {
+const parseResponse = function(
+  { rawResponse: { status, headers, body }, validate: { headers: vHeaders } },
+  { config: { dry } },
+) {
   if (dry) {
     return
   }

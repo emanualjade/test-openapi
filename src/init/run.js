@@ -22,15 +22,9 @@ const {
 // TODO: we should cancel other tasks if any of them fails. At the moment, this is
 // not possible because `node-fetch` does not support `AbortController`:
 // a PR is ongoing to add support: https://github.com/bitinn/node-fetch/pull/437
-const runTasks = async function({
-  task,
-  task: {
-    config: { repeat },
-  },
-  tasks,
-}) {
+const runTasks = async function({ task, config, config: { repeat } }) {
   // Passed as second argument to every plugin
-  const secondArg = { tasks }
+  const secondArg = { config }
 
   const runningTasks = new Array(repeat).fill().map(() => runTask({ task, secondArg }))
   await Promise.all(runningTasks)

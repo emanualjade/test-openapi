@@ -3,17 +3,8 @@
 const { normalizeError } = require('./normalize')
 
 // Error handler for `it()`
-const runTasksHandler = function(
-  error,
-  {
-    task: {
-      taskKey: task,
-      config: { originalConfig },
-    },
-    errors,
-  },
-) {
-  const errorA = normalizeError({ error, properties: { config: originalConfig, task } })
+const runTasksHandler = function(error, { task: { taskKey }, config: { originalConfig }, errors }) {
+  const errorA = normalizeError({ error, properties: { config: originalConfig, task: taskKey } })
   // Convert to plain object
   const errorB = { ...errorA, message: errorA.message }
 

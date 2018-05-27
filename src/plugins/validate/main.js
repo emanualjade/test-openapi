@@ -5,7 +5,7 @@ const { validateHeaders } = require('./headers')
 const { validateBody } = require('./body')
 
 // Validates response against OpenAPI specification
-const validateResponse = function({ validate, response, config: { dry } }) {
+const validateResponse = function({ validate, response }, { config: { dry } }) {
   if (dry) {
     return
   }

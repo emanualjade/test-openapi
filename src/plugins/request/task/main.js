@@ -1,14 +1,11 @@
 'use strict'
 
-const { getFetchParams } = require('./params')
 const { fireFetch } = require('./fetch')
 const { getFetchResponse } = require('./response')
 
 // Fire actual HTTP request
 const sendRequest = async function({ rawRequest, config }) {
-  const { url, fetchParams } = getFetchParams({ rawRequest, config })
-
-  const rawResponse = await fireFetch({ url, fetchParams, config })
+  const rawResponse = await fireFetch({ rawRequest, config })
 
   const rawResponseA = await getFetchResponse({ rawResponse, config })
 

@@ -21,10 +21,19 @@ const locationToKey = function({ location, name }) {
   return `${location}.${name}`
 }
 
+const locationToValue = function({ location, name, value }) {
+  if (SINGLE_NAME_LOCATIONS.includes(location)) {
+    return { [location]: value }
+  }
+
+  return { [location]: { [name]: value } }
+}
+
 // Those locations do not use dot notations
 const SINGLE_NAME_LOCATIONS = ['method', 'server', 'path', 'body']
 
 module.exports = {
   keyToLocation,
   locationToKey,
+  locationToValue,
 }

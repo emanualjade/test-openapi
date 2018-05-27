@@ -64,7 +64,6 @@ const eRunPlugins = addErrorHandler(runPlugins, runPluginsHandler)
 //   - `format` (160): parse response
 //   - `spec` (170): merge OpenAPI specification to `task.validate.*`
 //   - `validate` (180): validate response against `task.validate.*` JSON schemas
-//   - `request` (190): normalize returned `request` value
 
 module.exports = {
   run: eRun,

@@ -1,6 +1,8 @@
 'use strict'
 
-const { locationToKey } = require('../../../utils')
+const { merge } = require('lodash')
+
+const { locationToValue } = require('../../../utils')
 
 const { normalizeContentType, getContentTypeParam } = require('./content_type')
 const { stringifyFlat } = require('./json')
@@ -9,17 +11,27 @@ const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
 const stringifyParams = function({ params }) {
+  const request = getRequest({ params })
+
   const paramsA = normalizeContentType({ params })
 
   const paramsB = paramsA.map(param => stringifyParam({ param, params: paramsA }))
-  const rawRequest = Object.assign({}, ...paramsB)
-  return { rawRequest }
+  const rawRequest = merge({}, ...paramsB)
+
+  return { request, rawRequest }
+}
+
+// Returned as `task.request`
+const getRequest = function({ params }) {
+  const paramsA = params.map(locationToValue)
+  const request = merge({}, ...paramsA)
+  return request
 }
 
 const stringifyParam = function({ param, param: { location, name }, params }) {
-  const key = locationToKey({ location, name })
   const value = PARAM_STRINGIFIERS[location]({ param, params })
-  return { [key]: value }
+  const valueA = locationToValue({ location, name, value })
+  return valueA
 }
 
 // `url`, `query` and `header` values might not be strings.

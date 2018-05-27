@@ -22,7 +22,7 @@ const isSameParam = function(paramA, paramB) {
     return false
   }
 
-  if (paramA.location === 'header') {
+  if (paramA.location === 'headers') {
     return paramA.name.toLowerCase() === paramB.name.toLowerCase()
   }
 
@@ -70,6 +70,4 @@ module.exports = {
   mergeTaskParams,
   mergeHeaders,
   mergeTaskSchema,
-  isSameParam,
-  isSameHeader,
 }

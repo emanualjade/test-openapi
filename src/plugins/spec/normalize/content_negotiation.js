@@ -75,7 +75,7 @@ const addParamInfo = function(header) {
     return
   }
 
-  return { ...header, location: 'header', required: true }
+  return { ...header, location: 'headers', required: true }
 }
 
 module.exports = {

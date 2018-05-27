@@ -1,6 +1,6 @@
 'use strict'
 
-const { objectifyParams, stringifyFlat } = require('../../utils')
+const { stringifyFlat } = require('../../utils')
 
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
@@ -9,14 +9,14 @@ const { addFullUrl } = require('./url')
 // Stringify request parameters
 const stringifyParams = function({ params, operation, config }) {
   const paramsA = params.map(param => stringifyParam({ param, params }))
-  const rawRequest = objectifyParams({ params: paramsA })
+  const rawRequest = Object.assign({}, ...paramsA)
   const rawRequestA = addFullUrl({ rawRequest, operation, config })
   return { rawRequest: rawRequestA }
 }
 
-const stringifyParam = function({ param, param: { location }, params }) {
+const stringifyParam = function({ param, param: { location, name }, params }) {
   const value = PARAM_STRINGIFIERS[location]({ param, params })
-  return { ...param, value }
+  return { [`${location}.${name}`]: value }
 }
 
 // `url`, `query` and `header` values might not be strings.
@@ -52,20 +52,14 @@ const getBodyMime = function({ params }) {
 }
 
 const isContentTypeParam = function({ location, name }) {
-  return location === 'header' && name.toLowerCase() === 'content-type'
-}
-
-// TODO: not supported yet
-const stringifyParamFormData = function({ param: { value } }) {
-  return value
+  return location === 'headers' && name.toLowerCase() === 'content-type'
 }
 
 const PARAM_STRINGIFIERS = {
-  path: stringifyParamFlat,
+  url: stringifyParamFlat,
   query: stringifyParamFlat,
-  header: stringifyParamFlat,
+  headers: stringifyParamFlat,
   body: stringifyBody,
-  formData: stringifyParamFormData,
 }
 
 module.exports = {

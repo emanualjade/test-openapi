@@ -4,6 +4,8 @@ const { flatten, uniqBy } = require('lodash')
 
 const { throwSpecificationError } = require('../../../errors')
 
+const IN_TO_LOCATION = require('./in_to_location')
+
 // Normalize OpenAPI security request parameters into specification-agnostic format
 const getSecParams = function({
   spec: { securityDefinitions, security: apiSecurity = [] },
@@ -52,8 +54,9 @@ const getSecParamHandler = function({ securityDef: { type }, secName }) {
   )
 }
 
-// `apiKey` security definitions -> `header|query` request parameter
-const getDefApiKey = function({ name, in: location }) {
+// `apiKey` security definitions -> `headers|query` request parameter
+const getDefApiKey = function({ name, in: paramIn }) {
+  const location = IN_TO_LOCATION[paramIn]
   return { name, location, schema: { type: 'string' } }
 }
 

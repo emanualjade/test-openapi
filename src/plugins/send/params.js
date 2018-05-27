@@ -13,10 +13,12 @@ const getFetchParams = function({
 }
 
 const getFetchHeaders = function({ rawRequest }) {
-  const headers = pickBy(rawRequest, (value, name) => name.startsWith('headers.'))
-  const headersA = mapKeys(headers, (value, name) => name.replace(/^headers./, ''))
+  const headers = pickBy(rawRequest, (value, name) => HEADERS_PREFIX_REGEXP.test(name))
+  const headersA = mapKeys(headers, (value, name) => name.replace(HEADERS_PREFIX_REGEXP, ''))
   return headersA
 }
+
+const HEADERS_PREFIX_REGEXP = /^headers./
 
 module.exports = {
   getFetchParams,

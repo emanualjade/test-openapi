@@ -25,27 +25,29 @@ const extractContentTypeParam = function({ params }) {
 }
 
 const isContentTypeParam = function({ location, name }) {
-  return location === 'header' && name.toLowerCase() === 'content-type'
+  return location === 'headers' && name.toLowerCase() === 'content-type'
 }
 
 // Default request `Content-Type` according to HTTP is `application/octet-stream`
 const DEFAULT_CONTENT_TYPE = {
   name: 'Content-Type',
-  location: 'header',
+  location: 'headers',
   schema: { type: 'string', enum: ['application/octet-stream'] },
 }
 
 // Retrieve whether there is a request body and whether it is of `body` or `formData` type
 const getReqBodyType = function({ params }) {
-  const { location } = params.find(isReqBodyParam) || {}
-  return location
-}
+  const param = params.find(({ location }) => location === 'body')
+  if (param === undefined) {
+    return
+  }
 
-const isReqBodyParam = function({ location }) {
-  return REQ_BODY_LOCATIONS.includes(location)
-}
+  if (param.name === 'body') {
+    return 'body'
+  }
 
-const REQ_BODY_LOCATIONS = ['formData', 'body']
+  return 'formData'
+}
 
 const normalizeContentType = function({ contentTypeParam, reqBodyType }) {
   // If there is no request body, there is no `Content-Type` header

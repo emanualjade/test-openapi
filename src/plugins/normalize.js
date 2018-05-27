@@ -1,22 +1,28 @@
 'use strict'
 
-const { objectifyParams, objectifyResponse } = require('../utils')
+const { mapKeys } = require('lodash')
 
 // Return final value
 const normalizeReturnValue = function({ params, response }) {
-  const request = objectifyParams({ params })
+  const request = normalizeRequest({ params })
   const responseA = normalizeResponse({ response })
   return { request, response: responseA }
 }
 
-// Return final response value
-const normalizeResponse = function({ response }) {
-  if (response === undefined) {
-    return {}
+const normalizeRequest = function({ params }) {
+  const paramsA = params.map(({ location, name, value }) => ({ [`${location}.${name}`]: value }))
+  const request = Object.assign({}, ...paramsA)
+  return request
+}
+
+// From `{ status, headers, body }` to `{ status, 'headers.*': ..., body }`
+const normalizeResponse = function({ response: { headers, ...response } = {} }) {
+  if (headers === undefined) {
+    return response
   }
 
-  const responseA = objectifyResponse({ response })
-  return responseA
+  const headersA = mapKeys(headers, (value, name) => `headers.${name}`)
+  return { ...response, ...headersA }
 }
 
 module.exports = {

@@ -1,7 +1,6 @@
 'use strict'
 
 const { mergeHeaders } = require('../common')
-const { validateVHeader } = require('../validate')
 
 // Merge `task.validate.headers.*` to specification
 const mergeVHeaders = function({
@@ -10,7 +9,7 @@ const mergeVHeaders = function({
   },
   validate,
 }) {
-  const vHeaders = getVHeaders({ validate, headers })
+  const vHeaders = getVHeaders({ validate })
 
   const vHeadersA = mergeHeaders([...headers, ...vHeaders])
 
@@ -21,28 +20,23 @@ const mergeVHeaders = function({
 // `task.validate.headers.NAME` because it aligns headers with other properties
 // of the same nesting level. It also prevents too much nesting, which makes
 // the file looks more complicated than it is
-const getVHeaders = function({ validate = {}, headers }) {
+const getVHeaders = function({ validate = {} }) {
   return Object.entries(validate)
     .filter(isVHeader)
-    .map(([name, schema]) => getVHeader({ name, schema, headers }))
+    .map(getVHeader)
 }
 
 const isVHeader = function([name]) {
-  return name.startsWith(HEADERS_PREFIX)
+  return HEADERS_PREFIX_REGEXP.test(name)
 }
 
-const getVHeader = function({ name, schema, headers }) {
-  const nameA = name.replace(HEADERS_PREFIX, '')
-
-  const vHeader = { name: nameA, schema }
-
-  validateVHeader({ vHeader, headers })
-
-  return vHeader
+const getVHeader = function([name, schema]) {
+  const nameA = name.replace(HEADERS_PREFIX_REGEXP, '')
+  return { name: nameA, schema }
 }
 
 // We use `task.validate['headers.NAME']` notation
-const HEADERS_PREFIX = 'headers.'
+const HEADERS_PREFIX_REGEXP = /^headers\./
 
 module.exports = {
   mergeVHeaders,

@@ -6,4 +6,5 @@ const { generateParams } = require('./create')
 module.exports = {
   normalizeGenerate,
   generateParams,
+  dependencies: ['tasks', 'request'],
 }

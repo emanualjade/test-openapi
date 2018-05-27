@@ -45,9 +45,9 @@ const PLUGINS = [
   getTasks,
   mergeGlobTasks,
   normalizeParams,
-  normalizeGenerate,
   normalizeValidate,
   loadNormalizedSpec,
+  normalizeGenerate,
   handleDryRun,
   repeatTasks,
 ]

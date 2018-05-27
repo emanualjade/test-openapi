@@ -69,10 +69,11 @@ const { addErrorHandler, TestOpenApiError } = require('../errors')
 const getPlugins = function({ config: { plugins, ...config } }) {
   const pluginNames = [...DEFAULT_PLUGINS, ...plugins]
   const pluginsA = loadPlugins({ pluginNames })
+  const pluginsB = removeOverrides({ plugins: pluginsA })
 
-  validateUsedPlugins({ config, plugins: pluginsA })
+  validateUsedPlugins({ config, plugins: pluginsB })
 
-  return { config, plugins: pluginsA }
+  return { config, plugins: pluginsB }
 }
 
 // Plugins always included
@@ -131,6 +132,20 @@ const requirePluginHandler = function(_, { pluginName }) {
 }
 
 const eRequirePlugin = addErrorHandler(requirePlugin, requirePluginHandler)
+
+// Remove all plugins specified in `plugin.overrides`
+const removeOverrides = function({ plugins }) {
+  const overrides = getOverrides({ plugins })
+  const pluginsA = plugins.filter(({ name }) => !overrides.includes(name))
+  return pluginsA
+}
+
+const getOverrides = function({ plugins }) {
+  const overridesA = plugins.map(({ overrides = [] }) => overrides)
+  const overridesB = [].concat(...overridesA)
+  const overridesC = uniq(overridesB)
+  return overridesC
+}
 
 // Make sure the user did not forget to include some plugins
 const validateUsedPlugins = function({ config, plugins }) {

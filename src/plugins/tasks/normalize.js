@@ -9,7 +9,7 @@ const normalizeTasks = function({ tasks, server }) {
   const tasksB = Object.entries(tasksA).map(([taskKey, task]) =>
     normalizeTask({ taskKey, task, server }),
   )
-  return { tasks: tasksB }
+  return tasksB
 }
 
 const normalizeTask = function({ taskKey, task, task: originalTask, server }) {

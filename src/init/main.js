@@ -3,9 +3,7 @@
 const { reduceAsync } = require('../utils')
 const {
   loadConfig,
-  loadTasks,
-  validateTasks,
-  normalizeTasks,
+  getTasks,
   normalizeTasksGenerate,
   normalizeTasksValidate,
   normalizeTasksParams,
@@ -41,9 +39,7 @@ const mergePlugin = function(configA, configB) {
 
 const PLUGINS = [
   loadConfig,
-  loadTasks,
-  validateTasks,
-  normalizeTasks,
+  getTasks,
   normalizeTasksGenerate,
   normalizeTasksValidate,
   normalizeTasksParams,

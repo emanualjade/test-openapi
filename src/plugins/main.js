@@ -38,6 +38,9 @@ const REDUCERS = [
 // `plugin.dependencies` `{string[]}`
 // Other plugins required by this plugin to properly work
 
+// `plugin.optionalDependencies` `{string[]}`
+// Other plugins optionally used by this plugin
+
 // `plugin.overrides` `{string[]}`
 // List of plugins that should be disabled if this plugin is used
 
@@ -57,12 +60,15 @@ const REDUCERS = [
 //      - fired before all tasks
 //      - arguments: `(config)`
 //      - this type of handlers can modify the configuration object
+//      - `config` also has the following read-only properties:
+//         - `plugins`: list of available plugins
 //   - `task`:
 //      - fired for each task
 //      - arguments: `(task)`
 //      - this type of handlers can modify the current task
 //      - the task is the same object as the one specified in tasks files
 //      - `task` also has the following read-only properties:
+//         - `plugins`: list of available plugins
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)
 //         - `runTask(task)`: function allowing a task to fire another task
@@ -72,13 +78,14 @@ const REDUCERS = [
 //      - arguments: `(task)`
 //      - this type of handlers can modify the current `task`
 //      - `task` also has the following read-only properties:
+//         - `plugins`: list of available plugins
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)
 //   - `end`:
 //      - fired after all tasks
-//      - arguments: `({ tasks, config })`
+//      - arguments: `({ tasks, config, plugins })`
 //      - this type of handlers can modify all the final `tasks`
-//      - `config` is read-only
+//      - `config` and `plugins` are read-only
 // Throwing an exception in:
 //  - `start` or `end`: will stop the whole run
 //  - `task`: stop the current `task`, but other tasks are still run.

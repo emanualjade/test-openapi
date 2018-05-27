@@ -6,7 +6,8 @@ const config = require('./config')
 
 module.exports = {
   name: 'spec',
-  dependencies: ['call', 'generate', 'validate'],
+  dependencies: ['call'],
+  optionalDependencies: ['generate', 'validate'],
   config,
   handlers: [
     {

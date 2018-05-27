@@ -14,7 +14,7 @@ const findRefs = function({ task, tasks }) {
 }
 
 // Do not crawl some `task.*` properties for `deps`
-const CLEAN_PROPERTIES = ['taskKey']
+const CLEAN_PROPERTIES = ['taskKey', 'plugins']
 
 // Return each `dep` as an object with:
 //   depKey: 'taskKey'

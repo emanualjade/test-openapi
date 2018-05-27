@@ -1,5 +1,8 @@
 'use strict'
 
+const { throwTaskError } = require('../../errors')
+const { validateIsSchema } = require('../../utils')
+
 // Normalize `task.validate.*`
 const normalizeTasksValidate = function({ tasks }) {
   const tasksA = tasks.map(normalizeValidate)
@@ -7,11 +10,14 @@ const normalizeTasksValidate = function({ tasks }) {
 }
 
 const normalizeValidate = function({
-  validate: { status = DEFAULT_STATUS_CODE, body, ...validate } = {},
+  validate = {},
+  validate: { status = DEFAULT_STATUS_CODE, body, ...headers } = {},
   ...task
 }) {
-  const headers = normalizeHeaders({ validate })
-  const validateA = { status, headers, body }
+  validateJsonSchemas({ task, validate })
+
+  const headersA = normalizeHeaders({ headers })
+  const validateA = { status, headers: headersA, body }
   return { ...task, validate: validateA }
 }
 
@@ -19,9 +25,31 @@ const normalizeValidate = function({
 // status code is `200`
 const DEFAULT_STATUS_CODE = { type: 'integer', enum: [200] }
 
+// Make sure `task.validate.*.*` are valid JSON schemas
+const validateJsonSchemas = function({ task, validate }) {
+  Object.entries(validate).forEach(([prop, value]) => validateJsonSchema({ task, prop, value }))
+}
+
+const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
+  if (value === undefined) {
+    return
+  }
+
+  const { error } = validateIsSchema({ value })
+  if (error === undefined) {
+    return
+  }
+
+  const property = `validate.${prop}`
+  throwTaskError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
+    property,
+    task: taskKey,
+  })
+}
+
 // From `{ 'headers.NAME': schema, ... }` to array of `{ name: 'NAME', schema }`
-const normalizeHeaders = function({ validate }) {
-  return Object.entries(validate)
+const normalizeHeaders = function({ headers }) {
+  return Object.entries(headers)
     .filter(isHeader)
     .map(getHeader)
 }

@@ -15,7 +15,7 @@ const validateTaskJsonSchemas = function(task) {
   PROPERTIES.forEach(prop => validateJsonSchemas({ task, prop }))
 }
 
-const PROPERTIES = ['parameters', 'validate']
+const PROPERTIES = ['parameters']
 
 const validateJsonSchemas = function({ task, prop }) {
   const obj = task[prop]

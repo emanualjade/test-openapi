@@ -10,7 +10,7 @@ const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
-const stringifyParams = function({ params }) {
+const stringifyParams = function({ call: { params } }) {
   const request = getRequest({ params })
 
   const paramsA = normalizeContentType({ params })

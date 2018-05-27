@@ -5,11 +5,11 @@ const jsonSchemaFaker = require('json-schema-faker')
 const { locationToKey } = require('../../../utils')
 
 // Generates random values based on `task.call.*` JSON schemas
-const generateParams = function({ params }) {
+const generateParams = function({ call: { params, ...call } }) {
   const schema = getParamsJsonSchema({ params })
   const values = generateFromSchema({ schema })
   const paramsA = addGeneratedValues({ values, params })
-  return { params: paramsA }
+  return { call: { ...call, params: paramsA } }
 }
 
 // Transform OpenAPI parameters into a single JSON schema

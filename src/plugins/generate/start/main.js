@@ -9,13 +9,13 @@ const normalizeGenerate = function({ tasks }) {
   return { tasks: tasksA }
 }
 
-const normalizeTaskGenerate = function({ params, ...task }) {
+const normalizeTaskGenerate = function({ call: { params, ...call }, ...task }) {
   // `task.call.*: non-object` is shortcut for `{ enum: [value] }`
   const paramsA = params.map(normalizeParamShortcut)
 
   validateJsonSchemas({ params: paramsA, task })
 
-  return { ...task, params: paramsA }
+  return { ...task, call: { ...call, params: paramsA } }
 }
 
 const normalizeParamShortcut = function({ value, ...param }) {

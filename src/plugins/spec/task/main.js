@@ -8,14 +8,14 @@ const { getSpecOperation, getSpecResponse } = require('./operation')
 const { mergeInvalidValue, isInvalidValue } = require('./invalid')
 
 // Merge OpenAPI specification to `task.call.*`
-const mergeSpecParams = function({ taskKey, params, config }) {
+const mergeSpecParams = function({ call: { params, ...call }, taskKey, config }) {
   const specOperation = getSpecOperation({ taskKey, config })
   if (specOperation === undefined) {
     return
   }
 
   const paramsA = mergeParams([...specOperation.params, ...params], mergeSpec)
-  return { params: paramsA }
+  return { call: { ...call, params: paramsA } }
 }
 
 // Merge OpenAPI specification to `task.validate.*`

@@ -14,12 +14,12 @@ module.exports = {
     {
       type: 'task',
       handler: sendRequest,
-      order: 1150,
+      order: 150,
     },
     {
       type: 'task',
       handler: getReturnValue,
-      order: 1190,
+      order: 190,
     },
   ],
   dependencies: ['format', 'url'],

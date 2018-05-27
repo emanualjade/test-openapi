@@ -8,7 +8,7 @@ module.exports = {
     {
       type: 'task',
       handler: addFullUrl,
-      order: 1140,
+      order: 140,
     },
   ],
   dependencies: ['request'],

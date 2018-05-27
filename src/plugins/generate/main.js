@@ -14,7 +14,7 @@ module.exports = {
     {
       type: 'task',
       handler: generateParams,
-      order: 1120,
+      order: 120,
     },
   ],
   dependencies: ['request'],

@@ -14,7 +14,7 @@ module.exports = {
     {
       type: 'task',
       handler: validateResponse,
-      order: 1180,
+      order: 180,
     },
   ],
   dependencies: ['request'],

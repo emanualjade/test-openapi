@@ -14,12 +14,12 @@ module.exports = {
     {
       type: 'task',
       handler: mergeSpecParams,
-      order: 1110,
+      order: 110,
     },
     {
       type: 'task',
       handler: mergeSpecValidate,
-      order: 1170,
+      order: 170,
     },
   ],
   dependencies: ['request', 'generate', 'validate'],

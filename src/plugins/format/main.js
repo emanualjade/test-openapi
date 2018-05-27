@@ -8,12 +8,12 @@ module.exports = {
     {
       type: 'task',
       handler: stringifyParams,
-      order: 1130,
+      order: 130,
     },
     {
       type: 'task',
       handler: parseResponse,
-      order: 1160,
+      order: 160,
     },
   ],
   dependencies: ['request', 'validate'],

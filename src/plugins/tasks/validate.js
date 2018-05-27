@@ -1,70 +1,44 @@
 'use strict'
 
 const { throwTaskError } = require('../../errors')
-const { validateIsSchema } = require('../../utils')
+const { validateFromSchema, isObject } = require('../../utils')
 
-// Normalize `task.validate.*`
-const normalizeTasksValidate = function({ tasks }) {
-  const tasksA = tasks.map(normalizeValidate)
-  return { tasks: tasksA }
+const TASK_SCHEMA = require('./schema')
+
+// Make sure task files are not empty
+const validateTaskFile = function({ tasks, path }) {
+  if (isObject(tasks)) {
+    return
+  }
+
+  throwTaskError(`Task file '${path}' should be an object not a ${typeof tasks}`)
 }
 
-const normalizeValidate = function({
-  validate = {},
-  validate: { status = DEFAULT_STATUS_CODE, body, ...headers } = {},
-  ...task
-}) {
-  validateJsonSchemas({ task, validate })
+// Validate syntax of task files
+const validateTasks = function({ tasks }) {
+  validateEmptyTasks({ tasks })
 
-  const headersA = normalizeHeaders({ headers })
-  const validateA = { status, headers: headersA, body }
-  return { ...task, validate: validateA }
+  Object.entries(tasks).forEach(validateTask)
 }
 
-// Unless `task.validate.status` is overriden, will validate that response's
-// status code is `200`
-const DEFAULT_STATUS_CODE = { type: 'integer', enum: [200] }
+const validateEmptyTasks = function({ tasks }) {
+  if (Object.keys(tasks).length !== 0) {
+    return
+  }
 
-// Make sure `task.validate.*.*` are valid JSON schemas
-const validateJsonSchemas = function({ task, validate }) {
-  Object.entries(validate).forEach(([prop, value]) => validateJsonSchema({ task, prop, value }))
+  throwTaskError('No tasks were found')
 }
 
-const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
-  const { error } = validateIsSchema({ value })
+const validateTask = function([taskKey, task]) {
+  const { error, path } = validateFromSchema({ schema: TASK_SCHEMA, value: task, name: taskKey })
   if (error === undefined) {
     return
   }
 
-  const property = `validate.${prop}`
-  throwTaskError(`In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`, {
-    property,
-    task: taskKey,
-  })
+  throwTaskError(`Task '${taskKey}' is invalid: ${error}`, { task: taskKey, property: path })
 }
-
-// From `{ 'headers.NAME': schema, ... }` to array of `{ name: 'NAME', schema }`
-const normalizeHeaders = function({ headers }) {
-  return Object.entries(headers)
-    .filter(isHeader)
-    .map(getHeader)
-}
-
-const isHeader = function([name]) {
-  return HEADERS_PREFIX_REGEXP.test(name)
-}
-
-const getHeader = function([name, schema]) {
-  const nameA = name.replace(HEADERS_PREFIX_REGEXP, '')
-  return { name: nameA, schema }
-}
-
-// We use the `task.validate['headers.NAME']` notation instead of
-// `task.validate.headers.NAME` because it aligns headers with other properties
-// of the same nesting level. It also prevents too much nesting, which makes
-// the file looks more complicated than it is
-const HEADERS_PREFIX_REGEXP = /^headers\./
 
 module.exports = {
-  normalizeTasksValidate,
+  validateTaskFile,
+  validateTasks,
 }

@@ -9,7 +9,7 @@ const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 const { isObject } = require('../../utils')
 const { addErrorHandler, throwTaskError } = require('../../errors')
 
-const { validateTaskFile } = require('./validation')
+const { validateTaskFile } = require('./validate')
 
 // Load YAML/JSON task files
 const loadTasks = async function({ tasks }) {

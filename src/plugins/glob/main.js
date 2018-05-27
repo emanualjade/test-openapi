@@ -4,6 +4,7 @@ const { mergeGlobTasks } = require('./start')
 
 module.exports = {
   name: 'glob',
+  dependencies: [],
   handlers: [
     {
       type: 'start',
@@ -11,5 +12,4 @@ module.exports = {
       order: 100,
     },
   ],
-  dependencies: [],
 }

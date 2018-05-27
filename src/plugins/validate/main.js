@@ -5,6 +5,7 @@ const { validateResponse } = require('./task')
 
 module.exports = {
   name: 'validate',
+  dependencies: ['request'],
   handlers: [
     {
       type: 'start',
@@ -17,5 +18,4 @@ module.exports = {
       order: 180,
     },
   ],
-  dependencies: ['request'],
 }

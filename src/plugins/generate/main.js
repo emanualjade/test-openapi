@@ -5,6 +5,7 @@ const { generateParams } = require('./task')
 
 module.exports = {
   name: 'generate',
+  dependencies: ['request'],
   handlers: [
     {
       type: 'start',
@@ -17,5 +18,4 @@ module.exports = {
       order: 120,
     },
   ],
-  dependencies: ['request'],
 }

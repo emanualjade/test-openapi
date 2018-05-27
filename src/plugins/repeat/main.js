@@ -4,6 +4,7 @@ const { repeatTasks } = require('./start')
 
 module.exports = {
   name: 'repeat',
+  dependencies: [],
   handlers: [
     {
       type: 'start',
@@ -11,5 +12,4 @@ module.exports = {
       order: 160,
     },
   ],
-  dependencies: [],
 }

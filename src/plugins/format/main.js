@@ -4,6 +4,7 @@ const { stringifyParams, parseResponse } = require('./task')
 
 module.exports = {
   name: 'format',
+  dependencies: ['request', 'validate'],
   handlers: [
     {
       type: 'task',
@@ -16,5 +17,4 @@ module.exports = {
       order: 160,
     },
   ],
-  dependencies: ['request', 'validate'],
 }

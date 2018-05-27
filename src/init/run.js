@@ -2,44 +2,27 @@
 
 const { pick } = require('lodash')
 
-const { addGenErrorHandler } = require('../errors')
 const { reduceAsync } = require('../utils')
 
 // Run an `it()` task
-const runTask = async function({ originalTask, ...task }, context, plugins) {
-  const contextA = addRunTask({ context, plugins })
-
-  const { task: taskA } = await runTaskPlugins({ task, context: contextA, plugins })
+const runTask = async function({ originalTask, ...task }, handlers) {
+  const taskA = await runTaskPlugins({ task, handlers })
 
   const taskB = getTaskReturn({ task: taskA, originalTask })
   return taskB
 }
 
-// Pass `runTask` for recursive tasks
-// If some plugins (like the `repeat` plugin) monkey patch `runTask()`, the
-// non-monkey patched version is passed instead
-const addRunTask = function({ context, plugins }) {
-  const runTaskA = task => runTask(task, context, plugins)
-  return { ...context, runTask: runTaskA }
+const runTaskPlugins = function({ task, handlers }) {
+  return reduceAsync(handlers, runPlugin, task, mergePlugin)
 }
 
-const runTaskPlugins = function({
-  task,
-  context,
-  plugins: {
-    handlers: { task: taskHandlers },
-  },
-}) {
-  return reduceAsync(taskHandlers, eRunPlugin, { task, context }, mergePlugin)
-}
-
-const runPlugin = function({ task, context }, plugin) {
-  return plugin(task, context)
+const runPlugin = function(task, plugin) {
+  return plugin(task)
 }
 
 // We merge the return value of each plugin
-const mergePlugin = function({ task, context }, taskA) {
-  return { task: { ...task, ...taskA }, context }
+const mergePlugin = function(task, taskA) {
+  return { ...task, ...taskA }
 }
 
 // Task return value, returned to users and used by depReqs
@@ -51,13 +34,6 @@ const getTaskReturn = function({ task, originalTask }) {
   // in original task
   return { ...taskA, ...originalTask }
 }
-
-// Add `rawRequest` and `rawResponse` (named `request` and `response`) to every
-// thrown error, if available
-const eRunPlugin = addGenErrorHandler(runPlugin, ({ task: { rawRequest, rawResponse } }) => ({
-  rawRequest,
-  rawResponse,
-}))
 
 module.exports = {
   runTask,

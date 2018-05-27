@@ -4,6 +4,7 @@ const { handleDryRun } = require('./start')
 
 module.exports = {
   name: 'dry',
+  dependencies: [],
   handlers: [
     {
       type: 'start',
@@ -11,5 +12,4 @@ module.exports = {
       order: 150,
     },
   ],
-  dependencies: [],
 }

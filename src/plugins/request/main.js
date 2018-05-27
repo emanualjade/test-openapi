@@ -5,6 +5,11 @@ const { sendRequest, getReturnValue } = require('./task')
 
 module.exports = {
   name: 'request',
+  dependencies: ['format', 'url'],
+  properties: {
+    success: ['request', 'response'],
+    error: ['rawRequest', 'rawResponse'],
+  },
   handlers: [
     {
       type: 'start',
@@ -22,6 +27,4 @@ module.exports = {
       order: 190,
     },
   ],
-  dependencies: ['format', 'url'],
-  returnedProperties: ['request', 'response'],
 }

@@ -4,6 +4,7 @@ const { addFullUrl } = require('./task')
 
 module.exports = {
   name: 'url',
+  dependencies: ['request'],
   handlers: [
     {
       type: 'task',
@@ -11,5 +12,4 @@ module.exports = {
       order: 140,
     },
   ],
-  dependencies: ['request'],
 }

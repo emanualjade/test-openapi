@@ -8,7 +8,7 @@ const { getSpecOperation, getSpecResponse } = require('./operation')
 const { mergeInvalidValue, isInvalidValue } = require('./invalid')
 
 // Merge `task.parameters.*` to specification
-const mergeSpecParams = function({ taskKey, params }, { config }) {
+const mergeSpecParams = function({ taskKey, params, config }) {
   const specOperation = getSpecOperation({ taskKey, config })
   if (specOperation === undefined) {
     return
@@ -19,10 +19,12 @@ const mergeSpecParams = function({ taskKey, params }, { config }) {
 }
 
 // Merge `task.validate.*` to specification
-const mergeSpecValidate = function(
-  { taskKey, validate: { status, headers, body }, rawResponse },
-  { config },
-) {
+const mergeSpecValidate = function({
+  taskKey,
+  validate: { status, headers, body },
+  rawResponse,
+  config,
+}) {
   const specResponse = getSpecResponse({ taskKey, config, rawResponse })
   if (specResponse === undefined) {
     return

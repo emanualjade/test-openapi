@@ -4,7 +4,7 @@ const { addErrorHandler, topLevelHandler } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 
-const { getPlugins, applyPluginsConfig, runHandlers } = require('./plugins')
+const { getPlugins, runHandlers } = require('./plugins')
 const { launchRunner } = require('./runner')
 const { runTask } = require('./run')
 
@@ -24,9 +24,7 @@ const eRun = addErrorHandler(run, topLevelHandler)
 const runPlugins = async function({ config, plugins }) {
   const configA = { ...config, runTask }
 
-  const configB = applyPluginsConfig({ config: configA, plugins })
-
-  const configC = await runHandlers(configB, plugins, 'start')
+  const configC = await runHandlers(configA, plugins, 'start')
 
   await launchRunner({ config: configC, plugins })
 }

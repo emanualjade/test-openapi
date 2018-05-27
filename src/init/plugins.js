@@ -66,6 +66,8 @@ const { addErrorHandler, TestOpenApiError } = require('../errors')
 // of the same `type`. Please look at the current available plugins and try
 // to find out where the best place is for your plugin.
 
+// Find all plugins
+// Also validate their configuration and apply their defaults to the configuration
 const getPlugins = function({ config: { plugins, ...config } }) {
   const pluginNames = [...DEFAULT_PLUGINS, ...plugins]
   const pluginsA = loadPlugins({ pluginNames })
@@ -73,7 +75,9 @@ const getPlugins = function({ config: { plugins, ...config } }) {
 
   validateUsedPlugins({ config, plugins: pluginsB })
 
-  return { config, plugins: pluginsB }
+  const configA = applyPluginsConfig({ config, plugins: pluginsB })
+
+  return { config: configA, plugins: pluginsB }
 }
 
 // Plugins always included
@@ -390,6 +394,5 @@ const mergeReturnValue = function(input, newInput) {
 
 module.exports = {
   getPlugins,
-  applyPluginsConfig,
   runHandlers,
 }

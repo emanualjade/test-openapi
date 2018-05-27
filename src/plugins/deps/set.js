@@ -7,23 +7,19 @@ const { addErrorHandler, throwResponseError } = require('../../errors')
 const { get } = require('./get')
 
 // Set `dep` value to current task after it has been retrieved
-const setRefs = function({ task, config, refs, depReturns }) {
-  return refs.reduce((taskA, ref) => setRef({ task: taskA, config, ref, depReturns }), task)
+const setRefs = function({ task, refs, depReturns }) {
+  return refs.reduce((taskA, ref) => setRef({ task: taskA, ref, depReturns }), task)
 }
 
-const setRef = function({ task, config, ref: { depKey, depPath, path }, depReturns }) {
+const setRef = function({ task, ref: { depKey, depPath, path }, depReturns }) {
   const depReturn = depReturns[depKey]
-  const depValue = eGetDepValue({ depKey, depReturn, depPath, path, config })
+  const depValue = eGetDepValue({ depKey, depReturn, depPath, path })
 
   const taskA = set(path, depValue, task)
   return taskA
 }
 
-const getDepValue = function({ depReturn, depPath, config: { dry } }) {
-  if (dry) {
-    return
-  }
-
+const getDepValue = function({ depReturn, depPath }) {
   return get(depReturn, depPath)
 }
 

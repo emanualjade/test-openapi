@@ -5,20 +5,20 @@ const { runDeps } = require('./run')
 const { setRefs } = require('./set')
 
 // Replace all `deps`, i.e. references to other tasks.
-const replaceDeps = function(task, { config, runTask }) {
-  const refs = findRefs({ task, config })
+const replaceDeps = function(task, { tasks, runTask }) {
+  const refs = findRefs({ task, tasks })
 
   if (refs.length === 0) {
     return
   }
 
-  return runAndSetDeps({ task, config, refs, runTask })
+  return runAndSetDeps({ task, tasks, refs, runTask })
 }
 
-const runAndSetDeps = async function({ task, config, refs, runTask }) {
-  const depReturns = await runDeps({ task, config, refs, runTask })
+const runAndSetDeps = async function({ task, tasks, refs, runTask }) {
+  const depReturns = await runDeps({ task, tasks, refs, runTask })
 
-  const taskA = setRefs({ task, config, refs, depReturns })
+  const taskA = setRefs({ task, refs, depReturns })
   return taskA
 }
 

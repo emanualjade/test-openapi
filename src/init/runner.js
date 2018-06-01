@@ -45,8 +45,8 @@ const JASMINE_CONFIG = {
 }
 
 // Make Jasmine return a promise
-const onComplete = function(resolve, reject, errors, passed) {
-  if (passed && errors.length === 0) {
+const onComplete = function(resolve, reject, errors) {
+  if (errors.length === 0) {
     return resolve()
   }
 

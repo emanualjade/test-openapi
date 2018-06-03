@@ -16,8 +16,10 @@ const runCli = async function() {
 }
 
 // If an error is thrown, print error's description, then exit with exit code 1
-const runCliHandler = function({ message }) {
-  console.error(`Error: ${message}`)
+const runCliHandler = function({ plugin, message }) {
+  if (plugin === 'bug') {
+    console.error(message)
+  }
 
   exit(1)
 }

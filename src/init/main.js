@@ -3,10 +3,9 @@
 const { addErrorHandler, topLevelHandler } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
-const { getPlugins, runHandlers } = require('../plugins')
+const { getPlugins } = require('../plugins')
 
-const { launchRunner } = require('./runner')
-const { runTask } = require('./task')
+const { runTasks } = require('./tasks')
 
 // Main entry point
 const run = async function(config = {}) {
@@ -16,24 +15,11 @@ const run = async function(config = {}) {
 
   const { config: configC, plugins } = getPlugins({ config: configB })
 
-  await eRunPlugins({ config: configC, plugins })
+  const tasks = await runTasks({ config: configC, plugins })
+  return tasks
 }
 
 const eRun = addErrorHandler(run, topLevelHandler)
-
-const runPlugins = async function({ config, plugins }) {
-  const configA = { ...config, runTask }
-  const configB = await runHandlers(configA, plugins, 'start')
-
-  await launchRunner({ config: configB, plugins })
-}
-
-const runPluginsHandler = function(error, { plugins }) {
-  error.plugins = plugins.map(({ name }) => name)
-  throw error
-}
-
-const eRunPlugins = addErrorHandler(runPlugins, runPluginsHandler)
 
 // The following plugins can be run (order in parenthesis).
 // `start`, i.e. before any tasks:

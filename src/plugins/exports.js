@@ -31,6 +31,10 @@ const validateJsonSchemas = function({ plugin: { name: plugin, config: pluginCon
 }
 
 const validateJsonSchema = function({ schema, plugin, propName }) {
+  if (schema === undefined) {
+    return
+  }
+
   const name = `config.${propName}`
   const { error } = validateIsSchema({ value: schema, name })
   if (error === undefined) {

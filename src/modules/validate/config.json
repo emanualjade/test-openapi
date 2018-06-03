@@ -12,5 +12,8 @@
       "additionalProperties": false
     },
     "default": {}
+  },
+  "task.status": {
+    "default": 200
   }
 }

@@ -92,6 +92,8 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `format` (1600): parse response
 //   - `spec` (1700): merge OpenAPI specification to `task.validate.*`
 //   - `validate` (1800): validate response against `task.validate.*` JSON schemas
+// `complete`, i.e. after each tasks:
+//   - `tap` (1000): TAP output for current task
 // `end`, i.e. after all tasks:
 //   - `tap` (1000): ends TAP output
 

@@ -6,7 +6,7 @@ const { validateFromSchema } = require('../../../utils')
 const { validateRequiredBody } = require('./required')
 
 // Validates response body against OpenAPI specification
-const validateBody = function({ validate: { body: schema }, response: { body } }) {
+const validateBody = function({ schemas: { body: schema }, response: { body } }) {
   if (schema === undefined) {
     return
   }

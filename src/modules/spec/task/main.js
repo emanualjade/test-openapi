@@ -56,7 +56,7 @@ const applyShortcut = function({ value, isRandom }) {
 // Merge OpenAPI specification to `task.validate.*`
 const mergeSpecValidate = function({
   key,
-  validate: { status, headers, body },
+  validate,
   call: {
     response: { raw: rawResponse },
   },
@@ -73,10 +73,14 @@ const mergeSpecValidate = function({
     return
   }
 
+  const {
+    schemas: { status, headers, body },
+  } = validate
   const headersA = mergeHeaders([...specResponse.headers, ...headers], deepMerge)
   const bodyA = deepMerge(specResponse.body, body)
+  const schemas = { status, headers: headersA, body: bodyA }
 
-  return { validate: { status, headers: headersA, body: bodyA } }
+  return { validate: { ...validate, schemas } }
 }
 
 const deepMerge = function(valueA, valueB) {

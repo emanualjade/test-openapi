@@ -11,28 +11,17 @@ const normalizeValidate = function({ tasks }) {
   return { tasks: tasksA }
 }
 
-const normalizeTaskValidate = function({
-  validate,
-  validate: { status = DEFAULT_STATUS_CODE },
-  ...task
-}) {
-  // Default status code
-  const validateA = { ...validate, status }
+const normalizeTaskValidate = function({ validate, ...task }) {
+  const validateA = mapValues(validate, applyShortcut)
 
-  const validateB = mapValues(validateA, applyShortcut)
+  validateJsonSchemas({ task, validate: validateA })
 
-  validateJsonSchemas({ task, validate: validateB })
-
-  const { status: statusA, body, ...headers } = validateB
+  const { status: statusA, body, ...headers } = validateA
   const headersA = normalizeHeaders({ headers })
-  const validateC = { status: statusA, headers: headersA, body }
+  const schemas = { status: statusA, headers: headersA, body }
 
-  return { ...task, validate: validateC }
+  return { ...task, validate: { ...validate, schemas } }
 }
-
-// Unless `task.validate.status` is overriden, will validate that response's
-// status code is `200`
-const DEFAULT_STATUS_CODE = 200
 
 // `task.validate.*: non-object` is shortcut for `{ enum: [value] }`
 const applyShortcut = function(value) {

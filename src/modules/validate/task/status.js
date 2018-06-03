@@ -11,7 +11,7 @@ const validateStatus = function({ schemas: { status: schema }, response: { statu
     return
   }
 
-  const property = 'call.response.status'
+  const property = 'validate.status'
   throw new TestOpenApiError(`Status code${error}.`, { property, schema, actual: status })
 }
 

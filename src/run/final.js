@@ -20,7 +20,8 @@ const handleFinalFailure = function({ tasks, events }) {
   }
 
   const error = bundleErrors({ errors })
-  error.message = ERROR_MESSAGE
+
+  Object.assign(error, ERROR_PROPS)
 
   throw error
 }
@@ -33,7 +34,10 @@ const getFinalErrors = function({ tasks, events }) {
   return errorsA
 }
 
-const ERROR_MESSAGE = 'Some tasks failed'
+const ERROR_PROPS = {
+  message: 'Some tasks failed',
+  plugin: 'task',
+}
 
 // Transform to an event objects
 const getEvents = function({ tasks, events }) {

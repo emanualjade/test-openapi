@@ -2,11 +2,13 @@
 
 // Validation error
 // Properties often assigned:
+//  - `errors` `{array}`: all errors if it was a `task` error
 //  - `config` `{object}`: initial configuration object
 //  - `plugins` `{string[]}`: list of loaded plugins
 //  - `plugin` `{string}`: plugin that triggered the error.
 //    Will be `bug` if it was a bug in the library.
 //    Will be `config` if it was outside of any plugin
+//    Will be `task` if a task failed
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in `task`, `actual` or `config`
 //  - `actual` `{value}`: actual value

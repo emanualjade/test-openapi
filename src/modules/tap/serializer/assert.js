@@ -1,17 +1,22 @@
 'use strict'
 
+const { getDirective } = require('./directive')
 const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP assert
-const assert = function(ok) {
+const assert = function(ok, { directive } = {}) {
   checkArgument(ok, 'boolean')
 
   this.index = this.index + 1
 
   const okStr = getOk({ ok })
 
-  return write(this, `${okStr} ${this.index}`)
+  const directiveString = getDirective({ directive })
+
+  const assertString = `${okStr} ${this.index}${directiveString}`
+
+  return write(this, assertString)
 }
 
 const getOk = function({ ok }) {

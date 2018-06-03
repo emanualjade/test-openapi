@@ -7,9 +7,21 @@ const completeTap = function({
     tap: { writer },
   },
 }) {
-  const ok = error === undefined
+  const { ok, directive } = getAssert({ error })
 
-  writer.assert(ok)
+  writer.assert(ok, { directive })
+}
+
+const getAssert = function({ error }) {
+  if (error === undefined) {
+    return { ok: true }
+  }
+
+  const { skipped } = error
+  const skip = skipped === true
+  const directive = { skip }
+
+  return { ok: false, directive }
 }
 
 module.exports = {

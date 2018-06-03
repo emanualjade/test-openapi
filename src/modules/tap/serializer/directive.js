@@ -8,7 +8,7 @@ const getDirective = function({ directive = {} }) {
 
   const [directiveName, comment] = Object.entries(directive).find(isDirective) || []
 
-  if (directiveName === undefined) {
+  if (directiveName === undefined || comment === false) {
     return ''
   }
 

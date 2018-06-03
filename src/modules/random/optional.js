@@ -34,6 +34,7 @@ const fixRequired = function({ param, param: { random }, params }) {
     return param
   }
 
+  // Retrieve parameters that will be merged with current one
   const paramsA = params.filter(paramB => willBeMerged(param, paramB))
 
   if (paramsA.length === 0) {
@@ -45,6 +46,7 @@ const fixRequired = function({ param, param: { random }, params }) {
   return paramA
 }
 
+// Retrieve unique paths of all properties of all parameters
 const getParamsProperties = function({ params }) {
   const properties = params.map(getParamProperties)
   const propertiesA = [].concat(...properties)

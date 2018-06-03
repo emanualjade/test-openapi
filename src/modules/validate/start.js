@@ -12,8 +12,8 @@ const normalizeValidate = function({ tasks }) {
 }
 
 const normalizeTaskValidate = function({
-  validate = {},
-  validate: { status = DEFAULT_STATUS_CODE } = {},
+  validate,
+  validate: { status = DEFAULT_STATUS_CODE },
   ...task
 }) {
   // Default status code

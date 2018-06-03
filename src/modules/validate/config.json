@@ -10,6 +10,7 @@
         "^headers\\..+": {}
       },
       "additionalProperties": false
-    }
+    },
+    "default": {}
   }
 }

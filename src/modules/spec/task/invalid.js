@@ -1,8 +1,15 @@
 'use strict'
 
-// Merge `task.random.*: 'invalid'`
+const { isObject } = require('../../../utils')
+
+// `invalid` values are `{ format: 'invalid' }` JSON schemas
+const isInvalidFormat = function({ isRandom, value }) {
+  return isRandom && isObject(value) && value.format === 'invalid'
+}
+
+// Merge `task.random.*: { format: 'invalid' }`
 // I.e. inverse the specification schema
-const mergeInvalidValue = function({ specValue }) {
+const mergeInvalidFormat = function({ specValue }) {
   // If `invalid` but the specification does not define this property, ignore it
   if (specValue === undefined) {
     return {}
@@ -31,5 +38,6 @@ const addNullType = function({ specValue: { type = [] } }) {
 }
 
 module.exports = {
-  mergeInvalidValue,
+  isInvalidFormat,
+  mergeInvalidFormat,
 }

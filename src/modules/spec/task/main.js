@@ -5,7 +5,7 @@ const { merge } = require('lodash')
 const { mergeParams, mergeHeaders, getShortcut } = require('../../../utils')
 
 const { getSpecOperation, getSpecResponse } = require('./operation')
-const { mergeInvalidValue } = require('./invalid')
+const { isInvalidFormat, mergeInvalidFormat } = require('./invalid')
 
 // Merge OpenAPI specification to `task.call.*`
 const mergeSpecParams = function({ call: { params, ...call }, taskKey, config, plugins }) {
@@ -32,8 +32,8 @@ const mergeSpecParam = function({ value: specValue, ...specRest }, { value, isRa
 // Deep merge the JSON schemas
 // Both `specValue` and `value` might be `undefined`
 const mergeSpecValue = function({ specValue, value, isRandom }) {
-  if (isRandom && value === 'invalid') {
-    return mergeInvalidValue({ specValue })
+  if (isInvalidFormat({ isRandom, value })) {
+    return mergeInvalidFormat({ specValue })
   }
 
   const valueA = applyShortcut({ value, isRandom })

@@ -34,6 +34,7 @@
         "^body": {}
       },
       "additionalProperties": false
-    }
+    },
+    "default": {}
   }
 }

@@ -5,7 +5,7 @@ const { merge } = require('lodash')
 const { locationToValue } = require('../../../utils')
 
 const { mergeAllParams } = require('./merge')
-const { normalizeContentType, getContentTypeParam } = require('./content_type')
+const { normalizeContentType, isContentTypeParam } = require('./content_type')
 const { stringifyFlat } = require('./json')
 const { stringifyCollFormat } = require('./collection_format')
 const { findBodyHandler } = require('./body')
@@ -18,7 +18,7 @@ const stringifyParams = function({ call, call: { params } }) {
 
   const paramsB = normalizeContentType({ params: paramsA })
 
-  const paramsC = paramsA.map(param => stringifyParam({ param, params: paramsB }))
+  const paramsC = paramsB.map(param => stringifyParam({ param, params: paramsB }))
   const rawRequest = merge({}, ...paramsC)
   const requestA = { ...request, raw: rawRequest }
 
@@ -51,7 +51,7 @@ const stringifyParamFlat = function({ param: { value, name, collectionFormat } }
 
 // Stringify the request body according to HTTP request header `Content-Type`
 const stringifyBody = function({ param: { value }, params }) {
-  const { value: mime } = getContentTypeParam({ params })
+  const { value: mime } = params.find(isContentTypeParam)
 
   // Default stringifiers tries JSON.stringify()
   const { stringify = stringifyFlat } = findBodyHandler({ mime })

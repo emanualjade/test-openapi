@@ -8,7 +8,7 @@ const error = function({ request, response }) {
   return { ...requestA, ...responseA }
 }
 
-const getRequest = function({ request: { raw } }) {
+const getRequest = function({ request: { raw } = {} }) {
   if (raw === undefined) {
     return
   }
@@ -18,7 +18,7 @@ const getRequest = function({ request: { raw } }) {
   return { request }
 }
 
-const getResponse = function({ response: { raw } }) {
+const getResponse = function({ response: { raw } = {} }) {
   if (raw === undefined) {
     return
   }

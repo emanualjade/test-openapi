@@ -5,7 +5,12 @@ const { createWriteStream } = require('fs')
 
 const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
-// Retrieves stream to write to, according to `config.tap.output`
+// Add stream to write to, according to `config.tap.output`
+const addOutput = async function({ report }) {
+  const output = await getOutput({ report })
+  return { ...report, output }
+}
+
 const getOutput = async function({ report: { output } }) {
   // When `config.tap.output` is `true` (default), write to `stdout`
   if (String(output) === 'true') {
@@ -40,5 +45,5 @@ const getFileStreamHandler = function({ message }, { output }) {
 const eGetFileStream = addErrorHandler(getFileStream, getFileStreamHandler)
 
 module.exports = {
-  getOutput,
+  addOutput,
 }

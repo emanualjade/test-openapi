@@ -1,12 +1,12 @@
 'use strict'
 
 // Setup reporters' options
-const getReportersOptions = function({
-  config,
-  config: {
-    report: { reporters, options },
-  },
-}) {
+const addReportersOptions = function({ config, report }) {
+  const options = getReportersOptions({ config, report })
+  return { ...report, options }
+}
+
+const getReportersOptions = function({ config, report: { reporters, options } }) {
   const optionsA = reporters.map(reporter => getReporterOptions({ reporter, config, options }))
   return Object.assign({}, options, ...optionsA)
 }
@@ -22,5 +22,5 @@ const getReporterOptions = function({ reporter, reporter: { name }, config, opti
 }
 
 module.exports = {
-  getReportersOptions,
+  addReportersOptions,
 }

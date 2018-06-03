@@ -11,12 +11,6 @@
     },
     "default": true
   },
-  "general.ordered": {
-    "schema": {
-      "type": "boolean"
-    },
-    "default": true
-  },
   "general.styles": {
     "schema": {
       "type": "array",

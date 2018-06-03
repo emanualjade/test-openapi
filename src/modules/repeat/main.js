@@ -11,7 +11,7 @@ module.exports = {
     {
       type: 'start',
       handler: repeatTasks,
-      order: 1800,
+      order: 1700,
     },
   ],
 }

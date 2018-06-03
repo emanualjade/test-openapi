@@ -1,12 +1,13 @@
 'use strict'
 
 const { start } = require('./start')
+const { complete } = require('./complete')
 const { end } = require('./end')
 const config = require('./config')
 
 module.exports = {
   name: 'report',
-  dependencies: ['tap'],
+  dependencies: [],
   config,
   handlers: [
     {
@@ -15,9 +16,14 @@ module.exports = {
       order: 1600,
     },
     {
+      type: 'complete',
+      handler: complete,
+      order: 1000,
+    },
+    {
       type: 'end',
       handler: end,
-      order: 1100,
+      order: 1000,
     },
   ],
 }

@@ -1,6 +1,6 @@
 'use strict'
 
-const { isObject } = require('../../../utils')
+const { isObject } = require('../../../../../utils')
 
 // Check input arguments
 const checkArgument = function(value, type) {

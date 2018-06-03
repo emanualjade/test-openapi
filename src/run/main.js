@@ -79,9 +79,8 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `spec` (1400): parse, validate and normalize an OpenAPI specification
 //   - `dry` (1500): `config.dry: true` makes everything stop just before the
 //     first task run
-//   - `report` (1600): report using TAP output
-//   - `tap` (1700): start TAP output
-//   - `repeat` (1800): repeat each task `config.repeat` times
+//   - `report` (1600): start reporting
+//   - `repeat` (1700): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
 //   - `deps` (1000): replace all `deps`, i.e. references to other tasks
 //   - `spec` (1100): merge OpenAPI specification to `task.call.*`
@@ -94,10 +93,9 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `spec` (1700): merge OpenAPI specification to `task.validate.*`
 //   - `validate` (1800): validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
-//   - `tap` (1000): TAP output for current task
+//   - `report` (1000): reporting for current task
 // `end`, i.e. after all tasks:
-//   - `tap` (1000): ends TAP output
-//   - `report` (1100): ends reporting, e.g. show notification
+//   - `report` (1000): end of reporting
 
 module.exports = {
   run: eRun,

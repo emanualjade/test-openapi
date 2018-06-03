@@ -16,7 +16,6 @@ const DEFAULT_PLUGINS = [
   'glob',
   'deps',
   'dry',
-  'tap',
   'report',
 ]
 

@@ -1,7 +1,6 @@
 'use strict'
 
 const { getPlanString } = require('./plan')
-const { write } = require('./write')
 
 // Final TAP comments, indicating number of tests|pass|fail|skip
 const end = function() {
@@ -14,7 +13,7 @@ const end = function() {
 
   const endComment = [...planString, endCommentString].join('\n\n')
 
-  return write(this, endComment, { newlines: '\n', end: true })
+  return `${endComment}\n`
 }
 
 // Add final plan if not initially specified

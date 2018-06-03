@@ -3,32 +3,25 @@
 const { getErrorProps } = require('./error_props')
 
 // Add TAP output for each task, as a single assert
-const completeTap = function({
-  task,
-  error,
-  config: {
-    tap: { writer },
-  },
-}) {
+const complete = function({ task, error, options: { tap } }) {
   const assert = getAssert({ task, error })
-  writer.assert(assert)
+  return tap.assert(assert)
 }
 
 const getAssert = function({ task, error }) {
   const taskA = getTask({ task, error })
 
-  const { key } = taskA
   const ok = error === undefined
   const name = getAssertName({ task: taskA })
 
   if (ok) {
-    return { key, ok, name }
+    return { ok, name }
   }
 
   const errorProps = getErrorProps({ error })
   const directive = getDirective({ error })
 
-  return { key, ok, name, error: errorProps, directive }
+  return { ok, name, error: errorProps, directive }
 }
 
 const getTask = function({ task, error }) {
@@ -55,5 +48,5 @@ const getDirective = function({ error: { skipped } }) {
 }
 
 module.exports = {
-  completeTap,
+  complete,
 }

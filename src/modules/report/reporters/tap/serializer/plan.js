@@ -1,16 +1,19 @@
 'use strict'
 
 const { getDirective } = require('./directive')
-const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP plan
-const plan = function(tap, count) {
+const plan = function({ count }) {
+  if (count === undefined) {
+    return ''
+  }
+
   checkArgument(count, 'integer')
 
   const planString = getPlanString({ count })
 
-  return write(tap, planString)
+  return `${planString}\n\n`
 }
 
 const getPlanString = function({ count }) {

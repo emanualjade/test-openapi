@@ -39,8 +39,6 @@
     "node-notifier": "^5.2.1",
     "openapi-schema-to-json-schema": "^2.1.0",
     "swagger-parser": "^5.0.0",
-    "tap-colorize": "^1.2.0",
-    "tap-parser": "^7.0.0",
     "type-is": "^1.6.16",
     "yargs": "^11.0.0"
   },

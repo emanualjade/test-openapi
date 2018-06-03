@@ -4,10 +4,13 @@
     "name": {
       "type": "string"
     },
-    "report": {},
     "config": {
       "type": "object"
-    }
+    },
+    "options": {},
+    "start": {},
+    "complete": {},
+    "end": {}
   },
-  "required": ["name", "report"]
+  "required": ["name"]
 }

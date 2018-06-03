@@ -5,21 +5,24 @@ const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP assert
-const assert = function({ ok, directive } = {}) {
-  const assertString = getAssert(this, { ok, directive })
+const assert = function({ ok, name, directive } = {}) {
+  const assertString = getAssert(this, { ok, name, directive })
   return write(this, assertString)
 }
 
-const getAssert = function(tap, { ok, directive = {} }) {
+const getAssert = function(tap, { ok, name = '', directive = {} }) {
   checkArgument(ok, 'boolean')
+  checkArgument(name, 'string')
 
   updateState(tap, { ok, directive })
 
-  const okStr = getOk({ ok })
+  const okString = getOk({ ok })
+
+  const nameString = getName({ name })
 
   const directiveString = getDirective({ directive })
 
-  return `${okStr} ${tap.index}${directiveString}`
+  return `${okString} ${tap.index}${nameString}${directiveString}`
 }
 
 // Update index|tests|pass|skip|fail counters
@@ -48,6 +51,14 @@ const getOk = function({ ok }) {
   }
 
   return 'not ok'
+}
+
+const getName = function({ name }) {
+  if (name === '') {
+    return ''
+  }
+
+  return ` ${name}`
 }
 
 module.exports = {

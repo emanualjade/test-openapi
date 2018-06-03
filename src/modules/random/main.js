@@ -8,6 +8,7 @@ module.exports = {
   name: 'random',
   dependencies: ['call'],
   config,
+  returnValue: false,
   handlers: [
     {
       type: 'start',

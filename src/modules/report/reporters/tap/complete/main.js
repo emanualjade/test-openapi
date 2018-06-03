@@ -8,9 +8,8 @@ const complete = function({ task, error, options: { tap } }) {
   return tap.assert(assert)
 }
 
-const getAssert = function({ task, error }) {
+const getAssert = function({ task: { title: name }, error }) {
   const ok = error === undefined
-  const name = getAssertName({ task })
 
   if (ok) {
     return { ok, name }
@@ -20,16 +19,6 @@ const getAssert = function({ task, error }) {
   const directive = getDirective({ error })
 
   return { ok, name, error: errorProps, directive }
-}
-
-// Get assert name using `task.key` and `task.titles`
-const getAssertName = function({ task: { key, titles } }) {
-  if (titles.length === 0) {
-    return key
-  }
-
-  const titlesA = titles.join(' ')
-  return `${key} - ${titlesA}`
 }
 
 const getDirective = function({ error: { skipped } }) {

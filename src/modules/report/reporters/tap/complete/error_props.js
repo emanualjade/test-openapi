@@ -20,7 +20,6 @@ const getErrorProps = function({
   const stackProp = getStackProp({ name, stack })
 
   const errorA = omit(error, NOT_REPORTED_PROPS)
-  const taskA = omit(task, NOT_REPORTED_TASK_PROPS)
 
   // Enforce properties order
   const errorProps = {
@@ -32,14 +31,13 @@ const getErrorProps = function({
     schema,
     property,
     ...stackProp,
-    task: taskA,
+    task,
     ...errorA,
   }
   return errorProps
 }
 
 const NOT_REPORTED_PROPS = ['config', 'plugins']
-const NOT_REPORTED_TASK_PROPS = ['titles']
 
 // Only report `error.stack` when it's a bug error
 const getStackProp = function({ name, stack }) {

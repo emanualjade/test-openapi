@@ -1,10 +1,7 @@
 'use strict'
 
-const { mapValues } = require('lodash')
-
-const { isObject } = require('../utils')
 const { addErrorHandler } = require('../errors')
-const { runHandlers, addTaskErrorProp } = require('../plugins')
+const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run `task` handlers
 const bootTask = async function({ task, config, mRunTask, plugins }) {
@@ -36,56 +33,31 @@ const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, tas
     throw error
   }
 
-  // Returns `taskA` not `{ task: taskA }`
+  // Returns `task` not `{ task }`
   return taskA
 }
 
 const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
-  const taskA = await runHandlers(
-    task,
-    plugins,
-    'task',
-    readOnlyArgs,
-    runPluginHandler.bind(null, { plugins, originalTask }),
-  )
+  const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
 
-  const taskB = mergeOriginalTask({ task: taskA, originalTask })
+  const taskB = getTaskReturn({ task: taskA, originalTask, plugins })
   return { task: taskB }
 }
 
 // Let calling code handle errored tasks.
 // I.e. on exception, successfully return `{ task, error }` instead of throwing it.
-const runTaskHandler = function(error) {
-  const { task } = error
+const runTaskHandler = function(error, { originalTask }, { plugins }) {
+  const task = getTaskReturn({ task: error.task, originalTask, plugins })
+  Object.assign(error, { task })
   return { task, error }
 }
 
 const eRunTask = addErrorHandler(runTask, runTaskHandler)
 
 // Error handler for each plugin handler
-const runPluginHandler = function({ plugins, originalTask }, error, task) {
-  const taskA = mergeOriginalTask({ task, originalTask })
-  const errorA = addTaskErrorProp({ error, task: taskA, plugins })
-  throw errorA
-}
-
-// Task return value, returned to users and used by depReqs
-const mergeOriginalTask = function({ task, originalTask }) {
-  return mapValues(task, (newTask, prop) => shallowMerge(newTask, originalTask[prop]))
-}
-
-// Do a shallow merge on each plugin value
-// The originalTask properties has more priority
-const shallowMerge = function(newTask, originalTask) {
-  if (originalTask === undefined) {
-    return newTask
-  }
-
-  if (!isObject(newTask) || !isObject(originalTask)) {
-    return originalTask
-  }
-
-  return { ...newTask, ...originalTask }
+const runPluginHandler = function(error, task) {
+  Object.assign(error, { task })
+  throw error
 }
 
 module.exports = {

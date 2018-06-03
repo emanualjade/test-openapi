@@ -3,13 +3,13 @@
 const { normalizeValidate } = require('./start')
 const { validateResponse } = require('./task')
 const config = require('./config')
-const { error } = require('./error')
+const { returnValue } = require('./return')
 
 module.exports = {
   name: 'validate',
   dependencies: ['call'],
   config,
-  error,
+  returnValue,
   handlers: [
     {
       type: 'start',

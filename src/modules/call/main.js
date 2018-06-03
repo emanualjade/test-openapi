@@ -3,13 +3,13 @@
 const { normalizeParams } = require('./start')
 const { fireHttpCall } = require('./task')
 const { config } = require('./config.js')
-const { error } = require('./error')
+const { returnValue } = require('./return')
 
 module.exports = {
   name: 'call',
   dependencies: ['format', 'url'],
   config,
-  error,
+  returnValue,
   handlers: [
     {
       type: 'start',

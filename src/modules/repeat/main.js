@@ -7,6 +7,7 @@ module.exports = {
   name: 'repeat',
   dependencies: [],
   config,
+  returnValue: true,
   handlers: [
     {
       type: 'start',

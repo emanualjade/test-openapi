@@ -2,7 +2,7 @@
 
 const { pick } = require('lodash')
 
-const { runHandlers, addTaskErrorProp } = require('../plugins')
+const { runHandlers } = require('../plugins')
 
 // Run `complete` handlers
 const completeTask = async function({ returnValue, plugins, config }) {
@@ -11,7 +11,7 @@ const completeTask = async function({ returnValue, plugins, config }) {
     plugins,
     'complete',
     { config },
-    completePluginHandler.bind(null, plugins),
+    completePluginHandler,
   )
 
   // Only keep single task|error return
@@ -21,9 +21,9 @@ const completeTask = async function({ returnValue, plugins, config }) {
 }
 
 // If a `complete` plugin handle throws, it adds an `{ error }`
-const completePluginHandler = function(plugins, error, { task }) {
-  const errorA = addTaskErrorProp({ error, task, plugins })
-  return { error: errorA }
+const completePluginHandler = function(error, { task }) {
+  Object.assign(error, { task })
+  return { error }
 }
 
 module.exports = {

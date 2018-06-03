@@ -6,9 +6,7 @@ const { isObject } = require('../utils')
 const { runHandlers } = require('../plugins')
 
 // Run an `it()` task
-const runTask = async function({ originalTask, ...task }, { config, plugins, errors }) {
-  const readOnlyArgs = getReadOnlyArgs({ config, plugins, errors })
-
+const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs, errors }) {
   const taskA = await runHandlers(
     task,
     plugins,
@@ -19,17 +17,6 @@ const runTask = async function({ originalTask, ...task }, { config, plugins, err
 
   const taskB = mergeReturnValue({ task: taskA, originalTask })
   return taskB
-}
-
-// Passed to every task handler
-const getReadOnlyArgs = function({ config, plugins, errors }) {
-  // Pass `runTask` for recursive tasks
-  // If some plugins (like the `repeat` plugin) monkey patch `runTask()`, the
-  // non-monkey patched version is passed instead
-  const recursiveRunTask = task => runTask(task, { config, plugins, errors })
-
-  // Those arguments are passed to each task, but cannot be modified
-  return { config, runTask: recursiveRunTask }
 }
 
 // Error handler for `it()`

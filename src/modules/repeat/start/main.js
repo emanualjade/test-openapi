@@ -10,9 +10,13 @@ const repeatTasks = function({ repeat, runTask }) {
   return { runTask: runTaskA }
 }
 
-const repeatTask = async function({ repeat, runTask }, ...args) {
-  const repeatedTasks = new Array(repeat).fill().map(() => runTask(...args))
-  await Promise.all(repeatedTasks)
+const repeatTask = function({ repeat, runTask }, task, opts, ...args) {
+  if (opts.isNested) {
+    return runTask(task, opts, ...args)
+  }
+
+  const repeatedTasks = new Array(repeat).fill().map(() => runTask(task, opts, ...args))
+  return Promise.all(repeatedTasks)
 }
 
 module.exports = {

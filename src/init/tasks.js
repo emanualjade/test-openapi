@@ -64,8 +64,13 @@ const launchTask = async function({ task, runTask, config, readOnlyArgs, plugins
   // Returns `{ tasks, task, errors, error }`
   const returnValue = await runTask(task, { readOnlyArgs, plugins })
 
-  // Run `complete` handlers
-  // `complete` handlers should not throw
+  const returnValueA = await eCompleteTask({ returnValue, plugins, config })
+
+  return returnValueA
+}
+
+// Run `complete` handlers
+const completeTask = async function({ returnValue, plugins, config }) {
   const returnValueA = await runHandlers(returnValue, plugins, 'complete', { config })
 
   // Only keep single task|error return
@@ -73,6 +78,13 @@ const launchTask = async function({ task, runTask, config, readOnlyArgs, plugins
 
   return returnValueB
 }
+
+// If a `complete` handle throws, it becomes a `{ error }`
+const completeTaskHandler = function(error) {
+  return { error }
+}
+
+const eCompleteTask = addErrorHandler(completeTask, completeTaskHandler)
 
 // The top-level command either:
 //  - throws error with `error.errors` if any task failed
@@ -87,6 +99,7 @@ const getFinalReturn = function({ tasks }) {
   return getFailureReturn({ errors })
 }
 
+// Transform to an event object
 const getSuccessReturn = function({ tasks }) {
   return tasks.map(({ task }) => ({ type: 'task', ...task }))
 }

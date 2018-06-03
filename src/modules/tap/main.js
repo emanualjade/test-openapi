@@ -1,6 +1,7 @@
 'use strict'
 
 const { startTap } = require('./start')
+const { endTap } = require('./end')
 const config = require('./config')
 
 module.exports = {
@@ -12,6 +13,11 @@ module.exports = {
       type: 'start',
       handler: startTap,
       order: 1600,
+    },
+    {
+      type: 'end',
+      handler: endTap,
+      order: 1000,
     },
   ],
 }

@@ -71,7 +71,7 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 }
 
 // The following plugins can be run (order in parenthesis).
-// `start`, i.e. before any tasks:
+// `start`, i.e. before all tasks:
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
 //   - `call` (1100): normalize `task.call.*` object to an array
 //   - `random` (1200): normalize and validate `task.random.*` JSON schemas
@@ -92,6 +92,8 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `format` (1600): parse response
 //   - `spec` (1700): merge OpenAPI specification to `task.validate.*`
 //   - `validate` (1800): validate response against `task.validate.*` JSON schemas
+// `end`, i.e. after all tasks:
+//   - `tap` (1000): ends TAP output
 
 module.exports = {
   run: eRun,

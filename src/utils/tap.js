@@ -21,6 +21,14 @@ class Tap {
     this.output.write(`${string}\n`)
   }
 
+  close() {
+    if (this.output === false || this.output === stdout) {
+      return
+    }
+
+    this.output.destroy()
+  }
+
   version() {
     return this._write('TAP version 13')
   }
@@ -40,6 +48,14 @@ class Tap {
     }
 
     return this._write(`# ${testName}`)
+  }
+
+  comment(comment) {
+    if (typeof comment !== 'string') {
+      throw new Error(`tap.comment() argument must be a string, not ${comment}`)
+    }
+
+    return this._write(`# ${comment}`)
   }
 }
 

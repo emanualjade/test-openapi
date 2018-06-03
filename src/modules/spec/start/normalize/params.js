@@ -4,7 +4,6 @@ const { omit } = require('lodash')
 
 const { mergeParams, isObject } = require('../../../../utils')
 
-const REQUIRED = require('./required')
 const IN_TO_LOCATION = require('./in_to_location')
 const { normalizeSchema } = require('./json_schema')
 const { normalizeFormData } = require('./form_data')
@@ -34,7 +33,7 @@ const getParams = function({
 
   const paramsD = mergeParams([...contentNegotiations, ...secParams, ...paramsC, ...constParams])
 
-  const paramsE = paramsD.map(addIsRandom)
+  const paramsE = paramsD.map(removeRandom)
 
   return paramsE
 }
@@ -43,7 +42,16 @@ const getParams = function({
 const getParam = function({ name, in: paramIn, required = false, collectionFormat, ...schema }) {
   const location = IN_TO_LOCATION[paramIn]
   const value = getSchema({ schema })
-  return { name, location, required: REQUIRED[required], value, collectionFormat }
+  const random = getRandom({ required })
+  return { name, location, random, value, collectionFormat }
+}
+
+const getRandom = function({ required }) {
+  if (required) {
+    return 'shallow'
+  }
+
+  return 'optional'
 }
 
 // Normalize OpenAPI `in` to the same keys as `task.params.*`
@@ -79,13 +87,16 @@ const getServerParam = function({ spec: { host: hostname, basePath } }) {
 }
 
 const getConstParam = function({ value, location }) {
-  return { name: location, location, required: REQUIRED.true, value }
+  return { name: location, location, random: 'shallow', value }
 }
 
-// Add `param.isRandom`
-const addIsRandom = function({ value, ...param }) {
-  const isRandom = isObject(value)
-  return { ...param, value, isRandom }
+// Use `param.random: undefined` if value is not a JSON schema
+const removeRandom = function({ value, random, ...param }) {
+  if (isObject(value)) {
+    return { ...param, value, random }
+  }
+
+  return { ...param, value }
 }
 
 module.exports = {

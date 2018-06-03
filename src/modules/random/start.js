@@ -20,13 +20,13 @@ const addTaskRandomParams = function({ call: { params, ...call }, random, ...tas
   return { ...task, call: { ...call, params: paramsA } }
 }
 
-// From `task.random.*` object to an array of `{ name, location, required, value, isRandom: true }`
+// From `task.random.*` object to an array of `{ name, location, value, random: 'deep' }`
 const normalizeRandomParam = function({ key, value, task }) {
   validateJsonSchema({ key, value, task })
 
   const { location, name } = keyToLocation({ key })
 
-  return { location, name, value, required: 'full', isRandom: true }
+  return { location, name, value, random: 'deep' }
 }
 
 // Validate random parameters are valid JSON schema v4

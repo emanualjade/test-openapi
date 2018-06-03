@@ -75,5 +75,6 @@ const isSameHeader = function(inputA, inputB) {
 module.exports = {
   mergeParams,
   mergeHeaders,
+  isSameParam,
   deepMerge,
 }

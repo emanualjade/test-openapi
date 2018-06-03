@@ -1,7 +1,5 @@
 'use strict'
 
-const REQUIRED = require('./required')
-
 // Merge `formData` parameters into a single `task.call.body` parameter
 const normalizeFormData = function({ params }) {
   const { formDataParams, params: paramsA } = splitParams({ params })
@@ -35,11 +33,11 @@ const getBodyParam = function({ formDataParams }) {
 // OpenAPI 2.0 `formData` parameters can be individually made required, but the
 // specification does not prescribe whether the request body is required or not.
 // So we assume it is.
-const BODY_PARAM = { name: 'body', location: 'body', required: REQUIRED.true }
+const BODY_PARAM = { name: 'body', location: 'body', random: 'shallow' }
 
 // Transforms formData parameters:
-//  [{ name: 'one', location: 'formData', required: 'partial', value: { ... } },
-//   { name: 'two', location: 'formData', required: 'optional', value: { ... } }]
+//  [{ name: 'one', location: 'formData', random: 'shallow', value: { ... } },
+//   { name: 'two', location: 'formData', random: 'optional', value: { ... } }]
 // To JSON schema:
 //  { type: 'object', properties: { one: { ... }, two: { ... } }, required: ['one'] }
 const getBodyValue = function({ formDataParams }) {
@@ -55,9 +53,7 @@ const getProperties = function({ formDataParams }) {
 }
 
 const getRequired = function({ formDataParams }) {
-  return formDataParams
-    .filter(({ required }) => required !== REQUIRED.false)
-    .map(({ name }) => name)
+  return formDataParams.filter(({ random }) => random !== 'optional').map(({ name }) => name)
 }
 
 // `formData` parameters might have different `collectionFormat` but since we

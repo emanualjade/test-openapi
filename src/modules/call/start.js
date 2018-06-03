@@ -3,7 +3,7 @@
 const { keyToLocation } = require('../../utils')
 
 // Set `task.call.params`, a normalized version of `task.call.*` object as an array
-// of `{ name, location, required, value }`
+// of `{ name, location, value }`
 // Also apply `config.call.server`
 const normalizeParams = function({ tasks, call: { server } }) {
   const tasksA = tasks.map(task => normalizeTaskParams({ task, server }))
@@ -26,11 +26,11 @@ const addServer = function({ call, server }) {
   return { server, ...call }
 }
 
-// From `task.call.*` object to an array of `{ name, location, required, value }`
+// From `task.call.*` object to an array of `{ name, location, value }`
 const normalizeParam = function([key, value]) {
   const { location, name } = keyToLocation({ key })
 
-  return { location, name, value, required: 'full' }
+  return { location, name, value }
 }
 
 module.exports = {

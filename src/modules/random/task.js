@@ -39,16 +39,9 @@ jsonSchemaFaker.option({
   failOnInvalidFormat: false,
 })
 
+// Optional request parameters that have not been picked
 const shouldIncludeParam = function({ value }) {
-  return (
-    // Optional request parameters that have not been picked
-    value !== undefined &&
-    // Specifying `type: 'null'` or `enum: ['null']` means 'do not send this parameter'
-    // Specifying `type: ['null', ...]` means 'maybe send this parameter (or not, randomly)'
-    // No matter what, only required parameters or parameters specified in
-    // `task.random.*` can be sent
-    value !== null
-  )
+  return value !== undefined
 }
 
 module.exports = {

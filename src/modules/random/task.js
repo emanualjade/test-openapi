@@ -4,7 +4,7 @@ const jsonSchemaFaker = require('json-schema-faker')
 
 // Generates random values based on `task.random.*` JSON schemas
 const generateParams = function({ call: { params, ...call } }) {
-  const paramsA = params.map(param => generateParam({ param })).filter(shouldIncludeParam)
+  const paramsA = params.map(param => generateParam({ param }))
   return { call: { ...call, params: paramsA } }
 }
 
@@ -14,12 +14,10 @@ const generateParam = function({ param, param: { isRandom, required, value: sche
     return param
   }
 
-  // Optional parameters are never generated
-  if (!required) {
-    return { ...param, value: undefined }
-  }
-
   const schemaA = fixArray({ schema })
+
+  addRequired({ required })
+
   const value = jsonSchemaFaker(schemaA)
   return { ...param, value }
 }
@@ -34,15 +32,21 @@ const fixArray = function({ schema, schema: { type, items = {} } }) {
   return { ...schema, items: { ...items, type: 'string' } }
 }
 
+// When `required` is `full`, all deep properties are generated regardless of
+// JSON schema's `required`. E.g. `task.call|random.*` are always deeply
+// generated because they are explicited by the user.
+// When `required` is `partial` or `optional`, JSON schema's `required` is
+// used to determine whether deep properties should be geneated.
+// E.g. `spec` parameters use this.
+const addRequired = function({ required }) {
+  const optionalsProbability = required === 'full' ? 1 : 0
+  jsonSchemaFaker.option({ optionalsProbability })
+}
+
 jsonSchemaFaker.option({
   // JSON format v4 allow custom formats
   failOnInvalidFormat: false,
 })
-
-// Optional request parameters that have not been picked
-const shouldIncludeParam = function({ value }) {
-  return value !== undefined
-}
 
 module.exports = {
   generateParams,

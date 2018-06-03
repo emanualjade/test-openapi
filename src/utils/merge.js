@@ -4,6 +4,8 @@ const { isDeepStrictEqual } = require('util')
 
 const { merge } = require('lodash')
 
+const { isObject } = require('./types')
+
 // Merge request parameters of same name and location
 const mergeParams = function(params, merge) {
   return mergeValues(params, isSameParam, merge)
@@ -47,6 +49,10 @@ const defaultMerge = function(valueA, valueB) {
 }
 
 const deepMerge = function(valueA, valueB) {
+  if (!isObject(valueA) || !isObject(valueB)) {
+    return valueB
+  }
+
   return merge({}, valueA, valueB)
 }
 

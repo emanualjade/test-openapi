@@ -1,7 +1,7 @@
 'use strict'
 
 const { loadOpenApiSpec, loadNormalizedSpec } = require('./start')
-const { mergeSpecParams, mergeSpecValidate } = require('./task')
+const { addSpecParams, mergeSpecValidate } = require('./task')
 const config = require('./config')
 
 module.exports = {
@@ -17,7 +17,7 @@ module.exports = {
     },
     {
       type: 'task',
-      handler: mergeSpecParams,
+      handler: addSpecParams,
       order: 1100,
     },
     {

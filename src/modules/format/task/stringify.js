@@ -4,6 +4,7 @@ const { merge } = require('lodash')
 
 const { locationToValue } = require('../../../utils')
 
+const { mergeAllParams } = require('./merge')
 const { normalizeContentType, getContentTypeParam } = require('./content_type')
 const { stringifyFlat } = require('./json')
 const { stringifyCollFormat } = require('./collection_format')
@@ -11,7 +12,7 @@ const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
 const stringifyParams = function({ call, call: { params } }) {
-  const paramsA = removeNull({ params })
+  const paramsA = mergeAllParams({ params })
 
   const request = getRequest({ params: paramsA })
 
@@ -22,20 +23,6 @@ const stringifyParams = function({ call, call: { params } }) {
   const requestA = { ...request, raw: rawRequest }
 
   return { call: { ...call, request: requestA } }
-}
-
-// Specifying `null` means 'do not send this parameter'.
-// Only applies to top-level value, i.e. should never be an issue.
-// This is useful for:
-//  - removing parameters specified by another plugin, i.e. removing parameters
-//    specified by `spec` plugin
-//  - distinguishing from `?queryVar` (empty string) and no `queryVar` (null)
-//  - being consistent with `validate` plugin, which use `null` to specify
-//    'should not be defined'
-// When used with `random` plugin, parameters can be randomly generated or not
-// using `type: ['null', ...]`
-const removeNull = function({ params }) {
-  return params.filter(param => param !== null)
 }
 
 // Returned as `task.request`

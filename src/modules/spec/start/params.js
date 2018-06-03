@@ -4,6 +4,7 @@ const { omit } = require('lodash')
 
 const { mergeParams, isObject } = require('../../../utils')
 
+const REQUIRED = require('./required')
 const IN_TO_LOCATION = require('./in_to_location')
 const { normalizeSchema } = require('./json_schema')
 const { normalizeFormData } = require('./form_data')
@@ -42,7 +43,7 @@ const getParams = function({
 const getParam = function({ name, in: paramIn, required = false, collectionFormat, ...schema }) {
   const location = IN_TO_LOCATION[paramIn]
   const value = getSchema({ schema })
-  return { name, location, required, value, collectionFormat }
+  return { name, location, required: REQUIRED[required], value, collectionFormat }
 }
 
 // Normalize OpenAPI `in` to the same keys as `task.params.*`
@@ -78,7 +79,7 @@ const getServerParam = function({ spec: { host: hostname, basePath } }) {
 }
 
 const getConstParam = function({ value, location }) {
-  return { name: location, location, required: true, value }
+  return { name: location, location, required: REQUIRED.true, value }
 }
 
 // Add `param.isRandom`

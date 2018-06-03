@@ -1,6 +1,7 @@
 'use strict'
 
 const { filterFormDataMimes } = require('./form_data')
+const REQUIRED = require('./required')
 
 // Get OpenAPI `consumes` and `produces` properties as request headers
 const getNegotiationsParams = function({ spec, operation, params }) {
@@ -78,7 +79,7 @@ const addParamInfo = function(header) {
     return
   }
 
-  return { ...header, location: 'headers', required: true }
+  return { ...header, location: 'headers', required: REQUIRED.true }
 }
 
 module.exports = {

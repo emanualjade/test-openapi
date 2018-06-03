@@ -9,22 +9,22 @@ const isInvalidFormat = function({ isRandom, value }) {
 
 // Merge `task.random.*: { format: 'invalid' }`
 // I.e. inverse the specification schema
-const mergeInvalidFormat = function({ specParamValue }) {
+const mergeInvalidFormat = function({ param }) {
   // If `invalid` but the specification does not define this property, ignore it
-  if (specParamValue === undefined) {
+  if (param === undefined) {
     return {}
   }
 
-  const type = addNullType({ specParamValue })
+  const type = addNullType({ param })
   // TODO: json-schema-faker support for the `not` keyword is lacking
-  return { not: { ...specParamValue, type } }
+  return { not: { ...param, type } }
 }
 
 // When using 'invalid', we want to make sure the value is generated, i.e. it
 // should never be `null`
 // TODO: use `{ allOf: [{ not: { enum: [null] } }, ...] }` instead
 // This is unfortunately not supported at the moment by json-schema-faker
-const addNullType = function({ specParamValue: { type = [] } }) {
+const addNullType = function({ param: { type = [] } }) {
   if (type === 'null') {
     return type
   }

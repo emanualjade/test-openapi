@@ -30,8 +30,7 @@ const addServer = function({ call, server }) {
 const normalizeParam = function([key, value]) {
   const { location, name } = keyToLocation({ key })
 
-  // Parameters specified in `task.call.*` are always required (i.e. generated)
-  return { location, name, value, required: true }
+  return { location, name, value, required: 'full' }
 }
 
 module.exports = {

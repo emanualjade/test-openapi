@@ -1,9 +1,9 @@
 'use strict'
 
 const { TestOpenApiError } = require('../../errors')
-const { validateIsSchema, keyToLocation, mergeParams } = require('../../utils')
+const { validateIsSchema, keyToLocation } = require('../../utils')
 
-// Validate and add `task.random.*` to `task.call.params`
+// Validate and add `task.random.*` to `task.call.*`
 const addRandomParams = function({ tasks }) {
   const tasksA = tasks.map(addTaskRandomParams)
   return { tasks: tasksA }
@@ -14,7 +14,9 @@ const addTaskRandomParams = function({ call: { params, ...call }, random, ...tas
     normalizeRandomParam({ key, value, task }),
   )
 
-  const paramsA = mergeParams([...params, ...randomA])
+  // `task.random.*` have less priority than `task.call.*`
+  const paramsA = [...randomA, ...params]
+
   return { ...task, call: { ...call, params: paramsA } }
 }
 
@@ -24,8 +26,7 @@ const normalizeRandomParam = function({ key, value, task }) {
 
   const { location, name } = keyToLocation({ key })
 
-  // Parameters specified in `task.random.*` are always required (i.e. generated)
-  return { location, name, value, required: true, isRandom: true }
+  return { location, name, value, required: 'full', isRandom: true }
 }
 
 // Validate random parameters are valid JSON schema v4

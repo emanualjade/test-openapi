@@ -20,7 +20,7 @@ class Tap {
       return string
     }
 
-    this.output.write(`${string}\n`)
+    this.output.write(`${string}\n\n`)
   }
 
   close() {
@@ -54,6 +54,28 @@ class Tap {
 
     return this._write(`# ${comment}`)
   }
+
+  end(comments) {
+    checkArgument('end', comments, 'object')
+
+    const [pass, fail, skip] = END_COMMENTS.map(name => getEndComment({ comments, name }))
+
+    const endComment = `# tests: ${pass + fail + skip}
+# pass: ${pass}
+# fail: ${fail}
+# skip: ${skip}`
+    const endCommentA = addEndOk({ endComment, fail })
+
+    return this._write(endCommentA)
+  }
+}
+
+const addEndOk = function({ endComment, fail }) {
+  if (fail !== 0) {
+    return endComment
+  }
+
+  return `${endComment}\n# ok`
 }
 
 const getPlan = function({ count }) {
@@ -107,6 +129,14 @@ const addPlanComment = function({ planString, comment }) {
   checkArgument('plan', comment, 'string')
 
   return `${planString} ${comment}`
+}
+
+const END_COMMENTS = ['pass', 'fail', 'skip']
+
+const getEndComment = function({ comments, name }) {
+  const count = comments[name] || 0
+  checkArgument('end', count, 'integer')
+  return count
 }
 
 const checkArgument = function(name, value, type) {

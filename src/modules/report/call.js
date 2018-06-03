@@ -2,34 +2,28 @@
 
 const { stdout } = require('process')
 
-// Setup reporter's options
-const getReporterOptions = function({
-  config,
+// Call reporters' functions then write return value to output
+const callReporters = async function({
   config: {
-    report: { output, reporter, options },
-  },
-}) {
-  if (output === false || reporter.options === undefined) {
-    return options
-  }
-
-  const optionsA = reporter.options({ config, options })
-  return { ...options, ...optionsA }
-}
-
-// Call reporter's function then write return value to output
-const callReporter = async function({
-  config: {
-    report: { output, reporter, options },
+    report: { output, reporters, options },
   },
   input,
   type,
 }) {
-  if (output === false || reporter[type] === undefined) {
+  const inputA = { ...input, options }
+
+  const promises = reporters.map(reporter =>
+    callReporter({ reporter, output, input: inputA, type }),
+  )
+  await Promise.all(promises)
+}
+
+const callReporter = async function({ reporter, output, input, type }) {
+  if (reporter[type] === undefined) {
     return
   }
 
-  const message = await reporter[type]({ ...input, options })
+  const message = await reporter[type](input)
 
   if (message !== undefined) {
     output.write(message)
@@ -41,6 +35,5 @@ const callReporter = async function({
 }
 
 module.exports = {
-  getReporterOptions,
-  callReporter,
+  callReporters,
 }

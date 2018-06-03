@@ -1,11 +1,11 @@
 'use strict'
 
-const { callReporter } = require('../call')
+const { callReporters } = require('../call')
 
 // Ends reporting
 const end = async function(input) {
   const { config } = input
-  await callReporter({ config, input, type: 'end' })
+  await callReporters({ config, input, type: 'end' })
 }
 
 module.exports = {

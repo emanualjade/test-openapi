@@ -17,22 +17,19 @@
     },
     "default": true
   },
-  "general.style": {
+  "general.styles": {
     "schema": {
-      "type": "string"
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     },
-    "default": "tap"
+    "default": ["tap"]
   },
   "general.options": {
     "schema": {
       "type": "object"
     },
     "default": {}
-  },
-  "general.notify": {
-    "schema": {
-      "type": "boolean"
-    },
-    "default": false
   }
 }

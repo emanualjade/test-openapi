@@ -8,12 +8,12 @@ const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 // Retrieves stream to write to, according to `config.tap.output`
 const getOutput = async function({ report: { output } }) {
   // When `config.tap.output` is `true` (default), write to `stdout`
-  if (output === true) {
+  if (String(output) === 'true') {
     return stdout
   }
 
   // When `config.tap.output` is `false`, silent output
-  if (output === false) {
+  if (String(output) === 'false') {
     return false
   }
 

@@ -13,7 +13,7 @@ const defineCli = function() {
 }
 
 const CONFIG = {
-  plugin: {
+  plugins: {
     array: true,
     string: true,
     alias: 'p',
@@ -40,6 +40,22 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Maximum time to wait for each HTTP call',
   },
+  report: {
+    describe: 'Reporting options',
+  },
+  'report.output': {
+    string: true,
+    alias: 'o',
+    requiresArg: true,
+    describe: 'File output (default: stdout). Silent if false.',
+  },
+  'report.styles': {
+    array: true,
+    string: true,
+    alias: 'r',
+    requiresArg: true,
+    describe: 'Reporting style',
+  },
   spec: {
     string: true,
     alias: 's',
@@ -49,7 +65,6 @@ const CONFIG = {
   // Number of times each `it()` is repeated (each time with new random parameters)
   repeat: {
     number: true,
-    alias: 'r',
     requiresArg: true,
     describe: 'Number of times each task is repeated',
   },

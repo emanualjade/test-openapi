@@ -9,13 +9,16 @@ const { parseFlat } = require('./json')
 const parseResponse = function({
   call,
   call: {
-    rawResponse: { status, headers, body },
+    response: {
+      raw,
+      raw: { status, headers, body },
+    },
   },
 }) {
   const headersA = parseHeaders({ headers })
   const bodyA = parseBody({ body, headers })
 
-  const response = { status, headers: headersA, body: bodyA }
+  const response = { raw, status, headers: headersA, body: bodyA }
   return { call: { ...call, response } }
 }
 

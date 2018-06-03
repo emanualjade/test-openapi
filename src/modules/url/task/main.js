@@ -8,11 +8,19 @@ const { normalizeUrl } = require('./normalize')
 const { addQueryParams } = require('./query')
 
 // Build request URL from request parameters
-const addFullUrl = function({ call, call: { rawRequest } }) {
+const addFullUrl = function({
+  call,
+  call: {
+    request,
+    request: { raw: rawRequest },
+  },
+}) {
   const method = getMethod({ rawRequest })
   const url = getFullUrl({ rawRequest })
   const rawRequestA = { ...rawRequest, url, method }
-  return { call: { ...call, rawRequest: rawRequestA } }
+
+  const requestA = { ...request, raw: rawRequestA }
+  return { call: { ...call, request: requestA } }
 }
 
 const getFullUrl = function({ rawRequest }) {

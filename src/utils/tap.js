@@ -33,6 +33,14 @@ class Tap {
     const planString = getPlan({ integer })
     return this._write(planString)
   }
+
+  test(testName) {
+    if (typeof testName !== 'string') {
+      throw new Error(`tap.test() argument must be a string, not ${testName}`)
+    }
+
+    return this._write(`# ${testName}`)
+  }
 }
 
 const getPlan = function({ integer }) {

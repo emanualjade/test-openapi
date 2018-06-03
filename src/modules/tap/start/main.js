@@ -10,9 +10,15 @@ const startTap = async function({ tap, tasks }) {
 
   const writer = new Tap({ output })
 
+  const tasksCount = tasks.length
+
   writer.version()
 
-  writer.plan(tasks.length)
+  writer.plan(tasksCount)
+
+  if (tasksCount !== 0) {
+    writer.test('Tasks')
+  }
 
   return { tap: { ...tap, writer } }
 }

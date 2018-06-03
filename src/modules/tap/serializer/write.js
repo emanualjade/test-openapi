@@ -4,7 +4,7 @@ const { Stream } = require('stream')
 const { stdout } = require('process')
 
 // Write to output
-const write = function({ output = stdout }, string, { newlines = '\n\n' } = {}) {
+const write = function({ output = stdout }, string, { newlines = '\n\n', end = false } = {}) {
   if (output === false) {
     return string
   }
@@ -14,20 +14,12 @@ const write = function({ output = stdout }, string, { newlines = '\n\n' } = {}) 
   }
 
   output.write(`${string}${newlines}`)
-}
 
-// Closes stream
-const close = function() {
-  const { output } = this
-
-  if (output === false || output === stdout) {
-    return
+  if (end && output !== stdout) {
+    output.destroy()
   }
-
-  output.destroy()
 }
 
 module.exports = {
   write,
-  close,
 }

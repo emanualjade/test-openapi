@@ -6,18 +6,20 @@ const { test } = require('./test')
 const { assert } = require('./assert')
 const { comment } = require('./comment')
 const { end } = require('./end')
-const { close } = require('./write')
 
 // TAP serializer
 class Tap {
   constructor({ output } = {}) {
     const index = 0
+    const pass = 0
+    const fail = 0
+    const skip = 0
 
-    Object.assign(this, { output, index })
+    Object.assign(this, { output, index, pass, fail, skip })
   }
 }
 
-Object.assign(Tap.prototype, { close, version, plan, test, assert, comment, end })
+Object.assign(Tap.prototype, { version, plan, test, assert, comment, end })
 
 module.exports = {
   Tap,

@@ -25,7 +25,9 @@
     "schema": {
       "type": "object",
       "patternProperties": {
-        "^method": {},
+        "^method": {
+          "type": "string"
+        },
         "^server": {},
         "^path": {},
         "^url\\..+": {},

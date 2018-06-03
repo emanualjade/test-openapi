@@ -79,7 +79,8 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `spec` (1400): parse, validate and normalize an OpenAPI specification
 //   - `dry` (1500): `config.dry: true` makes everything stop just before the
 //     first task run
-//   - `repeat` (1600): repeat each task `config.repeat` times
+//   - `tap` (1600): start TAP output
+//   - `repeat` (1700): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
 //   - `deps` (1000): replace all `deps`, i.e. references to other tasks
 //   - `spec` (1100): merge OpenAPI specification to `task.call.*`

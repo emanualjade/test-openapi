@@ -7,7 +7,17 @@ const getConfigPlugins = function({ config: { plugins, ...config } }) {
 }
 
 // Plugins always included
-const DEFAULT_PLUGINS = ['call', 'random', 'validate', 'spec', 'repeat', 'glob', 'deps', 'dry']
+const DEFAULT_PLUGINS = [
+  'call',
+  'random',
+  'validate',
+  'spec',
+  'repeat',
+  'glob',
+  'deps',
+  'dry',
+  'tap',
+]
 
 module.exports = {
   getConfigPlugins,

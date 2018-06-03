@@ -1,0 +1,14 @@
+{
+  "general": {
+    "schema": {
+      "type": "object"
+    },
+    "default": {}
+  },
+  "general.output": {
+    "schema": {
+      "type": ["boolean", "string"]
+    },
+    "default": true
+  }
+}

@@ -1,17 +1,17 @@
 'use strict'
 
-const { repeatTasks } = require('./start')
+const { startTap } = require('./start')
 const config = require('./config')
 
 module.exports = {
-  name: 'repeat',
-  dependencies: [],
+  name: 'tap',
+  dependencies: ['call'],
   config,
   handlers: [
     {
       type: 'start',
-      handler: repeatTasks,
-      order: 1700,
+      handler: startTap,
+      order: 1600,
     },
   ],
 }

@@ -2,6 +2,8 @@
 
 const { isDeepStrictEqual } = require('util')
 
+const { merge } = require('lodash')
+
 // Merge request parameters of same name and location
 const mergeParams = function(params, merge) {
   return mergeValues(params, isSameParam, merge)
@@ -44,6 +46,10 @@ const defaultMerge = function(valueA, valueB) {
   return { ...valueA, ...valueB }
 }
 
+const deepMerge = function(valueA, valueB) {
+  return merge({}, valueA, valueB)
+}
+
 const isSameParam = function(paramA, paramB) {
   if (paramA.location !== paramB.location) {
     return false
@@ -63,4 +69,5 @@ const isSameHeader = function(inputA, inputB) {
 module.exports = {
   mergeParams,
   mergeHeaders,
+  deepMerge,
 }

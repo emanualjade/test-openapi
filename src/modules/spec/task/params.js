@@ -1,10 +1,8 @@
 'use strict'
 
-const { merge } = require('lodash')
+const { mergeParams, getShortcut, deepMerge } = require('../../../utils')
 
-const { mergeParams, mergeHeaders, getShortcut } = require('../../../utils')
-
-const { getSpecOperation, getSpecResponse } = require('./operation')
+const { getSpecOperation } = require('./operation')
 const { isInvalidFormat, mergeInvalidFormat } = require('./invalid')
 
 // Merge OpenAPI specification to `task.call.*`
@@ -53,41 +51,6 @@ const applyShortcut = function({ value, isRandom }) {
   return getShortcut(value)
 }
 
-// Merge OpenAPI specification to `task.validate.*`
-const mergeSpecValidate = function({
-  key,
-  validate,
-  call: {
-    response: { raw: rawResponse },
-  },
-  config,
-  pluginNames,
-}) {
-  // Optional dependency
-  if (!pluginNames.includes('validate')) {
-    return
-  }
-
-  const specResponse = getSpecResponse({ key, config, rawResponse })
-  if (specResponse === undefined) {
-    return
-  }
-
-  const {
-    schemas: { status, headers, body },
-  } = validate
-  const headersA = mergeHeaders([...specResponse.headers, ...headers], deepMerge)
-  const bodyA = deepMerge(specResponse.body, body)
-  const schemas = { status, headers: headersA, body: bodyA }
-
-  return { validate: { ...validate, schemas } }
-}
-
-const deepMerge = function(valueA, valueB) {
-  return merge({}, valueA, valueB)
-}
-
 module.exports = {
   mergeSpecParams,
-  mergeSpecValidate,
 }

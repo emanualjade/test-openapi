@@ -2,6 +2,6 @@
 
 module.exports = {
   ...require('./cli'),
+  ...require('./run'),
   ...require('./modules/spec'),
-  ...require('./init'),
 }

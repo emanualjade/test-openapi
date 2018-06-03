@@ -23,6 +23,7 @@ const getPlanString = function({ count }) {
 
 const getPlan = function({ count }) {
   if (count === 0) {
+    // Needed notation for `tap-parser` to parse it correctly
     return '1..0'
   }
 

@@ -23,7 +23,9 @@ const runTasks = async function({ config, plugins }) {
   )
   const tasksB = await Promise.all(tasksA)
 
-  const tasksC = getFinalReturn({ tasks: tasksB })
+  const events = await eEndTasks({ tasks: tasksB, plugins, config: configA })
+
+  const tasksC = getFinalReturn({ tasks: tasksB, events })
 
   return tasksC
 }
@@ -86,32 +88,57 @@ const completeTaskHandler = function(error) {
 
 const eCompleteTask = addErrorHandler(completeTask, completeTaskHandler)
 
+// Run `end` handlers
+const endTasks = async function({ tasks, plugins, config }) {
+  const events = []
+  const { events: eventsA } = await runHandlers({ events }, plugins, 'end', { tasks, config })
+  return eventsA
+}
+
+// If an `end` handle throws, it becomes a `{ type: 'error', error }` event
+const endTasksHandler = function(error) {
+  return { type: 'error', error }
+}
+
+const eEndTasks = addErrorHandler(endTasks, endTasksHandler)
+
 // The top-level command either:
 //  - throws error with `error.errors` if any task failed
 //  - returns all tasks as an array of `{ type: 'task', ...task }`
-const getFinalReturn = function({ tasks }) {
-  const errors = tasks.filter(({ error }) => error !== undefined).map(({ error }) => error)
+const getFinalReturn = function({ tasks, events }) {
+  handleFinalFailure({ tasks, events })
 
+  const eventsA = getEvents({ tasks, events })
+  return eventsA
+}
+
+const handleFinalFailure = function({ tasks, events }) {
+  const errors = getFinalErrors({ tasks, events })
   if (errors.length === 0) {
-    return getSuccessReturn({ tasks })
+    return
   }
 
-  return getFailureReturn({ errors })
-}
-
-// Transform to an event object
-const getSuccessReturn = function({ tasks }) {
-  return tasks.map(({ task }) => ({ type: 'task', ...task }))
-}
-
-const getFailureReturn = function({ errors }) {
   const error = bundleErrors({ errors })
   error.message = ERROR_MESSAGE
 
   throw error
 }
 
+const getFinalErrors = function({ tasks, events }) {
+  const taskErrors = tasks.filter(({ error }) => error !== undefined)
+  const errorEvents = events.filter(({ type }) => type === 'error')
+  const errors = [...taskErrors, ...errorEvents]
+  const errorsA = errors.map(({ error }) => error)
+  return errorsA
+}
+
 const ERROR_MESSAGE = 'Some tasks failed'
+
+// Transform to an event objects
+const getEvents = function({ tasks, events }) {
+  const taskEvents = tasks.map(({ task }) => ({ type: 'task', ...task }))
+  return [...taskEvents, ...events]
+}
 
 module.exports = {
   runTasks: eRunTasks,

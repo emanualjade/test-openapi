@@ -84,8 +84,8 @@ const REDUCERS = [
 //   - `end`:
 //      - fired after all tasks
 //      - arguments: `({ tasks, config, plugins })`
-//      - this type of handlers can modify all the final `tasks`
-//      - `config` and `plugins` are read-only
+//      - this type of handlers can return new `events`
+//      - `tasks`, `config` and `plugins` are read-only
 // Throwing an exception in:
 //  - `start` or `end`: will stop the whole run
 //  - `task`: stop the current `task`, but other tasks are still run.

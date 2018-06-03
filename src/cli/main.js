@@ -12,7 +12,8 @@ const { parseConfig } = require('./parse')
 const runCli = async function() {
   const yargs = defineCli()
   const config = parseConfig({ yargs })
-  await run(config)
+  const tasks = await run(config)
+  return tasks
 }
 
 // If an error is thrown, print error's description, then exit with exit code 1

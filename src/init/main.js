@@ -5,9 +5,24 @@ const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 const { getPlugins } = require('../plugins')
 
-const { runTasks } = require('./tasks')
+const { startTasks } = require('./start')
+const { bootTask } = require('./task')
+const { completeTask } = require('./complete')
+const { endTasks } = require('./end')
+const { getFinalReturn } = require('./final')
 
 // Main entry point
+// Does in order:
+//  - load configuration
+//  - load tasks
+//  - load plugins
+//  - run `start` plugin handlers
+//  - for each task, in parallel:
+//     - run `task` plugin handlers
+//     - run `complete` plugin handlers
+//  - run `end` plugin handlers
+//  - normalize return value to an array of event objects
+// If any task failed, throw an error instead
 const run = async function(config = {}) {
   const configA = loadConfig({ config })
 
@@ -15,11 +30,45 @@ const run = async function(config = {}) {
 
   const { config: configC, plugins } = getPlugins({ config: configB })
 
-  const tasks = await runTasks({ config: configC, plugins })
+  const tasks = await ePerformRun({ config: configC, plugins })
   return tasks
 }
 
 const eRun = addErrorHandler(run, topLevelHandler)
+
+// Fire all plugin handlers for all tasks
+const performRun = async function({ config, plugins }) {
+  const { config: configA, mRunTask } = await startTasks({ config, plugins })
+
+  const tasks = await fireTasks({ config: configA, mRunTask, plugins })
+
+  const events = await endTasks({ tasks, plugins, config: configA })
+
+  const tasksC = getFinalReturn({ tasks, events })
+  return tasksC
+}
+
+// Add `error.plugins` to every thrown error
+const performRunHandler = function(error, { plugins }) {
+  error.plugins = plugins.map(({ name }) => name)
+  throw error
+}
+
+const ePerformRun = addErrorHandler(performRun, performRunHandler)
+
+// Fire all tasks in parallel
+const fireTasks = function({ config, config: { tasks }, mRunTask, plugins }) {
+  const tasksA = tasks.map(task => fireTask({ task, config, mRunTask, plugins }))
+  return Promise.all(tasksA)
+}
+
+const fireTask = async function({ task, config, mRunTask, plugins }) {
+  const returnValue = await bootTask({ task, config, mRunTask, plugins })
+
+  const returnValueA = await completeTask({ returnValue, plugins, config })
+
+  return returnValueA
+}
 
 // The following plugins can be run (order in parenthesis).
 // `start`, i.e. before any tasks:

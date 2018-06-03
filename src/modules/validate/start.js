@@ -3,7 +3,7 @@
 const { mapValues } = require('lodash')
 
 const { TestOpenApiError } = require('../../errors')
-const { validateIsSchema, normalizeShortcut } = require('../../utils')
+const { validateIsSchema, getShortcut, isObject } = require('../../utils')
 
 // Normalize `task.validate.*`
 const normalizeValidate = function({ tasks }) {
@@ -19,8 +19,7 @@ const normalizeTaskValidate = function({
   // Default status code
   const validateA = { ...validate, status }
 
-  // `task.validate.*: non-object` is shortcut for `{ enum: [value] }`
-  const validateB = mapValues(validateA, normalizeShortcut)
+  const validateB = mapValues(validateA, applyShortcut)
 
   validateJsonSchemas({ task, validate: validateB })
 
@@ -34,6 +33,16 @@ const normalizeTaskValidate = function({
 // Unless `task.validate.status` is overriden, will validate that response's
 // status code is `200`
 const DEFAULT_STATUS_CODE = 200
+
+// `task.validate.*: non-object` is shortcut for `{ enum: [value] }`
+const applyShortcut = function(value) {
+  // object means it's not a shortcut notation.
+  if (isObject(value)) {
+    return value
+  }
+
+  return getShortcut(value)
+}
 
 // Make sure `task.validate.*.*` are valid JSON schemas
 const validateJsonSchemas = function({ task, validate }) {

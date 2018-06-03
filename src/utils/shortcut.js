@@ -3,13 +3,7 @@
 const { isObject } = require('./types')
 
 // Normalize non-JSON schemas to a `const` JSON schema
-const normalizeShortcut = function(value) {
-  // `undefined` is ignored.
-  // object means it's not a shortcut notation.
-  if (value === undefined || isObject(value)) {
-    return value
-  }
-
+const getShortcut = function(value) {
   const type = guessType(value)
   return { type, enum: [value] }
 }
@@ -29,8 +23,9 @@ const TYPES = Object.entries({
   string: value => typeof value === 'string',
   boolean: value => typeof value === 'boolean',
   array: Array.isArray,
+  object: isObject,
 })
 
 module.exports = {
-  normalizeShortcut,
+  getShortcut,
 }

@@ -1,0 +1,18 @@
+{
+  "task": {
+    "schema": {
+      "type": "object",
+      "patternProperties": {
+        "^method": {},
+        "^server": {},
+        "^path": {},
+        "^url\\..+": {},
+        "^query\\..+": {},
+        "^headers\\..+": {},
+        "^body": {}
+      },
+      "additionalProperties": false
+    },
+    "default": {}
+  }
+}

@@ -7,13 +7,13 @@ const config = require('./config')
 module.exports = {
   name: 'spec',
   dependencies: ['call'],
-  optionalDependencies: ['generate', 'validate'],
+  optionalDependencies: ['random', 'validate'],
   config,
   handlers: [
     {
       type: 'start',
       handler: loadNormalizedSpec,
-      order: 1300,
+      order: 1400,
     },
     {
       type: 'task',

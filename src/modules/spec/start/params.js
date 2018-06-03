@@ -33,7 +33,9 @@ const getParams = function({
 
   const paramsD = mergeParams([...contentNegotiations, ...secParams, ...paramsC, ...constParams])
 
-  return paramsD
+  const paramsE = paramsD.map(addIsRandom)
+
+  return paramsE
 }
 
 // From OpenAPI request `parameters` to normalized format
@@ -78,6 +80,10 @@ const getServerParam = function({ spec: { host: hostname, basePath } }) {
 const getConstParam = function({ value, location }) {
   const valueA = { type: 'string', enum: [value] }
   return { name: location, location, required: true, value: valueA }
+}
+
+const addIsRandom = function(param) {
+  return { ...param, isRandom: true }
 }
 
 module.exports = {

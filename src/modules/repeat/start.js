@@ -1,7 +1,7 @@
 'use strict'
 
 // Repeat each task `config.repeat` times
-// If used with `generate` plugin, each time will use different random parameters
+// If used with `random` plugin, each time will use different random parameters
 // It will be reported only as a single task.
 // Run all tasks in parallel.
 const repeatTasks = function({ repeat, runTask }) {

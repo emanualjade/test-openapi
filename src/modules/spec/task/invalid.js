@@ -1,15 +1,7 @@
 'use strict'
 
-// `task.call|validate.*: invalid` means we inverse re-use parameter's schema
-const isInvalidValue = function({ value }) {
-  return (
-    value !== undefined &&
-    Array.isArray(value.enum) &&
-    value.enum.length === 1 &&
-    value.enum[0] === 'invalid'
-  )
-}
-
+// Merge `task.random.*: 'invalid'`
+// I.e. inverse the specification schema
 const mergeInvalidValue = function({ specValue }) {
   // If `invalid` but the specification does not define this property, ignore it
   if (specValue === undefined) {
@@ -39,6 +31,5 @@ const addNullType = function({ specValue: { type = [] } }) {
 }
 
 module.exports = {
-  isInvalidValue,
   mergeInvalidValue,
 }

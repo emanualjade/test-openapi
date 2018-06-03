@@ -1,16 +1,18 @@
 'use strict'
 
-const { normalizeGenerate } = require('./start')
+const { addRandomParams } = require('./start')
 const { generateParams } = require('./task')
+const config = require('./config')
 
 module.exports = {
-  name: 'generate',
+  name: 'random',
   dependencies: ['call'],
+  config,
   handlers: [
     {
       type: 'start',
-      handler: normalizeGenerate,
-      order: 1400,
+      handler: addRandomParams,
+      order: 1200,
     },
     {
       type: 'task',

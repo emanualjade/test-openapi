@@ -13,14 +13,6 @@ const keyToLocation = function({ key }) {
   return { location, name: nameA }
 }
 
-const locationToKey = function({ location, name }) {
-  if (SINGLE_NAME_LOCATIONS.includes(location)) {
-    return location
-  }
-
-  return `${location}.${name}`
-}
-
 const locationToValue = function({ location, name, value }) {
   if (SINGLE_NAME_LOCATIONS.includes(location)) {
     return { [location]: value }
@@ -34,6 +26,5 @@ const SINGLE_NAME_LOCATIONS = ['method', 'server', 'path', 'body']
 
 module.exports = {
   keyToLocation,
-  locationToKey,
   locationToValue,
 }

@@ -3,10 +3,10 @@
     "schema": {
       "type": "object",
       "properties": {
-        "^method": {},
-        "^server": {},
-        "^path": {},
-        "^body": {}
+        "method": {},
+        "server": {},
+        "path": {},
+        "body": {}
       },
       "patternProperties": {
         "^url\\..+": {},

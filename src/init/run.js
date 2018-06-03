@@ -3,30 +3,29 @@
 const { mapValues } = require('lodash')
 
 const { isObject } = require('../utils')
+const { addErrorHandler } = require('../errors')
 const { runHandlers } = require('../plugins')
 
 // Run an `it()` task
-const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs, errors }) {
-  const taskA = await runHandlers(
-    task,
-    plugins,
-    'task',
-    readOnlyArgs,
-    runTaskHandler.bind(null, { errors }),
-  )
+const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
+  const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
 
   const taskB = mergeReturnValue({ task: taskA, originalTask })
-  return taskB
+  return { task: taskB }
 }
 
-// Error handler for `it()`
+// Let calling code handle errored tasks.
+// I.e. on exception, successfully return `{ error }` instead of throwing it.
+const runTaskHandler = function(error) {
+  return { error }
+}
+
+const eRunTask = addErrorHandler(runTask, runTaskHandler)
+
+// Error handler for each plugin handler
 // Add `error.task` and `error.taskKey`
-const runTaskHandler = function({ errors }, error, { taskKey, ...task }) {
+const runPluginHandler = function(error, { taskKey, ...task }) {
   Object.assign(error, { taskKey, task })
-
-  // Errors collection
-  errors.push(error)
-
   throw error
 }
 
@@ -50,5 +49,5 @@ const shallowMerge = function(originalTask, newTask) {
 }
 
 module.exports = {
-  runTask,
+  runTask: eRunTask,
 }

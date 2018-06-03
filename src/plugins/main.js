@@ -97,6 +97,11 @@ const REDUCERS = [
 // of the same `type`. Please look at the current available plugins and try
 // to find out where the best place is for your plugin.
 
+// `plugin.error` `{function}`
+// Optional function taking `taskConfig` as input and returning transformed.
+// Used before `task` is assigned to `error.task` to filter out task properties
+// that should not appear in reporting output.
+
 module.exports = {
   getPlugins,
 }

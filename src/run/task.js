@@ -4,7 +4,7 @@ const { mapValues } = require('lodash')
 
 const { isObject } = require('../utils')
 const { addErrorHandler } = require('../errors')
-const { runHandlers } = require('../plugins')
+const { runHandlers, addTaskErrorProp } = require('../plugins')
 
 // Run `task` handlers
 const bootTask = async function({ task, config, mRunTask, plugins }) {
@@ -41,7 +41,13 @@ const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, tas
 }
 
 const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
-  const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
+  const taskA = await runHandlers(
+    task,
+    plugins,
+    'task',
+    readOnlyArgs,
+    runPluginHandler.bind(null, plugins),
+  )
 
   const taskB = mergeReturnValue({ task: taskA, originalTask })
   return { task: taskB }
@@ -56,10 +62,9 @@ const runTaskHandler = function(error) {
 const eRunTask = addErrorHandler(runTask, runTaskHandler)
 
 // Error handler for each plugin handler
-// Add `error.task`
-const runPluginHandler = function(error, task) {
-  Object.assign(error, { task })
-  throw error
+const runPluginHandler = function(plugins, error, task) {
+  const errorA = addTaskErrorProp({ error, task, plugins })
+  throw errorA
 }
 
 // Task return value, returned to users and used by depReqs

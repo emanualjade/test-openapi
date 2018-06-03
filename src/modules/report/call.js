@@ -10,20 +10,26 @@ const callReporters = async function({
   input,
   type,
 }) {
-  const inputA = { ...input, options }
-
   const promises = reporters.map(reporter =>
-    callReporter({ reporter, output, input: inputA, type }),
+    callReporter({ reporter, output, input, options, type }),
   )
   await Promise.all(promises)
 }
 
-const callReporter = async function({ reporter, output, input, type }) {
+const callReporter = async function({
+  reporter,
+  reporter: { name },
+  output,
+  input,
+  options,
+  type,
+}) {
   if (reporter[type] === undefined) {
     return
   }
 
-  const message = await reporter[type](input)
+  const optionsA = options[name] || {}
+  const message = await reporter[type]({ ...input, options: optionsA })
 
   if (message !== undefined) {
     output.write(message)

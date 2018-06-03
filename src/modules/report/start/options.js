@@ -11,12 +11,14 @@ const getReportersOptions = function({
   return Object.assign({}, options, ...optionsA)
 }
 
-const getReporterOptions = function({ reporter, config, options }) {
+const getReporterOptions = function({ reporter, reporter: { name }, config, options }) {
   if (reporter.options === undefined) {
     return
   }
 
-  return reporter.options({ config, options })
+  const optionsA = options[name] || {}
+  const optionsB = reporter.options({ config, options: optionsA })
+  return { [name]: { ...optionsA, ...optionsB } }
 }
 
 module.exports = {

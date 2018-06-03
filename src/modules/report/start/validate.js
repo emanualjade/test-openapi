@@ -22,14 +22,22 @@ const validateModule = function({ reporter, style }) {
 }
 
 // Validate `config.report.options`
-const validateOptions = function({ options, reporter: { config = {} }, style }) {
+const validateOptions = function({
+  reporter: { config = {}, name },
+  options: { [name]: options },
+  style,
+}) {
+  if (options === undefined) {
+    return
+  }
+
   const { error } = validateFromSchema({ schema: config, value: options })
   if (error === undefined) {
     return
   }
 
-  throw new TestOpenApiError(`'report.options' for reporter '${style}' are invalid: ${error}`, {
-    property: 'report.options',
+  throw new TestOpenApiError(`'report.options.${name}' is invalid: ${error}`, {
+    property: `report.options.${name}`,
     plugin: `reporter-${style}`,
   })
 }

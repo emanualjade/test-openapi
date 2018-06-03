@@ -4,7 +4,7 @@ const { omit } = require('lodash')
 
 const { convertPlainObject } = require('../../../../errors')
 
-// JSON/YAML reporter
+// JSON reporter
 const end = function({ tasks }) {
   const report = getReport({ tasks })
   const reportA = JSON.stringify(report, null, 2)

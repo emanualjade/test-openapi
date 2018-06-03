@@ -1,7 +1,5 @@
 'use strict'
 
-const { isDeepStrictEqual } = require('util')
-
 const { merge } = require('lodash')
 
 const { isObject } = require('./types')
@@ -17,7 +15,7 @@ const mergeHeaders = function(headers, merge) {
 }
 
 // Merge array values with a custom merge function and condition function
-const mergeValues = function(array, condition = isDeepStrictEqual, merge = defaultMerge) {
+const mergeValues = function(array, condition, merge = defaultMerge) {
   return array
     .filter(value => value !== undefined)
     .map(mergeValue.bind(null, merge, condition))

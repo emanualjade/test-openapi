@@ -6,7 +6,7 @@ const { readFile } = require('fs')
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 
-const { isObject } = require('../utils')
+const { isObject, sortArray } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { validateTaskFile } = require('./validate')
@@ -21,10 +21,14 @@ const loadTasks = async function({ tasks }) {
   // Can use globbing
   const tasksA = await fastGlob(tasks)
 
-  const tasksB = await Promise.all(tasksA.map(loadTaskFile))
-  const tasksC = Object.assign({}, ...tasksB)
+  // Ensure task object keys order is always the same, because it's the one
+  // used for reporting and we want an ordered and stable output
+  const tasksB = sortArray(tasksA)
 
-  return tasksC
+  const tasksC = await Promise.all(tasksB.map(loadTaskFile))
+  const tasksD = Object.assign({}, ...tasksC)
+
+  return tasksD
 }
 
 // Load and parse each task file in parallel

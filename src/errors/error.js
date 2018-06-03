@@ -7,7 +7,6 @@
 //  - `plugin` `{string}`: plugin that triggered the error.
 //    Will be `bug` if it was a bug in the library.
 //    Will be `config` if it was outside of any plugin
-//  - `key` `{string}`: current task's key
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in `task`, `actual` or `config`
 //  - `actual` `{value}`: actual value

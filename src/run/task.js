@@ -56,9 +56,9 @@ const runTaskHandler = function(error) {
 const eRunTask = addErrorHandler(runTask, runTaskHandler)
 
 // Error handler for each plugin handler
-// Add `error.task` and `error.key`
-const runPluginHandler = function(error, { key, ...task }) {
-  Object.assign(error, { key, task })
+// Add `error.task`
+const runPluginHandler = function(error, task) {
+  Object.assign(error, { task })
   throw error
 }
 

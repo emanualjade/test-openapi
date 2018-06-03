@@ -6,7 +6,7 @@ const { getTasks } = require('../tasks')
 const { getPlugins, runHandlers } = require('../plugins')
 
 const { launchRunner } = require('./runner')
-const { runTask } = require('./run')
+const { runTask } = require('./task')
 
 // Main entry point
 const run = async function(config = {}) {

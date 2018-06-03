@@ -1,6 +1,6 @@
 'use strict'
 
-const { merge } = require('lodash')
+const { mergeAll } = require('lodash/fp')
 
 const { isObject } = require('./types')
 
@@ -15,7 +15,7 @@ const mergeHeaders = function(headers, merge) {
 }
 
 // Merge array values with a custom merge function and condition function
-const mergeValues = function(array, condition, merge = defaultMerge) {
+const mergeValues = function(array, condition, merge = shallowMerge) {
   return array
     .filter(value => value !== undefined)
     .map(mergeValue.bind(null, merge, condition))
@@ -23,35 +23,37 @@ const mergeValues = function(array, condition, merge = defaultMerge) {
 }
 
 const mergeValue = function(merge, condition, value, index, array) {
-  const nextSameValue = findSameValue({ condition, array, value, start: index + 1 })
+  const nextSameValues = findSameValues({ condition, array, value, start: index + 1 })
 
-  if (nextSameValue !== undefined) {
+  if (nextSameValues.length !== 0) {
     return
   }
 
-  const prevSameValue = findSameValue({ condition, array, value, length: index })
+  const prevSameValues = findSameValues({ condition, array, value, length: index })
 
-  if (prevSameValue !== undefined) {
-    return merge(prevSameValue, value)
+  if (prevSameValues.length !== 0) {
+    return merge(...prevSameValues, value)
   }
 
   return value
 }
 
-const findSameValue = function({ condition, array, value, start = 0, length }) {
-  return array.slice(start, length).find(valueB => condition(value, valueB))
+const findSameValues = function({ condition, array, value, start = 0, length }) {
+  return array.slice(start, length).filter(valueB => condition(value, valueB))
 }
 
-const defaultMerge = function(valueA, valueB) {
-  return { ...valueA, ...valueB }
+const shallowMerge = function(...values) {
+  return Object.assign({}, ...values)
 }
 
-const deepMerge = function(valueA, valueB) {
-  if (!isObject(valueA) || !isObject(valueB)) {
-    return valueB
+const deepMerge = function(...values) {
+  const lastValue = values[values.length - 1]
+
+  if (!isObject(lastValue)) {
+    return lastValue
   }
 
-  return merge({}, valueA, valueB)
+  return mergeAll(values)
 }
 
 const isSameParam = function(paramA, paramB) {

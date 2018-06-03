@@ -1,16 +1,17 @@
 'use strict'
 
 const { getDirective } = require('./directive')
+const { getErrorProps } = require('./error_props')
 const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP assert
-const assert = function({ ok, name, directive } = {}) {
-  const assertString = getAssert(this, { ok, name, directive })
+const assert = function(assertOpts = {}) {
+  const assertString = getAssert(this, assertOpts)
   return write(this, assertString)
 }
 
-const getAssert = function(tap, { ok, name = '', directive = {} }) {
+const getAssert = function(tap, { ok, name = '', directive = {}, error }) {
   checkArgument(ok, 'boolean')
   checkArgument(name, 'string')
 
@@ -22,7 +23,9 @@ const getAssert = function(tap, { ok, name = '', directive = {} }) {
 
   const directiveString = getDirective({ directive })
 
-  return `${okString} ${tap.index}${nameString}${directiveString}`
+  const errorProps = getErrorProps({ ok, error })
+
+  return `${okString} ${tap.index}${nameString}${directiveString}${errorProps}`
 }
 
 // Update index|tests|pass|skip|fail counters

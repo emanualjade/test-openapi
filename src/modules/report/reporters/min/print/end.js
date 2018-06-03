@@ -1,12 +1,22 @@
 'use strict'
 
-const { getSummary, yellow } = require('../../../utils')
+const { getSummary, yellow, HORIZONTAL_LINE, fullIndent } = require('../../../utils')
 
 // Print final reporting message with counter of passed|failed|skipped tasks
 const getEndMessage = function({ tasks }) {
   const summary = getSummary({ tasks })
+  const line = getLine({ summary })
   const endMessage = printSummary({ summary })
-  return `\n${endMessage}\n`
+  return `${line}\n${fullIndent(endMessage)}\n\n`
+}
+
+// Only show separator line when there were some errors
+const getLine = function({ summary: { fail } }) {
+  if (fail === 0) {
+    return ''
+  }
+
+  return `\n${HORIZONTAL_LINE}\n`
 }
 
 const printSummary = function({ summary, summary: { total } }) {

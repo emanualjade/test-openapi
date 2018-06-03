@@ -7,4 +7,5 @@ module.exports = {
   ...require('./prettify'),
   ...require('./stringify'),
   ...require('./summary'),
+  ...require('./line'),
 }

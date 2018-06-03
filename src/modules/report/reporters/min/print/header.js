@@ -1,6 +1,6 @@
 'use strict'
 
-const { red, dim, grey } = require('../../../utils')
+const { red, dim } = require('../../../utils')
 
 // Retrieve top of error printed message
 const getHeader = function({ task, error: { message } }) {
@@ -8,8 +8,7 @@ const getHeader = function({ task, error: { message } }) {
   return `${red.bold(taskName)}
 ${dim(taskTitle)}
 
-${message}
-${HORIZONTAL_LINE}`
+${message}`
 }
 
 // Parse `taks.title` using ' - ' delimiter
@@ -26,10 +25,6 @@ const parseTitle = function({ task: { title } }) {
 
 // Delimiter between taskName - title
 const TITLE_DELIMITER = ' - '
-
-// Horizontal line below each error message
-const HORIZONTAL_LINE_SIZE = 78
-const HORIZONTAL_LINE = grey('\u2500'.repeat(HORIZONTAL_LINE_SIZE))
 
 module.exports = {
   getHeader,

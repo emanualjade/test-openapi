@@ -1,6 +1,6 @@
 'use strict'
 
-const { red, indent } = require('../../../utils')
+const { red, indent, fullIndent, HORIZONTAL_LINE } = require('../../../utils')
 
 const { getHeader } = require('./header')
 const { getErrorProps } = require('./props')
@@ -9,9 +9,14 @@ const { getErrorProps } = require('./props')
 const getErrorMessage = function({ task, error }) {
   const header = getHeader({ task, error })
   const errorProps = getErrorProps({ error })
-  const message = `${header}\n\n${errorProps}`
-  const messageA = indent(message)
-  return `\n${CROSS_MARK} ${messageA}\n`
+
+  return `
+${HORIZONTAL_LINE}
+${CROSS_MARK} ${indent(header)}
+${HORIZONTAL_LINE}
+
+${fullIndent(errorProps)}
+`
 }
 
 // Red cross symbol

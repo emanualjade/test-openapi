@@ -40,6 +40,7 @@ const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, tas
 const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
   const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
 
+  // Normalize `task` by calling all `plugin.returnValue`
   const taskB = getTaskReturn({ task: taskA, originalTask, plugins })
   return { task: taskB }
 }
@@ -47,6 +48,7 @@ const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArg
 // Let calling code handle errored tasks.
 // I.e. on exception, successfully return `{ task, error }` instead of throwing it.
 const runTaskHandler = function(error, { originalTask }, { plugins }) {
+  // Normalize `task` by calling all `plugin.returnValue`
   const task = getTaskReturn({ task: error.task, originalTask, plugins })
   Object.assign(error, { task })
   return { task, error }
@@ -55,6 +57,7 @@ const runTaskHandler = function(error, { originalTask }, { plugins }) {
 const eRunTask = addErrorHandler(runTask, runTaskHandler)
 
 // Error handler for each plugin handler
+// Persist current `task` values by setting it to thrown error
 const runPluginHandler = function(error, task) {
   Object.assign(error, { task })
   throw error

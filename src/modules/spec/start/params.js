@@ -2,7 +2,7 @@
 
 const { omit } = require('lodash')
 
-const { mergeParams } = require('../../../utils')
+const { mergeParams, isObject } = require('../../../utils')
 
 const IN_TO_LOCATION = require('./in_to_location')
 const { normalizeSchema } = require('./json_schema')
@@ -78,12 +78,13 @@ const getServerParam = function({ spec: { host: hostname, basePath } }) {
 }
 
 const getConstParam = function({ value, location }) {
-  const valueA = { type: 'string', enum: [value] }
-  return { name: location, location, required: true, value: valueA }
+  return { name: location, location, required: true, value }
 }
 
-const addIsRandom = function(param) {
-  return { ...param, isRandom: true }
+// Add `param.isRandom`
+const addIsRandom = function({ value, ...param }) {
+  const isRandom = isObject(value)
+  return { ...param, value, isRandom }
 }
 
 module.exports = {

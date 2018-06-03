@@ -70,7 +70,7 @@ const getAcceptHeader = function(mimes) {
   }
 
   const accept = mimes.join(',')
-  return { name: 'Accept', value: { type: 'string', enum: [accept] } }
+  return { name: 'Accept', value: accept }
 }
 
 const addParamInfo = function(header) {

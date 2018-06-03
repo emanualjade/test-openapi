@@ -7,14 +7,13 @@ const { callReporters } = require('./call')
 // We do so by buffering each task until its reporting time comes.
 const complete = async function(input) {
   const {
+    task: { key },
     config,
     config: {
       report,
       report: { taskKeys, inputs, index },
     },
   } = input
-
-  const { key } = getTask(input)
 
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
@@ -32,14 +31,6 @@ const complete = async function(input) {
 
   // Unbuffer tasks, i.e. report them
   await completeTasks({ count, keys, inputs, config })
-}
-
-const getTask = function({ task, error }) {
-  if (task !== undefined) {
-    return task
-  }
-
-  return error.task
 }
 
 const getCount = function({ keys, inputs }) {

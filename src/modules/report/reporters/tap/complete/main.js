@@ -9,10 +9,8 @@ const complete = function({ task, error, options: { tap } }) {
 }
 
 const getAssert = function({ task, error }) {
-  const taskA = getTask({ task, error })
-
   const ok = error === undefined
-  const name = getAssertName({ task: taskA })
+  const name = getAssertName({ task })
 
   if (ok) {
     return { ok, name }
@@ -22,14 +20,6 @@ const getAssert = function({ task, error }) {
   const directive = getDirective({ error })
 
   return { ok, name, error: errorProps, directive }
-}
-
-const getTask = function({ task, error }) {
-  if (task !== undefined) {
-    return task
-  }
-
-  return error.task
 }
 
 // Get assert name using `task.key` and `task.titles`

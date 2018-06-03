@@ -49,12 +49,12 @@ const pluck = function(returns, prop) {
 
 // Normal `{ task }` or `{ error }` return value is still present
 // Pick the first failed|successful one
-const getSingleReturn = function({ tasks, errors }) {
+const getSingleReturn = function({ tasks: [task], errors }) {
   if (errors.length !== 0) {
-    return { error: errors[0] }
+    return { task, error: errors[0] }
   }
 
-  return { task: tasks[0] }
+  return { task }
 }
 
 module.exports = {

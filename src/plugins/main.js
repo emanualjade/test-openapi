@@ -75,9 +75,11 @@ const REDUCERS = [
 //   - `complete`:
 //      - fired for each task, but after `task` type.
 //      - fired whether `task` has failed or not
-//      - arguments: `(task)`
-//      - this type of handlers can modify the current `task`
-//      - `task` also has the following read-only properties:
+//      - arguments: `({ task, error })`
+//         - `error` is only defined if `task` failed
+//         - when using `repeat` plugin, `tasks` and `errors` will also be set
+//      - this type of handlers can modify the current `task` or `error`
+//      - it also has the following read-only properties:
 //         - `plugins`: list of available plugins
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)

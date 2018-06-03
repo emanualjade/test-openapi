@@ -54,9 +54,10 @@ const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArg
 }
 
 // Let calling code handle errored tasks.
-// I.e. on exception, successfully return `{ error }` instead of throwing it.
+// I.e. on exception, successfully return `{ task, error }` instead of throwing it.
 const runTaskHandler = function(error) {
-  return { error }
+  const { task } = error
+  return { task, error }
 }
 
 const eRunTask = addErrorHandler(runTask, runTaskHandler)

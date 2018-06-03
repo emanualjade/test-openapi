@@ -2,10 +2,6 @@
 
 // Add `error.task`
 const addTaskErrorProp = function({ error, task, plugins }) {
-  if (task === undefined) {
-    return error
-  }
-
   const taskA = getTaskErrorProp({ task, plugins })
   Object.assign(error, { task: taskA })
   return error

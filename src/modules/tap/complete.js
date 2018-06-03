@@ -9,7 +9,7 @@ const completeTap = function({
 }) {
   const { ok, directive } = getAssert({ error })
 
-  writer.assert(ok, { directive })
+  writer.assert({ ok, directive })
 }
 
 const getAssert = function({ error }) {

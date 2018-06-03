@@ -1,13 +1,20 @@
 'use strict'
 
+const { getAssert } = require('./assert')
 const { write } = require('./write')
 const { checkArgument } = require('./check')
 
-// TAP test title, used to group asserts
-const test = function(testName) {
+// TAP test, i.e. group of asserts
+const test = function(testName, asserts = []) {
   checkArgument(testName, 'string')
 
-  return write(this, `# ${testName}`)
+  const testHeader = `# ${testName}`
+
+  const assertsString = asserts.map(assert => getAssert(this, assert))
+
+  const testString = [testHeader, ...assertsString].join('\n\n')
+
+  return write(this, testString)
 }
 
 module.exports = {

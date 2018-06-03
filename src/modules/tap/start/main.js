@@ -8,13 +8,9 @@ const { getOutput } = require('./output')
 const startTap = async function({ tap, tasks }) {
   const output = await getOutput({ tap })
 
-  const writer = new Tap({ output })
+  const count = tasks.length
 
-  const tasksCount = tasks.length
-
-  writer.version()
-
-  writer.plan(tasksCount)
+  const writer = new Tap({ output, count })
 
   return { tap: { ...tap, writer } }
 }

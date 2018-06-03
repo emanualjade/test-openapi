@@ -1,12 +1,12 @@
 'use strict'
 
 // Ends TAP v13 output
+// Write # tests|pass|fail|skip|ok comments at the end
 const endTap = function({
   config: {
     tap: { writer },
   },
 }) {
-  // Write # tests|pass|fail|skip|ok comments at the end
   writer.end()
 }
 

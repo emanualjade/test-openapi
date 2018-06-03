@@ -9,17 +9,23 @@ const { end } = require('./end')
 
 // TAP serializer
 class Tap {
-  constructor({ output } = {}) {
+  constructor({ output, count } = {}) {
     const index = 0
     const pass = 0
     const fail = 0
     const skip = 0
 
-    Object.assign(this, { output, index, pass, fail, skip })
+    Object.assign(this, { output, index, pass, fail, skip, count })
+
+    version(this)
+
+    if (count !== undefined) {
+      plan(this, count)
+    }
   }
 }
 
-Object.assign(Tap.prototype, { version, plan, test, assert, comment, end })
+Object.assign(Tap.prototype, { test, assert, comment, end })
 
 module.exports = {
   Tap,

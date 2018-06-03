@@ -5,15 +5,20 @@ const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP plan
-const plan = function(count, directive) {
+const plan = function(tap, count) {
   checkArgument(count, 'integer')
 
+  const planString = getPlanString({ count })
+
+  return write(tap, planString)
+}
+
+const getPlanString = function({ count }) {
   const planString = getPlan({ count })
 
-  const directiveA = getPlanDirective({ directive, count })
-  const directiveString = getDirective({ planString, directive: directiveA })
+  const directiveString = getPlanDirective({ count })
 
-  return write(this, `${planString}${directiveString}`)
+  return `${planString}${directiveString}`
 }
 
 const getPlan = function({ count }) {
@@ -25,14 +30,17 @@ const getPlan = function({ count }) {
 }
 
 // If no asserts are defined, consider plan as skipped
-const getPlanDirective = function({ directive, count }) {
-  if (directive === undefined && count === 0) {
-    return { skip: true }
+const getPlanDirective = function({ count }) {
+  if (count !== 0) {
+    return ''
   }
 
-  return directive
+  const directive = { skip: true }
+  const directiveString = getDirective({ directive })
+  return directiveString
 }
 
 module.exports = {
   plan,
+  getPlanString,
 }

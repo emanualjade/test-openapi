@@ -43,28 +43,21 @@ const defineAllTasks = function({ config: { tasks }, runTask, readOnlyArgs, plug
 // TODO: fix title when we refactor how reporting is done
 // Method and path should be included in titles.
 const defineTask = function({ task, task: { taskKey }, runTask, readOnlyArgs, plugins, errors }) {
-  // This means `this` context is lost.
-  // We can remove the arrow function if we ever need the context.
   // Timeout is handled differently (i.e. not by the runner)
-  it(
-    taskKey,
-    async () => {
-      const { task: taskA, error } = await runTask(task, {
-        readOnlyArgs,
-        plugins,
-      })
+  it(taskKey, launchTask.bind(null, { task, runTask, readOnlyArgs, plugins, errors }), 0)
+}
 
-      // TODO: temporary as long as if we use Jasmine
-      if (error) {
-        errors.push(error)
-        throw error
-      }
+const launchTask = async function({ task, runTask, readOnlyArgs, plugins, errors }) {
+  const { task: taskA, error } = await runTask(task, { readOnlyArgs, plugins })
 
-      // Only return first task
-      return { task: taskA, error }
-    },
-    0,
-  )
+  // TODO: temporary as long as if we use Jasmine
+  if (error) {
+    errors.push(error)
+    throw error
+  }
+
+  // Only return first task
+  return { task: taskA, error }
 }
 
 module.exports = {

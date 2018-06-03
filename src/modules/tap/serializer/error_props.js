@@ -25,7 +25,7 @@ const getError = function({ message, name, stack, ...error }) {
 
 const getAt = function({ stack }) {
   if (stack === undefined) {
-    return
+    return ''
   }
 
   const [, at] = stack.split('\n')

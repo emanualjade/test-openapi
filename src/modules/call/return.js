@@ -13,8 +13,8 @@ const getRequest = function({ request: { raw } = {} }) {
   }
 
   // Enforce properties order
-  const { method, url, server, path, query, headers } = raw
-  const request = { method, url, server, path, query, headers }
+  const { method, url, server, path, query, headers, body } = raw
+  const request = { method, url, server, path, query, headers, body }
   return { request }
 }
 

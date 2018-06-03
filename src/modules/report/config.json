@@ -28,5 +28,11 @@
       "type": "object"
     },
     "default": {}
+  },
+  "general.notify": {
+    "schema": {
+      "type": "boolean"
+    },
+    "default": false
   }
 }

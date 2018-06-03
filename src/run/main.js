@@ -97,6 +97,7 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `tap` (1000): TAP output for current task
 // `end`, i.e. after all tasks:
 //   - `tap` (1000): ends TAP output
+//   - `report` (1100): ends reporting, e.g. show notification
 
 module.exports = {
   run: eRun,

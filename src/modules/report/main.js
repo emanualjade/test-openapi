@@ -1,6 +1,7 @@
 'use strict'
 
 const { start } = require('./start')
+const { end } = require('./end')
 const config = require('./config')
 
 module.exports = {
@@ -12,6 +13,11 @@ module.exports = {
       type: 'start',
       handler: start,
       order: 1600,
+    },
+    {
+      type: 'end',
+      handler: end,
+      order: 1100,
     },
   ],
 }

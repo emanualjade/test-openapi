@@ -1,6 +1,6 @@
 'use strict'
 
-const { red, indent, fullIndent, HORIZONTAL_LINE } = require('../../../utils')
+const { red, indent, fullIndent, HORIZONTAL_LINE } = require('../utils')
 
 const { getHeader } = require('./header')
 const { getErrorProps } = require('./props')

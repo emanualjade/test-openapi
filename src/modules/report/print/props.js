@@ -2,8 +2,8 @@
 
 const { get } = require('lodash')
 
-const { isShortcut } = require('../../../../../utils')
-const { orange, indentValue, stringifyValue, highlightValue } = require('../../../utils')
+const { isShortcut } = require('../../../utils')
+const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
 const { callErrorProps } = require('./call')
 

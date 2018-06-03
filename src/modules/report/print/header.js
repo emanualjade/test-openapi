@@ -1,6 +1,6 @@
 'use strict'
 
-const { red, dim } = require('../../../utils')
+const { red, dim } = require('../utils')
 
 // Retrieve top of error printed message
 const getHeader = function({ task, error: { message } }) {

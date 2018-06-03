@@ -1,6 +1,6 @@
 'use strict'
 
-const { getErrorMessage } = require('./print')
+const { getErrorMessage } = require('../../print')
 
 // Print task errors and update spinner
 const complete = function({ task, error, options: { spinner } }) {

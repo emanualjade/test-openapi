@@ -2,14 +2,16 @@
   "task": {
     "schema": {
       "type": "object",
-      "patternProperties": {
+      "properties": {
         "^method": {},
         "^server": {},
         "^path": {},
+        "^body": {}
+      },
+      "patternProperties": {
         "^url\\..+": {},
         "^query\\..+": {},
-        "^headers\\..+": {},
-        "^body": {}
+        "^headers\\..+": {}
       },
       "additionalProperties": false
     },

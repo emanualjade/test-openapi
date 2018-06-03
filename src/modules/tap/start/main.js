@@ -16,10 +16,6 @@ const startTap = async function({ tap, tasks }) {
 
   writer.plan(tasksCount)
 
-  if (tasksCount !== 0) {
-    writer.test('Tasks')
-  }
-
   return { tap: { ...tap, writer } }
 }
 

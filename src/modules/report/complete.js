@@ -44,13 +44,20 @@ const getCount = function({ keys, inputs }) {
 }
 
 const completeTasks = async function({ count, keys, inputs, config }) {
-  const promises = keys.slice(0, count).map(key => completeTask({ key, inputs, config }))
-  await Promise.all(promises)
+  const keysA = keys.slice(0, count)
+  await completeTask({ keys: keysA, inputs, config })
 }
 
-const completeTask = async function({ key, inputs, config }) {
+const completeTask = async function({ keys: [key, ...keys], inputs, config }) {
+  if (key === undefined) {
+    return
+  }
+
   const input = inputs[key]
   await callReporters({ config, input, type: 'complete' })
+
+  // Async iteration through recursion
+  await completeTask({ keys, inputs, config })
 }
 
 module.exports = {

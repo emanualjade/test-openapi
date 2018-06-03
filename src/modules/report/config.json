@@ -18,7 +18,7 @@
         "type": "string"
       }
     },
-    "default": ["tap"]
+    "default": ["min"]
   },
   "general.options": {
     "schema": {

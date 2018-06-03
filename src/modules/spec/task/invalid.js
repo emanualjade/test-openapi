@@ -16,11 +16,14 @@ const mergeInvalidFormat = function({ specParamValue }) {
   }
 
   const type = addNullType({ specParamValue })
+  // TODO: json-schema-faker support for the `not` keyword is lacking
   return { not: { ...specParamValue, type } }
 }
 
 // When using 'invalid', we want to make sure the value is generated, i.e. it
 // should never be `null`
+// TODO: use `{ allOf: [{ not: { enum: [null] } }, ...] }` instead
+// This is unfortunately not supported at the moment by json-schema-faker
 const addNullType = function({ specParamValue: { type = [] } }) {
   if (type === 'null') {
     return type

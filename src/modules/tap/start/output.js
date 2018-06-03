@@ -7,9 +7,11 @@ const { createWriteStream } = require('fs')
 const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
 // Retrieves stream to write to, according to `config.tap.output`
-const getOutput = function({ tap: { output } }) {
+const getOutput = async function({ tap: { output, reporter } }) {
   const getStream = STREAMS[String(output)] || STREAMS.default
-  return getStream({ output })
+  const stream = await getStream({ output })
+  const streamA = useReporter({ stream, reporter })
+  return streamA
 }
 
 // When `config.tap.output` is `true` (default), write to `stdout`
@@ -50,6 +52,16 @@ const STREAMS = {
   true: getStdout,
   false: getSilentStream,
   default: eGetFileStream,
+}
+
+// Use `tap.reporter` if it is set (by another plugin, like `report` plugin)
+const useReporter = function({ stream, reporter }) {
+  if (reporter === undefined) {
+    return stream
+  }
+
+  reporter.pipe(stream)
+  return reporter
 }
 
 module.exports = {

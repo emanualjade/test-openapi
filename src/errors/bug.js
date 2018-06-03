@@ -29,7 +29,7 @@ const getBugMessage = function({ bugError, bugError: { stack } }) {
   const repositoryName = getRepositoryName({ bugError })
 
   return `A bug occured.
-Please report an issue on the '${repositoryName}' GitHub repository and paste the following lines:
+Please report an issue on the '${repositoryName}' code repository and paste the following lines:
 
 OS: ${platform()}
 node.js: ${nodeVersion}

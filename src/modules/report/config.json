@@ -16,5 +16,17 @@
       "type": "boolean"
     },
     "default": true
+  },
+  "general.style": {
+    "schema": {
+      "type": "string"
+    },
+    "default": "tap"
+  },
+  "general.options": {
+    "schema": {
+      "type": "object"
+    },
+    "default": {}
   }
 }

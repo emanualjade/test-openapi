@@ -17,6 +17,7 @@ const handleBugs = function({ error }) {
 
   const message = getBugMessage({ bugError })
 
+  // `error.errors` is `undefined` with a `bug` error
   return new TestOpenApiError(message, { plugin: 'bug' })
 }
 

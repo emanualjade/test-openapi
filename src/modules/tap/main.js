@@ -13,7 +13,7 @@ module.exports = {
     {
       type: 'start',
       handler: startTap,
-      order: 1600,
+      order: 1700,
     },
     {
       type: 'complete',

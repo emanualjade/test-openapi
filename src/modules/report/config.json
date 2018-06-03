@@ -1,0 +1,20 @@
+{
+  "general": {
+    "schema": {
+      "type": "object"
+    },
+    "default": {}
+  },
+  "general.output": {
+    "schema": {
+      "type": ["boolean", "string"]
+    },
+    "default": true
+  },
+  "general.ordered": {
+    "schema": {
+      "type": "boolean"
+    },
+    "default": true
+  }
+}

@@ -2,26 +2,42 @@
 
 // Add TAP output for each task, as a single assert
 const completeTap = function({
+  task,
   error,
   config: {
     tap: { writer },
   },
 }) {
-  const { ok, directive } = getAssert({ error })
+  const taskA = getTask({ task, error })
+  const assert = getAssert({ task: taskA, error })
 
-  writer.assert({ ok, directive })
+  writer.assert(assert)
 }
 
-const getAssert = function({ error }) {
+const getTask = function({ task, error }) {
+  if (task !== undefined) {
+    return task
+  }
+
+  return error.task
+}
+
+const getAssert = function({ task, error }) {
+  const name = getName({ task })
+
   if (error === undefined) {
-    return { ok: true }
+    return { ok: true, name }
   }
 
   const { skipped } = error
   const skip = skipped === true
   const directive = { skip }
 
-  return { ok: false, directive }
+  return { ok: false, name, directive }
+}
+
+const getName = function({ task: { key } }) {
+  return key
 }
 
 module.exports = {

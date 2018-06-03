@@ -29,6 +29,7 @@
     "ajv": "^6.5.0",
     "chalk": "^2.4.1",
     "cross-fetch": "^2.2.1",
+    "emphasize": "^2.0.0",
     "fast-glob": "^2.2.1",
     "fast-memoize": "^2.4.0",
     "is-glob": "^4.0.0",
@@ -42,6 +43,7 @@
     "ora": "^2.1.0",
     "swagger-parser": "^5.0.0",
     "type-is": "^1.6.16",
+    "underscore.string": "^3.3.4",
     "yargs": "^11.0.0"
   },
   "devDependencies": {

@@ -1,6 +1,9 @@
 'use strict'
 
-const complete = function({ task: { title }, error, options: { spinner } }) {
+const { getErrorMessage } = require('./print')
+
+// Print task errors and update spinner
+const complete = function({ task, error, options: { spinner } }) {
   const failed = error !== undefined
 
   spinner.update({ clear: failed })
@@ -9,7 +12,8 @@ const complete = function({ task: { title }, error, options: { spinner } }) {
     return
   }
 
-  return `${title}\n`
+  const errorMessage = getErrorMessage({ task, error })
+  return errorMessage
 }
 
 module.exports = {

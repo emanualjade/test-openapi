@@ -26,6 +26,11 @@ const TYPES = Object.entries({
   object: isObject,
 })
 
+const isShortcut = function(schema) {
+  return isObject(schema) && Array.isArray(schema.enum) && schema.enum.length === 1
+}
+
 module.exports = {
   getShortcut,
+  isShortcut,
 }

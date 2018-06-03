@@ -9,19 +9,19 @@ const isInvalidFormat = function({ isRandom, value }) {
 
 // Merge `task.random.*: { format: 'invalid' }`
 // I.e. inverse the specification schema
-const mergeInvalidFormat = function({ specValue }) {
+const mergeInvalidFormat = function({ specParamValue }) {
   // If `invalid` but the specification does not define this property, ignore it
-  if (specValue === undefined) {
+  if (specParamValue === undefined) {
     return {}
   }
 
-  const type = addNullType({ specValue })
-  return { not: { ...specValue, type } }
+  const type = addNullType({ specParamValue })
+  return { not: { ...specParamValue, type } }
 }
 
 // When using 'invalid', we want to make sure the value is generated, i.e. it
 // should never be `null`
-const addNullType = function({ specValue: { type = [] } }) {
+const addNullType = function({ specParamValue: { type = [] } }) {
   if (type === 'null') {
     return type
   }

@@ -24,21 +24,24 @@ const mergeSpecParams = function({ call: { params, ...call }, taskKey, config, p
 }
 
 // Merge a `task.call.*` value with the specification value
-const mergeSpecParam = function({ value: specValue, ...specRest }, { value, isRandom, ...rest }) {
-  const valueA = mergeSpecValue({ specValue, value, isRandom })
-  return { ...specRest, ...rest, value: valueA, isRandom: true }
+const mergeSpecParam = function(specParam, param) {
+  const value = mergeSpecValue({ specParam, param })
+  return { ...specParam, ...param, value, isRandom: true }
 }
 
 // Deep merge the JSON schemas
-// Both `specValue` and `value` might be `undefined`
-const mergeSpecValue = function({ specValue, value, isRandom }) {
-  if (isInvalidFormat({ isRandom, value })) {
-    return mergeInvalidFormat({ specValue })
+// Both `specParam.value` and `param.value` might be `undefined`
+// Both might not be a JSON schema
+const mergeSpecValue = function({ specParam, param }) {
+  const specParamValue = applyShortcut(specParam)
+
+  if (isInvalidFormat(param)) {
+    return mergeInvalidFormat({ specParamValue })
   }
 
-  const valueA = applyShortcut({ value, isRandom })
+  const paramValue = applyShortcut(param)
 
-  return deepMerge(specValue, valueA)
+  return deepMerge(specParamValue, paramValue)
 }
 
 // Returned value is always a JSON schema

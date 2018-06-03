@@ -15,7 +15,11 @@ const repeatTask = function({ repeat, runTask }, task, opts, ...args) {
     return runTask(task, opts, ...args)
   }
 
-  const repeatedTasks = new Array(repeat).fill().map(() => runTask(task, opts, ...args))
+  const repeatA = task.repeat || repeat
+
+  const taskA = { ...task, repeat: repeatA }
+
+  const repeatedTasks = new Array(repeatA).fill().map(() => runTask(taskA, opts, ...args))
   return Promise.all(repeatedTasks)
 }
 

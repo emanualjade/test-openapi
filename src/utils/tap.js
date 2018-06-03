@@ -35,59 +35,49 @@ class Tap {
     return this._write('TAP version 13')
   }
 
-  plan(integer, directive) {
-    if (!Number.isInteger(integer)) {
-      throw new Error(`tap.plan() first argument must be an integer not ${integer}`)
-    }
+  plan(count, directive) {
+    checkArgument('plan', count, 'integer')
 
-    const planString = getPlan({ integer })
-    const planStringA = addPlanDirective({ planString, integer, directive })
+    const planString = getPlan({ count })
+    const planStringA = addPlanDirective({ planString, count, directive })
     return this._write(planStringA)
   }
 
   test(testName) {
-    if (typeof testName !== 'string') {
-      throw new Error(`tap.test() argument must be a string not ${testName}`)
-    }
+    checkArgument('test', testName, 'string')
 
     return this._write(`# ${testName}`)
   }
 
   comment(comment) {
-    if (typeof comment !== 'string') {
-      throw new Error(`tap.comment() argument must be a string not ${comment}`)
-    }
+    checkArgument('comment', comment, 'string')
 
     return this._write(`# ${comment}`)
   }
 }
 
-const getPlan = function({ integer }) {
-  if (integer === 0) {
+const getPlan = function({ count }) {
+  if (count === 0) {
     return '0..0'
   }
 
-  return `1..${String(integer)}`
+  return `1..${String(count)}`
 }
 
-const addPlanDirective = function({ planString, integer, directive }) {
-  const directiveA = getDirective({ directive, integer })
+const addPlanDirective = function({ planString, count, directive }) {
+  const directiveA = getDirective({ directive, count })
 
   if (directiveA === undefined) {
     return planString
   }
 
-  if (!isObject(directiveA)) {
-    throw new Error(`tap.plan() second argument must be an object not ${directiveA}`)
-  }
+  checkArgument('plan', directiveA, 'object')
 
   const directiveNames = Object.keys(directiveA)
   const [directiveName] = directiveNames
 
   if (directiveNames.length !== 1 || !DIRECTIVES.includes(directiveName.toLowerCase())) {
-    throw new Error(
-      `tap.plan() second argument must be an object with a single 'todo' or 'skip' property`,
-    )
+    throw new Error(`tap.plan() argument must be an object with a single 'todo' or 'skip' property`)
   }
 
   const planStringA = `${planString} # ${directiveName.toUpperCase()}`
@@ -98,9 +88,9 @@ const addPlanDirective = function({ planString, integer, directive }) {
   return planStringB
 }
 
-const getDirective = function({ directive, integer }) {
+const getDirective = function({ directive, count }) {
   // If no tasks are defined, considered them as skipped
-  if (directive === undefined && integer === 0) {
+  if (directive === undefined && count === 0) {
     return { skip: true }
   }
 
@@ -114,11 +104,28 @@ const addPlanComment = function({ planString, comment }) {
     return planString
   }
 
-  if (typeof comment !== 'string') {
-    throw new Error(`tap.plan() second argument value must be true or a string not ${comment}`)
-  }
+  checkArgument('plan', comment, 'string')
 
   return `${planString} ${comment}`
+}
+
+const checkArgument = function(name, value, type) {
+  const isValid = TYPES[type](value)
+  if (isValid) {
+    return
+  }
+
+  throw new Error(`tap.${name}() argument must be ${type} not ${value}`)
+}
+
+const TYPES = {
+  string(value) {
+    return typeof value === 'string'
+  },
+
+  integer: Number.isInteger,
+
+  object: isObject,
 }
 
 module.exports = {

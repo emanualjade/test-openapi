@@ -15,12 +15,12 @@ class Tap {
     Object.assign(this, { output })
   }
 
-  _write(string) {
+  _write(string, { newlines = '\n\n' } = {}) {
     if (!this.output) {
       return string
     }
 
-    this.output.write(`${string}\n\n`)
+    this.output.write(`${string}${newlines}`)
   }
 
   close() {
@@ -66,7 +66,7 @@ class Tap {
 # skip: ${skip}`
     const endCommentA = addEndOk({ endComment, fail })
 
-    return this._write(endCommentA)
+    return this._write(endCommentA, { newlines: '\n' })
   }
 }
 

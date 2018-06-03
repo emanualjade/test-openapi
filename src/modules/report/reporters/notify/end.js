@@ -3,16 +3,7 @@
 const notifier = require('node-notifier')
 
 // Show notification at end of run if `config.report.notify: true`
-const notify = function({
-  config: {
-    report: { notify },
-  },
-  tasks,
-}) {
-  if (!notify) {
-    return
-  }
-
+const end = function({ tasks }) {
   const { count, failed, passed } = getCounts({ tasks })
   const opts = getOpts({ failed })
   const optsA = addMessage({ count, failed, passed, opts })
@@ -55,5 +46,5 @@ const addMessage = function({ count, failed, passed, opts, opts: { message } }) 
 }
 
 module.exports = {
-  notify,
+  end,
 }

@@ -3,7 +3,7 @@
 const Colorize = require('tap-colorize')
 
 // TAP reporter
-const report = function({ colors = true }, stream) {
+const report = function({ colors = false }, stream) {
   if (colors === false) {
     return
   }

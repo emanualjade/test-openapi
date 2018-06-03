@@ -21,7 +21,7 @@
     "schema": {
       "type": "string"
     },
-    "default": "object"
+    "default": "tap"
   },
   "general.options": {
     "schema": {

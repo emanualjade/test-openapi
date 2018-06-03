@@ -2,8 +2,8 @@
 
 const { mapValues } = require('lodash')
 
-const { TestOpenApiError } = require('../../../errors')
-const { validateIsSchema, normalizeShortcut } = require('../../../utils')
+const { TestOpenApiError } = require('../../errors')
+const { validateIsSchema, normalizeShortcut } = require('../../utils')
 
 // Normalize `task.validate.*`
 const normalizeValidate = function({ tasks }) {

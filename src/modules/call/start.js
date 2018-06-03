@@ -1,6 +1,6 @@
 'use strict'
 
-const { keyToLocation } = require('../../../utils')
+const { keyToLocation } = require('../../utils')
 
 // Set `task.call.params`, a normalized version of `task.call.*` object as an array
 // of `{ name, location, required, value }`

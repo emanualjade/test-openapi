@@ -1,7 +1,7 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
-const { validateIsSchema, normalizeShortcut, locationToKey } = require('../../../utils')
+const { TestOpenApiError } = require('../../errors')
+const { validateIsSchema, normalizeShortcut, locationToKey } = require('../../utils')
 
 // Normalize and validate `task.call.*` JSON schemas
 const normalizeGenerate = function({ tasks }) {

@@ -1,6 +1,6 @@
 'use strict'
 
-const { Spinner } = require('./spinner')
+const { Spinner } = require('../../utils')
 
 // Add a CLI spinner updated with each complete task
 const options = function({ config: { tasks } }) {

@@ -10,5 +10,11 @@
       "type": ["boolean", "string"]
     },
     "default": true
+  },
+  "general.ordered": {
+    "schema": {
+      "type": "boolean"
+    },
+    "default": true
   }
 }

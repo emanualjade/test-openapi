@@ -5,6 +5,7 @@ const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP test, i.e. group of asserts
+// TODO: make it work with `keys` (ordered output)
 const test = function(testName, asserts = []) {
   checkArgument(testName, 'string')
 

@@ -1,6 +1,5 @@
 'use strict'
 
-const { getAssertName } = require('./name')
 const { getErrorProps } = require('./error_props')
 
 // Add TAP output for each task, as a single assert
@@ -16,17 +15,38 @@ const completeTap = function({
 }
 
 const getAssert = function({ task, error }) {
+  const taskA = getTask({ task, error })
+
+  const { key } = taskA
   const ok = error === undefined
-  const name = getAssertName({ task, error })
+  const name = getAssertName({ task: taskA })
 
   if (ok) {
-    return { ok, name }
+    return { key, ok, name }
   }
 
   const errorProps = getErrorProps({ error })
   const directive = getDirective({ error })
 
-  return { ok, name, error: errorProps, directive }
+  return { key, ok, name, error: errorProps, directive }
+}
+
+const getTask = function({ task, error }) {
+  if (task !== undefined) {
+    return task
+  }
+
+  return error.task
+}
+
+// Get assert name using `task.key` and `task.titles`
+const getAssertName = function({ task: { key, titles } }) {
+  if (titles.length === 0) {
+    return key
+  }
+
+  const titlesA = titles.join(' ')
+  return `${key} - ${titlesA}`
 }
 
 const getDirective = function({ error: { skipped } }) {

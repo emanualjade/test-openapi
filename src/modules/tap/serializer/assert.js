@@ -1,17 +1,17 @@
 'use strict'
 
+const { writeAssert } = require('./keys')
 const { getDirective } = require('./directive')
 const { getErrorProps } = require('./error_props')
-const { write } = require('./write')
 const { checkArgument } = require('./check')
 
 // TAP assert
 const assert = function(assertOpts = {}) {
   const assertString = getAssert(this, assertOpts)
-  return write(this, assertString)
+  return writeAssert(this, assertString, assertOpts.key)
 }
 
-const getAssert = function(tap, { ok, name = '', directive = {}, error }) {
+const getAssert = function(tap, { key, ok, name = '', directive = {}, error }) {
   checkArgument(ok, 'boolean')
   checkArgument(name, 'string')
 
@@ -19,19 +19,27 @@ const getAssert = function(tap, { ok, name = '', directive = {}, error }) {
 
   const okString = getOk({ ok })
 
+  const index = getIndex({ tap, key })
+
   const nameString = getName({ name })
 
   const directiveString = getDirective({ directive })
 
   const errorProps = getErrorProps({ ok, error })
 
-  return `${okString} ${tap.index}${nameString}${directiveString}${errorProps}`
+  return `${okString} ${index}${nameString}${directiveString}${errorProps}`
+}
+
+const getIndex = function({ tap, tap: { keys }, key }) {
+  if (keys !== undefined) {
+    return keys.indexOf(key) + 1
+  }
+
+  return ++tap.index
 }
 
 // Update index|tests|pass|skip|fail counters
 const updateState = function(tap, { ok, directive }) {
-  tap.index++
-
   const category = getCategory({ ok, directive })
   tap[category]++
 }

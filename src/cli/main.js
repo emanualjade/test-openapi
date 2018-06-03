@@ -18,12 +18,14 @@ const runCli = async function() {
 
 // If an error is thrown, print error's description, then exit with exit code 1
 const runCliHandler = function({ plugin, message }) {
-  if (plugin === 'bug') {
+  if (CORE_PLUGINS.includes(plugin)) {
     console.error(message)
   }
 
   exit(1)
 }
+
+const CORE_PLUGINS = ['bug', 'config']
 
 const eRunCli = addErrorHandler(runCli, runCliHandler)
 

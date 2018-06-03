@@ -2,7 +2,7 @@
 
 const { flatten, uniqBy } = require('lodash')
 
-const { TestOpenApiError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../../errors')
 
 const IN_TO_LOCATION = require('./in_to_location')
 const REQUIRED = require('./required')

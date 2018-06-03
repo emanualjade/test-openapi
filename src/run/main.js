@@ -76,22 +76,21 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `call` (1100): normalize `task.call.*` object to an array
 //   - `random` (1200): normalize and validate `task.random.*` JSON schemas
 //   - `validate` (1300): normalize `task.validate.*`
-//   - `spec` (1400): parse, validate and normalize an OpenAPI specification
+//   - `spec` (1400): parse, validate, normalize an OpenAPI specification
+//     then add it to `task.random|validate.*`
 //   - `dry` (1500): `config.dry: true` makes everything stop just before the
 //     first task run
 //   - `report` (1600): start reporting
 //   - `repeat` (1700): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
 //   - `deps` (1000): replace all `deps`, i.e. references to other tasks
-//   - `spec` (1100): merge OpenAPI specification to `task.call.*`
-//   - `random` (1200): generates random values based on `task.random.*`
+//   - `random` (1100): generates random values based on `task.random.*`
 //     JSON schemas
-//   - `format` (1300): stringify request parameters
-//   - `url` (1400): build request URL from request parameters
-//   - `call` (1500): fire actual HTTP call
-//   - `format` (1600): parse response
-//   - `spec` (1700): merge OpenAPI specification to `task.validate.*`
-//   - `validate` (1800): validate response against `task.validate.*` JSON schemas
+//   - `format` (1200): stringify request parameters
+//   - `url` (1300): build request URL from request parameters
+//   - `call` (1400): fire actual HTTP call
+//   - `format` (1500): parse response
+//   - `validate` (1600): validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
 //   - `report` (1000): reporting for current task
 // `end`, i.e. after all tasks:

@@ -2,7 +2,7 @@
 
 const { omit } = require('lodash')
 
-const { mergeParams, isObject } = require('../../../utils')
+const { mergeParams, isObject } = require('../../../../utils')
 
 const REQUIRED = require('./required')
 const IN_TO_LOCATION = require('./in_to_location')

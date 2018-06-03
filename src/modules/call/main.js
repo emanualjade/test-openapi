@@ -24,7 +24,7 @@ module.exports = {
     {
       type: 'task',
       handler: fireHttpCall,
-      order: 1500,
+      order: 1400,
     },
   ],
 }

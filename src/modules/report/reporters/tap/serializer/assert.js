@@ -6,7 +6,7 @@ const { checkArgument } = require('./check')
 
 // TAP assert
 const assert = function({ ok, name = '', directive = {}, error }) {
-  const index = updateState(this, { ok, directive })
+  const index = updateState.call(this, { ok, directive })
 
   const okString = getOk({ ok })
 
@@ -20,11 +20,11 @@ const assert = function({ ok, name = '', directive = {}, error }) {
 }
 
 // Update index|tests|pass|skip|fail counters
-const updateState = function(tap, { ok, directive }) {
+const updateState = function({ ok, directive }) {
   const category = getCategory({ ok, directive })
-  tap[category]++
+  this[category]++
 
-  return ++tap.index
+  return ++this.index
 }
 
 const getCategory = function({ ok, directive: { skip } }) {

@@ -10,7 +10,7 @@ const start = function() {
   const { count } = this
   const planString = plan({ count })
 
-  return `${versionString}${planString}`
+  return this.colors.gray(`${versionString}${planString}`)
 }
 
 module.exports = {

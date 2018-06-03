@@ -16,7 +16,8 @@ const assert = function({ ok, name = '', directive = {}, error }) {
 
   const errorProps = getErrorProps({ ok, error })
 
-  return `${okString} ${index}${nameString}${directiveString}${errorProps}\n\n`
+  const color = COLORS[ok]
+  return this.colors[color](`${okString} ${index}${nameString}${directiveString}${errorProps}\n\n`)
 }
 
 // Update index|tests|pass|skip|fail counters
@@ -57,6 +58,11 @@ const getName = function({ name }) {
   }
 
   return ` ${name}`
+}
+
+const COLORS = {
+  true: 'green',
+  false: 'red',
 }
 
 module.exports = {

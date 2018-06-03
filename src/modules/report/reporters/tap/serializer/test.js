@@ -8,13 +8,26 @@ const { checkArgument } = require('./check')
 const test = function(testName, asserts = []) {
   checkArgument(testName, 'string')
 
-  const testHeader = `# ${testName}`
+  const testHeader = getTestHeader.call(this, { testName, asserts })
 
   const assertsString = asserts.map(assertOpts => assert.call(this, assertOpts))
 
   const testString = [testHeader, ...assertsString].join('\n\n')
+  return testString
+}
 
-  return `${testString}\n\n`
+const getTestHeader = function({ testName, asserts }) {
+  const color = getColor({ asserts })
+  return this.colors[color](`# ${testName}`)
+}
+
+const getColor = function({ asserts }) {
+  const failed = asserts.some(({ ok }) => !ok)
+  if (failed) {
+    return 'red'
+  }
+
+  return 'green'
 }
 
 module.exports = {

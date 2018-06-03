@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "ajv": "^6.5.0",
+    "chalk": "^2.4.1",
     "cross-fetch": "^2.2.1",
     "fast-glob": "^2.2.1",
     "fast-memoize": "^2.4.0",

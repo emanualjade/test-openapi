@@ -7,7 +7,7 @@ const normalizeTasks = function({ tasks }) {
 }
 
 const normalizeTask = function([key, task]) {
-  return { ...task, originalTask: task, key, titles: [] }
+  return { ...task, originalTask: task, key }
 }
 
 module.exports = {

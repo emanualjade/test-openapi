@@ -3,11 +3,9 @@
 // Fire each `plugin.returnValue()` if available to transform `task` return
 // value for each plugin
 const getTaskReturn = function({ task, task: { key }, originalTask, plugins }) {
-  const title = getTitle({ task })
-
   const taskReturns = plugins.map(plugin => getReturnObj({ task, originalTask, plugin }))
 
-  return Object.assign({ key, title }, ...taskReturns)
+  return Object.assign({ key }, ...taskReturns)
 }
 
 const getReturnObj = function({ task, originalTask, plugin: { returnValue, name } }) {
@@ -30,16 +28,6 @@ const getReturnObj = function({ task, originalTask, plugin: { returnValue, name 
   if (originalTask[name] !== undefined) {
     return { [name]: originalTask[name] }
   }
-}
-
-// Get task title, i.e. full name taken from `task.titles` which is filled in by plugins
-const getTitle = function({ task: { key, titles } }) {
-  if (titles.length === 0) {
-    return key
-  }
-
-  const titlesA = titles.join(' ')
-  return `${key} - ${titlesA}`
 }
 
 module.exports = {

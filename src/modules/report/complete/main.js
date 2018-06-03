@@ -1,6 +1,8 @@
 'use strict'
 
-const { callReporters } = require('./call')
+const { callReporters } = require('../call')
+
+const { addTitle } = require('./title')
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
@@ -13,12 +15,15 @@ const complete = async function(input) {
       report,
       report: { taskKeys, inputs, index },
     },
+    plugins,
   } = input
+
+  const inputA = addTitle({ input, plugins })
 
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks
-  inputs[key] = input
+  inputs[key] = inputA
 
   // Only use keys not reported yet
   const keys = taskKeys.slice(index)

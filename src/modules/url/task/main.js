@@ -14,16 +14,12 @@ const addFullUrl = function({
     request,
     request: { raw: rawRequest },
   },
-  titles,
 }) {
   const method = getMethod({ rawRequest })
-  const { shortUrl, url } = getFullUrl({ rawRequest })
-  const rawRequestA = { ...rawRequest, url, method }
-  const requestA = { ...request, raw: rawRequestA }
+  const url = getFullUrl({ rawRequest })
+  const requestA = { ...request, raw: { ...rawRequest, url, method } }
 
-  const titlesA = addTitle({ method, shortUrl, titles })
-
-  return { call: { ...call, request: requestA }, titles: titlesA }
+  return { call: { ...call, request: requestA } }
 }
 
 const getFullUrl = function({ rawRequest }) {
@@ -32,13 +28,7 @@ const getFullUrl = function({ rawRequest }) {
   const urlB = addUrlParams({ url: urlA, rawRequest })
   const urlC = normalizeUrl({ url: urlB })
   const urlD = addQueryParams({ url: urlC, rawRequest })
-  return { shortUrl: urlC, url: urlD }
-}
-
-// Add HTTP method and URL in reporting
-const addTitle = function({ method, shortUrl, titles }) {
-  const title = `${method.toUpperCase()} ${shortUrl}`
-  return [...titles, title]
+  return urlD
 }
 
 module.exports = {

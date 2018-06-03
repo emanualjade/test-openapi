@@ -4,12 +4,16 @@ const { normalizeParams } = require('./start')
 const { fireHttpCall } = require('./task')
 const { config } = require('./config.js')
 const { returnValue } = require('./return')
+const { title } = require('./report')
 
 module.exports = {
   name: 'call',
   dependencies: ['format', 'url'],
   config,
   returnValue,
+  report: {
+    title,
+  },
   handlers: [
     {
       type: 'start',

@@ -8,8 +8,9 @@ const complete = function({ task, error, options: { tap } }) {
   return tap.assert(assert)
 }
 
-const getAssert = function({ task: { title: name }, error }) {
+const getAssert = function({ task: { key, title }, error }) {
   const ok = error === undefined
+  const name = `${key} - ${title}`
 
   if (ok) {
     return { ok, name }

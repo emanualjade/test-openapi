@@ -31,21 +31,21 @@ const runPluginHandler = function(error, { taskKey, ...task }) {
 
 // Task return value, returned to users and used by depReqs
 const mergeReturnValue = function({ task, originalTask }) {
-  return mapValues(task, (newTask, prop) => shallowMerge(originalTask[prop], newTask))
+  return mapValues(task, (newTask, prop) => shallowMerge(newTask, originalTask[prop]))
 }
 
 // Do a shallow merge on each plugin value
-// The originalTask properties has less priority
-const shallowMerge = function(originalTask, newTask) {
-  if (newTask === undefined) {
-    return originalTask
-  }
-
-  if (!isObject(originalTask) || !isObject(newTask)) {
+// The originalTask properties has more priority
+const shallowMerge = function(newTask, originalTask) {
+  if (originalTask === undefined) {
     return newTask
   }
 
-  return { ...originalTask, ...newTask }
+  if (!isObject(newTask) || !isObject(originalTask)) {
+    return originalTask
+  }
+
+  return { ...newTask, ...originalTask }
 }
 
 module.exports = {

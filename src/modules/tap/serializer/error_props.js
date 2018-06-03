@@ -11,10 +11,8 @@ const getErrorProps = function({ ok, error }) {
 
   const errorA = getError(error)
 
-  const errorProps = yamlDump(errorA, YAML_OPTS)
-  const errorPropsA = indent({ errorProps })
-  const errorPropsB = `\n  ---${errorPropsA}...`
-  return errorPropsB
+  const errorProps = serializeErrorProps({ error: errorA })
+  return errorProps
 }
 
 const getError = function({ message, name, stack, ...error }) {
@@ -36,6 +34,14 @@ const getAt = function({ stack }) {
 
 // Remove leading '  at' from stack trace
 const AT_REGEXP = /^.*at /
+
+// Serialize error to indented YAML
+const serializeErrorProps = function({ error }) {
+  const errorProps = yamlDump(error, YAML_OPTS)
+  const errorPropsA = indent({ errorProps })
+  const errorPropsB = `\n  ---${errorPropsA}...`
+  return errorPropsB
+}
 
 const YAML_OPTS = {
   schema: DEFAULT_FULL_SCHEMA,

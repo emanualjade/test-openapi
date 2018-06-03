@@ -1,6 +1,6 @@
 'use strict'
 
-const { tap } = require('../../../utils')
+const { Tap } = require('../../../utils')
 
 const { getOutput } = require('./output')
 
@@ -8,9 +8,11 @@ const { getOutput } = require('./output')
 const startTap = async function({ tap: tapConfig, tasks }) {
   const output = await getOutput({ tapConfig })
 
-  tap.version({ output })
+  const tap = new Tap({ output })
 
-  tap.plan(tasks.length, { output })
+  tap.version()
+
+  tap.plan(tasks.length)
 }
 
 module.exports = {

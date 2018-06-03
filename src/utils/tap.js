@@ -1,18 +1,34 @@
 'use strict'
 
 const { stdout } = require('process')
+const { Stream } = require('stream')
 
-const version = function(opts) {
-  write('TAP version 13', opts)
-}
+// TAP serializer
+class Tap {
+  constructor({ output = stdout } = {}) {
+    if (!(output instanceof Stream)) {
+      throw new Error('new Tap() options.output must be a stream')
+    }
 
-const plan = function(integer, opts) {
-  if (!Number.isInteger(integer)) {
-    throw new Error(`tap.plan() argument must be an integer, not ${integer}`)
+    Object.assign(this, { output })
   }
 
-  const planString = getPlan({ integer })
-  write(planString, opts)
+  _write(string) {
+    this.output.write(`${string}\n`)
+  }
+
+  version() {
+    this._write('TAP version 13')
+  }
+
+  plan(integer) {
+    if (!Number.isInteger(integer)) {
+      throw new Error(`tap.plan() argument must be an integer, not ${integer}`)
+    }
+
+    const planString = getPlan({ integer })
+    this._write(planString)
+  }
 }
 
 const getPlan = function({ integer }) {
@@ -20,16 +36,9 @@ const getPlan = function({ integer }) {
     return '0..0'
   }
 
-  return `1..${integer}`
-}
-
-const write = function(string, { output = stdout } = {}) {
-  output.write(`${string}\n`)
+  return `1..${String(integer)}`
 }
 
 module.exports = {
-  tap: {
-    version,
-    plan,
-  },
+  Tap,
 }

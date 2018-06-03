@@ -8,9 +8,9 @@ const { getSpecOperation, getSpecResponse } = require('./operation')
 const { isInvalidFormat, mergeInvalidFormat } = require('./invalid')
 
 // Merge OpenAPI specification to `task.call.*`
-const mergeSpecParams = function({ call: { params, ...call }, key, config, plugins }) {
+const mergeSpecParams = function({ call: { params, ...call }, key, config, pluginNames }) {
   // Optional dependency
-  if (!plugins.includes('random')) {
+  if (!pluginNames.includes('random')) {
     return
   }
 
@@ -61,10 +61,10 @@ const mergeSpecValidate = function({
     response: { raw: rawResponse },
   },
   config,
-  plugins,
+  pluginNames,
 }) {
   // Optional dependency
-  if (!plugins.includes('validate')) {
+  if (!pluginNames.includes('validate')) {
     return
   }
 

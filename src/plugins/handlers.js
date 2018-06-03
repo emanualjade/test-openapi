@@ -15,9 +15,8 @@ const runHandlers = function(input, plugins, type, readOnlyArgs, errorHandler) {
 }
 
 const getHandlers = function({ plugins, type, errorHandler, readOnlyArgs }) {
-  const pluginNames = plugins.map(({ name }) => name)
   const handlers = plugins.map(plugin =>
-    mapHandlers({ plugin, type, errorHandler, readOnlyArgs, pluginNames }),
+    mapHandlers({ plugin, type, errorHandler, readOnlyArgs, plugins }),
   )
   const handlersA = [].concat(...handlers)
 
@@ -32,11 +31,11 @@ const mapHandlers = function({
   type,
   errorHandler,
   readOnlyArgs,
-  pluginNames,
+  plugins,
 }) {
   return handlers
     .filter(({ type: typeA }) => typeA === type)
-    .map(handler => mapHandler({ plugin, handler, errorHandler, readOnlyArgs, pluginNames }))
+    .map(handler => mapHandler({ plugin, handler, errorHandler, readOnlyArgs, plugins }))
 }
 
 const mapHandler = function({
@@ -44,16 +43,17 @@ const mapHandler = function({
   handler: { handler, order },
   errorHandler,
   readOnlyArgs,
-  pluginNames,
+  plugins,
 }) {
-  const handlerA = callHandler.bind(null, { handler, readOnlyArgs, pluginNames })
+  const handlerA = callHandler.bind(null, { handler, readOnlyArgs, plugins })
   const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, name))
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return { handler: handlerC, order }
 }
 
-const callHandler = function({ handler, readOnlyArgs, pluginNames }, input, ...args) {
-  const inputA = { ...input, ...readOnlyArgs, plugins: pluginNames }
+const callHandler = function({ handler, readOnlyArgs, plugins }, input, ...args) {
+  const pluginNames = plugins.map(({ name }) => name)
+  const inputA = { ...input, ...readOnlyArgs, pluginNames, plugins }
   const maybePromise = handler(inputA, ...args)
   return maybePromise
 }

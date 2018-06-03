@@ -36,8 +36,13 @@ const getAssert = function({ task, error }) {
   return { ok: false, name, directive }
 }
 
-const getName = function({ task: { key } }) {
-  return key
+const getName = function({ task: { key, titles } }) {
+  if (titles.length === 0) {
+    return key
+  }
+
+  const titlesA = titles.join(' ')
+  return `${key} - ${titlesA}`
 }
 
 module.exports = {

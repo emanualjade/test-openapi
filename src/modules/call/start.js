@@ -10,7 +10,7 @@ const normalizeParams = function({ tasks, call: { server } }) {
   return { tasks: tasksA }
 }
 
-const normalizeTaskParams = function({ task: { call = {}, ...task }, server }) {
+const normalizeTaskParams = function({ task: { call, ...task }, server }) {
   const callA = addServer({ call, server })
   const params = Object.entries(callA).map(normalizeParam)
   return { ...task, call: { ...call, params } }

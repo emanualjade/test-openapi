@@ -13,6 +13,7 @@ const mergeSpecParams = function({ call: { params, ...call }, key, config, plugi
   }
 
   const specOperation = getSpecOperation({ key, config })
+  // Task does not start with an `operationId`
   if (specOperation === undefined) {
     return
   }

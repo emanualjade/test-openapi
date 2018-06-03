@@ -21,6 +21,8 @@ const mergeSpecValidate = function({
   }
 
   const specResponse = getSpecResponse({ key, config, rawResponse })
+  // Task does not start with an `operationId` or this status code is not defined
+  // in the specification
   if (specResponse === undefined) {
     return
   }

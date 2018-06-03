@@ -18,8 +18,8 @@ const getErrorProps = function({ error }) {
 // List of possible error properties
 const ERROR_PROPS = [
   { name: 'Property', value: 'property' },
-  { name: 'Expected', value: 'expected' },
-  { name: 'Value', value: 'actual' },
+  { name: 'Expected value', value: 'expected' },
+  { name: 'Actual value', value: 'actual' },
   { name: 'JSON schema', value: 'schema', exclude: isShortcut, highlighted: true },
   ...callErrorProps,
 ]

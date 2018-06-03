@@ -30,7 +30,7 @@ const normalizeRandomParam = function({ key, value, task }) {
 
 // Validate random parameters are valid JSON schema v4
 // We cannot use later versions because json-schema-faker does not support them
-const validateJsonSchema = function({ key, value, task: { taskKey } }) {
+const validateJsonSchema = function({ key, value, task: { key: taskKey } }) {
   const { error } = validateIsSchema({ value })
   if (error === undefined) {
     return
@@ -39,10 +39,7 @@ const validateJsonSchema = function({ key, value, task: { taskKey } }) {
   const property = `random.${key}`
   throw new TestOpenApiError(
     `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
-    {
-      property,
-      taskKey,
-    },
+    { property, key: taskKey },
   )
 }
 

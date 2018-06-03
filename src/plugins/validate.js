@@ -62,22 +62,22 @@ const validateProp = function({ taskOrConfig, path, schema, name }) {
     return
   }
 
-  const { taskKey, taskMessage } = getTaskProps({ task: taskOrConfig, name })
+  const { key, taskMessage } = getTaskProps({ task: taskOrConfig, name })
 
   throw new TestOpenApiError(`Configuration ${taskMessage}is invalid: ${error}`, {
     property: path,
-    taskKey,
+    key,
     schema,
     actual: value,
   })
 }
 
-const getTaskProps = function({ task: { taskKey }, name }) {
+const getTaskProps = function({ task: { key }, name }) {
   if (name !== 'task') {
     return { taskMessage: '' }
   }
 
-  return { taskKey, taskMessage: `for task '${taskKey}' ` }
+  return { key, taskMessage: `for task '${key}' ` }
 }
 
 module.exports = {

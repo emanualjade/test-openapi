@@ -14,12 +14,12 @@ const mergeGlobTasks = function({ tasks }) {
 
 const splitTasks = function({ tasks }) {
   const globTasks = tasks.filter(isGlobTask)
-  const nonGlobTasks = tasks.filter(({ taskKey }) => !isGlobTask({ taskKey }))
+  const nonGlobTasks = tasks.filter(({ key }) => !isGlobTask({ key }))
   return { globTasks, nonGlobTasks }
 }
 
-const isGlobTask = function({ taskKey }) {
-  return isGlob(taskKey)
+const isGlobTask = function({ key }) {
+  return isGlob(key)
 }
 
 const mergeGlob = function({ task, globTasks }) {
@@ -31,8 +31,8 @@ const mergeGlob = function({ task, globTasks }) {
   return merge({}, ...globTasksA, task)
 }
 
-const findGlobTasks = function({ task: { taskKey }, globTasks }) {
-  return globTasks.filter(({ taskKey: taskPattern }) => isMatch(taskKey, taskPattern))
+const findGlobTasks = function({ task: { key }, globTasks }) {
+  return globTasks.filter(({ key: taskPattern }) => isMatch(key, taskPattern))
 }
 
 module.exports = {

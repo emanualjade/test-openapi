@@ -31,22 +31,22 @@ const validateEmptyTasks = function({ tasks }) {
 
 // Tasks are constrained to JSON
 // This also validates against circular references
-const validateJson = function([taskKey, task]) {
-  const copy = eCloneTask({ task, taskKey })
+const validateJson = function([key, task]) {
+  const copy = eCloneTask({ task, key })
   // TODO: replace with util.isDeepStrictEqual() when we upgrade Node.js
   if (isEqual(task, copy)) {
     return
   }
 
-  throw new TestOpenApiError(`Task '${taskKey}' is not valid JSON`, { taskKey })
+  throw new TestOpenApiError(`Task '${key}' is not valid JSON`, { key })
 }
 
 const cloneTask = function({ task }) {
   return JSON.parse(JSON.stringify(task))
 }
 
-const cloneTaskHandler = function({ message }, { taskKey }) {
-  throw new TestOpenApiError(`Task '${taskKey}' is not valid JSON: ${message}`, { taskKey })
+const cloneTaskHandler = function({ message }, { key }) {
+  throw new TestOpenApiError(`Task '${key}' is not valid JSON: ${message}`, { key })
 }
 
 const eCloneTask = addErrorHandler(cloneTask, cloneTaskHandler)

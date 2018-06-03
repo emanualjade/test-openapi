@@ -4,7 +4,7 @@ const { omit } = require('lodash')
 
 const { crawl } = require('./crawl')
 
-// Find all `deps`, i.e. references to other tasks as `taskKey.*`
+// Find all `deps`, i.e. references to other tasks as `KEY.*`
 const findRefs = function({ task, tasks }) {
   const cleanTask = omit(task, CLEAN_PROPERTIES)
   const nodes = crawl(cleanTask)
@@ -14,10 +14,10 @@ const findRefs = function({ task, tasks }) {
 }
 
 // Do not crawl some `task.*` properties for `deps`
-const CLEAN_PROPERTIES = ['taskKey', 'plugins']
+const CLEAN_PROPERTIES = ['key', 'plugins']
 
 // Return each `dep` as an object with:
-//   depKey: 'taskKey'
+//   depKey: 'key'
 //   depPath: 'call.request|response|...'
 //   path: 'call.request|response...'
 const getRef = function({ node: { value, path }, tasks }) {
@@ -36,7 +36,7 @@ const getRef = function({ node: { value, path }, tasks }) {
 }
 
 const getDepKey = function({ tasks, value }) {
-  return tasks.map(({ taskKey }) => taskKey).find(taskKey => value.startsWith(`${taskKey}.`))
+  return tasks.map(({ key }) => key).find(key => value.startsWith(`${key}.`))
 }
 
 // Converts `a.b[0].c` to `a.b.0.c`

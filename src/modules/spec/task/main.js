@@ -8,13 +8,13 @@ const { getSpecOperation, getSpecResponse } = require('./operation')
 const { isInvalidFormat, mergeInvalidFormat } = require('./invalid')
 
 // Merge OpenAPI specification to `task.call.*`
-const mergeSpecParams = function({ call: { params, ...call }, taskKey, config, plugins }) {
+const mergeSpecParams = function({ call: { params, ...call }, key, config, plugins }) {
   // Optional dependency
   if (!plugins.includes('random')) {
     return
   }
 
-  const specOperation = getSpecOperation({ taskKey, config })
+  const specOperation = getSpecOperation({ key, config })
   if (specOperation === undefined) {
     return
   }
@@ -55,7 +55,7 @@ const applyShortcut = function({ value, isRandom }) {
 
 // Merge OpenAPI specification to `task.validate.*`
 const mergeSpecValidate = function({
-  taskKey,
+  key,
   validate: { status, headers, body },
   call: {
     response: { raw: rawResponse },
@@ -68,7 +68,7 @@ const mergeSpecValidate = function({
     return
   }
 
-  const specResponse = getSpecResponse({ taskKey, config, rawResponse })
+  const specResponse = getSpecResponse({ key, config, rawResponse })
   if (specResponse === undefined) {
     return
   }

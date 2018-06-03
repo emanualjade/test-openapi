@@ -6,7 +6,7 @@ const { TestOpenApiError } = require('../../../errors')
 // A new stack is created for each task
 const checkStack = function({
   depKey,
-  task: { taskKey, deps: { stack = [taskKey], stackPath } = {} },
+  task: { key, deps: { stack = [key], stackPath } = {} },
   refs,
 }) {
   const newStack = [...stack, depKey]

@@ -1,21 +1,19 @@
 'use strict'
 
 // Find the operation related to a specific task, and add it
-// Does so by checking task key which should be `OperationId.taskKey`
-const getSpecOperation = function({ taskKey, config: { spec } }) {
+// Does so by checking task key which should be `OperationId.key`
+const getSpecOperation = function({ key, config: { spec } }) {
   if (spec === undefined) {
     return
   }
 
-  return spec.operations.find(
-    ({ operationId }) => operationId && taskKey.startsWith(`${operationId}.`),
-  )
+  return spec.operations.find(({ operationId }) => operationId && key.startsWith(`${operationId}.`))
 }
 
 // Find the specification response matching both the current operation and
 // the received status code
-const getSpecResponse = function({ taskKey, config, rawResponse: { status } }) {
-  const operation = getSpecOperation({ taskKey, config })
+const getSpecResponse = function({ key, config, rawResponse: { status } }) {
+  const operation = getSpecOperation({ key, config })
   if (operation === undefined) {
     return
   }

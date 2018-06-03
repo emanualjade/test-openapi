@@ -47,7 +47,7 @@ const cleanUsedPlugins = function({ usedPlugins }) {
 }
 
 // Those properties are not plugin-related
-const CORE_PROPS = ['tasks', 'originalTask', 'taskKey']
+const CORE_PROPS = ['tasks', 'originalTask', 'key']
 
 module.exports = {
   validateMissingPlugins,

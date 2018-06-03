@@ -49,7 +49,7 @@ const validateJsonSchemas = function({ task, validate }) {
   Object.entries(validate).forEach(([prop, value]) => validateJsonSchema({ task, prop, value }))
 }
 
-const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
+const validateJsonSchema = function({ task: { key }, prop, value }) {
   const { error } = validateIsSchema({ value })
   if (error === undefined) {
     return
@@ -57,11 +57,8 @@ const validateJsonSchema = function({ task: { taskKey }, prop, value }) {
 
   const property = `validate.${prop}`
   throw new TestOpenApiError(
-    `In task '${taskKey}', '${property}' is not a valid JSON schema v4:${error}`,
-    {
-      property,
-      taskKey,
-    },
+    `In task '${key}', '${property}' is not a valid JSON schema v4:${error}`,
+    { property, key },
   )
 }
 

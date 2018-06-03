@@ -29,7 +29,7 @@ const getDepKeys = function({ refs }) {
 const runDep = async function({ task, tasks, refs, depKey, runDepTask }) {
   const stackInfo = checkStack({ depKey, task, refs })
 
-  const depTask = tasks.find(({ taskKey }) => taskKey === depKey)
+  const depTask = tasks.find(({ key }) => key === depKey)
   // `task.deps` will only be used|returned in `dep` tasks
   const depTaskA = { ...depTask, deps: stackInfo }
 

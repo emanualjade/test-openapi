@@ -6,8 +6,8 @@ const normalizeTasks = function({ tasks }) {
   return Object.entries(tasks).map(normalizeTask)
 }
 
-const normalizeTask = function([taskKey, task]) {
-  return { ...task, originalTask: task, taskKey }
+const normalizeTask = function([key, task]) {
+  return { ...task, originalTask: task, key }
 }
 
 module.exports = {

@@ -7,7 +7,7 @@ const { createWriteStream } = require('fs')
 const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
 // Retrieves stream to write to, according to `config.tap.output`
-const getOutput = function({ tapConfig: { output } }) {
+const getOutput = function({ tap: { output } }) {
   const getStream = STREAMS[String(output)] || STREAMS.default
   return getStream({ output })
 }

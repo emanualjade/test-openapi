@@ -6,7 +6,7 @@ const { Stream } = require('stream')
 // TAP serializer
 class Tap {
   constructor({ output = stdout } = {}) {
-    if (!(output instanceof Stream)) {
+    if (!(output instanceof Stream) && output !== false) {
       throw new Error('new Tap() options.output must be a stream')
     }
 
@@ -14,11 +14,15 @@ class Tap {
   }
 
   _write(string) {
+    if (!this.output) {
+      return string
+    }
+
     this.output.write(`${string}\n`)
   }
 
   version() {
-    this._write('TAP version 13')
+    return this._write('TAP version 13')
   }
 
   plan(integer) {
@@ -27,7 +31,7 @@ class Tap {
     }
 
     const planString = getPlan({ integer })
-    this._write(planString)
+    return this._write(planString)
   }
 }
 

@@ -23,7 +23,7 @@ const getPlanString = function({ count }) {
 
 const getPlan = function({ count }) {
   if (count === 0) {
-    return '0..0'
+    return '1..0'
   }
 
   return `1..${String(count)}`

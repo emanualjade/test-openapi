@@ -59,8 +59,7 @@ const parseBody = function({ body, headers }) {
 const trimBody = function({ body }) {
   const bodyA = body.trim()
 
-  // Convert body to `undefined` when empty so we can re-use same logic as
-  // response headers for requiredness checks
+  // Convert body to `undefined` when empty
   if (bodyA === '') {
     return
   }

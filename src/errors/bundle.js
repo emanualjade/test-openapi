@@ -20,4 +20,5 @@ const convertPlainObject = function({ name, message, stack, ...error }) {
 
 module.exports = {
   bundleErrors,
+  convertPlainObject,
 }

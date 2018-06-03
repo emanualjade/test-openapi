@@ -1,8 +1,8 @@
 'use strict'
 
-const { report } = require('./report')
+const { end } = require('./end')
 
 module.exports = {
   name: 'object',
-  report,
+  end,
 }

@@ -2,7 +2,7 @@
 
 const { titleize } = require('underscore.string')
 
-const { yellow, highlight, prettifyJson } = require('..//utils')
+const { yellow, highlight, prettifyJson } = require('../../report/utils')
 
 // Print HTTP request in error messages
 const printRequest = function({ method, url, headers, body }) {
@@ -51,11 +51,11 @@ const printBody = function({ body }) {
   return `\n\n${bodyB}`
 }
 
-const callErrorProps = [
+const errorProps = [
   { name: 'Request', value: 'task.call.request', print: printRequest, indented: true },
   { name: 'Response', value: 'task.call.response', print: printResponse, indented: true },
 ]
 
 module.exports = {
-  callErrorProps,
+  errorProps,
 }

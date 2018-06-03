@@ -1,11 +1,6 @@
 'use strict'
 
-// Add `task.title`, i.e. full name taken from all `plugin.report.title`
-const addTitle = function({ input, input: { task }, plugins }) {
-  const title = getTitle({ task, plugins })
-  return { ...input, task: { ...task, title } }
-}
-
+// Get `task.title`, i.e. full name taken from all `plugin.report.title`
 const getTitle = function({ task, plugins }) {
   return plugins
     .map(plugin => getPluginTitle({ task, plugin }))
@@ -28,5 +23,5 @@ const isDefinedTitle = function(title) {
 }
 
 module.exports = {
-  addTitle,
+  getTitle,
 }

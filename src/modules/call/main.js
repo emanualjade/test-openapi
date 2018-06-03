@@ -4,7 +4,7 @@ const { normalizeParams } = require('./start')
 const { fireHttpCall } = require('./task')
 const { config } = require('./config.js')
 const { returnValue } = require('./return')
-const { title } = require('./report')
+const { title, errorProps } = require('./report')
 
 module.exports = {
   name: 'call',
@@ -13,6 +13,7 @@ module.exports = {
   returnValue,
   report: {
     title,
+    errorProps,
   },
   handlers: [
     {

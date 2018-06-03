@@ -2,7 +2,8 @@
 
 const { callReporters } = require('../call')
 
-const { addTitle } = require('./title')
+const { getTitle } = require('./title')
+const { getErrorProps } = require('./error_props')
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
@@ -18,7 +19,7 @@ const complete = async function(input) {
     plugins,
   } = input
 
-  const inputA = addTitle({ input, plugins })
+  const inputA = addProps({ input, plugins })
 
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
@@ -36,6 +37,13 @@ const complete = async function(input) {
 
   // Unbuffer tasks, i.e. report them
   await completeTasks({ count, keys, inputs, config })
+}
+
+// Add plugin-specific `task.title` and `task.errorProps`
+const addProps = function({ input, input: { task }, plugins }) {
+  const title = getTitle({ task, plugins })
+  const errorProps = getErrorProps({ plugins })
+  return { ...input, task: { ...task, title, errorProps } }
 }
 
 const getCount = function({ keys, inputs }) {

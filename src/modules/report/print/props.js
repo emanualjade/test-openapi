@@ -2,27 +2,16 @@
 
 const { get } = require('lodash')
 
-const { isShortcut } = require('../../../utils')
 const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
-const { callErrorProps } = require('./call')
-
 // Print `error.*` properties in error printed message
-const getErrorProps = function({ error }) {
-  return ERROR_PROPS.map(errorProp => addErrorPropValue(errorProp, error))
+const getErrorProps = function({ task: { errorProps }, error }) {
+  return errorProps
+    .map(errorProp => addErrorPropValue(errorProp, error))
     .filter(filterErrorProps)
     .map(errorProp => printErrorProp(errorProp, error))
     .join('\n\n')
 }
-
-// List of possible error properties
-const ERROR_PROPS = [
-  { name: 'Property', value: 'property' },
-  { name: 'Expected value', value: 'expected' },
-  { name: 'Actual value', value: 'actual' },
-  { name: 'JSON schema', value: 'schema', exclude: isShortcut, highlighted: true },
-  ...callErrorProps,
-]
 
 // Get `errorProp.value` which can be a path or a function
 const addErrorPropValue = function(errorProp, error) {

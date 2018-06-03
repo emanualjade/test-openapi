@@ -7,7 +7,7 @@ const { getErrorProps } = require('./props')
 // Retrieve task's error to print
 const getErrorMessage = function({ task, error }) {
   const header = getHeader({ task, error })
-  const errorProps = getErrorProps({ error })
+  const errorProps = getErrorProps({ task, error })
 
   return `
 ${HORIZONTAL_LINE}

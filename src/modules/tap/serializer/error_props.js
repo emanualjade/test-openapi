@@ -25,7 +25,7 @@ const getError = function({ message, name, stack, ...error }) {
 
 const getAt = function({ stack }) {
   if (stack === undefined) {
-    return ''
+    return
   }
 
   const [, at] = stack.split('\n')
@@ -46,6 +46,8 @@ const serializeErrorProps = function({ error }) {
 const YAML_OPTS = {
   schema: DEFAULT_FULL_SCHEMA,
   noRefs: true,
+  // Otherwise `tap-out` parser crashes
+  flowLevel: 1,
 }
 
 // Indent error properties by two spaces

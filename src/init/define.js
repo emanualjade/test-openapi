@@ -1,5 +1,9 @@
 'use strict'
 
+const { pick } = require('lodash')
+
+const { runHandlers } = require('../plugins')
+
 // Main entry point of tasks definition
 const defineTasks = function({ config: { runTask, ...config }, plugins, errors }) {
   const readOnlyArgs = getReadOnlyArgs({ config, runTask, plugins })
@@ -47,17 +51,32 @@ const defineTask = function({ task, task: { taskKey }, runTask, readOnlyArgs, pl
   it(taskKey, launchTask.bind(null, { task, runTask, readOnlyArgs, plugins, errors }), 0)
 }
 
-const launchTask = async function({ task, runTask, readOnlyArgs, plugins, errors }) {
-  const { task: taskA, error } = await runTask(task, { readOnlyArgs, plugins })
+const launchTask = async function({
+  task,
+  runTask,
+  readOnlyArgs,
+  readOnlyArgs: { config },
+  plugins,
+  errors,
+}) {
+  // Returns `{ tasks, task, errors, error }`
+  const returnValue = await runTask(task, { readOnlyArgs, plugins })
+
+  // Run `complete` handlers
+  // `complete` handlers should not throw
+  const returnValueA = await runHandlers(returnValue, plugins, 'complete', { config })
+
+  // Only keep single task|error return
+  const returnValueB = pick(returnValueA, ['task', 'error'])
 
   // TODO: temporary as long as if we use Jasmine
-  if (error) {
+  const { error } = returnValueB
+  if (error !== undefined) {
     errors.push(error)
     throw error
   }
 
-  // Only return first task
-  return { task: taskA, error }
+  return returnValueB
 }
 
 module.exports = {

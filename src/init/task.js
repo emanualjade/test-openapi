@@ -6,7 +6,7 @@ const { isObject } = require('../utils')
 const { addErrorHandler } = require('../errors')
 const { runHandlers } = require('../plugins')
 
-// Run an `it()` task
+// Run `task` handlers
 const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
   const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
 

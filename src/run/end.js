@@ -12,7 +12,7 @@ const endTasks = async function({ tasks, plugins, config }) {
 
 // If an `end` handle throws, it becomes a `{ type: 'error', error }` event
 const endTasksHandler = function(error) {
-  return { type: 'error', error }
+  return [{ type: 'error', error }]
 }
 
 const eEndTasks = addErrorHandler(endTasks, endTasksHandler)

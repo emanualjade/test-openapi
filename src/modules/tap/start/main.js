@@ -1,6 +1,6 @@
 'use strict'
 
-const { Tap } = require('../../../utils')
+const { Tap } = require('../serializer')
 
 const { getOutput } = require('./output')
 

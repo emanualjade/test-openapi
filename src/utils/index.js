@@ -10,5 +10,4 @@ module.exports = {
   ...require('./location'),
   ...require('./json_schema'),
   ...require('./shortcut'),
-  ...require('./tap'),
 }

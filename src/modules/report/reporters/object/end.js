@@ -6,7 +6,9 @@ const { convertPlainObject } = require('../../../../errors')
 const { getSummary } = require('../../utils')
 
 // JSON reporter
-const end = function({ tasks }) {
+const end = function({ options: { spinner }, tasks }) {
+  spinner.stop()
+
   const report = getReport({ tasks })
   const reportA = JSON.stringify(report, null, 2)
   return reportA

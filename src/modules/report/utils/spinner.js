@@ -22,7 +22,7 @@ class Spinner {
   }
 
   // Increment CLI spinner index
-  update({ clear = false }) {
+  update({ clear = false } = {}) {
     this.updateText()
 
     if (!clear) {

@@ -2,9 +2,7 @@
 
 const { titleize } = require('underscore.string')
 
-const { yellow } = require('./colors')
-const { highlight } = require('./highlight')
-const { prettifyJson } = require('./prettify')
+const { yellow, highlight, prettifyJson } = require('../../../utils')
 
 // Print HTTP request in error messages
 const printRequest = function({ method, url, headers, body }) {

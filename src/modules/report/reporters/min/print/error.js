@@ -1,7 +1,7 @@
 'use strict'
 
-const { red } = require('./colors')
-const { indent } = require('./indent')
+const { red, indent } = require('../../../utils')
+
 const { getHeader } = require('./header')
 const { getErrorProps } = require('./props')
 

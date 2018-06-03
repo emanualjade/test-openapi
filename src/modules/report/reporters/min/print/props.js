@@ -3,11 +3,8 @@
 const { get } = require('lodash')
 
 const { isShortcut } = require('../../../../../utils')
+const { orange, indentValue, stringifyValue, highlightValue } = require('../../../utils')
 
-const { orange } = require('./colors')
-const { indentValue } = require('./indent')
-const { stringifyValue } = require('./stringify')
-const { highlightValue } = require('./highlight')
 const { callErrorProps } = require('./call')
 
 // Print `error.*` properties in error printed message

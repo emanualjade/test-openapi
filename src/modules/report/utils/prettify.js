@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler } = require('../../../../../errors')
+const { addErrorHandler } = require('../../../errors')
 
 // Prettify JSON, if string is JSON
 const prettifyJson = function(string) {

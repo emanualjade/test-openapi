@@ -1,8 +1,6 @@
 'use strict'
 
-const { getSummary } = require('../../../utils')
-
-const { yellow } = require('./colors')
+const { getSummary, yellow } = require('../../../utils')
 
 // Print final reporting message with counter of passed|failed|skipped tasks
 const getEndMessage = function({ tasks }) {

@@ -60,8 +60,7 @@ const useReporter = function({ stream, reporter }) {
     return stream
   }
 
-  reporter.pipe(stream)
-  return reporter
+  return reporter(stream)
 }
 
 module.exports = {

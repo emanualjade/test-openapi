@@ -1,14 +1,16 @@
 'use strict'
 
-const colorize = require('tap-colorize')
+const Colorize = require('tap-colorize')
 
 // TAP reporter
-const report = function({ options: { colors = false } }) {
+const report = function({ colors = true }, stream) {
   if (colors === false) {
     return
   }
 
-  return colorize()
+  const colorize = Colorize()
+  colorize.pipe(stream)
+  return colorize
 }
 
 module.exports = {

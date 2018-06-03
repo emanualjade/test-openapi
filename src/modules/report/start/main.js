@@ -36,7 +36,7 @@ const getReporter = function({ report: { style, options } }) {
   validateOptions({ options, config, style })
 
   // `reporter.report()` should not throw
-  const reporter = report({ options })
+  const reporter = report.bind(null, options)
   return reporter
 }
 

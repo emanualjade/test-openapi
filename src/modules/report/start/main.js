@@ -8,18 +8,17 @@ const { addReportersOptions } = require('./options')
 
 // Starts reporting
 const start = async function(config) {
-  const { report } = config
-  const reportA = await addOutput({ report })
+  const report = await addOutput({ config })
 
-  const reportB = addReporters({ report: reportA })
+  const reportA = addReporters({ report })
 
-  const reportC = addReportersOptions({ config, report: reportB })
+  const reportB = addReportersOptions({ config, report: reportA })
 
-  await callReporters({ config: { report: reportC }, input: config, type: 'start' })
+  await callReporters({ config: { report: reportB }, input: config, type: 'start' })
 
-  const reportD = addOrdering({ config, report: reportC })
+  const reportC = addOrdering({ config, report: reportB })
 
-  return { report: reportD }
+  return { report: reportC }
 }
 
 // Used to ensure tasks ordering

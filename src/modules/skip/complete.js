@@ -8,8 +8,9 @@ const { abortTask } = require('../../errors')
 // This means they will be reported (`report` plugin shows them as `skipped`)
 // Also they are aborted but considered successful. This implies successful tasks
 // might be emptier than expected (if they are skipped).
-const skipTask = function({ skip }) {
-  if (!skip) {
+const skipTask = function({ skip, isNested }) {
+  // Nested tasks are not skipped
+  if (!skip || isNested) {
     return
   }
 

@@ -10,7 +10,7 @@ const repeatTasks = function({ repeat, runTask }) {
 }
 
 const repeatTask = async function({ repeat, runTask }, task, opts, ...args) {
-  if (opts.isNested) {
+  if (opts.readOnlyArgs.isNested) {
     return runTask(task, opts, ...args)
   }
 

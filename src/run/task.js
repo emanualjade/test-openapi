@@ -26,7 +26,10 @@ const getTaskReadOnlyArgs = function({ config, mRunTask, plugins }) {
 // Pass `runTask` for recursive tasks, with the second argument bound
 // Also tasks can use `isNested` to know if this is a recursive call
 const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, task) {
-  const { task: taskA, error } = await mRunTask(task, { plugins, readOnlyArgs, isNested: true })
+  const { task: taskA, error } = await mRunTask(task, {
+    plugins,
+    readOnlyArgs: { ...readOnlyArgs, isNested: true },
+  })
 
   // Propagate to parent
   if (error) {

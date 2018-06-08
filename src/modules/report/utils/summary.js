@@ -12,11 +12,11 @@ const getSummary = function({ tasks }) {
 }
 
 const isFailedTask = function({ error }) {
-  return error !== undefined && !error.skipped
+  return error !== undefined
 }
 
-const isSkippedTask = function({ error }) {
-  return error !== undefined && error.skipped
+const isSkippedTask = function({ task: { aborted } }) {
+  return aborted === true
 }
 
 module.exports = {

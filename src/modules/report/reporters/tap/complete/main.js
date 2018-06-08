@@ -8,23 +8,21 @@ const complete = function({ task, error, options: { tap } }) {
   return tap.assert(assert)
 }
 
-const getAssert = function({ task: { key, title }, error }) {
+const getAssert = function({ task: { key, title, aborted }, error }) {
   const ok = error === undefined
-  const name = `${key} - ${title}`
+  const name = getName({ key, title })
+  const directive = { skip: Boolean(aborted) }
+  const errorProps = getErrorProps({ ok, error })
 
-  if (ok) {
-    return { ok, name }
-  }
-
-  const errorProps = getErrorProps({ error })
-  const directive = getDirective({ error })
-
-  return { ok, name, error: errorProps, directive }
+  return { ok, name, directive, error: errorProps }
 }
 
-const getDirective = function({ error: { skipped } }) {
-  const skip = skipped === true
-  return { skip }
+const getName = function({ key, title }) {
+  if (title.trim() === '') {
+    return key
+  }
+
+  return `${key} - ${title}`
 }
 
 module.exports = {

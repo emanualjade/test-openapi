@@ -5,4 +5,5 @@ module.exports = {
   ...require('./handler'),
   ...require('./bundle'),
   ...require('./top'),
+  ...require('./abort'),
 }

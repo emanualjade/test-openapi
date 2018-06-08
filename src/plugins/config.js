@@ -17,6 +17,7 @@ const DEFAULT_PLUGINS = [
   'deps',
   'dry',
   'only',
+  'skip',
   'report',
 ]
 

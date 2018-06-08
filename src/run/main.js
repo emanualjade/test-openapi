@@ -74,6 +74,7 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 // `start`, i.e. before all tasks:
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
 //   - `only` (1100): select tasks according to `config|task.only`
+//   - `skip` (1150): set `task.skip` according to `config.skip`
 //   - `call` (1200): normalize `task.call.*` object to an array
 //   - `random` (1300): normalize and validate `task.random.*` JSON schemas
 //   - `validate` (1400): normalize `task.validate.*`
@@ -84,6 +85,7 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `report` (1700): start reporting
 //   - `repeat` (1800): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
+//   - `skip` (900): skip task if `task.skip: true`
 //   - `deps` (1000): replace all `deps`, i.e. references to other tasks
 //   - `random` (1100): generates random values based on `task.random.*`
 //     JSON schemas

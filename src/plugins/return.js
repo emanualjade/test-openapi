@@ -2,10 +2,10 @@
 
 // Fire each `plugin.returnValue()` if available to transform `task` return
 // value for each plugin
-const getTaskReturn = function({ task, task: { key }, originalTask, plugins }) {
+const getTaskReturn = function({ task, task: { key }, originalTask, plugins, aborted = false }) {
   const taskReturns = plugins.map(plugin => getReturnObj({ task, originalTask, plugin }))
 
-  return Object.assign({ key }, ...taskReturns)
+  return Object.assign({ key }, ...taskReturns, { aborted })
 }
 
 const getReturnObj = function({ task, originalTask, plugin: { returnValue, name } }) {

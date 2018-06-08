@@ -29,12 +29,12 @@ const updateState = function({ ok, directive }) {
 }
 
 const getCategory = function({ ok, directive: { skip } }) {
-  if (ok) {
-    return 'pass'
-  }
-
   if (skip !== undefined && skip !== false) {
     return 'skip'
+  }
+
+  if (ok) {
+    return 'pass'
   }
 
   return 'fail'

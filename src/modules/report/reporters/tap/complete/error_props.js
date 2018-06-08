@@ -4,6 +4,7 @@ const { omit } = require('lodash')
 
 // Retrieve TAP error properties
 const getErrorProps = function({
+  ok,
   error: {
     name,
     message,
@@ -15,8 +16,12 @@ const getErrorProps = function({
     property,
     task,
     ...error
-  },
+  } = {},
 }) {
+  if (ok) {
+    return
+  }
+
   const stackProp = getStackProp({ name, stack })
 
   const errorA = omit(error, NOT_REPORTED_PROPS)

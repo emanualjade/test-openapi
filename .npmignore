@@ -12,6 +12,7 @@ bundles/*
 yarn-error.log
 .eslintcache
 .npmrc
+*~
 
 gulp
 gulpfile.js

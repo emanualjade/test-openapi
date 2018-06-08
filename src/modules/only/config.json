@@ -1,0 +1,23 @@
+{
+  "general": {
+    "schema": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      ]
+    }
+  },
+  "task": {
+    "schema": {
+      "type": "boolean"
+    },
+    "default": false
+  }
+}

@@ -56,6 +56,13 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Reporting style',
   },
+  only: {
+    array: true,
+    string: true,
+    alias: 'f',
+    requiresArg: true,
+    describe: 'Only run tasks whose key matches the globbing pattern',
+  },
   spec: {
     string: true,
     alias: 's',

@@ -24,7 +24,7 @@ const getReturnObj = function({ task, originalTask, plugin: { returnValue, name 
     return { [name]: task[name] }
   }
 
-  // defaults to return task.PLUGIN.*
+  // defaults to return originalTask.PLUGIN.*
   if (originalTask[name] !== undefined) {
     return { [name]: originalTask[name] }
   }

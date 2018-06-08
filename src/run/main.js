@@ -73,6 +73,7 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 // The following plugins can be run (order in parenthesis).
 // `start`, i.e. before all tasks:
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
+//   - `only` (1050): select tasks according to `config|task.only`
 //   - `call` (1100): normalize `task.call.*` object to an array
 //   - `random` (1200): normalize and validate `task.random.*` JSON schemas
 //   - `validate` (1300): normalize `task.validate.*`

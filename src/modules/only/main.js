@@ -12,7 +12,7 @@ module.exports = {
     {
       type: 'start',
       handler: selectOnlyTasks,
-      order: 1050,
+      order: 1100,
     },
   ],
 }

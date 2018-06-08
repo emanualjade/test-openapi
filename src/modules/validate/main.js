@@ -14,7 +14,7 @@ module.exports = {
     {
       type: 'start',
       handler: normalizeValidate,
-      order: 1300,
+      order: 1400,
     },
     {
       type: 'task',

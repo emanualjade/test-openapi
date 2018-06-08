@@ -11,7 +11,7 @@ module.exports = {
     {
       type: 'start',
       handler: handleDryRun,
-      order: 1500,
+      order: 1600,
     },
   ],
 }

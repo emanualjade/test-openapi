@@ -19,7 +19,7 @@ module.exports = {
     {
       type: 'start',
       handler: normalizeParams,
-      order: 1100,
+      order: 1200,
     },
     {
       type: 'task',

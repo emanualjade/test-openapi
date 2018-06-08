@@ -73,16 +73,16 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 // The following plugins can be run (order in parenthesis).
 // `start`, i.e. before all tasks:
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
-//   - `only` (1050): select tasks according to `config|task.only`
-//   - `call` (1100): normalize `task.call.*` object to an array
-//   - `random` (1200): normalize and validate `task.random.*` JSON schemas
-//   - `validate` (1300): normalize `task.validate.*`
-//   - `spec` (1400): parse, validate, normalize an OpenAPI specification
+//   - `only` (1100): select tasks according to `config|task.only`
+//   - `call` (1200): normalize `task.call.*` object to an array
+//   - `random` (1300): normalize and validate `task.random.*` JSON schemas
+//   - `validate` (1400): normalize `task.validate.*`
+//   - `spec` (1500): parse, validate, normalize an OpenAPI specification
 //     then add it to `task.random|validate.*`
-//   - `dry` (1500): `config.dry: true` makes everything stop just before the
+//   - `dry` (1600): `config.dry: true` makes everything stop just before the
 //     first task run
-//   - `report` (1600): start reporting
-//   - `repeat` (1700): repeat each task `config.repeat` times
+//   - `report` (1700): start reporting
+//   - `repeat` (1800): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
 //   - `deps` (1000): replace all `deps`, i.e. references to other tasks
 //   - `random` (1100): generates random values based on `task.random.*`

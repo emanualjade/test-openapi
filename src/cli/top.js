@@ -82,13 +82,6 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Number of times each task is repeated',
   },
-  dry: {
-    boolean: true,
-    alias: 'd',
-    describe: 'Only validate tasks syntax instead of performing them.',
-    // Otherwises defaults to `false`
-    default: undefined,
-  },
 }
 
 const USAGE = `$0 [OPTS] [TASKS_FILES...]

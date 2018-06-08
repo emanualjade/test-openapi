@@ -15,7 +15,6 @@ const DEFAULT_PLUGINS = [
   'repeat',
   'glob',
   'deps',
-  'dry',
   'only',
   'skip',
   'report',

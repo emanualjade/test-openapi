@@ -80,8 +80,6 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `validate` (1400): normalize `task.validate.*`
 //   - `spec` (1500): parse, validate, normalize an OpenAPI specification
 //     then add it to `task.random|validate.*`
-//   - `dry` (1600): `config.dry: true` makes everything stop just before the
-//     first task run
 //   - `report` (1700): start reporting
 //   - `repeat` (1800): repeat each task `config.repeat` times
 // `task`, i.e. for each task:

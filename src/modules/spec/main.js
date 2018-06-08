@@ -12,7 +12,7 @@ module.exports = {
     {
       type: 'start',
       handler: loadNormalizedSpec,
-      order: 1500,
+      order: 1600,
     },
   ],
   loadOpenApiSpec,

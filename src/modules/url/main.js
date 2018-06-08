@@ -9,7 +9,7 @@ module.exports = {
     {
       type: 'task',
       handler: addFullUrl,
-      order: 1300,
+      order: 1400,
     },
   ],
 }

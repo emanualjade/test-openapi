@@ -13,12 +13,12 @@ module.exports = {
     {
       type: 'start',
       handler: addRandomParams,
-      order: 1300,
+      order: 1400,
     },
     {
       type: 'task',
       handler: generateParams,
-      order: 1100,
+      order: 1200,
     },
   ],
 }

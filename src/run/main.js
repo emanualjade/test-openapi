@@ -74,24 +74,24 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 // `start`, i.e. before all tasks:
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
 //   - `only` (1100): select tasks according to `config|task.only`
-//   - `skip` (1150): set `task.skip` according to `config.skip`
-//   - `call` (1200): normalize `task.call.*` object to an array
-//   - `random` (1300): normalize and validate `task.random.*` JSON schemas
-//   - `validate` (1400): normalize `task.validate.*`
-//   - `spec` (1500): parse, validate, normalize an OpenAPI specification
+//   - `skip` (1200): set `task.skip` according to `config.skip`
+//   - `call` (1300): normalize `task.call.*` object to an array
+//   - `random` (1400): normalize and validate `task.random.*` JSON schemas
+//   - `validate` (1500): normalize `task.validate.*`
+//   - `spec` (1600): parse, validate, normalize an OpenAPI specification
 //     then add it to `task.random|validate.*`
 //   - `report` (1700): start reporting
 //   - `repeat` (1800): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
-//   - `skip` (900): skip task if `task.skip: true`
-//   - `deps` (1000): replace all `deps`, i.e. references to other tasks
-//   - `random` (1100): generates random values based on `task.random.*`
+//   - `skip` (1000): skip task if `task.skip: true`
+//   - `deps` (1100): replace all `deps`, i.e. references to other tasks
+//   - `random` (1200): generates random values based on `task.random.*`
 //     JSON schemas
-//   - `format` (1200): stringify request parameters
-//   - `url` (1300): build request URL from request parameters
-//   - `call` (1400): fire actual HTTP call
-//   - `format` (1500): parse response
-//   - `validate` (1600): validate response against `task.validate.*` JSON schemas
+//   - `format` (1300): stringify request parameters
+//   - `url` (1400): build request URL from request parameters
+//   - `call` (1500): fire actual HTTP call
+//   - `format` (1600): parse response
+//   - `validate` (1700): validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
 //   - `report` (1000): reporting for current task
 // `end`, i.e. after all tasks:

@@ -14,12 +14,12 @@ module.exports = {
     {
       type: 'start',
       handler: setSkippedTasks,
-      order: 1150,
+      order: 1200,
     },
     {
       type: 'task',
       handler: skipTask,
-      order: 900,
+      order: 1000,
     },
   ],
 }

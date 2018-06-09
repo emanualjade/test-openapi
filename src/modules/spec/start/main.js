@@ -1,12 +1,11 @@
 'use strict'
 
 const { loadOpenApiSpec } = require('./load')
-const { getOperations } = require('./normalize')
-const { addSpecToTasks } = require('./tasks')
+const { normalizeSpec } = require('./normalize')
 
 // Parse, validate and normalize an OpenAPI specification (including JSON references)
 // then add it to `task.random|validate.*`
-const loadNormalizedSpec = async function({ spec, tasks, pluginNames }) {
+const loadNormalizedSpec = async function({ spec }) {
   if (spec === undefined) {
     return
   }
@@ -15,15 +14,7 @@ const loadNormalizedSpec = async function({ spec, tasks, pluginNames }) {
 
   const specB = normalizeSpec({ spec: specA })
 
-  const tasksA = addSpecToTasks({ spec: specB, tasks, pluginNames })
-
-  return { tasks: tasksA }
-}
-
-// Normalize specification object
-const normalizeSpec = function({ spec }) {
-  const operations = getOperations({ spec })
-  return { operations }
+  return { spec: specB }
 }
 
 module.exports = {

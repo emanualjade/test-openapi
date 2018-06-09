@@ -6,6 +6,11 @@ const { getParams } = require('./params')
 const { normalizeResponses } = require('./response')
 
 // Normalize OpenAPI operation into specification-agnostic format
+const normalizeSpec = function({ spec }) {
+  const operations = getOperations({ spec })
+  return { operations }
+}
+
 const getOperations = function({ spec, spec: { paths } }) {
   const operations = Object.entries(paths).map(([path, pathDef]) =>
     getOperationsByPath({ spec, path, pathDef }),
@@ -39,5 +44,5 @@ const getOperation = function({
 }
 
 module.exports = {
-  getOperations,
+  normalizeSpec,
 }

@@ -3,31 +3,23 @@
 const { getSpecOperation } = require('./operation')
 
 // Add OpenAPI specification parameters to `task.call.*`
-const addSpecToRandom = function({
-  spec,
-  task,
-  task: {
-    call: { params, ...call },
-    key,
-  },
-  pluginNames,
-}) {
+const addSpecToRandom = function({ spec, key, call, call: { params }, pluginNames }) {
   // Optional dependency
   if (!pluginNames.includes('random')) {
-    return task
+    return call
   }
 
   const specOperation = getSpecOperation({ key, spec })
 
   // Task does not start with an `operationId`
   if (specOperation === undefined) {
-    return task
+    return call
   }
 
   // Specification params have less priority than `task.call|random.*`
   const paramsA = [...specOperation.params, ...params]
 
-  return { ...task, call: { ...call, params: paramsA } }
+  return { ...call, params: paramsA }
 }
 
 module.exports = {

@@ -60,7 +60,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^7.1.0",
     "plugin-error": "^1.0.1",
-    "prettier": "^1.13.4"
+    "prettier": "^1.13.5"
   },
   "engines": {
     "node": ">=8.11.0"

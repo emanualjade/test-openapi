@@ -2,7 +2,7 @@
 
 const { titleize } = require('underscore.string')
 
-const { yellow, highlight, prettifyJson } = require('../../report/utils')
+const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
 
 // Print HTTP request in error messages
 const printRequest = function({ method, url, headers, body }) {
@@ -47,7 +47,7 @@ const printBody = function({ body }) {
   }
 
   const bodyA = prettifyJson(body)
-  const bodyB = highlight(bodyA)
+  const bodyB = highlightValueAuto(bodyA)
   return `\n\n${bodyB}`
 }
 

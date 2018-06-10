@@ -17,7 +17,7 @@ const CORE_ERROR_PROPS = [
   { name: 'Expected value', value: 'expected' },
   { name: 'Actual value', value: 'actual' },
   { name: 'Property', value: 'property' },
-  { name: 'JSON schema', value: 'schema', exclude: isShortcut, highlighted: true },
+  { name: 'JSON schema', value: 'schema', exclude: isShortcut },
 ]
 
 module.exports = {

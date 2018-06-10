@@ -1,23 +1,27 @@
 'use strict'
 
-const { highlightAuto } = require('emphasize')
+const { highlight, highlightAuto } = require('emphasize')
 
-// Syntax highlighting if `errorProp.highlighted: true`
-const highlightValue = function({ string, highlighted }) {
-  if (!highlighted) {
+// Syntax highlighting
+const highlightValue = function({ string, value, format }) {
+  // Not performed on strings, unless `format` was specified
+  if (typeof value === 'string' && format === undefined) {
     return string
   }
 
-  return highlight(string)
+  // Non-strings are highlighted as YAML, unless `errorProp.format` was explicited
+  const formatA = format || 'yaml'
+
+  return highlight(formatA, string).value
 }
 
 // Console (ANSI sequences) syntax color highlighting
 // Automatically guesses MIME type/format
-const highlight = function(string) {
+const highlightValueAuto = function(string) {
   return highlightAuto(string).value
 }
 
 module.exports = {
   highlightValue,
-  highlight,
+  highlightValueAuto,
 }

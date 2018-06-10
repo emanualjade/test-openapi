@@ -1,9 +1,20 @@
 'use strict'
 
-const { isObject } = require('./types')
+const { mapValues } = require('lodash')
+
+const { isObject } = require('../../../utils')
+
+// `task.validate.*: non-object` is shortcut for `{ enum: [value] }`
+const applyShortcuts = function({ validate }) {
+  return mapValues(validate, applyShortcut)
+}
 
 // Normalize non-JSON schemas to a `const` JSON schema
-const getShortcut = function(value) {
+const applyShortcut = function(value) {
+  if (isObject(value)) {
+    return value
+  }
+
   const type = guessType(value)
   return { type, enum: [value] }
 }
@@ -23,14 +34,10 @@ const TYPES = Object.entries({
   string: value => typeof value === 'string',
   boolean: value => typeof value === 'boolean',
   array: Array.isArray,
-  object: isObject,
+  // Default
+  object: () => true,
 })
 
-const isShortcut = function(schema) {
-  return isObject(schema) && Array.isArray(schema.enum) && schema.enum.length === 1
-}
-
 module.exports = {
-  getShortcut,
-  isShortcut,
+  applyShortcuts,
 }

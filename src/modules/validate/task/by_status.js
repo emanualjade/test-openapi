@@ -1,31 +1,28 @@
 'use strict'
 
-const { mergeHeaders, deepMerge } = require('../../../utils')
+const { deepMerge } = require('../../../utils')
 
-// `validate.schemaByStatus` is like `validate.schemas` but as map according to
-// status code.
+// `validate.byStatus.*` is like `validate.*` but as map according to status code.
 // Used e.g. with OpenAPI specification which allow different responses per status.
-const pickSchemaByStatus = function({
-  validate: { schemas, schemasByStatus },
+const addByStatus = function({
+  validate: { byStatus, ...validate },
   response: {
     raw: { status },
   },
 }) {
-  if (schemasByStatus === undefined) {
-    return schemas
+  if (byStatus === undefined) {
+    return validate
   }
 
-  const schemaByStatus = schemasByStatus[String(status)] || schemasByStatus.default
-  if (schemaByStatus === undefined) {
-    return schemas
+  const byStatusA = byStatus[String(status)] || byStatus.default
+  if (byStatusA === undefined) {
+    return validate
   }
 
-  const headersA = mergeHeaders([...schemaByStatus.headers, ...schemas.headers], deepMerge)
-  const bodyA = deepMerge(schemaByStatus.body, schemas.body)
-
-  return { status: schemas.status, headers: headersA, body: bodyA }
+  // `byStatus` has lower priority because it comes from another plugin (e.g. `spec`)
+  return deepMerge(byStatusA, validate)
 }
 
 module.exports = {
-  pickSchemaByStatus,
+  addByStatus,
 }

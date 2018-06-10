@@ -1,8 +1,6 @@
 'use strict'
 
-const { mapValues, omit } = require('lodash')
-
-const { mergeHeaders } = require('../../../../utils')
+const { mapValues, mapKeys, omit } = require('lodash')
 
 const { normalizeSchema } = require('./json_schema')
 const { getNegotiationsResponse } = require('./content_negotiation')
@@ -15,7 +13,7 @@ const normalizeResponses = function({ responses, spec, operation }) {
 const normalizeResponse = function({ response, spec, operation }) {
   const body = getResponseBody({ response })
   const headers = getResponseHeaders({ response, spec, operation })
-  return { body, headers }
+  return { body, ...headers }
 }
 
 const getResponseBody = function({ response: { schema = {} } }) {
@@ -23,22 +21,25 @@ const getResponseBody = function({ response: { schema = {} } }) {
 }
 
 const getResponseHeaders = function({ response: { headers = {} }, spec, operation }) {
-  const headersA = Object.entries(headers).map(getResponseHeader)
+  const headersA = mapValues(headers, getResponseHeader)
 
   const contentNegotiations = getNegotiationsResponse({ spec, operation })
+  const headersB = { ...contentNegotiations, ...headersA }
 
-  const headersB = mergeHeaders([...contentNegotiations, ...headersA])
-
-  return headersB
+  const headersC = mapKeys(headersB, addHeaderPrefix)
+  return headersC
 }
 
-const getResponseHeader = function([name, header]) {
+const getResponseHeader = function(value) {
   // We do not support `header` `collectionFormat`
-  const schema = omit(header, ['collectionFormat'])
+  const schema = omit(value, 'collectionFormat')
 
-  const value = normalizeSchema({ schema })
+  const schemaA = normalizeSchema({ schema })
+  return schemaA
+}
 
-  return { name, value }
+const addHeaderPrefix = function(value, name) {
+  return `headers.${name}`
 }
 
 module.exports = {

@@ -8,28 +8,13 @@ const { TestOpenApiError } = require('../../../errors')
 // Otherwise, it is required
 // TODO: this does not work when `type` is not top-level in the JSON-schema,
 // e.g. `{ not: { type } }`
-const validateRequiredBody = function({ schema, value }) {
+const checkRequired = function({ schema, value, property, name }) {
   const message = validateRequiredness({ schema, value })
   if (message === undefined) {
     return
   }
 
-  const property = 'call.response.body'
-  throw new TestOpenApiError(`Response body ${message}`, { property, schema, actual: value })
-}
-
-const validateRequiredHeader = function({ schema, value, name }) {
-  const message = validateRequiredness({ schema, value })
-  if (message === undefined) {
-    return
-  }
-
-  const property = `call.response.headers.${name}`
-  throw new TestOpenApiError(`Response header '${name}' ${message}`, {
-    property,
-    schema,
-    actual: value,
-  })
+  throw new TestOpenApiError(`${name} ${message}`, { property, schema, actual: value })
 }
 
 const validateRequiredness = function({ schema: { type = [] }, value }) {
@@ -59,6 +44,5 @@ const validateRequired = function({ value }) {
 }
 
 module.exports = {
-  validateRequiredBody,
-  validateRequiredHeader,
+  checkRequired,
 }

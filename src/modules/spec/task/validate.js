@@ -7,7 +7,7 @@ const addSpecToValidate = function({
   spec,
   key,
   validate,
-  validate: { schemasByStatus } = {},
+  validate: { byStatus } = {},
   pluginNames,
 }) {
   // Optional dependency
@@ -22,8 +22,7 @@ const addSpecToValidate = function({
     return validate
   }
 
-  const schemasByStatusA = { ...schemasByStatus, ...specResponses }
-  return { ...validate, schemasByStatus: schemasByStatusA }
+  return { ...validate, byStatus: { ...byStatus, ...specResponses } }
 }
 
 module.exports = {

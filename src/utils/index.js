@@ -9,5 +9,4 @@ module.exports = {
   ...require('./sort'),
   ...require('./location'),
   ...require('./json_schema'),
-  ...require('./shortcut'),
 }

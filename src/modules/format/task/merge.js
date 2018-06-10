@@ -1,11 +1,11 @@
 'use strict'
 
-const { mergeParams, deepMerge } = require('../../../utils')
+const { mergeParams } = require('../../../utils')
 
 // Merge all parameters with same `name` and `location`
 // `params` must be ordered from least to most priority
 const mergeAllParams = function({ params }) {
-  const paramsA = mergeParams(params, deepMerge)
+  const paramsA = mergeParams(params)
 
   const paramsB = removeNull({ params: paramsA })
   return paramsB

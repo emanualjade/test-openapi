@@ -4,9 +4,12 @@ const { TestOpenApiError } = require('../../../errors')
 const { validateFromSchema } = require('../../../utils')
 
 // Validates response status code against OpenAPI specification
-const validateStatus = function({ schemas: { status: schema }, response: { status } }) {
-  const { error } = validateFromSchema({ schema, value: status })
+const validateStatus = function({ validate: { status: schema }, response: { status } }) {
+  if (schema === undefined) {
+    return
+  }
 
+  const { error } = validateFromSchema({ schema, value: status })
   if (error === undefined) {
     return
   }

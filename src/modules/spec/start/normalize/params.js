@@ -2,7 +2,7 @@
 
 const { omit } = require('lodash')
 
-const { mergeParams, isObject } = require('../../../../utils')
+const { isObject } = require('../../../../utils')
 
 const IN_TO_LOCATION = require('./in_to_location')
 const { normalizeSchema } = require('./json_schema')
@@ -31,7 +31,7 @@ const getParams = function({
 
   const constParams = getConstParams({ spec, method, path })
 
-  const paramsD = mergeParams([...contentNegotiations, ...secParams, ...paramsC, ...constParams])
+  const paramsD = [...contentNegotiations, ...secParams, ...paramsC, ...constParams]
 
   const paramsE = paramsD.map(removeRandom)
 

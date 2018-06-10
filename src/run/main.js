@@ -77,7 +77,6 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `skip` (1200): set `task.skip` according to `config.skip`
 //   - `call` (1300): normalize `task.call.*` object to an array
 //   - `random` (1400): normalize and validate `task.random.*` JSON schemas
-//   - `validate` (1500): normalize `task.validate.*`
 //   - `spec` (1600): parse, validate and normalize an OpenAPI specification
 //   - `report` (1700): start reporting
 //   - `repeat` (1800): repeat each task `config.repeat` times
@@ -85,8 +84,7 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `skip` (1000): skip task if `task.skip: true`
 //   - `deps` (1100): replace all `deps`, i.e. references to other tasks
 //   - `spec` (1150): add OpenAPI specification to `task.random|validate.*`
-//   - `random` (1200): generates random values based on `task.random.*`
-//     JSON schemas
+//   - `random` (1200): generates random values based on `task.random.*` JSON schemas
 //   - `format` (1300): stringify request parameters
 //   - `url` (1400): build request URL from request parameters
 //   - `call` (1500): fire actual HTTP call

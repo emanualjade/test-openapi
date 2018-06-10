@@ -16,8 +16,7 @@ const getSpecResponse = function({ key, spec }) {
   }
 
   // `{ '200': validate, default: validate, ... }`
-  const { responses } = operation
-  return responses
+  return operation.responses
 }
 
 module.exports = {

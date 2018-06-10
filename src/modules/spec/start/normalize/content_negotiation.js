@@ -10,32 +10,39 @@ const getNegotiationsParams = function({ spec, operation, params }) {
   return headers
 }
 
-// Get OpenAPI `produces` property as a response header
-const getNegotiationsResponse = function({ spec, operation }) {
-  const contentType = getContentTypeResponse({ spec, operation })
-  const headers = [contentType].filter(header => header !== undefined)
-  return headers
-}
-
+// Get `consumes` and `produces` OpenAPI properties as header parameters instead
+// A random request Content-Type will be picked
 const getContentTypeParam = function({ spec, operation, params }) {
   const consumes = getConsumes({ spec, operation })
   const consumesA = filterFormDataMimes({ mimes: consumes, params })
-  const header = getContentTypeHeader(consumesA)
-  const headerA = addParamInfo(header)
-  return headerA
+
+  if (consumesA === undefined) {
+    return
+  }
+
+  const value = { type: 'string', enum: consumesA }
+  return { name: 'Content-Type', value, location: 'headers', random: 'shallow' }
 }
 
+// But the Accept header is always the same
 const getAcceptParam = function({ spec, operation }) {
   const produces = getProduces({ spec, operation })
-  const header = getAcceptHeader(produces)
-  const headerA = addParamInfo(header)
-  return headerA
+  if (produces === undefined) {
+    return
+  }
+
+  const value = produces.join(',')
+  return { name: 'Accept', value, location: 'headers' }
 }
 
-const getContentTypeResponse = function({ spec, operation }) {
+// Get OpenAPI `produces` property as a `Content-Type` response header
+const getNegotiationsResponse = function({ spec, operation }) {
   const produces = getProduces({ spec, operation })
-  const header = getContentTypeHeader(produces)
-  return header
+  if (produces === undefined) {
+    return
+  }
+
+  return { 'Content-Type': { type: 'string', enum: produces } }
 }
 
 const getConsumes = function({
@@ -50,35 +57,6 @@ const getProduces = function({
   operation: { produces = specProduces },
 }) {
   return produces
-}
-
-// Get `consumes` and `produces` OpenAPI properties as header parameters instead
-// Also works when merging with response header schemas
-// A random request Content-Type will be picked
-const getContentTypeHeader = function(mimes) {
-  if (mimes === undefined) {
-    return
-  }
-
-  return { name: 'Content-Type', value: { type: 'string', enum: mimes } }
-}
-
-// But the Accept header is always the same
-const getAcceptHeader = function(mimes) {
-  if (mimes === undefined) {
-    return
-  }
-
-  const accept = mimes.join(',')
-  return { name: 'Accept', value: accept }
-}
-
-const addParamInfo = function(header) {
-  if (header === undefined) {
-    return
-  }
-
-  return { ...header, location: 'headers', random: 'shallow' }
 }
 
 module.exports = {

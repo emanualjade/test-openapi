@@ -55,7 +55,7 @@ const removeFormDataPrefix = function(key) {
   return key.replace(FORM_DATA_REGEXP, '')
 }
 
-const FORM_DATA_REGEXP = /^formData\\./
+const FORM_DATA_REGEXP = /^formData\./
 
 module.exports = {
   filterFormDataMimes,

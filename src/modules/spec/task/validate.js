@@ -3,16 +3,10 @@
 const { getSpecResponse } = require('./operation')
 
 // Add OpenAPI specification to `task.validate.*`
-const addSpecToValidate = function({
-  spec,
-  key,
-  validate,
-  validate: { byStatus } = {},
-  pluginNames,
-}) {
+const addSpecToValidate = function({ spec, key, validate, validate: { byStatus } = {} }) {
   // Optional dependency
-  if (!pluginNames.includes('validate')) {
-    return validate
+  if (validate === undefined) {
+    return
   }
 
   const specResponses = getSpecResponse({ key, spec })

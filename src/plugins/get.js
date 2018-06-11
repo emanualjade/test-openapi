@@ -50,14 +50,14 @@ const REDUCERS = [
 //      - arguments: `(config)`
 //      - this type of handlers can modify the configuration object
 //      - `config` also has the following read-only properties:
-//         - `plugins` and `pluginNames`: list of available plugins
+//         - `plugins`: list of available plugins
 //   - `task`:
 //      - fired for each task
 //      - arguments: `(task)`
 //      - this type of handlers can modify the current task
 //      - the task is the same object as the one specified in tasks files
 //      - `task` also has the following read-only properties:
-//         - `plugins` and `pluginNames`: list of available plugins
+//         - `plugins`: list of available plugins
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)
 //         - `runTask(task)`: function allowing a task to fire another task
@@ -69,7 +69,7 @@ const REDUCERS = [
 //         - when using `repeat` plugin, `tasks` and `errors` will also be set
 //      - this type of handlers can modify the current `task` or `error`
 //      - it also has the following read-only properties:
-//         - `plugins` and `pluginNames`: list of available plugins
+//         - `plugins`: list of available plugins
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)
 //   - `end`:
@@ -77,7 +77,7 @@ const REDUCERS = [
 //      - arguments: none
 //      - this type of handlers can return new `events`
 //      - it also has the following read-only properties:
-//         - `plugins` and `pluginNames`: list of available plugins
+//         - `plugins`: list of available plugins
 //         - `config`: the configuration object (after being modified by the
 //           `start` handlers)
 //         - `tasks`

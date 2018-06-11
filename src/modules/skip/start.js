@@ -1,12 +1,7 @@
 'use strict'
 
 // When using `config.skip: '*'`, it behaves like a dry run, i.e. no reporting
-const setDryRun = function({ skip, report, pluginNames }) {
-  // Optional dependency
-  if (!pluginNames.includes('report')) {
-    return
-  }
-
+const setDryRun = function({ skip, report }) {
   if (!isDryRun({ skip })) {
     return
   }

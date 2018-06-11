@@ -52,8 +52,7 @@ const mapHandler = function({
 }
 
 const callHandler = function({ handler, readOnlyArgs, plugins }, input, ...args) {
-  const pluginNames = plugins.map(({ name }) => name)
-  const inputA = { ...input, ...readOnlyArgs, pluginNames, plugins }
+  const inputA = { ...input, ...readOnlyArgs, plugins }
   const maybePromise = handler(inputA, ...args)
   return maybePromise
 }

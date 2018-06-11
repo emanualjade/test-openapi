@@ -6,10 +6,10 @@ const { getSpecOperation } = require('./operation')
 const { removeOptionals } = require('./optional')
 
 // Add OpenAPI specification parameters to `task.random.*`
-const addSpecToRandom = function({ spec, key, random, call, pluginNames }) {
+const addSpecToRandom = function({ spec, key, random, call }) {
   // Optional dependency
-  if (!pluginNames.includes('random')) {
-    return random
+  if (random === undefined) {
+    return
   }
 
   const specOperation = getSpecOperation({ key, spec })

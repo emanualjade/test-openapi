@@ -75,20 +75,20 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
 //   - `only` (1100): check if `config|task.only` is used
 //   - `skip` (1200): set dry run (`report.output: false`) if `config.skip: *`
-//   - `spec` (1600): parse, validate and normalize an OpenAPI specification
-//   - `report` (1700): start reporting
-//   - `repeat` (1800): repeat each task `config.repeat` times
+//   - `spec` (1300): parse, validate and normalize an OpenAPI specification
+//   - `report` (1400): start reporting
+//   - `repeat` (1500): repeat each task `config.repeat` times
 // `task`, i.e. for each task:
-//   - `only` (900): select tasks according to `config|task.only`
-//   - `skip` (1000): skip task if `task.skip: true`
-//   - `deps` (1100): replace all `deps`, i.e. references to other tasks
-//   - `spec` (1150): add OpenAPI specification to `task.random|validate.*`
-//   - `random` (1200): generates random values based on `task.random.*` JSON schemas
-//   - `format` (1300): stringify request parameters
-//   - `url` (1400): build request URL from request parameters
-//   - `call` (1500): fire actual HTTP call
-//   - `format` (1600): parse response
-//   - `validate` (1700): validate response against `task.validate.*` JSON schemas
+//   - `only` (1000): select tasks according to `config|task.only`
+//   - `skip` (1100): skip task if `task.skip: true`
+//   - `deps` (1200): replace all `deps`, i.e. references to other tasks
+//   - `spec` (1300): add OpenAPI specification to `task.random|validate.*`
+//   - `random` (1400): generates random values based on `task.random.*` JSON schemas
+//   - `format` (1500): stringify request parameters
+//   - `url` (1600): build request URL from request parameters
+//   - `call` (1700): fire actual HTTP call
+//   - `format` (1800): parse response
+//   - `validate` (1900): validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
 //   - `report` (1000): reporting for current task
 // `end`, i.e. after all tasks:

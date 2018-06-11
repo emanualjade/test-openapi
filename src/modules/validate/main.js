@@ -11,7 +11,7 @@ module.exports = {
     {
       type: 'task',
       handler: validateResponse,
-      order: 1700,
+      order: 1900,
     },
   ],
 }

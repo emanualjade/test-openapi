@@ -18,7 +18,7 @@ module.exports = {
     {
       type: 'task',
       handler: selectOnlyTasks,
-      order: 900,
+      order: 1000,
     },
   ],
 }

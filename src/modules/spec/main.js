@@ -13,12 +13,12 @@ module.exports = {
     {
       type: 'start',
       handler: loadNormalizedSpec,
-      order: 1600,
+      order: 1300,
     },
     {
       type: 'task',
       handler: addSpecToTask,
-      order: 1150,
+      order: 1300,
     },
   ],
   loadOpenApiSpec,

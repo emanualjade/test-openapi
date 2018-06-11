@@ -13,7 +13,7 @@ module.exports = {
     {
       type: 'start',
       handler: start,
-      order: 1700,
+      order: 1400,
     },
     {
       type: 'complete',

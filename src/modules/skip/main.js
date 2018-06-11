@@ -19,7 +19,7 @@ module.exports = {
     {
       type: 'task',
       handler: skipTask,
-      order: 1000,
+      order: 1100,
     },
   ],
 }

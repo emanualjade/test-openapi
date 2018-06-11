@@ -12,7 +12,7 @@ module.exports = {
     {
       type: 'task',
       handler: generateParams,
-      order: 1200,
+      order: 1400,
     },
   ],
 }

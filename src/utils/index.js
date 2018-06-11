@@ -2,7 +2,6 @@
 
 module.exports = {
   ...require('./types'),
-  ...require('./merge'),
   ...require('./promise'),
   ...require('./reduce'),
   ...require('./func_name'),

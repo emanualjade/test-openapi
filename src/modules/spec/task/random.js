@@ -1,6 +1,6 @@
 'use strict'
 
-const { mergeCall } = require('../../../utils')
+const { mergeAll } = require('lodash/fp')
 
 const { getSpecOperation } = require('./operation')
 const { removeOptionals } = require('./optional')
@@ -24,7 +24,7 @@ const addSpecToRandom = function({ spec, key, random, call, pluginNames }) {
   const paramsA = removeOptionals({ params, random, call })
 
   // Specification params have less priority than `task.random.*`
-  const randomA = mergeCall(paramsA, random)
+  const randomA = mergeAll([paramsA, random])
   return randomA
 }
 

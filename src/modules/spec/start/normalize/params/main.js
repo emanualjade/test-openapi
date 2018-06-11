@@ -1,6 +1,7 @@
 'use strict'
 
-const { mergeCall } = require('../../../../../utils')
+const { mergeAll } = require('lodash/fp')
+
 const { getNegotiationsParams } = require('../content_negotiation')
 
 const { normalizeParams } = require('./normalize')
@@ -30,7 +31,7 @@ const getParams = function({
 
   const constants = getConstants({ spec, method, path, server })
 
-  const paramsD = mergeCall(contentNegotiations, secParams, paramsC, constants)
+  const paramsD = mergeAll([contentNegotiations, secParams, paramsC, constants])
 
   return paramsD
 }

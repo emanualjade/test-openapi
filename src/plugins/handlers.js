@@ -1,6 +1,6 @@
 'use strict'
 
-const { sortBy, reduceAsync } = require('../utils')
+const { reduceAsync } = require('../utils')
 const { addErrorHandler } = require('../errors')
 
 // Run plugin `handlers` of a given `type`
@@ -20,8 +20,7 @@ const getHandlers = function({ plugins, type, errorHandler, readOnlyArgs }) {
   )
   const handlersA = [].concat(...handlers)
 
-  const handlersB = sortBy(handlersA, 'order')
-  const handlersC = handlersB.map(({ handler }) => handler)
+  const handlersC = handlersA.map(({ handler }) => handler)
 
   return handlersC
 }

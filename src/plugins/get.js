@@ -3,7 +3,6 @@
 const { getConfigPlugins } = require('./config')
 const { loadAllPlugins } = require('./load')
 const { validateExports } = require('./exports')
-const { validateMissingPlugins } = require('./missing')
 const { validatePluginsConfig } = require('./validate')
 const { applyPluginsDefaults } = require('./defaults')
 
@@ -22,7 +21,6 @@ const REDUCERS = [
   getConfigPlugins,
   loadAllPlugins,
   validateExports,
-  validateMissingPlugins,
   validatePluginsConfig,
   applyPluginsDefaults,
 ]

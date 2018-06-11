@@ -58,6 +58,6 @@ const normalizeHeaderKey = function(key) {
 
 module.exports = {
   keyToLocation,
-  locationToKey,
   keysToObjects,
+  locationToKey,
 }

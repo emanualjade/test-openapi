@@ -1,7 +1,7 @@
 'use strict'
 
 const { setSkippedTasks } = require('./start')
-const { skipTask } = require('./complete')
+const { skipTask } = require('./task')
 const config = require('./config')
 
 module.exports = {

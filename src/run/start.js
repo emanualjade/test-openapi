@@ -4,7 +4,7 @@ const { runHandlers } = require('../plugins')
 
 const { runTask } = require('./task')
 
-// Run all `start` plugins handlers
+// Run each `plugin.start()`
 const startTasks = async function({ config, plugins }) {
   // `runTask()` can be monkey patched
   const { runTask: mRunTask, ...configA } = await runHandlers(

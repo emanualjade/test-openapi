@@ -5,7 +5,7 @@ const { normalizeSpec } = require('./normalize')
 
 // Parse, validate and normalize an OpenAPI specification (including JSON references)
 // then add it to `task.random|validate.*`
-const loadNormalizedSpec = async function({ spec, call: { server } }) {
+const start = async function({ spec, call: { server } }) {
   if (spec === undefined) {
     return
   }
@@ -18,5 +18,5 @@ const loadNormalizedSpec = async function({ spec, call: { server } }) {
 }
 
 module.exports = {
-  loadNormalizedSpec,
+  start,
 }

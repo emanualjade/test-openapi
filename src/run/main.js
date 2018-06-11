@@ -16,11 +16,11 @@ const { getFinalReturn } = require('./final')
 //  - load configuration
 //  - load tasks
 //  - load plugins
-//  - run `start` plugin handlers
+//  - run each `plugin.start()`
 //  - for each task, in parallel:
-//     - run `task` plugin handlers
-//     - run `complete` plugin handlers
-//  - run `end` plugin handlers
+//     - run each `plugin.task()`
+//     - run each `plugin.complete()`
+//  - run each `plugin.end()`
 //  - normalize return value to an array of event objects
 // If any task failed, throw an error instead
 const run = async function(config = {}) {
@@ -70,29 +70,29 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
   return returnValueA
 }
 
-// The following plugins can be run (order in parenthesis).
+// The following plugins can be run (in order).
 // `start`, i.e. before all tasks:
-//   - `glob` (1000): merge tasks whose name include globbing matching other task names.
-//   - `only` (1100): check if `config|task.only` is used
-//   - `skip` (1200): set dry run (`report.output: false`) if `config.skip: *`
-//   - `spec` (1300): parse, validate and normalize an OpenAPI specification
-//   - `report` (1400): start reporting
-//   - `repeat` (1500): repeat each task `config.repeat` times
+//   - `glob`: merge tasks whose name include globbing matching other task names.
+//   - `only`: check if `config|task.only` is used
+//   - `skip`: set dry run (`report.output: false`) if `config.skip: *`
+//   - `spec`: parse, validate and normalize an OpenAPI specification
+//   - `report`: start reporting
+//   - `repeat`: repeat each task `config.repeat` times
 // `task`, i.e. for each task:
-//   - `only` (1000): select tasks according to `config|task.only`
-//   - `skip` (1100): skip task if `task.skip: true`
-//   - `deps` (1200): replace all `deps`, i.e. references to other tasks
-//   - `spec` (1300): add OpenAPI specification to `task.random|validate.*`
-//   - `random` (1400): generates random values based on `task.random.*` JSON schemas
-//   - `serialize` (1500): stringify request parameters
-//   - `url` (1600): build request URL from request parameters
-//   - `call` (1700): fire actual HTTP call
-//   - `parse` (1800): parse response
-//   - `validate` (1900): validate response against `task.validate.*` JSON schemas
+//   - `only`: select tasks according to `config|task.only`
+//   - `skip`: skip task if `task.skip: true`
+//   - `deps`: replace all `deps`, i.e. references to other tasks
+//   - `spec`: add OpenAPI specification to `task.random|validate.*`
+//   - `random`: generates random values based on `task.random.*` JSON schemas
+//   - `serialize`: stringify request parameters
+//   - `url`: build request URL from request parameters
+//   - `call`: fire actual HTTP call
+//   - `parse`: parse response
+//   - `validate`: validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
-//   - `report` (1000): reporting for current task
+//   - `report`: reporting for current task
 // `end`, i.e. after all tasks:
-//   - `report` (1000): end of reporting
+//   - `report`: end of reporting
 
 module.exports = {
   run: eRun,

@@ -3,7 +3,7 @@
 const { runHandlers } = require('../plugins')
 const { addErrorHandler } = require('../errors')
 
-// Run `end` handlers
+// Run each `plugin.end()`
 const endTasks = async function({ tasks, plugins, config }) {
   const events = []
   const { events: eventsA } = await runHandlers({ events }, plugins, 'end', { tasks, config })

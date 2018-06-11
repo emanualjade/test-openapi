@@ -8,7 +8,7 @@ const { normalizeUrl } = require('./normalize')
 const { addQueryParams } = require('./query')
 
 // Build request URL from request parameters
-const addFullUrl = function({
+const task = function({
   call,
   call: {
     request,
@@ -33,5 +33,5 @@ const getFullUrl = function({ rawRequest, config }) {
 }
 
 module.exports = {
-  addFullUrl,
+  task,
 }

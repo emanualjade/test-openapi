@@ -20,25 +20,11 @@
         "pattern": "^(general|task)(\\.[\\w.]+)?$"
       }
     },
-    "handlers": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["start", "task", "complete", "end"]
-          },
-          "handler": {},
-          "order": {
-            "type": "number",
-            "minimum": 0
-          }
-        },
-        "additionalProperties": false
-      }
-    },
+    "start": {},
+    "task": {},
+    "complete": {},
+    "end": {},
     "returnValue": {}
   },
-  "required": ["name", "handlers"]
+  "required": ["name"]
 }

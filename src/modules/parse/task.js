@@ -6,7 +6,7 @@ const { parseFlat } = require('../../utils')
 const { findBodyHandler } = require('../format')
 
 // Parse response
-const parseResponse = function({
+const task = function({
   call,
   call: {
     response: {
@@ -68,5 +68,5 @@ const trimBody = function({ body }) {
 }
 
 module.exports = {
-  parseResponse,
+  task,
 }

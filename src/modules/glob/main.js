@@ -1,14 +1,8 @@
 'use strict'
 
-const { mergeGlobTasks } = require('./start')
+const { start } = require('./start')
 
 module.exports = {
   name: 'glob',
-  handlers: [
-    {
-      type: 'start',
-      handler: mergeGlobTasks,
-      order: 1000,
-    },
-  ],
+  start,
 }

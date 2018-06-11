@@ -4,7 +4,7 @@ const { fireFetch } = require('./fetch')
 const { getFetchResponse } = require('./response')
 
 // Fire actual HTTP call
-const fireHttpCall = async function({
+const task = async function({
   call,
   call: {
     request: { raw: rawRequest },
@@ -19,5 +19,5 @@ const fireHttpCall = async function({
 }
 
 module.exports = {
-  fireHttpCall,
+  task,
 }

@@ -1,14 +1,8 @@
 'use strict'
 
-const { parseResponse } = require('./task')
+const { task } = require('./task')
 
 module.exports = {
   name: 'parse',
-  handlers: [
-    {
-      type: 'task',
-      handler: parseResponse,
-      order: 1800,
-    },
-  ],
+  task,
 }

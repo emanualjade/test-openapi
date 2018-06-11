@@ -8,7 +8,7 @@ const { abortTask } = require('../../errors')
 // the globbing patterns
 // `task.only: true` will only run those tasks
 // Behaves similarly to `skip` plugin
-const selectOnlyTasks = function({
+const task = function({
   only,
   config: {
     only: { patterns, enabled },
@@ -27,5 +27,5 @@ const isOnly = function({ only, patterns, key }) {
 }
 
 module.exports = {
-  selectOnlyTasks,
+  task,
 }

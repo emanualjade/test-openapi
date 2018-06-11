@@ -3,7 +3,7 @@
 const { addErrorHandler } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
-// Run `task` handlers
+// Run each `plugin.task()`
 const bootTask = async function({ task, config, mRunTask, plugins }) {
   const readOnlyArgs = getTaskReadOnlyArgs({ config, mRunTask, plugins })
 

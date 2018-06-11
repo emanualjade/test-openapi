@@ -4,7 +4,7 @@ const { pick } = require('lodash')
 
 const { runHandlers } = require('../plugins')
 
-// Run `complete` handlers
+// Run each `plugin.complete()`
 const completeTask = async function({ returnValue, plugins, config }) {
   const returnValueA = await runHandlers(
     returnValue,

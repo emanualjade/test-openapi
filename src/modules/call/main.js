@@ -1,6 +1,6 @@
 'use strict'
 
-const { fireHttpCall } = require('./task')
+const { task } = require('./task')
 const { config } = require('./config.js')
 const { returnValue } = require('./return')
 const { title, errorProps } = require('./report')
@@ -13,11 +13,5 @@ module.exports = {
     title,
     errorProps,
   },
-  handlers: [
-    {
-      type: 'task',
-      handler: fireHttpCall,
-      order: 1700,
-    },
-  ],
+  task,
 }

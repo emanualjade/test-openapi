@@ -3,50 +3,29 @@
 const { isObject } = require('../../../utils')
 
 // `Content-Type` should be empty if no request body is going to be sent.
-// Otherwise it should be defined.
-const normalizeContentType = function({ params }) {
-  const contentTypeParams = getContentTypeParams({ params })
-  const paramsA = getOtherParams({ params })
-
-  return [...contentTypeParams, ...paramsA]
-}
-
-// Find the `Content-Type` header request parameter, or add one if none
-const getContentTypeParams = function({ params }) {
-  const body = params.find(({ location }) => location === 'body')
-
+// Also add a default one.
+const normalizeContentType = function({
+  call,
+  call: { body },
+  call: { 'headers.content-type': contentTypeParam, ...noBodyCall },
+}) {
   // If there is no request body, there is no `Content-Type` header
   if (body === undefined) {
-    return []
+    return noBodyCall
   }
 
-  const paramsA = params.filter(isContentTypeParam)
-
-  if (paramsA.length === 0) {
-    return getDefaultContentTypeParam({ body })
+  // If there is no `Content-Type`, use a default
+  if (contentTypeParam === undefined) {
+    const contentType = getDefaultContentType({ body })
+    return { ...call, 'headers.content-type': contentType }
   }
 
-  return paramsA
-}
-
-const getOtherParams = function({ params }) {
-  return params.filter(param => !isContentTypeParam(param))
-}
-
-const isContentTypeParam = function({ location, name }) {
-  return location === 'headers' && name.toLowerCase() === 'content-type'
+  return call
 }
 
 // Default `Content-Type` request header if none was specified
-const getDefaultContentTypeParam = function({ body }) {
-  const value = getDefaultContentType({ body })
-  return [{ ...DEFAULT_CONTENT_TYPE, value }]
-}
-
-const DEFAULT_CONTENT_TYPE = { name: 'Content-Type', location: 'headers' }
-
-const getDefaultContentType = function({ body: { value: bodyValue } }) {
-  if (isObject(bodyValue) || Array.isArray(bodyValue)) {
+const getDefaultContentType = function({ body }) {
+  if (isObject(body) || Array.isArray(body)) {
     return DEFAULT_OBJ_MIME
   }
 
@@ -61,5 +40,4 @@ const DEFAULT_NON_OBJ_MIME = 'application/octet-stream'
 
 module.exports = {
   normalizeContentType,
-  isContentTypeParam,
 }

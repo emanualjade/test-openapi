@@ -1,6 +1,5 @@
 'use strict'
 
-const { normalizeParams } = require('./start')
 const { fireHttpCall } = require('./task')
 const { config } = require('./config.js')
 const { returnValue } = require('./return')
@@ -16,11 +15,6 @@ module.exports = {
     errorProps,
   },
   handlers: [
-    {
-      type: 'start',
-      handler: normalizeParams,
-      order: 1300,
-    },
     {
       type: 'task',
       handler: fireHttpCall,

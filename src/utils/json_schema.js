@@ -57,17 +57,15 @@ const validator = getValidator()
 const mValidateFromSchema = memoize(validateFromSchema)
 
 const getJsonSchemaSchema = function() {
-  const schema = omit(JSON_SCHEMA_SCHEMA, ['id', '$schema'])
+  return SCHEMA_FIXES.reduce((schema, fix) => fix(schema), JSON_SCHEMA_SCHEMA)
+}
 
-  const schemaA = fixMultipleOf({ schema })
-
-  const schemaB = fixFormat({ schema: schemaA })
-
-  return schemaB
+const removeId = function(schema) {
+  return omit(schema, ['id', '$schema'])
 }
 
 // `exclusiveMinimum` boolean is not valid in the JSON schema version used by `ajv`
-const fixMultipleOf = function({ schema }) {
+const fixMultipleOf = function(schema) {
   const multipleOf = { type: 'number', exclusiveMinimum: 0 }
 
   return {
@@ -78,11 +76,18 @@ const fixMultipleOf = function({ schema }) {
 }
 
 // `format` is not present in JSON schema v4 meta-schema but is actually allowed
-const fixFormat = function({ schema }) {
+const fixFormat = function(schema) {
   const format = { type: 'string' }
-
   return { ...schema, properties: { ...schema.properties, format } }
 }
+
+// `x-*` custom properties are not present in JSON schema v4 meta-schema but are
+// actually allowed
+const fixCustomProperties = function(schema) {
+  return { ...schema, patternProperties: { '^x-*': {} } }
+}
+
+const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties]
 
 const jsonSchemaSchema = getJsonSchemaSchema()
 

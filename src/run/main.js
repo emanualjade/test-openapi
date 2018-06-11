@@ -75,8 +75,6 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `glob` (1000): merge tasks whose name include globbing matching other task names.
 //   - `only` (1100): select tasks according to `config|task.only`
 //   - `skip` (1200): set `task.skip` according to `config.skip`
-//   - `call` (1300): normalize `task.call.*` object to an array
-//   - `random` (1400): normalize and validate `task.random.*` JSON schemas
 //   - `spec` (1600): parse, validate and normalize an OpenAPI specification
 //   - `report` (1700): start reporting
 //   - `repeat` (1800): repeat each task `config.repeat` times

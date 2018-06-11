@@ -1,25 +1,33 @@
 'use strict'
 
-const { getSpecOperation } = require('./operation')
+const { mergeCall } = require('../../../utils')
 
-// Add OpenAPI specification parameters to `task.call.*`
-const addSpecToRandom = function({ spec, key, call, call: { params }, pluginNames }) {
+const { getSpecOperation } = require('./operation')
+const { removeOptionals } = require('./optional')
+// const { fixRequireds } = require('./required')
+
+// Add OpenAPI specification parameters to `task.random.*`
+const addSpecToRandom = function({ spec, key, random, call, pluginNames }) {
   // Optional dependency
   if (!pluginNames.includes('random')) {
-    return call
+    return random
   }
 
   const specOperation = getSpecOperation({ key, spec })
 
   // Task does not start with an `operationId`
   if (specOperation === undefined) {
-    return call
+    return random
   }
 
-  // Specification params have less priority than `task.call|random.*`
-  const paramsA = [...specOperation.params, ...params]
+  const { params } = specOperation
+  const paramsA = removeOptionals({ params, random, call })
 
-  return { ...call, params: paramsA }
+  // const paramsB = fixRequireds({ params: paramsA, random, call })
+
+  // Specification params have less priority than `task.random.*`
+  const randomA = mergeCall(paramsA, random)
+  return randomA
 }
 
 module.exports = {

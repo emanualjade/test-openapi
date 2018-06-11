@@ -1,6 +1,5 @@
 'use strict'
 
-const { addRandomParams } = require('./start')
 const { generateParams } = require('./task')
 const config = require('./config')
 
@@ -10,11 +9,6 @@ module.exports = {
   config,
   returnValue: false,
   handlers: [
-    {
-      type: 'start',
-      handler: addRandomParams,
-      order: 1400,
-    },
     {
       type: 'task',
       handler: generateParams,

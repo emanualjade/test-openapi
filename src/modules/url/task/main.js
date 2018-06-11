@@ -14,16 +14,17 @@ const addFullUrl = function({
     request,
     request: { raw: rawRequest },
   },
+  config,
 }) {
   const method = getMethod({ rawRequest })
-  const url = getFullUrl({ rawRequest })
+  const url = getFullUrl({ rawRequest, config })
   const requestA = { ...request, raw: { ...rawRequest, url, method } }
 
   return { call: { ...call, request: requestA } }
 }
 
-const getFullUrl = function({ rawRequest }) {
-  const url = getServer({ rawRequest })
+const getFullUrl = function({ rawRequest, config }) {
+  const url = getServer({ rawRequest, config })
   const urlA = addPath({ url, rawRequest })
   const urlB = addUrlParams({ url: urlA, rawRequest })
   const urlC = normalizeUrl({ url: urlB })

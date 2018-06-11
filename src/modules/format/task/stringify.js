@@ -1,60 +1,57 @@
 'use strict'
 
-const { merge } = require('lodash')
+const { omitBy, mapValues } = require('lodash')
 
-const { locationToValue } = require('../../../utils')
+const { keysToObjects, keyToLocation, stringifyFlat } = require('../../../utils')
 
-const { mergeAllParams } = require('./merge')
-const { normalizeContentType, isContentTypeParam } = require('./content_type')
-const { stringifyFlat } = require('./json')
-const { stringifyCollFormat } = require('./collection_format')
+const { normalizeContentType } = require('./content_type')
 const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
-const stringifyParams = function({ call, call: { params } }) {
-  const paramsA = mergeAllParams({ params })
+const stringifyParams = function({ call }) {
+  const callA = removeNull({ call })
 
-  const request = getRequest({ params: paramsA })
+  const callB = normalizeContentType({ call: callA })
 
-  const paramsB = normalizeContentType({ params: paramsA })
+  const request = keysToObjects(callB)
 
-  const paramsC = paramsB.map(param => stringifyParam({ param, params: paramsB }))
-  const rawRequest = merge({}, ...paramsC)
+  const callC = mapValues(callB, stringifyParam)
+
+  const rawRequest = keysToObjects(callC)
   const requestA = { ...request, raw: rawRequest }
 
   return { call: { ...call, request: requestA } }
 }
 
-// Returned as `task.request`
-const getRequest = function({ params }) {
-  const paramsA = params.map(locationToValue)
-  const request = merge({}, ...paramsA)
-  return request
+// Specifying `null` means 'do not send this parameter'.
+// Only applies to top-level value, i.e. should never be an issue.
+// This is useful for:
+//  - removing parameters specified by another plugin, i.e. removing parameters
+//    specified by `spec` plugin
+//  - distinguishing from `?queryVar` (empty string) and no `queryVar` (null)
+//  - being consistent with `validate` plugin, which use `null` to specify
+//    'should not be defined'
+// When used with `random` plugin, parameters can be randomly generated or not
+// using `type: ['null', ...]`
+const removeNull = function({ call }) {
+  return omitBy(call, value => value === null)
 }
 
-const stringifyParam = function({ param, param: { location, name }, params }) {
-  const value = PARAM_STRINGIFIERS[location]({ param, params })
-  const valueA = locationToValue({ location, name, value })
-  return valueA
+const stringifyParam = function(value, key, call) {
+  const { location } = keyToLocation({ key })
+  return PARAM_STRINGIFIERS[location]({ value, call })
 }
 
 // `url`, `query` and `header` values might not be strings.
 // In which case they are JSON stringified
-// Unless a `collectionFormat` is used
-const stringifyParamFlat = function({ param: { value, name, collectionFormat } }) {
-  if (Array.isArray(value)) {
-    return stringifyCollFormat({ value, collectionFormat, name })
-  }
-
+const stringifyParamFlat = function({ value }) {
   return stringifyFlat(value)
 }
 
 // Stringify the request body according to HTTP request header `Content-Type`
-const stringifyBody = function({ param: { value }, params }) {
-  const { value: mime } = params.find(isContentTypeParam)
-
+const stringifyBody = function({ value, call: { 'headers.content-type': contentType } }) {
   // Default stringifiers tries JSON.stringify()
-  const { stringify = stringifyFlat } = findBodyHandler({ mime })
+  const { stringify = stringifyFlat } = findBodyHandler({ mime: contentType })
 
   return stringify(value)
 }

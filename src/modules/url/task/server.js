@@ -4,8 +4,13 @@ const { env } = require('process')
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
-const getServer = function({ rawRequest: { server = getDefaultServer() } }) {
+const getServer = function({ rawRequest, config }) {
+  const server = getServerValue({ rawRequest, config })
   return server.replace(TRAILING_SLASH_REGEXP, '')
+}
+
+const getServerValue = function({ rawRequest, config }) {
+  return rawRequest.server || config.call.server || getDefaultServer()
 }
 
 const getDefaultServer = function() {

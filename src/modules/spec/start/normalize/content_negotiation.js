@@ -6,8 +6,7 @@ const { filterFormDataMimes } = require('./form_data')
 const getNegotiationsParams = function({ spec, operation, params }) {
   const contentType = getContentTypeParam({ spec, operation, params })
   const accept = getAcceptParam({ spec, operation })
-  const headers = [contentType, accept].filter(header => header !== undefined)
-  return headers
+  return { ...contentType, ...accept }
 }
 
 // Get `consumes` and `produces` OpenAPI properties as header parameters instead
@@ -15,13 +14,12 @@ const getNegotiationsParams = function({ spec, operation, params }) {
 const getContentTypeParam = function({ spec, operation, params }) {
   const consumes = getConsumes({ spec, operation })
   const consumesA = filterFormDataMimes({ mimes: consumes, params })
-
   if (consumesA === undefined) {
     return
   }
 
-  const value = { type: 'string', enum: consumesA }
-  return { name: 'Content-Type', value, location: 'headers', random: 'shallow' }
+  const value = { type: 'string', enum: consumesA, 'x-required': true }
+  return { 'headers.content-type': value }
 }
 
 // But the Accept header is always the same
@@ -31,8 +29,9 @@ const getAcceptParam = function({ spec, operation }) {
     return
   }
 
-  const value = produces.join(',')
-  return { name: 'Accept', value, location: 'headers' }
+  const accept = produces.join(',')
+  const value = { type: 'string', enum: [accept], 'x-required': true }
+  return { 'headers.accept': value }
 }
 
 // Get OpenAPI `produces` property as a `Content-Type` response header

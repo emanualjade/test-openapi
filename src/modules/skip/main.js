@@ -1,6 +1,6 @@
 'use strict'
 
-const { setSkippedTasks } = require('./start')
+const { setDryRun } = require('./start')
 const { skipTask } = require('./task')
 const config = require('./config')
 
@@ -13,7 +13,7 @@ module.exports = {
   handlers: [
     {
       type: 'start',
-      handler: setSkippedTasks,
+      handler: setDryRun,
       order: 1200,
     },
     {

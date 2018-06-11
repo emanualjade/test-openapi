@@ -10,12 +10,6 @@
         "type": "string"
       }
     },
-    "overrides": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "config": {
       "type": "object",
       "additionalProperties": {

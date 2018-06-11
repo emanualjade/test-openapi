@@ -3,7 +3,6 @@
 const { getConfigPlugins } = require('./config')
 const { loadAllPlugins } = require('./load')
 const { validateExports } = require('./exports')
-const { removeOverrides } = require('./overrides')
 const { validateMissingPlugins } = require('./missing')
 const { validatePluginsConfig } = require('./validate')
 const { applyPluginsDefaults } = require('./defaults')
@@ -23,7 +22,6 @@ const REDUCERS = [
   getConfigPlugins,
   loadAllPlugins,
   validateExports,
-  removeOverrides,
   validateMissingPlugins,
   validatePluginsConfig,
   applyPluginsDefaults,
@@ -40,9 +38,6 @@ const REDUCERS = [
 
 // `plugin.optionalDependencies` `{string[]}`
 // Other plugins optionally used by this plugin
-
-// `plugin.overrides` `{string[]}`
-// List of plugins that should be disabled if this plugin is used
 
 // `plugin.handlers` `{array}`
 // Handlers are the functions fired by each plugin. This is where the logic is.

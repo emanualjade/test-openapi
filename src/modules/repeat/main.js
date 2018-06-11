@@ -5,7 +5,6 @@ const config = require('./config')
 
 module.exports = {
   name: 'repeat',
-  dependencies: [],
   config,
   returnValue: true,
   handlers: [

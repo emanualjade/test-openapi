@@ -33,12 +33,6 @@ const REDUCERS = [
 // `plugin.name` `{string}`
 // Name of the plugin. Should match the module name, e.g. `test-openapi-plugin-NAME`
 
-// `plugin.dependencies` `{string[]}`
-// Other plugins required by this plugin to properly work
-
-// `plugin.optionalDependencies` `{string[]}`
-// Other plugins optionally used by this plugin
-
 // `plugin.handlers` `{array}`
 // Handlers are the functions fired by each plugin. This is where the logic is.
 // The goal of each handler is to usually to modify its input (first argument).

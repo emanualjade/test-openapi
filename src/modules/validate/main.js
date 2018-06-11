@@ -5,7 +5,6 @@ const config = require('./config')
 
 module.exports = {
   name: 'validate',
-  dependencies: ['call'],
   config,
   handlers: [
     {

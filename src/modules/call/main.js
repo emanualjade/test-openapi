@@ -7,7 +7,6 @@ const { title, errorProps } = require('./report')
 
 module.exports = {
   name: 'call',
-  dependencies: ['format', 'url'],
   config,
   returnValue,
   report: {

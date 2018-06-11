@@ -9,6 +9,8 @@ const getConfigPlugins = function({ config: { plugins, ...config } }) {
 // Plugins always included
 const DEFAULT_PLUGINS = [
   'call',
+  'url',
+  'format',
   'random',
   'validate',
   'spec',

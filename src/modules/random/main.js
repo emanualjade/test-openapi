@@ -5,7 +5,6 @@ const config = require('./config')
 
 module.exports = {
   name: 'random',
-  dependencies: ['call'],
   config,
   returnValue: false,
   handlers: [

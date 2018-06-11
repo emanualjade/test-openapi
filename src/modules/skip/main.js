@@ -6,8 +6,6 @@ const config = require('./config')
 
 module.exports = {
   name: 'skip',
-  dependencies: [],
-  optionalDependencies: ['report'],
   config,
   returnValue: true,
   handlers: [

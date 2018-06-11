@@ -6,7 +6,6 @@ const config = require('./config')
 
 module.exports = {
   name: 'only',
-  dependencies: [],
   config,
   returnValue: true,
   handlers: [

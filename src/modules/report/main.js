@@ -7,7 +7,6 @@ const config = require('./config')
 
 module.exports = {
   name: 'report',
-  dependencies: [],
   config,
   handlers: [
     {

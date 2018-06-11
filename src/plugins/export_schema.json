@@ -4,12 +4,6 @@
     "name": {
       "type": "string"
     },
-    "dependencies": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      }
-    },
     "config": {
       "type": "object",
       "additionalProperties": {

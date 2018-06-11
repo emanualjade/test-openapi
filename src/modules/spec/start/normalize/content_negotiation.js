@@ -18,7 +18,7 @@ const getContentTypeParam = function({ spec, operation, params }) {
     return
   }
 
-  const value = { type: 'string', enum: consumesA, 'x-required': true }
+  const value = { type: 'string', enum: consumesA }
   return { 'headers.content-type': value }
 }
 
@@ -30,7 +30,7 @@ const getAcceptParam = function({ spec, operation }) {
   }
 
   const accept = produces.join(',')
-  const value = { type: 'string', enum: [accept], 'x-required': true }
+  const value = { type: 'string', enum: [accept] }
   return { 'headers.accept': value }
 }
 

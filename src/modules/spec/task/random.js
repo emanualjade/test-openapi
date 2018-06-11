@@ -4,7 +4,6 @@ const { mergeCall } = require('../../../utils')
 
 const { getSpecOperation } = require('./operation')
 const { removeOptionals } = require('./optional')
-// const { fixRequireds } = require('./required')
 
 // Add OpenAPI specification parameters to `task.random.*`
 const addSpecToRandom = function({ spec, key, random, call, pluginNames }) {
@@ -21,9 +20,8 @@ const addSpecToRandom = function({ spec, key, random, call, pluginNames }) {
   }
 
   const { params } = specOperation
-  const paramsA = removeOptionals({ params, random, call })
 
-  // const paramsB = fixRequireds({ params: paramsA, random, call })
+  const paramsA = removeOptionals({ params, random, call })
 
   // Specification params have less priority than `task.random.*`
   const randomA = mergeCall(paramsA, random)

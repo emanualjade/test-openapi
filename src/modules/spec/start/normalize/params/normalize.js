@@ -27,7 +27,7 @@ const normalizeParam = function({
 
   const schemaA = getSchema({ schema })
 
-  const schemaB = { ...schemaA, 'x-required': required }
+  const schemaB = { ...schemaA, optional: !required }
 
   const schemaC = addSeparator({ schema: schemaB, collectionFormat })
 

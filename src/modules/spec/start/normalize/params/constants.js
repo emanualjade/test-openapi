@@ -22,7 +22,7 @@ const getServerParam = function({ spec: { host: hostname, basePath }, server }) 
 }
 
 const getConstant = function({ value, key }) {
-  return { [key]: { type: 'string', enum: [value], 'x-required': true } }
+  return { [key]: { type: 'string', enum: [value] } }
 }
 
 module.exports = {

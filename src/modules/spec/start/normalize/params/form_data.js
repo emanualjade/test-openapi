@@ -24,17 +24,12 @@ const splitParams = function({ params }) {
   return { formDataParams, params: paramsA }
 }
 
-const getBodyParam = function({ formDataParams }) {
-  const value = getBodyValue({ formDataParams })
-  // OpenAPI 2.0 `formData` parameters can be individually made required, but the
-  // specification does not prescribe whether the request body is required or not.
-  // So we assume it is.
-  return { ...value, 'x-required': true }
-}
-
 // Transforms formData parameters to JSON schema:
 //   { type: 'object', properties: { one: { ... }, two: { ... } }, required: ['one'] }
-const getBodyValue = function({ formDataParams }) {
+// OpenAPI 2.0 `formData` parameters can be individually made required, but the
+// specification does not prescribe whether the request body is required or not.
+// So we assume it is.
+const getBodyParam = function({ formDataParams }) {
   const properties = mapKeys(formDataParams, (value, key) => removeFormDataPrefix(key))
   const required = getRequired({ properties })
   return { type: 'object', properties, required }
@@ -42,7 +37,7 @@ const getBodyValue = function({ formDataParams }) {
 
 const getRequired = function({ properties }) {
   return Object.entries(properties)
-    .filter(([, { 'x-required': required }]) => required)
+    .filter(([, { optional }]) => !optional)
     .map(([key]) => key)
 }
 

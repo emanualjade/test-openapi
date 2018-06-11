@@ -1,6 +1,7 @@
 'use strict'
 
-const { selectOnlyTasks } = require('./start')
+const { checkOnlyRun } = require('./start')
+const { selectOnlyTasks } = require('./task')
 const config = require('./config')
 
 module.exports = {
@@ -11,8 +12,13 @@ module.exports = {
   handlers: [
     {
       type: 'start',
-      handler: selectOnlyTasks,
+      handler: checkOnlyRun,
       order: 1100,
+    },
+    {
+      type: 'task',
+      handler: selectOnlyTasks,
+      order: 900,
     },
   ],
 }

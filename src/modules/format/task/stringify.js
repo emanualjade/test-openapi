@@ -3,9 +3,9 @@
 const { omitBy, mapValues } = require('lodash')
 
 const { keysToObjects, keyToLocation, stringifyFlat } = require('../../../utils')
+const { findBodyHandler } = require('../body')
 
 const { normalizeContentType } = require('./content_type')
-const { findBodyHandler } = require('./body')
 
 // Stringify request parameters
 const stringifyParams = function({ call }) {

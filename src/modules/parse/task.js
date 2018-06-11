@@ -2,8 +2,8 @@
 
 const { mapValues } = require('lodash')
 
-const { parseFlat } = require('../../../utils')
-const { findBodyHandler } = require('../body')
+const { parseFlat } = require('../../utils')
+const { findBodyHandler } = require('../format')
 
 // Parse response
 const parseResponse = function({

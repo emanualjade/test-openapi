@@ -3,12 +3,12 @@
 const { omitBy, mapValues } = require('lodash')
 
 const { keysToObjects, keyToLocation, stringifyFlat } = require('../../../utils')
-const { findBodyHandler } = require('../body')
+const { findBodyHandler } = require('../../format')
 
 const { normalizeContentType } = require('./content_type')
 
 // Stringify request parameters
-const stringifyParams = function({ call }) {
+const serializeParams = function({ call }) {
   const callA = removeNull({ call })
 
   const callB = normalizeContentType({ call: callA })
@@ -67,5 +67,5 @@ const PARAM_STRINGIFIERS = {
 }
 
 module.exports = {
-  stringifyParams,
+  serializeParams,
 }

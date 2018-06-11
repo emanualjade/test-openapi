@@ -15,9 +15,10 @@ const DEFAULT_PLUGINS = [
   'deps',
   'spec',
   'random',
-  'format',
+  'serialize',
   'url',
   'call',
+  'parse',
   'validate',
 
   'report',

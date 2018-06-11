@@ -84,10 +84,10 @@ const fireTask = async function({ task, config, mRunTask, plugins }) {
 //   - `deps` (1200): replace all `deps`, i.e. references to other tasks
 //   - `spec` (1300): add OpenAPI specification to `task.random|validate.*`
 //   - `random` (1400): generates random values based on `task.random.*` JSON schemas
-//   - `format` (1500): stringify request parameters
+//   - `serialize` (1500): stringify request parameters
 //   - `url` (1600): build request URL from request parameters
 //   - `call` (1700): fire actual HTTP call
-//   - `format` (1800): parse response
+//   - `parse` (1800): parse response
 //   - `validate` (1900): validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
 //   - `report` (1000): reporting for current task

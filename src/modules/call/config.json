@@ -41,7 +41,7 @@
       "patternProperties": {
         "^url\\..+": {},
         "^query\\..+": {},
-        "^headers\\..+": {}
+        "^headers\\.[^A-Z]+": {}
       },
       "additionalProperties": false
     },

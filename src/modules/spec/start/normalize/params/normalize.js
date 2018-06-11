@@ -22,16 +22,24 @@ const normalizeParam = function({
   collectionFormat,
   ...schema
 }) {
+  const key = getParamKey({ name, paramIn })
+  const schemaA = getParamSchema({ schema, required, collectionFormat })
+  return { [key]: schemaA }
+}
+
+const getParamKey = function({ name, paramIn }) {
   const location = IN_TO_LOCATION[paramIn]
   const key = locationToKey({ name, location })
+  return key
+}
 
+const getParamSchema = function({ schema, required, collectionFormat }) {
   const schemaA = getSchema({ schema })
 
   const schemaB = { ...schemaA, optional: !required }
 
   const schemaC = addSeparator({ schema: schemaB, collectionFormat })
-
-  return { [key]: schemaC }
+  return schemaC
 }
 
 // Normalize OpenAPI `in` to the same keys as `task.params.*`

@@ -39,11 +39,22 @@ const locationToKey = function({ location, name }) {
     return location
   }
 
-  return `${location}.${name}`
+  const key = `${location}.${name}`
+  const keyA = normalizeHeaderKey(key)
+  return keyA
 }
 
 // Those locations do not use dot notations
 const SINGLE_NAME_LOCATIONS = ['method', 'server', 'path', 'body']
+
+// Headers are normalized to lowercase, to make them case-insensitive
+const normalizeHeaderKey = function(key) {
+  if (!key.startsWith('headers.')) {
+    return key
+  }
+
+  return key.toLowerCase()
+}
 
 module.exports = {
   keyToLocation,

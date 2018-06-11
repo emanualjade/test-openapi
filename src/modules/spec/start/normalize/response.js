@@ -26,7 +26,7 @@ const getResponseHeaders = function({ response: { headers = {} }, spec, operatio
   const contentNegotiations = getNegotiationsResponse({ spec, operation })
   const headersB = { ...contentNegotiations, ...headersA }
 
-  const headersC = mapKeys(headersB, addHeaderPrefix)
+  const headersC = mapKeys(headersB, normalizeHeaderKey)
   return headersC
 }
 
@@ -38,8 +38,9 @@ const getResponseHeader = function(value) {
   return schemaA
 }
 
-const addHeaderPrefix = function(value, name) {
-  return `headers.${name}`
+const normalizeHeaderKey = function(value, name) {
+  const nameA = name.toLowerCase()
+  return `headers.${nameA}`
 }
 
 module.exports = {

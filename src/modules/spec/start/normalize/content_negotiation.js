@@ -41,7 +41,7 @@ const getNegotiationsResponse = function({ spec, operation }) {
     return
   }
 
-  return { 'Content-Type': { type: 'string', enum: produces } }
+  return { 'content-type': { type: 'string', enum: produces } }
 }
 
 const getConsumes = function({

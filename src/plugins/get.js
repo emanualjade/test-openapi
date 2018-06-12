@@ -4,7 +4,6 @@ const { getConfigPlugins } = require('./config')
 const { loadAllPlugins } = require('./load')
 const { validateExports } = require('./exports')
 const { validatePluginsConfig } = require('./schema')
-const { applyPluginsDefaults } = require('./defaults')
 
 // Find all plugins
 // Also validate their configuration and apply their defaults to the configuration
@@ -17,24 +16,16 @@ const applyReducer = function(input, reducer) {
   return { ...input, ...output }
 }
 
-const REDUCERS = [
-  getConfigPlugins,
-  loadAllPlugins,
-  validateExports,
-  validatePluginsConfig,
-  applyPluginsDefaults,
-]
+const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePluginsConfig]
 
 // Plugins are the way most functionalities is implemented.
 // A plugin is a plain object that exports the following properties.
 
 // `plugin.config.general` `{object}`
 // JSON schema describing the plugin general configuration at `config.PLUGIN`
-// Can include `default` values
 
 // `plugin.config.task` `{object}`
 // JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
-// Can include `default` values
 
 // `plugin.start|task|complete|end` `{function}`
 // Handlers are the functions fired by each plugin. This is where the logic is.

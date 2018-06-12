@@ -1,7 +1,6 @@
 {
   "general": {
-    "type": "object",
-    "default": {}
+    "type": "object"
   },
   "general.output": {
     "type": ["boolean", "string"],

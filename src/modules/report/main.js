@@ -6,7 +6,6 @@ const { end } = require('./end')
 const config = require('./config')
 
 module.exports = {
-  name: 'report',
   config,
   start,
   complete,

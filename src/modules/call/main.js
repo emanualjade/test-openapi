@@ -6,7 +6,6 @@ const { returnValue } = require('./return')
 const { title, errorProps } = require('./report')
 
 module.exports = {
-  name: 'call',
   config,
   returnValue,
   report: {

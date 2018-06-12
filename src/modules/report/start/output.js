@@ -12,14 +12,14 @@ const addOutput = async function({ report }) {
 }
 
 const getOutput = async function({ report: { output } }) {
+  // When `config.tap.output` is `undefined` (default), write to `stdout`
+  if (output === undefined) {
+    return stdout
+  }
+
   // When `config.tap.output` is `false`, silent output
   if (String(output) === 'false') {
     return false
-  }
-
-  // When `config.tap.output` is `true` (default), write to `stdout`
-  if (String(output) === 'true') {
-    return stdout
   }
 
   // When `config.tap.output` is a string, write to a file

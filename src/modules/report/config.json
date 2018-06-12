@@ -3,8 +3,7 @@
     "type": "object"
   },
   "general.output": {
-    "type": ["boolean", "string"],
-    "default": true
+    "type": ["boolean", "string"]
   },
   "general.styles": {
     "type": "array",

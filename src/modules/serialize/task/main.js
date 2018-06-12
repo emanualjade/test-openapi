@@ -8,7 +8,7 @@ const { findBodyHandler } = require('../../format')
 const { normalizeContentType } = require('./content_type')
 
 // Stringify request parameters
-const task = function({ call }) {
+const task = function({ call = {} }) {
   const callA = removeNull({ call })
 
   const callB = normalizeContentType({ call: callA })

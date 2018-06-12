@@ -8,8 +8,7 @@
     "patternProperties": {
       "^headers\\..+": {}
     },
-    "additionalProperties": false,
-    "default": {}
+    "additionalProperties": false
   },
   "task.status": {}
 }

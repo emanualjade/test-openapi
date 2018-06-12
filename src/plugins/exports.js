@@ -20,7 +20,7 @@ const validateSchema = function({ plugin, plugin: { name } }) {
     return
   }
 
-  const message = `Plugin '${plugin}' is invalid:${error}`
+  const message = `Plugin '${name}' is invalid: ${error}`
   throwPluginError({ plugin: name, message })
 }
 
@@ -41,7 +41,7 @@ const validateJsonSchema = function({ schema, plugin, propName }) {
     return
   }
 
-  const message = `Plugin '${plugin}' is invalid: '${name}' is not a valid JSON schema:${error}`
+  const message = `Plugin '${plugin}' is invalid: '${name}' is not a valid JSON schema: ${error}`
   throwPluginError({ plugin, message })
 }
 

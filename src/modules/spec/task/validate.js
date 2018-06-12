@@ -1,11 +1,12 @@
 'use strict'
 
+const { hasOptionalDependency } = require('../../../utils')
+
 const { getSpecResponse } = require('./operation')
 
 // Add OpenAPI specification to `task.validate.*`
-const addSpecToValidate = function({ spec, key, validate, validate: { byStatus } = {} }) {
-  // Optional dependency
-  if (validate === undefined) {
+const addSpecToValidate = function({ spec, key, validate, validate: { byStatus } = {}, plugins }) {
+  if (!hasOptionalDependency({ plugins, name: 'validate' })) {
     return
   }
 

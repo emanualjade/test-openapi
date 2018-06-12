@@ -2,17 +2,16 @@
 
 const { mergeAll } = require('lodash/fp')
 
+const { hasOptionalDependency } = require('../../../utils')
+
 const { getSpecOperation } = require('./operation')
 const { removeOptionals } = require('./optional')
 
 // Add OpenAPI specification parameters to `task.random.*`
-const addSpecToRandom = function({ spec, key, random, call }) {
-  // Optional dependency
-  /*
-  if (random === undefined) {
+const addSpecToRandom = function({ spec, key, random, call, plugins }) {
+  if (!hasOptionalDependency({ plugins, name: 'random' })) {
     return
   }
-  */
 
   const specOperation = getSpecOperation({ key, spec })
 

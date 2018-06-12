@@ -9,4 +9,5 @@ module.exports = {
   ...require('./location'),
   ...require('./json_schema'),
   ...require('./flat'),
+  ...require('./plugins'),
 }

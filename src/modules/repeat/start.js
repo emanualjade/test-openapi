@@ -4,10 +4,12 @@
 // If used with `random` plugin, each time will use different random parameters
 // It will be reported only as a single task.
 // Run all tasks in parallel.
-const start = function({ repeat, runTask }) {
+const start = function({ repeat = DEFAULT_REPEAT, runTask }) {
   const runTaskA = repeatTask.bind(null, { repeat, runTask })
   return { runTask: runTaskA }
 }
+
+const DEFAULT_REPEAT = 10
 
 const repeatTask = async function({ repeat, runTask }, task, opts, ...args) {
   if (opts.readOnlyArgs.isNested) {

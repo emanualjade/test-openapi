@@ -1,15 +1,11 @@
 {
   "general": {
-    "schema": {
-      "type": "integer",
-      "minimum": 1,
-      "default": 10
-    }
+    "type": "integer",
+    "minimum": 1,
+    "default": 10
   },
   "task": {
-    "schema": {
-      "type": "integer",
-      "minimum": 1
-    }
+    "type": "integer",
+    "minimum": 1
   }
 }

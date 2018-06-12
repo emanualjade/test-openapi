@@ -1,21 +1,17 @@
 {
   "task": {
-    "schema": {
-      "type": "object",
-      "properties": {
-        "status": {},
-        "body": {}
-      },
-      "patternProperties": {
-        "^headers\\..+": {}
-      },
-      "additionalProperties": false,
-      "default": {}
-    }
+    "type": "object",
+    "properties": {
+      "status": {},
+      "body": {}
+    },
+    "patternProperties": {
+      "^headers\\..+": {}
+    },
+    "additionalProperties": false,
+    "default": {}
   },
   "task.status": {
-    "schema": {
-      "default": 200
-    }
+    "default": 200
   }
 }

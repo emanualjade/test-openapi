@@ -8,7 +8,7 @@ const UPPERCASE_METHODS = METHODS.map(method => method.toUpperCase())
 
 // Add all allowed HTTP methods to config validation
 const validateHttpMethods = function({ config }) {
-  config.task.schema.properties.method.enum = [...METHODS, ...UPPERCASE_METHODS]
+  config.task.properties.method.enum = [...METHODS, ...UPPERCASE_METHODS]
 
   return config
 }

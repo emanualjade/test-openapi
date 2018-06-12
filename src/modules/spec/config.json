@@ -1,7 +1,5 @@
 {
   "general": {
-    "schema": {
-      "type": ["string", "object"]
-    }
+    "type": ["string", "object"]
   }
 }

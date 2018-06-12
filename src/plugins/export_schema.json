@@ -7,13 +7,7 @@
     "config": {
       "type": "object",
       "additionalProperties": {
-        "type": "object",
-        "properties": {
-          "schema": {
-            "type": "object"
-          }
-        },
-        "additionalProperties": false
+        "type": "object"
       },
       "propertyNames": {
         "pattern": "^(general|task)(\\.[\\w.]+)?$"

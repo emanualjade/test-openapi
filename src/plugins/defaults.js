@@ -33,11 +33,11 @@ const getPluginDefaults = function({ plugin: { name, config: pluginConfig = {} }
     .map(configEntry => getDefaults(type, configEntry, name))
 }
 
-const hasDefaults = function(type, [configName, { schema: { default: defaultValue } = {} }]) {
+const hasDefaults = function(type, [configName, { default: defaultValue }]) {
   return configName.startsWith(type) && defaultValue !== undefined
 }
 
-const getDefaults = function(type, [configName, { schema: { default: defaultValue } = {} }], name) {
+const getDefaults = function(type, [configName, { default: defaultValue }], name) {
   const path = configName.replace(type, name)
   return set({}, path, defaultValue)
 }

@@ -1,23 +1,19 @@
 {
   "general": {
-    "schema": {
-      "oneOf": [
-        {
+    "oneOf": [
+      {
+        "type": "string"
+      },
+      {
+        "type": "array",
+        "items": {
           "type": "string"
-        },
-        {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
         }
-      ]
-    }
+      }
+    ]
   },
   "task": {
-    "schema": {
-      "type": "boolean",
-      "default": false
-    }
+    "type": "boolean",
+    "default": false
   }
 }

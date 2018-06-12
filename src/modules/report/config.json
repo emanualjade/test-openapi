@@ -1,29 +1,21 @@
 {
   "general": {
-    "schema": {
-      "type": "object",
-      "default": {}
-    }
+    "type": "object",
+    "default": {}
   },
   "general.output": {
-    "schema": {
-      "type": ["boolean", "string"],
-      "default": true
-    }
+    "type": ["boolean", "string"],
+    "default": true
   },
   "general.styles": {
-    "schema": {
-      "type": "array",
-      "items": {
-        "type": "string"
-      },
-      "default": ["min"]
-    }
+    "type": "array",
+    "items": {
+      "type": "string"
+    },
+    "default": ["min"]
   },
   "general.options": {
-    "schema": {
-      "type": "object",
-      "default": {}
-    }
+    "type": "object",
+    "default": {}
   }
 }

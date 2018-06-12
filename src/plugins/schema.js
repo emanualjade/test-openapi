@@ -11,7 +11,7 @@ const validatePluginsConfig = function({ config, plugins }) {
 }
 
 const validatePluginConfig = function({ config, plugin: { config: pluginConfig = {}, name } }) {
-  Object.entries(pluginConfig).forEach(([propName, { schema }]) =>
+  Object.entries(pluginConfig).forEach(([propName, schema]) =>
     validatePropConfig({ config, propName, schema, name }),
   )
 }

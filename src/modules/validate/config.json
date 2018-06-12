@@ -9,6 +9,5 @@
       "^headers\\..+": {}
     },
     "additionalProperties": false
-  },
-  "task.status": {}
+  }
 }

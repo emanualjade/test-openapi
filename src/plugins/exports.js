@@ -25,7 +25,7 @@ const validateSchema = function({ plugin, plugin: { name } }) {
 }
 
 const validateJsonSchemas = function({ plugin: { name: plugin, config: pluginConfig = {} } }) {
-  Object.entries(pluginConfig).forEach(([propName, { schema }]) =>
+  Object.entries(pluginConfig).forEach(([propName, schema]) =>
     validateJsonSchema({ schema, plugin, propName }),
   )
 }

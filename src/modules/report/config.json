@@ -1,17 +1,20 @@
 {
   "general": {
-    "type": "object"
-  },
-  "general.output": {
-    "type": ["boolean", "string"]
-  },
-  "general.styles": {
-    "type": "array",
-    "items": {
-      "type": "string"
-    }
-  },
-  "general.options": {
-    "type": "object"
+    "type": "object",
+    "properties": {
+      "output": {
+        "type": ["boolean", "string"]
+      },
+      "styles": {
+        "type": "array",
+        "items": {
+          "type": "string"
+        }
+      },
+      "options": {
+        "type": "object"
+      }
+    },
+    "additionalProperties": false
   }
 }

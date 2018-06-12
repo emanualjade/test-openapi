@@ -2,16 +2,14 @@
   "general": {
     "type": "object",
     "properties": {
-      "server": {},
-      "timeout": {}
+      "server": {
+        "type": "string"
+      },
+      "timeout": {
+        "type": "integer"
+      }
     },
     "additionalProperties": false
-  },
-  "general.server": {
-    "type": "string"
-  },
-  "general.timeout": {
-    "type": "integer"
   },
   "task": {
     "type": "object",

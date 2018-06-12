@@ -10,38 +10,32 @@ const validatePluginsConfig = function({ config, plugins }) {
   plugins.forEach(plugin => validatePluginConfig({ config, plugin }))
 }
 
-const validatePluginConfig = function({ config, plugin: { config: pluginConfig = {}, name } }) {
-  Object.entries(pluginConfig).forEach(([propName, schema]) =>
-    validatePropConfig({ config, propName, schema, name }),
+const validatePluginConfig = function({
+  config,
+  plugin: { config: pluginConfig = {}, name: plugin },
+}) {
+  Object.entries(pluginConfig).forEach(([name, schema]) =>
+    validatePropConfig({ config, schema, name, plugin }),
   )
 }
 
-const validatePropConfig = function({ config, propName, schema, name }) {
+const validatePropConfig = function({ config, schema, name, plugin }) {
   // Validation not set for that property
   if (!isObject(schema)) {
     return
   }
 
-  const { path, type } = getPropPath({ propName, name })
-
-  VALIDATORS[type]({ config, path, schema })
-}
-
-// From `general.example` to `{ path: 'pluginName.example', type: 'general' }`
-const getPropPath = function({ propName, name }) {
-  const [type, ...propNameA] = propName.split('.')
-  const path = [name, ...propNameA].join('.')
-  return { path, type }
+  VALIDATORS[name]({ config, schema, name, plugin })
 }
 
 // `plugin.config.general.*` validate against top-level configuration
-const validateGeneral = function({ config, path, schema }) {
-  validateProp({ taskOrConfig: config, path, schema, name: 'config' })
+const validateGeneral = function({ config, schema, name, plugin }) {
+  validateProp({ taskOrConfig: config, schema, name, plugin })
 }
 
 // `plugin.config.task.*` validate against each task
-const validateTask = function({ config: { tasks }, path, schema }) {
-  tasks.forEach(task => validateProp({ taskOrConfig: task, path, schema, name: 'task' }))
+const validateTask = function({ config: { tasks }, schema, name, plugin }) {
+  tasks.forEach(task => validateProp({ taskOrConfig: task, schema, name, plugin }))
 }
 
 const VALIDATORS = {
@@ -51,13 +45,15 @@ const VALIDATORS = {
 
 // Validate plugin-specific configuration against a JSON schema specified in
 // `plugin.config`
-const validateProp = function({ taskOrConfig, path, schema, name }) {
-  const value = get(taskOrConfig, path)
+const validateProp = function({ taskOrConfig, schema, name, plugin }) {
+  const value = get(taskOrConfig, plugin)
   if (value === undefined) {
     return
   }
 
-  const { error } = validateFromSchema({ schema, value, name: `${name}.${path}` })
+  const property = `${name}.${plugin}`
+
+  const { error } = validateFromSchema({ schema, value, name: property })
   if (error === undefined) {
     return
   }
@@ -65,7 +61,7 @@ const validateProp = function({ taskOrConfig, path, schema, name }) {
   const { key, taskMessage } = getTaskProps({ task: taskOrConfig, name })
 
   throw new TestOpenApiError(`Configuration ${taskMessage}is invalid: ${error}`, {
-    property: path,
+    property,
     key,
     schema,
     actual: value,

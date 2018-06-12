@@ -1,7 +1,5 @@
 'use strict'
 
-const { omit } = require('lodash')
-
 const { convertPlainObject } = require('../../../../errors')
 const { getSummary } = require('../../utils')
 
@@ -9,21 +7,21 @@ const { getSummary } = require('../../utils')
 const end = function({ options: { spinner }, tasks }) {
   spinner.stop()
 
-  const report = getReport({ tasks })
-  const reportA = JSON.stringify(report, null, 2)
-  return reportA
+  const tasksA = getTasks({ tasks })
+  const tasksB = JSON.stringify(tasksA, null, 2)
+  return tasksB
 }
 
-const getReport = function({ tasks }) {
+const getTasks = function({ tasks }) {
   const summary = getSummary({ tasks })
   const tasksA = tasks.map(getTask)
 
   return { summary, tasks: tasksA }
 }
 
-const getTask = function({ task, error }) {
-  const errorA = getError({ error })
-  return { ...task, error: errorA }
+const getTask = function(task) {
+  const error = getError(task)
+  return { ...task, error }
 }
 
 const getError = function({ error }) {
@@ -31,9 +29,7 @@ const getError = function({ error }) {
     return
   }
 
-  const errorA = convertPlainObject(error)
-  const errorB = omit(errorA, ['task'])
-  return errorB
+  return convertPlainObject(error)
 }
 
 module.exports = {

@@ -6,7 +6,9 @@ const { checkArgument } = require('./check')
 
 // TAP assert
 const assert = function({ ok, name = '', directive = {}, error }) {
-  const index = updateState.call(this, { ok, directive })
+  const category = getCategory({ ok, directive })
+
+  const index = updateState.call(this, { category })
 
   const okString = getOk({ ok })
 
@@ -16,16 +18,8 @@ const assert = function({ ok, name = '', directive = {}, error }) {
 
   const errorProps = getErrorProps({ ok, error })
 
-  const color = COLORS[ok]
+  const color = COLORS[category]
   return this.colors[color](`${okString} ${index}${nameString}${directiveString}${errorProps}\n\n`)
-}
-
-// Update index|tests|pass|skip|fail counters
-const updateState = function({ ok, directive }) {
-  const category = getCategory({ ok, directive })
-  this[category]++
-
-  return ++this.index
 }
 
 const getCategory = function({ ok, directive: { skip } }) {
@@ -38,6 +32,13 @@ const getCategory = function({ ok, directive: { skip } }) {
   }
 
   return 'fail'
+}
+
+// Update index|tests|pass|skip|fail counters
+const updateState = function({ category }) {
+  this[category]++
+
+  return ++this.index
 }
 
 const getOk = function({ ok }) {
@@ -61,8 +62,9 @@ const getName = function({ name }) {
 }
 
 const COLORS = {
-  true: 'green',
-  false: 'red',
+  pass: 'green',
+  fail: 'red',
+  skip: 'grey',
 }
 
 module.exports = {

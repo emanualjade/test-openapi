@@ -52,8 +52,8 @@ const printBody = function({ body }) {
 }
 
 const errorProps = [
-  { name: 'Request', value: 'task.call.request', print: printRequest, indented: true },
-  { name: 'Response', value: 'task.call.response', print: printResponse, indented: true },
+  { name: 'Request', taskValue: 'call.request', print: printRequest, indented: true },
+  { name: 'Response', taskValue: 'call.response', print: printResponse, indented: true },
 ]
 
 module.exports = {

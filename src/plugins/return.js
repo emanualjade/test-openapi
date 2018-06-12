@@ -2,10 +2,18 @@
 
 // Fire each `plugin.returnValue()` if available to transform `task` return
 // value for each plugin
-const getTaskReturn = function({ task, task: { key }, originalTask, plugins, aborted = false }) {
+const getTaskReturn = function({
+  task,
+  task: { key },
+  originalTask,
+  plugins,
+  aborted = false,
+  error,
+}) {
   const taskReturns = plugins.map(plugin => getReturnObj({ task, originalTask, plugin }))
+  const errorObj = getError({ error, aborted })
 
-  return Object.assign({ key }, ...taskReturns, { aborted })
+  return Object.assign({ key, ...errorObj }, ...taskReturns, { aborted })
 }
 
 const getReturnObj = function({ task, originalTask, plugin: { returnValue, name } }) {
@@ -28,6 +36,15 @@ const getReturnObj = function({ task, originalTask, plugin: { returnValue, name 
   if (originalTask[name] !== undefined) {
     return { [name]: originalTask[name] }
   }
+}
+
+const getError = function({ error, aborted }) {
+  // When aborting a task, this means it was stopped but should be considered a success
+  if (aborted || error === undefined) {
+    return
+  }
+
+  return { error }
 }
 
 module.exports = {

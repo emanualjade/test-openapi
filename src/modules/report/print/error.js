@@ -5,9 +5,9 @@ const { red, dim, indent, fullIndent, HORIZONTAL_LINE } = require('../utils')
 const { getErrorProps } = require('./props')
 
 // Retrieve task's error to print
-const getErrorMessage = function({ task, error }) {
-  const header = getHeader({ task, error })
-  const errorProps = getErrorProps({ task, error })
+const getErrorMessage = function(task) {
+  const header = getHeader(task)
+  const errorProps = getErrorProps(task)
 
   return `
 ${HORIZONTAL_LINE}
@@ -19,7 +19,7 @@ ${fullIndent(errorProps)}
 }
 
 // Retrieve top of error printed message
-const getHeader = function({ task: { key, title }, error: { message } }) {
+const getHeader = function({ key, title, error: { message } }) {
   return `${red.bold(key)}
 ${dim(title)}
 

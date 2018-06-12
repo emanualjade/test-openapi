@@ -19,44 +19,24 @@ const repeatTask = async function({ repeat, runTask }, task, opts, ...args) {
   // Default `task.repeat` to `config.repeat`
   const repeatA = task.repeat || repeat
 
-  const returns = await runTasks({ repeat: repeatA, task, opts, args, runTask })
+  // Since `runTask()` has an exception handler, no promise should be rejected.
+  // I.e. if one task fails, the others are still run.
+  // The reason is to allow reporting when some tasks failed but not others.
+  const tasks = new Array(repeatA).fill().map(() => runTask(task, opts, ...args))
+  const tasksA = await Promise.all(tasks)
 
-  const taskReturn = getTaskReturn({ returns })
-  return taskReturn
+  const taskA = getTaskReturn({ tasks: tasksA })
+  return taskA
 }
 
-// Since `runTask()` has an exception handler, no promise should be rejected.
-// I.e. if one task fails, the others are still run.
-// The reason is to allow reporting when some tasks failed but not others.
-const runTasks = async function({ repeat, task, opts, args, runTask }) {
-  // Add `task.repeat`
-  const taskA = { ...task, repeat }
-
-  const returns = new Array(repeat).fill().map(() => runTask(taskA, opts, ...args))
-  const returnsA = await Promise.all(returns)
-  return returnsA
-}
-
-const getTaskReturn = function({ returns }) {
-  const tasks = pluck(returns, 'task')
-  const errors = pluck(returns, 'error')
-  const singleReturn = getSingleReturn({ tasks, errors })
-
-  return { tasks, errors, ...singleReturn }
-}
-
-const pluck = function(returns, prop) {
-  return returns.map(obj => obj[prop]).filter(value => value !== undefined)
-}
-
-// Normal `{ task }` or `{ error }` return value is still present
-// Pick the first failed|successful one
-const getSingleReturn = function({ tasks: [task], errors }) {
-  if (errors.length !== 0) {
-    return { task, error: errors[0] }
+// Return first task that errored. If none, returns first task.
+const getTaskReturn = function({ tasks }) {
+  const erroredTask = tasks.find(({ error }) => error !== undefined)
+  if (erroredTask !== undefined) {
+    return erroredTask
   }
 
-  return { task }
+  return tasks[0]
 }
 
 module.exports = {

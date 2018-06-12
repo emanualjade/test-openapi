@@ -26,7 +26,7 @@ const start = async function(config) {
 // Used to ensure tasks ordering
 const addOrdering = function({ config: { tasks }, report }) {
   const taskKeys = tasks.map(({ key }) => key)
-  return { ...report, taskKeys, inputs: {}, index: 0 }
+  return { ...report, taskKeys, tasks: {}, index: 0 }
 }
 
 module.exports = {

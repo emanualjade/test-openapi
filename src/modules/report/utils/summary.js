@@ -15,7 +15,7 @@ const isFailedTask = function({ error }) {
   return error !== undefined
 }
 
-const isSkippedTask = function({ task: { aborted } }) {
+const isSkippedTask = function({ aborted }) {
   return aborted === true
 }
 

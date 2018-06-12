@@ -3,8 +3,8 @@
 const { getErrorMessage } = require('../../print')
 
 // Print task errors and update spinner
-const complete = function({ task, error, options: { spinner } }) {
-  const failed = error !== undefined
+const complete = function({ options: { spinner }, ...task }) {
+  const failed = task.error !== undefined
 
   spinner.update({ clear: failed })
 
@@ -12,7 +12,7 @@ const complete = function({ task, error, options: { spinner } }) {
     return
   }
 
-  const errorMessage = getErrorMessage({ task, error })
+  const errorMessage = getErrorMessage(task)
   return errorMessage
 }
 

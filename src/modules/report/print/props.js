@@ -5,26 +5,30 @@ const { get } = require('lodash')
 const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
 // Print `error.*` properties in error printed message
-const getErrorProps = function({ task: { errorProps }, error }) {
+const getErrorProps = function({ errorProps, ...task }) {
   return errorProps
-    .map(errorProp => addErrorPropValue(errorProp, error))
+    .map(errorProp => addErrorPropValue(errorProp, task))
     .filter(filterErrorProps)
-    .map(errorProp => printErrorProp(errorProp, error))
+    .map(printErrorProp)
     .join('\n\n')
 }
 
 // Get `errorProp.value` which can be a path or a function
-const addErrorPropValue = function(errorProp, error) {
-  const value = getErrorPropValue(errorProp, error)
+const addErrorPropValue = function(errorProp, task) {
+  const value = getErrorPropValue(errorProp, task)
   return { ...errorProp, value }
 }
 
-const getErrorPropValue = function({ value }, error) {
+const getErrorPropValue = function({ value, taskValue }, task) {
   if (typeof value === 'string') {
-    return get(error, value)
+    return get(task.error, value)
   }
 
-  return value(error)
+  if (typeof taskValue === 'string') {
+    return get(task, taskValue)
+  }
+
+  return value(task)
 }
 
 // Do not print error.* properties that are not present
@@ -33,9 +37,9 @@ const filterErrorProps = function({ value, exclude }) {
   return value !== undefined && (exclude === undefined || !exclude(value))
 }
 
-const printErrorProp = function({ name, value, print, indented = false, format }, error) {
+const printErrorProp = function({ name, value, print, indented = false, format }) {
   // Call `errorProp.print()` if present
-  const valueA = printValue({ value, error, print })
+  const valueA = printValue({ value, print })
   // Stringify and prettify to YAML
   const string = stringifyValue(valueA)
   // Syntax highlighting
@@ -46,12 +50,12 @@ const printErrorProp = function({ name, value, print, indented = false, format }
   return `${orange(`${name}:`)} ${stringB}`
 }
 
-const printValue = function({ value, error, print }) {
+const printValue = function({ value, print }) {
   if (print === undefined) {
     return value
   }
 
-  return print(value, error)
+  return print(value)
 }
 
 module.exports = {

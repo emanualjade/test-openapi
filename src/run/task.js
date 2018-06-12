@@ -26,44 +26,40 @@ const getTaskReadOnlyArgs = function({ config, mRunTask, plugins }) {
 // Pass `runTask` for recursive tasks, with the second argument bound
 // Also tasks can use `isNested` to know if this is a recursive call
 const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, task) {
-  const { task: taskA, error } = await mRunTask(task, {
-    plugins,
-    readOnlyArgs: { ...readOnlyArgs, isNested: true },
-  })
+  const readOnlyArgsA = { ...readOnlyArgs, isNested: true }
+  const taskA = await mRunTask(task, { plugins, readOnlyArgs: readOnlyArgsA })
 
   // Propagate to parent
-  if (error) {
+  const { error } = taskA
+  if (error !== undefined) {
     throw error
   }
 
-  // Returns `task` not `{ task }`
   return taskA
 }
 
 const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
   const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
 
-  // Normalize `task` by calling all `plugin.returnValue`
   const taskB = getTaskReturn({ task: taskA, originalTask, plugins })
-  return { task: taskB }
+  return taskB
 }
 
 // Let calling code handle errored tasks.
 // I.e. on exception, successfully return `{ task, error }` instead of throwing it.
 const runTaskHandler = function(error, { originalTask }, { plugins }) {
-  const { task, aborted } = error
+  const { task, aborted } = extractErrorProps({ error })
 
-  // Normalize `task` by calling all `plugin.returnValue`
-  const taskA = getTaskReturn({ task, originalTask, plugins, aborted })
+  const taskA = getTaskReturn({ task, originalTask, plugins, aborted, error })
+  return taskA
+}
 
-  // When throwing an Error with `error.aborted: true`, this means the task was
-  // stopped but should be considered a success
-  if (aborted) {
-    return { task: taskA }
-  }
-
-  Object.assign(error, { task: taskA })
-  return { task: taskA, error }
+// We only assign those properties to `error` to carry information during throw.
+// But we don't want to persist those
+const extractErrorProps = function({ error, error: { task, aborted } }) {
+  delete error.task
+  delete error.aborted
+  return { task, aborted }
 }
 
 const eRunTask = addErrorHandler(runTask, runTaskHandler)

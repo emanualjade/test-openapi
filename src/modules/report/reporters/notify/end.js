@@ -2,47 +2,57 @@
 
 const notifier = require('node-notifier')
 
+const { getSummary } = require('../../utils')
+
 // Show notification at end of run if `config.report.notify: true`
 const end = function({ tasks }) {
-  const { count, failed, passed } = getCounts({ tasks })
-  const opts = getOpts({ failed })
-  const optsA = addMessage({ count, failed, passed, opts })
-
-  notifier.notify(optsA)
+  const opts = getOpts({ tasks })
+  notifier.notify(opts)
 }
 
-const getCounts = function({ tasks }) {
-  const count = tasks.length
-  const failed = tasks.filter(({ error }) => error !== undefined).length
-  const passed = count - failed
-  return { count, failed, passed }
+const getOpts = function({ tasks }) {
+  const { ok, total, pass, fail, skip } = getSummary({ tasks })
+
+  const opts = OPTS[ok]
+  const message = opts.message({ total, pass, fail, skip })
+
+  return { ...opts, message }
 }
 
-const getOpts = function({ failed }) {
-  if (failed > 0) {
-    return FAILED_OPTS
+const getPassMessage = function({ total, pass, skip }) {
+  const skipMessage = getSkipMessage({ skip })
+  return `${pass} of ${total} tasks passed.${skipMessage}`
+}
+
+const getSkipMessage = function({ skip }) {
+  if (skip === 0) {
+    return ''
   }
 
-  return PASSED_OPTS
+  return `\n${skip} tasks were skipped.`
 }
 
-const FAILED_OPTS = {
-  title: 'Tasks failed!',
-  message: ({ count, failed }) => `${failed} of ${count} tasks failed.`,
-  icon: `${__dirname}/failed.png`,
-  sound: 'Basso',
+const getFailMessage = function({ total, fail }) {
+  return `${fail} of ${total} tasks failed.`
 }
 
-const PASSED_OPTS = {
+const PASS_OPTS = {
   title: 'Tasks passed.',
-  message: ({ count, passed }) => `${passed} of ${count} tasks passed.`,
+  message: getPassMessage,
   icon: `${__dirname}/passed.png`,
   sound: false,
 }
 
-const addMessage = function({ count, failed, passed, opts, opts: { message } }) {
-  const messageA = message({ count, failed, passed })
-  return { ...opts, message: messageA }
+const FAIL_OPTS = {
+  title: 'Tasks failed!',
+  message: getFailMessage,
+  icon: `${__dirname}/failed.png`,
+  sound: 'Basso',
+}
+
+const OPTS = {
+  true: PASS_OPTS,
+  false: FAIL_OPTS,
 }
 
 module.exports = {

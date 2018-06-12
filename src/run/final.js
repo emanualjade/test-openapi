@@ -41,7 +41,7 @@ const ERROR_PROPS = {
 
 // Transform to an event objects
 const getEvents = function({ tasks, events }) {
-  const taskEvents = tasks.map(({ task }) => ({ type: 'task', ...task }))
+  const taskEvents = tasks.map(task => ({ type: 'task', ...task }))
   return [...taskEvents, ...events]
 }
 

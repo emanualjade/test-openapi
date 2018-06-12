@@ -4,6 +4,8 @@
     "name": {
       "type": "string"
     },
+    "report": {},
+    "returnValue": {},
     "config": {
       "type": "object",
       "properties": {
@@ -15,8 +17,7 @@
     "start": {},
     "task": {},
     "complete": {},
-    "end": {},
-    "returnValue": {}
+    "end": {}
   },
   "required": ["name"]
 }

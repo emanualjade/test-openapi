@@ -3,7 +3,7 @@
 const { getConfigPlugins } = require('./config')
 const { loadAllPlugins } = require('./load')
 const { validateExports } = require('./exports')
-const { validatePluginsConfig } = require('./plugin_conf')
+const { validatePluginsConfig } = require('./schema')
 const { applyPluginsDefaults } = require('./defaults')
 
 // Find all plugins

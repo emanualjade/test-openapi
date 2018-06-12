@@ -12,7 +12,6 @@
       "^query\\..+": {},
       "^headers\\.[^A-Z]+": {}
     },
-    "additionalProperties": false,
-    "default": {}
+    "additionalProperties": false
   }
 }

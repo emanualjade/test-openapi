@@ -8,6 +8,10 @@ const { validateIsSchema, stringifyFlat } = require('../../utils')
 
 // Generates random values based on `task.random.*` JSON schemas
 const task = function({ random, call }) {
+  if (random === undefined) {
+    return
+  }
+
   const randomParams = mapValues(random, generateParam)
   // `task.random.*` have less priority than `task.call.*`
   return { call: { ...randomParams, ...call } }

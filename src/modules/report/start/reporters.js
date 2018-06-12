@@ -9,7 +9,7 @@ const addReporters = function({ report }) {
   return { ...report, reporters }
 }
 
-const getReporters = function({ report: { styles = DEFAULT_REPORTERS, options, output } }) {
+const getReporters = function({ report: { styles = DEFAULT_REPORTERS, options = {}, output } }) {
   if (output === false) {
     return []
   }

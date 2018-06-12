@@ -6,7 +6,7 @@ const addReportersOptions = function({ config, report }) {
   return { ...report, options }
 }
 
-const getReportersOptions = function({ config, report: { reporters, options } }) {
+const getReportersOptions = function({ config, report: { reporters, options = {} } }) {
   const optionsA = reporters.map(reporter => getReporterOptions({ reporter, config, options }))
   return Object.assign({}, options, ...optionsA)
 }

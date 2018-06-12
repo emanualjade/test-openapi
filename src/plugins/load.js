@@ -18,9 +18,9 @@ const requirePlugin = function(name) {
   return { ...plugin, name }
 }
 
-const requirePluginHandler = function(_, { plugin }) {
+const requirePluginHandler = function(_, name) {
   throw new TestOpenApiError(
-    `The plugin '${plugin}' is used in the configuration but is not installed. Please run 'npm install test-openapi-plugin-${plugin}'.`,
+    `The plugin '${name}' is used in the configuration but is not installed. Please run 'npm install test-openapi-plugin-${name}'.`,
   )
 }
 

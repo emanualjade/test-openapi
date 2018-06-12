@@ -13,7 +13,6 @@
     ]
   },
   "task": {
-    "type": "boolean",
-    "default": false
+    "type": "boolean"
   }
 }

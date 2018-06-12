@@ -9,7 +9,7 @@ const { abortTask } = require('../../errors')
 // `task.only: true` will only run those tasks
 // Behaves similarly to `skip` plugin
 const task = function({
-  only,
+  only = false,
   config: {
     only: { patterns, enabled },
   },

@@ -9,8 +9,7 @@
     "type": "array",
     "items": {
       "type": "string"
-    },
-    "default": ["min"]
+    }
   },
   "general.options": {
     "type": "object",

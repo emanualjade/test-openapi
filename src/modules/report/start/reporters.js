@@ -9,13 +9,15 @@ const addReporters = function({ report }) {
   return { ...report, reporters }
 }
 
-const getReporters = function({ report: { styles, options, output } }) {
+const getReporters = function({ report: { styles = DEFAULT_REPORTERS, options, output } }) {
   if (output === false) {
     return []
   }
 
   return styles.map(style => getReporter({ style, options }))
 }
+
+const DEFAULT_REPORTERS = ['min']
 
 const getReporter = function({ style, options }) {
   const reporter = loadReporter({ style })

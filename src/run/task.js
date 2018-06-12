@@ -8,8 +8,8 @@ const bootTask = async function({ task, config, mRunTask, plugins }) {
   const readOnlyArgs = getTaskReadOnlyArgs({ config, mRunTask, plugins })
 
   // Use potentially monkey-patched `runTask`
-  const returnValue = await mRunTask(task, { readOnlyArgs, plugins })
-  return returnValue
+  const taskA = await mRunTask(task, { readOnlyArgs, plugins })
+  return taskA
 }
 
 // Passed to every task handler

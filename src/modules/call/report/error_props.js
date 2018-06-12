@@ -5,7 +5,7 @@ const { titleize } = require('underscore.string')
 const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
 
 // Print HTTP request in error messages
-const printRequest = function({ method, url, headers, body }) {
+const printRequest = function({ raw: { method, url, headers, body } }) {
   const methodA = printMethod({ method })
   const headersA = printHeaders({ headers })
   const bodyA = printBody({ body })
@@ -14,7 +14,7 @@ const printRequest = function({ method, url, headers, body }) {
 }
 
 // Print HTTP response in error messages
-const printResponse = function({ status, headers, body }) {
+const printResponse = function({ raw: { status, headers, body } }) {
   const statusA = printStatus({ status })
   const headersA = printHeaders({ headers })
   const bodyA = printBody({ body })

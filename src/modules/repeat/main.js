@@ -5,6 +5,5 @@ const config = require('./config')
 
 module.exports = {
   config,
-  returnValue: true,
   start,
 }

@@ -2,9 +2,9 @@
   "general": {
     "schema": {
       "type": "integer",
-      "minimum": 1
-    },
-    "default": 10
+      "minimum": 1,
+      "default": 10
+    }
   },
   "task": {
     "schema": {

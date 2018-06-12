@@ -9,11 +9,13 @@
       "patternProperties": {
         "^headers\\..+": {}
       },
-      "additionalProperties": false
-    },
-    "default": {}
+      "additionalProperties": false,
+      "default": {}
+    }
   },
   "task.status": {
-    "default": 200
+    "schema": {
+      "default": 200
+    }
   }
 }

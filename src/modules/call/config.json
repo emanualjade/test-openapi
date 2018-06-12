@@ -6,9 +6,9 @@
         "server": {},
         "timeout": {}
       },
-      "additionalProperties": false
-    },
-    "default": {}
+      "additionalProperties": false,
+      "default": {}
+    }
   },
   "general.server": {
     "schema": {
@@ -16,9 +16,9 @@
     }
   },
   "general.timeout": {
-    "default": 1e4,
     "schema": {
-      "type": "integer"
+      "type": "integer",
+      "default": 1e4
     }
   },
   "task": {
@@ -43,8 +43,8 @@
         "^query\\..+": {},
         "^headers\\.[^A-Z]+": {}
       },
-      "additionalProperties": false
-    },
-    "default": {}
+      "additionalProperties": false,
+      "default": {}
+    }
   }
 }

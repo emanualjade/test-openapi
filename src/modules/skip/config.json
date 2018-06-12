@@ -16,8 +16,8 @@
   },
   "task": {
     "schema": {
-      "type": "boolean"
-    },
-    "default": false
+      "type": "boolean",
+      "default": false
+    }
   }
 }

@@ -25,17 +25,18 @@ const validatePropConfig = function({ config, schema, name, plugin }) {
     return
   }
 
-  VALIDATORS[name]({ config, schema, name, plugin })
+  VALIDATORS[name]({ config, schema, plugin })
 }
 
-// `plugin.config.general.*` validate against top-level configuration
-const validateGeneral = function({ config, schema, name, plugin }) {
-  validateProp({ taskOrConfig: config, schema, name, plugin })
+// `plugin.config.general` validate against top-level configuration
+const validateGeneral = function({ config, schema, plugin }) {
+  // Rename `general` to `config` in error messages
+  validateProp({ taskOrConfig: config, schema, name: 'config', plugin })
 }
 
-// `plugin.config.task.*` validate against each task
-const validateTask = function({ config: { tasks }, schema, name, plugin }) {
-  tasks.forEach(task => validateProp({ taskOrConfig: task, schema, name, plugin }))
+// `plugin.config.task` validate against each task
+const validateTask = function({ config: { tasks }, schema, plugin }) {
+  tasks.forEach(task => validateProp({ taskOrConfig: task, schema, name: 'task', plugin }))
 }
 
 const VALIDATORS = {

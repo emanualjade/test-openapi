@@ -5,8 +5,7 @@
       "server": {},
       "timeout": {}
     },
-    "additionalProperties": false,
-    "default": {}
+    "additionalProperties": false
   },
   "general.server": {
     "type": "string"

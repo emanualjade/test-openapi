@@ -9,9 +9,7 @@ const task = async function({
   call: {
     request: { raw: rawRequest },
   },
-  config: {
-    call: { timeout = DEFAULT_TIMEOUT },
-  },
+  config: { call: { timeout = DEFAULT_TIMEOUT } = {} },
 }) {
   const rawResponse = await fireFetch({ rawRequest, timeout })
 

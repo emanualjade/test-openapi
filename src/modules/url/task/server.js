@@ -9,8 +9,8 @@ const getServer = function({ rawRequest, config }) {
   return server.replace(TRAILING_SLASH_REGEXP, '')
 }
 
-const getServerValue = function({ rawRequest, config }) {
-  return rawRequest.server || config.call.server || getDefaultServer()
+const getServerValue = function({ rawRequest, config: { call = {} } }) {
+  return rawRequest.server || call.server || getDefaultServer()
 }
 
 const getDefaultServer = function() {

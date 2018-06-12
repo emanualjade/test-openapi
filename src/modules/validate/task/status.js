@@ -4,7 +4,10 @@ const { TestOpenApiError } = require('../../../errors')
 const { validateFromSchema } = require('../../../utils')
 
 // Validates response status code against OpenAPI specification
-const validateStatus = function({ validate: { status: schema }, response: { status } }) {
+const validateStatus = function({
+  validate: { status: schema = DEFAULT_STATUS },
+  response: { status },
+}) {
   if (schema === undefined) {
     return
   }
@@ -17,6 +20,8 @@ const validateStatus = function({ validate: { status: schema }, response: { stat
   const property = 'validate.status'
   throw new TestOpenApiError(`Status code${error}.`, { property, schema, actual: status })
 }
+
+const DEFAULT_STATUS = { type: 'integer', enum: [200] }
 
 module.exports = {
   validateStatus,

@@ -12,8 +12,7 @@
     "type": "string"
   },
   "general.timeout": {
-    "type": "integer",
-    "default": 1e4
+    "type": "integer"
   },
   "task": {
     "type": "object",

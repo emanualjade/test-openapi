@@ -4,12 +4,7 @@ const fetch = require('cross-fetch')
 
 const { addErrorHandler, TestOpenApiError } = require('../../../errors')
 
-const fireFetch = function({
-  rawRequest: { method, url, body, headers },
-  config: {
-    call: { timeout },
-  },
-}) {
+const fireFetch = function({ rawRequest: { method, url, body, headers }, timeout }) {
   return fetch(url, { method, headers, body, timeout })
 }
 

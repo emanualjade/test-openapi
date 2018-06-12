@@ -22,7 +22,11 @@ const handleBugs = function({ error }) {
 }
 
 const findBugError = function({ error: { errors } }) {
-  return errors.find(error => error.name !== 'TestOpenApiError')
+  return errors.find(isBugError)
+}
+
+const isBugError = function({ name }) {
+  return name !== 'TestOpenApiError'
 }
 
 const getBugMessage = function({ bugError, bugError: { stack } }) {
@@ -53,4 +57,5 @@ const REPOSITORY_PREFIX = 'test-openapi-plugin-'
 
 module.exports = {
   handleBugs,
+  isBugError,
 }

@@ -7,7 +7,7 @@ const title = function({ request, response }) {
   return [url, status].filter(part => part !== undefined).join(' ')
 }
 
-const getUrl = function({ request: { method, url } = {} }) {
+const getUrl = function({ request: { raw: { method, url } = {} } = {} }) {
   if (method === undefined || url === undefined) {
     return
   }
@@ -20,7 +20,7 @@ const getUrl = function({ request: { method, url } = {} }) {
 // Remove query variables from URL
 const QUERY_REGEXP = /\?.*/
 
-const getStatus = function({ response: { status } = {} }) {
+const getStatus = function({ response: { raw: { status } = {} } = {} }) {
   if (status === undefined) {
     return
   }

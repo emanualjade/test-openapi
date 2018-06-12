@@ -1,5 +1,7 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { bundleErrors } = require('./bundle')
 const { handleBugs } = require('./bug')
 const { getPluginName } = require('./plugin')
@@ -13,9 +15,11 @@ const topLevelHandler = function(error, config = {}) {
 
   const errorC = handleBugs({ error: errorB })
 
-  errorC.plugin = getPluginName(errorC)
+  const errorD = cleanError({ error: errorC })
 
-  throw errorC
+  errorD.plugin = getPluginName(errorD)
+
+  throw errorD
 }
 
 // Bundle single error with `bundleErrors()` unless it's already bundled
@@ -25,6 +29,16 @@ const bundleSingleError = function({ error }) {
   }
 
   return bundleErrors({ errors: [error] })
+}
+
+const cleanError = function({ error, error: { errors } }) {
+  if (errors === undefined) {
+    return error
+  }
+
+  error.errors = errors.map(errorObj => omit(errorObj, 'stack'))
+
+  return error
 }
 
 module.exports = {

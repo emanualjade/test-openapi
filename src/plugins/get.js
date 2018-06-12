@@ -28,6 +28,14 @@ const REDUCERS = [
 // Plugins are the way most functionalities is implemented.
 // A plugin is a plain object that exports the following properties.
 
+// `plugin.config.general` `{object}`
+// JSON schema describing the plugin general configuration at `config.PLUGIN`
+// Can include `default` values
+
+// `plugin.config.task` `{object}`
+// JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
+// Can include `default` values
+
 // `plugin.start|task|complete|end` `{function}`
 // Handlers are the functions fired by each plugin. This is where the logic is.
 // The goal of each handler is to usually to modify its input (first argument).

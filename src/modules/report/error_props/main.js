@@ -3,7 +3,7 @@
 const { omit, omitBy, mapKeys } = require('lodash')
 const { capitalize } = require('underscore.string')
 
-const { getCoreErrorProps } = require('./core')
+const { addCoreErrorProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
 const getErrorProps = function({ task: { originalTask, ...task }, plugins, noCore = false }) {
@@ -53,17 +53,6 @@ const getTitle = function({ titles }) {
 
 const isDefinedTitle = function(title) {
   return title !== undefined && title.trim() !== ''
-}
-
-// Add core `errorProps`
-// Enforce properties order
-const addCoreErrorProps = function({ errorProps, task, noCore }) {
-  if (noCore) {
-    return errorProps
-  }
-
-  const coreErrorProps = getCoreErrorProps(task)
-  return [coreErrorProps, ...errorProps]
 }
 
 const getOriginalProps = function({ originalTask }) {

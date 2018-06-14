@@ -2,6 +2,17 @@
 
 const { isSimpleSchema } = require('../../../utils')
 
+// Add core `errorProps`
+// Enforce properties order
+const addCoreErrorProps = function({ errorProps, task, noCore }) {
+  if (noCore) {
+    return errorProps
+  }
+
+  const coreErrorProps = getCoreErrorProps(task)
+  return [coreErrorProps, ...errorProps]
+}
+
 // Core `errorProps` always present on error
 const getCoreErrorProps = function({ error: { expected, actual, property, schema } = {} }) {
   const schemaA = getJsonSchema({ schema })
@@ -25,5 +36,5 @@ const getJsonSchema = function({ schema }) {
 }
 
 module.exports = {
-  getCoreErrorProps,
+  addCoreErrorProps,
 }

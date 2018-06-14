@@ -7,7 +7,8 @@ const getErrorProps = function({ task, plugins }) {
   const errorPropsA = plugins
     .map(({ report: { errorProps } = {} }) => errorProps)
     .filter(errorProp => errorProp !== undefined)
-  const errorPropsB = [getCoreErrorProps, ...errorPropsA]
+  // Core has merging priority
+  const errorPropsB = [...errorPropsA, getCoreErrorProps]
   const errorPropsC = errorPropsB.map(errorProp => errorProp(task))
   const errorPropsD = [].concat(...errorPropsC)
   return errorPropsD

@@ -17,7 +17,7 @@ const getReporters = function({ report: { styles = DEFAULT_REPORTERS, options = 
   return styles.map(style => getReporter({ style, options }))
 }
 
-const DEFAULT_REPORTERS = ['min']
+const DEFAULT_REPORTERS = ['pretty']
 
 const getReporter = function({ style, options }) {
   const reporter = loadReporter({ style })

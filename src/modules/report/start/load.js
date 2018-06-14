@@ -4,9 +4,10 @@ const { addErrorHandler, TestOpenApiError } = require('../../../errors')
 
 // Load reporter's module
 // TODO: use separate Node modules instead
-const loadReporter = function({ style }) {
+const loadReporter = function({ style: name }) {
   // eslint-disable-next-line import/no-dynamic-require
-  return require(`../reporters/${style}`)
+  const reporter = require(`../reporters/${name}`)
+  return { ...reporter, name }
 }
 
 const loadReporterHandler = function(_, { style }) {

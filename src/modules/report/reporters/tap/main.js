@@ -7,7 +7,6 @@ const { end } = require('./end')
 const config = require('./config')
 
 module.exports = {
-  name: 'tap',
   config,
   options,
   start,

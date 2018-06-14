@@ -1,13 +1,15 @@
 'use strict'
 
 // Add `METHOD URL (STATUS)` to reporting
-const title = function({ request, response }) {
-  const url = getUrl({ request })
-  const status = getStatus({ response })
+const title = function({
+  call: { request: { raw: rawRequest = {} } = {}, response: { raw: rawResponse = {} } = {} },
+}) {
+  const url = getUrl(rawRequest)
+  const status = getStatus(rawResponse)
   return [url, status].filter(part => part !== undefined).join(' ')
 }
 
-const getUrl = function({ request: { raw: { method, url } = {} } = {} }) {
+const getUrl = function({ method, url }) {
   if (method === undefined || url === undefined) {
     return
   }
@@ -20,7 +22,7 @@ const getUrl = function({ request: { raw: { method, url } = {} } = {} }) {
 // Remove query variables from URL
 const QUERY_REGEXP = /\?.*/
 
-const getStatus = function({ response: { raw: { status } = {} } = {} }) {
+const getStatus = function({ status }) {
   if (status === undefined) {
     return
   }

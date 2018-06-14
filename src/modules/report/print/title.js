@@ -9,13 +9,12 @@ const getTitle = function({ task, plugins }) {
 }
 
 // Call `plugin.report.title(task[pluginName])`
-const getPluginTitle = function({ task, plugin: { name, report: { title } = {} } }) {
+const getPluginTitle = function({ task, plugin: { report: { title } = {} } }) {
   if (title === undefined) {
     return
   }
 
-  const pluginOpts = task[name] || {}
-  return title(pluginOpts)
+  return title(task)
 }
 
 const isDefinedTitle = function(title) {

@@ -6,10 +6,7 @@ const { removePrefixes } = require('../../../utils')
 const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
 
 const errorProps = function({
-  call: {
-    request: { raw: rawRequest = {} },
-    response: { raw: rawResponse = {} },
-  },
+  call: { request: { raw: rawRequest = {} } = {}, response: { raw: rawResponse = {} } = {} },
 }) {
   const request = getRequest(rawRequest)
   const response = getResponse(rawResponse)

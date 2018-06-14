@@ -21,6 +21,7 @@ const getReportFuncs = function({ plugins }) {
     .map(({ report }) => report)
     .filter(reportFunc => reportFunc !== undefined)
 
+  // Enforce properties order
   const reportFuncsA = [getCoreErrorProps, ...reportFuncs]
   return reportFuncsA
 }

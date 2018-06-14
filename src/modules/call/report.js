@@ -2,10 +2,10 @@
 
 const { titleize } = require('underscore.string')
 
-const { removePrefixes } = require('../../../utils')
-const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
+const { removePrefixes } = require('../../utils')
+const { yellow, highlightValueAuto, prettifyJson } = require('../report/utils')
 
-const errorProps = function({
+const report = function({
   call: { request: { raw: rawRequest = {} } = {}, response: { raw: rawResponse = {} } = {} },
 }) {
   const title = getTitle({ rawRequest, rawResponse })
@@ -92,5 +92,5 @@ const printBody = function({ body }) {
 }
 
 module.exports = {
-  errorProps,
+  report,
 }

@@ -1,14 +1,11 @@
 'use strict'
 
-const { task } = require('./task')
 const { config } = require('./config.js')
-const { title, errorProps } = require('./report')
+const { report } = require('./report')
+const { task } = require('./task')
 
 module.exports = {
   config,
-  report: {
-    title,
-    errorProps,
-  },
+  report,
   task,
 }

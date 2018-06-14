@@ -18,7 +18,7 @@ const getAssert = function({ key, title, aborted, error }) {
 }
 
 const getName = function({ key, title }) {
-  if (title.trim() === '') {
+  if (title === undefined || title.trim() === '') {
     return key
   }
 

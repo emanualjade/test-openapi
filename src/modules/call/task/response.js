@@ -7,13 +7,13 @@ const getFetchResponse = async function({ rawResponse, rawResponse: { status }, 
   const headers = getHeaders({ rawResponse })
   const body = await eGetBody({ rawResponse, timeout })
 
-  return { status, headers, body }
+  return { status, ...headers, body }
 }
 
 // Normalize response headers to a plain object
 const getHeaders = function({ rawResponse: { headers } }) {
   const headersA = [...headers.entries()]
-  const headersB = headersA.map(([name, value]) => ({ [name]: value }))
+  const headersB = headersA.map(([name, value]) => ({ [`headers.${name}`]: value }))
   const headersC = Object.assign({}, ...headersB)
   return headersC
 }

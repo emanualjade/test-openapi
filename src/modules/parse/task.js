@@ -11,12 +11,12 @@ const task = function({
   call: {
     response: {
       raw,
-      raw: { status, headers, body },
+      raw: { status, body, ...headers },
     },
   },
 }) {
   const headersA = parseHeaders({ headers })
-  const bodyA = parseBody({ body, headers })
+  const bodyA = parseBody({ body, headers: headersA })
 
   const response = { raw, status, headers: headersA, body: bodyA }
   return { call: { ...call, response } }
@@ -44,7 +44,7 @@ const parseBody = function({ body, headers }) {
   }
 
   // On bad servers, this could be undefined
-  const mime = headers['content-type']
+  const mime = headers['headers.content-type']
 
   const { parse } = findBodyHandler({ mime })
 

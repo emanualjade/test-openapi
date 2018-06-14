@@ -1,16 +1,19 @@
 'use strict'
 
+const { removePrefixes } = require('../../../utils')
+
 // Add `query` request parameters to the request URL
-const addQueryParams = function({ url, rawRequest: { query } }) {
-  if (query === undefined) {
+const addQueryParams = function({ url, rawRequest }) {
+  const query = removePrefixes(rawRequest, 'query')
+  const queryA = Object.entries(query)
+
+  if (queryA.length === 0) {
     return url
   }
 
-  const queryA = Object.entries(query)
-    .map(encodeQueryParam)
-    .join('&')
+  const queryB = queryA.map(encodeQueryParam).join('&')
 
-  return `${url}?${queryA}`
+  return `${url}?${queryB}`
 }
 
 // We cannot use `querystring` core module or `qs` library because we want to

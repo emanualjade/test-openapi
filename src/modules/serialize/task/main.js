@@ -2,10 +2,11 @@
 
 const { omitBy, mapValues } = require('lodash')
 
-const { keysToObjects, keyToLocation, stringifyFlat } = require('../../../utils')
+const { keyToLocation, stringifyFlat } = require('../../../utils')
 const { findBodyHandler } = require('../../format')
 
 const { normalizeContentType } = require('./content_type')
+const { normalizeMethod } = require('./method')
 
 // Stringify request parameters
 const task = function({ call = {} }) {
@@ -13,11 +14,10 @@ const task = function({ call = {} }) {
 
   const callB = normalizeContentType({ call: callA })
 
-  const request = keysToObjects(callB)
+  const request = normalizeMethod({ call: callB })
 
-  const callC = mapValues(callB, stringifyParam)
+  const rawRequest = mapValues(request, stringifyParam)
 
-  const rawRequest = keysToObjects(callC)
   const requestA = { ...request, raw: rawRequest }
 
   return { call: { ...call, request: requestA } }

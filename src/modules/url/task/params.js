@@ -13,9 +13,9 @@ const addUrlParams = function({ url, rawRequest }) {
 // which characters are allowed in `url` request parameter names
 const URL_PARAM_REGEXP = /\{([^}]+)\}/g
 
-const getUrlParam = function({ name, rawRequest: { url = {} } }) {
+const getUrlParam = function({ name, rawRequest }) {
   const property = `call.url.${name}`
-  const value = url[name]
+  const value = rawRequest[`url.${name}`]
 
   if (value === undefined) {
     throw new TestOpenApiError(`The URL parameter '${name}' must be defined`, { property })

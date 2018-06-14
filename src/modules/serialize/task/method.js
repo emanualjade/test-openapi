@@ -4,11 +4,11 @@ const METHODS = require('methods')
 
 const { TestOpenApiError } = require('../../../errors')
 
-// Retrieve `task.call.method`
-const getMethod = function({ rawRequest: { method = DEFAULT_METHOD } }) {
+// Validate `task.call.method` and add default value
+const normalizeMethod = function({ call, call: { method = DEFAULT_METHOD } }) {
   validateMethod({ method })
 
-  return method
+  return { ...call, method }
 }
 
 const DEFAULT_METHOD = 'GET'
@@ -25,5 +25,5 @@ const validateMethod = function({ method }) {
 }
 
 module.exports = {
-  getMethod,
+  normalizeMethod,
 }

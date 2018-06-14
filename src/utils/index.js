@@ -10,4 +10,5 @@ module.exports = {
   ...require('./json_schema'),
   ...require('./flat'),
   ...require('./plugins'),
+  ...require('./prefix'),
 }

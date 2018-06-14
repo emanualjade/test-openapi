@@ -1,6 +1,5 @@
 'use strict'
 
-const { getMethod } = require('./method')
 const { getServer } = require('./server')
 const { addPath } = require('./path')
 const { addUrlParams } = require('./params')
@@ -16,9 +15,8 @@ const task = function({
   },
   config,
 }) {
-  const method = getMethod({ rawRequest })
   const url = getFullUrl({ rawRequest, config })
-  const requestA = { ...request, raw: { ...rawRequest, url, method } }
+  const requestA = { ...request, raw: { ...rawRequest, url } }
 
   return { call: { ...call, request: requestA } }
 }

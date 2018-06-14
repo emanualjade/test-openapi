@@ -2,13 +2,11 @@
 
 const { red, dim, indent, fullIndent, HORIZONTAL_LINE } = require('../utils')
 
-const { getTitle } = require('./title')
 const { getErrorProps } = require('./error_props')
 
 // Retrieve task's error to print
 const getErrorMessage = function({ task, plugins }) {
-  const title = getTitle({ task, plugins })
-  const errorProps = getErrorProps({ task, plugins })
+  const { title, errorProps } = getErrorProps({ task, plugins })
 
   const header = getHeader({ task, title })
 

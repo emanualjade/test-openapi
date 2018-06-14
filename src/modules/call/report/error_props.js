@@ -8,10 +8,39 @@ const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils
 const errorProps = function({
   call: { request: { raw: rawRequest = {} } = {}, response: { raw: rawResponse = {} } = {} },
 }) {
+  const title = getTitle({ rawRequest, rawResponse })
   const request = getRequest(rawRequest)
   const response = getResponse(rawResponse)
 
-  return { Request: request, Response: response }
+  return { title, Request: request, Response: response }
+}
+
+// Add `METHOD URL (STATUS)` to reporting
+const getTitle = function({ rawRequest, rawResponse }) {
+  const url = getUrl(rawRequest)
+  const status = getStatus(rawResponse)
+  return [url, status].filter(part => part !== undefined).join(' ')
+}
+
+const getUrl = function({ method, url }) {
+  if (method === undefined || url === undefined) {
+    return
+  }
+
+  const urlA = url.replace(QUERY_REGEXP, '')
+
+  return `${method.toUpperCase()} ${urlA}`
+}
+
+// Remove query variables from URL
+const QUERY_REGEXP = /\?.*/
+
+const getStatus = function({ status }) {
+  if (status === undefined) {
+    return
+  }
+
+  return `(${status})`
 }
 
 // Print HTTP request in error messages

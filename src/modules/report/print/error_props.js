@@ -15,23 +15,34 @@ const getErrorProps = function({ task, plugins }) {
   // Core has merging priority
   const reportFuncsA = [...reportFuncs, getCoreErrorProps]
 
-  const errorProps = reportFuncsA.map(reportFunc => getPluginErrorProps({ reportFunc, task }))
+  const reportResult = reportFuncsA.map(reportFunc => getPluginErrorProps({ reportFunc, task }))
+
+  const title = getTitle({ reportResult })
+
+  const errorProps = reportResult.map(({ errorProps }) => errorProps)
   const errorPropsA = Object.assign({}, ...errorProps)
 
   const errorPropsB = printErrorProps({ errorProps: errorPropsA })
-  return errorPropsB
+  return { title, errorProps: errorPropsB }
 }
 
 const getPluginErrorProps = function({ reportFunc, task }) {
   const errorProps = reportFunc(task)
 
-  const errorPropsA = omitBy(errorProps, isEmptyProp)
-  return errorPropsA
+  const { title, ...errorPropsA } = omitBy(errorProps, isEmptyProp)
+  return { title, errorProps: errorPropsA }
 }
 
 // Do not print error.* properties that are not present
 const isEmptyProp = function(value) {
   return value === undefined
+}
+
+const getTitle = function({ reportResult }) {
+  return reportResult
+    .map(({ title }) => title)
+    .filter(title => title !== undefined && title.trim() !== '')
+    .join(' ')
 }
 
 const printErrorProps = function({ errorProps }) {

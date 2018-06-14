@@ -5,30 +5,24 @@ const { red, dim, indent, HORIZONTAL_LINE } = require('../utils')
 const { getErrorProps } = require('./error_props')
 
 // Retrieve task's error to print
-const getErrorMessage = function({ task, plugins }) {
-  const { title, errorProps } = getErrorProps({ task, plugins })
-
-  const header = getHeader({ task, title })
-
-  return `
-${HORIZONTAL_LINE}
-${CROSS_MARK} ${header}
-${HORIZONTAL_LINE}
-${indent(errorProps)}
-`
-}
-
-// Retrieve top of error printed message
-const getHeader = function({
+const getErrorMessage = function({
+  task,
   task: {
     key,
     error: { message },
   },
-  title,
+  plugins,
 }) {
-  return `${red.bold(key)}
+  const { title, errorProps } = getErrorProps({ task, plugins })
+
+  return `
+${HORIZONTAL_LINE}
+${CROSS_MARK} ${red.bold(key)}
 ${indent(dim(title))}
-${indent(message)}`
+${indent(message)}
+${HORIZONTAL_LINE}
+${indent(errorProps)}
+`
 }
 
 // Red cross symbol

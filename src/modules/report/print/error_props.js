@@ -3,22 +3,51 @@
 const { omitBy } = require('lodash')
 
 const { isObject } = require('../../../utils')
+const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
 // Get `task.errorProps`, i.e. plugin-specific error properties printed on reporting
 const getErrorProps = function({ task, plugins }) {
-  const errorPropsA = plugins
+  const reportFuncs = plugins
     .map(({ report: { errorProps } = {} }) => errorProps)
-    .filter(errorProp => errorProp !== undefined)
+    .filter(reportFunc => reportFunc !== undefined)
   // Core has merging priority
-  const errorPropsB = [...errorPropsA, getCoreErrorProps]
-  const errorPropsC = errorPropsB.map(errorProp => {
-    const values = errorProp(task)
-    // Do not print error.* properties that are not present
-    const valuesA = omitBy(values, value => value === undefined)
-    return valuesA
-  })
-  const errorPropsD = Object.assign({}, ...errorPropsC)
-  return errorPropsD
+  const reportFuncsA = [...reportFuncs, getCoreErrorProps]
+
+  const errorProps = reportFuncsA.map(reportFunc => getPluginErrorProps({ reportFunc, task }))
+  const errorPropsA = Object.assign({}, ...errorProps)
+
+  const errorPropsB = printErrorProps({ errorProps: errorPropsA })
+  return errorPropsB
+}
+
+const getPluginErrorProps = function({ reportFunc, task }) {
+  const errorProps = reportFunc(task)
+
+  const errorPropsA = omitBy(errorProps, isEmptyProp)
+  return errorPropsA
+}
+
+// Do not print error.* properties that are not present
+const isEmptyProp = function(value) {
+  return value === undefined
+}
+
+const printErrorProps = function({ errorProps }) {
+  return Object.entries(errorProps)
+    .map(printErrorProp)
+    .join('\n\n')
+}
+
+// Print `error.*` properties in error printed message
+const printErrorProp = function([name, value]) {
+  // Stringify and prettify to YAML
+  const string = stringifyValue(value)
+  // Syntax highlighting, unless already highlighted
+  const stringA = highlightValue({ string })
+  // Indentation if multiline
+  const stringB = indentValue({ string: stringA })
+  // Prefix with `errorProp.name`
+  return `${orange(`${name}:`)} ${stringB}`
 }
 
 const getCoreErrorProps = function({ error: { expected, actual, property, schema } }) {

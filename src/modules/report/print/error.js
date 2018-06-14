@@ -4,7 +4,6 @@ const { red, dim, indent, fullIndent, HORIZONTAL_LINE } = require('../utils')
 
 const { getTitle } = require('./title')
 const { getErrorProps } = require('./error_props')
-const { printErrorProps } = require('./props')
 
 // Retrieve task's error to print
 const getErrorMessage = function({ task, plugins }) {
@@ -12,14 +11,13 @@ const getErrorMessage = function({ task, plugins }) {
   const errorProps = getErrorProps({ task, plugins })
 
   const header = getHeader({ task, title })
-  const errorPropsA = printErrorProps({ errorProps })
 
   return `
 ${HORIZONTAL_LINE}
 ${CROSS_MARK} ${indent(header)}
 ${HORIZONTAL_LINE}
 
-${fullIndent(errorPropsA)}
+${fullIndent(errorProps)}
 `
 }
 

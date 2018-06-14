@@ -29,6 +29,7 @@ const getReportFuncs = function({ plugins }) {
   return reportFuncsA
 }
 
+// Call all `plugin.report()`
 const callReportFuncs = function({ reportFuncs, task }) {
   const reportResult = reportFuncs.map(reportFunc => callReportFunc({ reportFunc, task }))
 
@@ -42,7 +43,7 @@ const callReportFuncs = function({ reportFuncs, task }) {
   return { titles, errorProps: errorPropsA }
 }
 
-// Call `plugin.report()`
+// Call single `plugin.report()`
 const callReportFunc = function({ reportFunc, task }) {
   const errorProps = reportFunc(task)
 

@@ -1,20 +1,18 @@
 'use strict'
 
 const { highlight, highlightAuto } = require('emphasize')
+const hasAnsi = require('has-ansi')
 
 const { reset, red, dim, grey, yellow, magenta, italic, bold, inverse } = require('./colors')
 
-// Syntax highlighting
-const highlightValue = function({ string, value, format }) {
-  // Not performed on strings, unless `format` was specified
-  if (typeof value === 'string' && format === undefined) {
+// Syntax highlighting, as YAML
+const highlightValue = function({ string }) {
+  // Already highlighted
+  if (hasAnsi(string)) {
     return string
   }
 
-  // Non-strings are highlighted as YAML, unless `errorProp.format` was explicited
-  const formatA = format || 'yaml'
-
-  return highlight(formatA, string, THEME).value
+  return highlight('yaml', string, THEME).value
 }
 
 // Console (ANSI sequences) syntax color highlighting

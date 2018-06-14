@@ -37,13 +37,13 @@ const filterErrorProps = function({ value, exclude }) {
   return value !== undefined && (exclude === undefined || !exclude(value))
 }
 
-const printErrorProp = function({ name, value, print, indented = false, format }) {
+const printErrorProp = function({ name, value, print, indented = false }) {
   // Call `errorProp.print()` if present
   const valueA = printValue({ value, print })
   // Stringify and prettify to YAML
   const string = stringifyValue(valueA)
   // Syntax highlighting
-  const stringA = highlightValue({ string, value: valueA, format })
+  const stringA = highlightValue({ string })
   // Indentation if `errorProp.indented: true`
   const stringB = indentValue({ string: stringA, indented })
   // Prefix with `errorProp.name`

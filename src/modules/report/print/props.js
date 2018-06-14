@@ -16,7 +16,9 @@ const printErrorProps = function({ task, errorProps }) {
 // Get `errorProp.value` which can be a path or a function
 const addErrorPropValue = function(errorProp, task) {
   const value = getErrorPropValue(errorProp, task)
-  return { ...errorProp, value }
+  // Call `errorProp.print()` if present
+  const valueA = printValue({ value, print: errorProp.print })
+  return { ...errorProp, value: valueA }
 }
 
 const getErrorPropValue = function({ value, taskValue }, task) {
@@ -32,16 +34,13 @@ const getErrorPropValue = function({ value, taskValue }, task) {
 }
 
 // Do not print error.* properties that are not present
-// Also applies `errorProp.exclude()`
-const filterErrorProps = function({ value, exclude }) {
-  return value !== undefined && (exclude === undefined || !exclude(value))
+const filterErrorProps = function({ value }) {
+  return value !== undefined
 }
 
-const printErrorProp = function({ name, value, print, indented = false }) {
-  // Call `errorProp.print()` if present
-  const valueA = printValue({ value, print })
+const printErrorProp = function({ name, value, indented = false }) {
   // Stringify and prettify to YAML
-  const string = stringifyValue(valueA)
+  const string = stringifyValue(value)
   // Syntax highlighting
   const stringA = highlightValue({ string })
   // Indentation if `errorProp.indented: true`

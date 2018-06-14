@@ -1,32 +1,30 @@
 'use strict'
 
 const { omit, omitBy } = require('lodash')
+const { mergeAll } = require('lodash/fp')
 
 const { addCoreErrorProps } = require('./core')
-const { addOriginalProps } = require('./original')
 
 // Get plugin-specific properties printed on reporting
 const getErrorProps = function({ task: { originalTask, ...task }, plugins, noCore = false }) {
-  const { titles, errorProps } = callReportFuncs({ task, plugins })
+  const { titles, errorProps } = callReportFuncs({ task, originalTask, plugins })
 
   const title = getTitle({ titles })
 
   const errorPropsA = addCoreErrorProps({ errorProps, task, noCore })
 
-  const errorPropsB = addOriginalProps({ errorProps: errorPropsA, originalTask })
-
-  const errorPropsC = errorPropsB.map(removeEmptyProps)
+  const errorPropsB = errorPropsA.map(removeEmptyProps)
 
   // Merge all `plugin.report()` results
-  const errorPropsD = Object.assign({}, ...errorPropsC)
+  const errorPropsC = mergeAll(errorPropsB)
 
-  return { title, errorProps: errorPropsD }
+  return { title, errorProps: errorPropsC }
 }
 
 // Find and call all `plugin.report()`
-const callReportFuncs = function({ task, plugins }) {
+const callReportFuncs = function({ task, originalTask, plugins }) {
   const reportResult = plugins
-    .map(plugin => callReportFunc({ plugin, task }))
+    .map(plugin => callReportFunc({ plugin, task, originalTask }))
     .filter(value => value !== undefined)
 
   // Separate `title` from the rest as it is handled differently
@@ -37,12 +35,31 @@ const callReportFuncs = function({ task, plugins }) {
 }
 
 // Call `plugin.report()`
-const callReportFunc = function({ plugin: { report, name }, task }) {
-  if (report === undefined) {
-    return
+const callReportFunc = function({ plugin, plugin: { report, name }, task, originalTask }) {
+  const { title, ...errorProps } = callReport({ report, plugin, task })
+
+  const errorPropsA = addOriginalTask({ errorProps, originalTask, name })
+
+  // If there is no `task.*`, do not report anything
+  if (Object.keys(errorPropsA).length === 0) {
+    return { title }
   }
 
-  return report(task[name])
+  return { title, [name]: errorPropsA }
+}
+
+const callReport = function({ report, plugin: { name }, task }) {
+  if (report !== undefined) {
+    return report(task[name])
+  }
+
+  return {}
+}
+
+// Add `originalTask.*` to `errorProps`
+// Merged with lower priority, but should appear at end
+const addOriginalTask = function({ errorProps, originalTask, name }) {
+  return { ...errorProps, ...originalTask[name], ...errorProps }
 }
 
 // Retrieve printed task title by concatenating all `title` from `plugin.report()`

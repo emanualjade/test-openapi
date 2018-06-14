@@ -5,7 +5,7 @@ const { get } = require('lodash')
 const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
 // Print `error.*` properties in error printed message
-const getErrorProps = function({ errorProps, ...task }) {
+const printErrorProps = function({ task, errorProps }) {
   return errorProps
     .map(errorProp => addErrorPropValue(errorProp, task))
     .filter(filterErrorProps)
@@ -59,5 +59,5 @@ const printValue = function({ value, print }) {
 }
 
 module.exports = {
-  getErrorProps,
+  printErrorProps,
 }

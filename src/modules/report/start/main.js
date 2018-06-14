@@ -16,7 +16,7 @@ const start = async function(config) {
 
   const reportC = addReportersOptions({ config, report: reportB })
 
-  await callReporters({ config: { report: reportC }, input: config, type: 'start' })
+  await callReporters({ config: { report: reportC }, type: 'start' }, config)
 
   const reportD = addOrdering({ config, report: reportC })
 

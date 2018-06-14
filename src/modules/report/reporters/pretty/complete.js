@@ -67,9 +67,9 @@ const printErrorProp = function([name, value]) {
   // Stringify and prettify to YAML
   const string = stringifyValue(value)
   // Syntax highlighting, unless already highlighted
-  const stringA = highlightValue({ string })
+  const stringA = highlightValue(string)
   // Indentation if multiline
-  const stringB = indentValue({ string: stringA })
+  const stringB = indentValue(stringA)
   // Prefix with `errorProp.name`
   return `${orange(`${name}:`)} ${stringB}`
 }

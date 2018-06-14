@@ -1,8 +1,8 @@
 'use strict'
 
 // Indent value if multi-line
-const indentValue = function({ string }) {
-  if (!shouldIndent({ string })) {
+const indentValue = function(string) {
+  if (!shouldIndent(string)) {
     return string
   }
 
@@ -10,7 +10,7 @@ const indentValue = function({ string }) {
 }
 
 // Indent multi-line stringds
-const shouldIndent = function({ string }) {
+const shouldIndent = function(string) {
   return string.includes('\n')
 }
 

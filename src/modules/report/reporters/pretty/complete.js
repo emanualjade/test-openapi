@@ -1,5 +1,7 @@
 'use strict'
 
+const { capitalize } = require('underscore.string')
+
 const {
   red,
   dim,
@@ -71,7 +73,7 @@ const printErrorProp = function([name, value]) {
   // Indentation if multiline
   const stringB = indentValue(stringA)
   // Prefix with `errorProp.name`
-  return `${orange(`${name}:`)} ${stringB}`
+  return `${orange(`${capitalize(name, true)}:`)} ${stringB}`
 }
 
 module.exports = {

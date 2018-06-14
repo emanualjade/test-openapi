@@ -13,7 +13,7 @@ const report = function({
   const request = getRequest(rawRequest)
   const response = getResponse(rawResponse)
 
-  return { title, Request: request, Response: response }
+  return { title, request, response }
 }
 
 // Add `METHOD URL (STATUS)` to reporting

@@ -3,6 +3,8 @@
 const { dump: yamlDump, DEFAULT_FULL_SCHEMA } = require('js-yaml')
 const { omitBy } = require('lodash')
 
+const { indent } = require('../../../utils')
+
 // YAML error properties for each failed assertion
 const getErrorProps = function({ ok, error }) {
   if (ok || error === undefined) {
@@ -38,7 +40,7 @@ const AT_REGEXP = /^.*at /
 // Serialize error to indented YAML
 const serializeErrorProps = function({ error }) {
   const errorProps = yamlDump(error, YAML_OPTS)
-  const errorPropsA = indent({ errorProps })
+  const errorPropsA = indent(errorProps)
   const errorPropsB = `\n  ---${errorPropsA}...`
   return errorPropsB
 }
@@ -49,13 +51,6 @@ const YAML_OPTS = {
   // Otherwise `tap-out` parser crashes
   flowLevel: 1,
 }
-
-// Indent error properties by two spaces
-const indent = function({ errorProps }) {
-  return errorProps.replace(INDENT_REGEX, '\n  ')
-}
-
-const INDENT_REGEX = /\n|^/g
 
 module.exports = {
   getErrorProps,

@@ -1,6 +1,6 @@
 'use strict'
 
-const { red, dim, indent, fullIndent, HORIZONTAL_LINE } = require('../utils')
+const { red, dim, indent, HORIZONTAL_LINE } = require('../utils')
 
 const { getErrorProps } = require('./error_props')
 
@@ -12,9 +12,9 @@ const getErrorMessage = function({ task, plugins }) {
 
   return `
 ${HORIZONTAL_LINE}
-${CROSS_MARK} ${indent(header)}
+${CROSS_MARK} ${header}
 ${HORIZONTAL_LINE}
-${fullIndent(errorProps)}
+${indent(errorProps)}
 `
 }
 
@@ -27,9 +27,8 @@ const getHeader = function({
   title,
 }) {
   return `${red.bold(key)}
-${dim(title)}
-
-${message}`
+${indent(dim(title))}
+${indent(message)}`
 }
 
 // Red cross symbol

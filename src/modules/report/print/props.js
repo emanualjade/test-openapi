@@ -1,7 +1,5 @@
 'use strict'
 
-const { get } = require('lodash')
-
 const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
 // Print `error.*` properties in error printed message
@@ -15,22 +13,8 @@ const printErrorProps = function({ task, errorProps }) {
 
 // Get `errorProp.value` which can be a path or a function
 const addErrorPropValue = function(errorProp, task) {
-  const value = getErrorPropValue(errorProp, task)
-  // Call `errorProp.print()` if present
-  const valueA = printValue({ value, print: errorProp.print })
-  return { ...errorProp, value: valueA }
-}
-
-const getErrorPropValue = function({ value, taskValue }, task) {
-  if (typeof value === 'string') {
-    return get(task.error, value)
-  }
-
-  if (typeof taskValue === 'string') {
-    return get(task, taskValue)
-  }
-
-  return value(task)
+  const value = errorProp.value(task)
+  return { ...errorProp, value }
 }
 
 // Do not print error.* properties that are not present
@@ -47,14 +31,6 @@ const printErrorProp = function({ name, value }) {
   const stringB = indentValue({ string: stringA })
   // Prefix with `errorProp.name`
   return `${orange(`${name}:`)} ${stringB}`
-}
-
-const printValue = function({ value, print }) {
-  if (print === undefined) {
-    return value
-  }
-
-  return print(value)
 }
 
 module.exports = {

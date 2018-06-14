@@ -6,7 +6,11 @@ const { removePrefixes } = require('../../../utils')
 const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
 
 // Print HTTP request in error messages
-const printRequest = function({ raw: { method, url, body, ...rest } = {} }) {
+const getRequest = function({
+  call: {
+    request: { raw: { method, url, body, ...rest } = {} },
+  },
+}) {
   const methodA = printMethod({ method })
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
@@ -15,7 +19,11 @@ const printRequest = function({ raw: { method, url, body, ...rest } = {} }) {
 }
 
 // Print HTTP response in error messages
-const printResponse = function({ raw: { status, body, ...rest } = {} }) {
+const getResponse = function({
+  call: {
+    response: { raw: { status, body, ...rest } = {} },
+  },
+}) {
   const statusA = printStatus({ status })
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
@@ -54,8 +62,8 @@ const printBody = function({ body }) {
 }
 
 const errorProps = [
-  { name: 'Request', taskValue: 'call.request', print: printRequest },
-  { name: 'Response', taskValue: 'call.response', print: printResponse },
+  { name: 'Request', value: getRequest },
+  { name: 'Response', value: getResponse },
 ]
 
 module.exports = {

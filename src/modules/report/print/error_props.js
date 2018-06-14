@@ -9,7 +9,19 @@ const getErrorProps = function({ plugins }) {
   return errorPropsB
 }
 
-const printJsonSchema = function(schema) {
+const getExpected = function({ error: { expected } }) {
+  return expected
+}
+
+const getActual = function({ error: { actual } }) {
+  return actual
+}
+
+const getProperty = function({ error: { property } }) {
+  return property
+}
+
+const getJsonSchema = function({ error: { schema } }) {
   // Do not print JSON schemas which are simplistic, as they do not provide extra
   // information over `Expected value`
   if (isShortcut(schema)) {
@@ -24,10 +36,10 @@ const isShortcut = function(schema) {
 }
 
 const CORE_ERROR_PROPS = [
-  { name: 'Expected value', value: 'expected' },
-  { name: 'Actual value', value: 'actual' },
-  { name: 'Property', value: 'property' },
-  { name: 'JSON schema', value: 'schema', print: printJsonSchema },
+  { name: 'Expected value', value: getExpected },
+  { name: 'Actual value', value: getActual },
+  { name: 'Property', value: getProperty },
+  { name: 'JSON schema', value: getJsonSchema },
 ]
 
 module.exports = {

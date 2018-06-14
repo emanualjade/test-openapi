@@ -56,7 +56,11 @@ const isEmptyProp = function(value) {
 // Retrieve printed task title by concatenating all `title` from `plugin.report()`
 // result
 const getTitle = function({ titles }) {
-  return titles.filter(title => title !== undefined && title.trim() !== '').join(' ')
+  return titles.filter(isDefinedTitle).join(' ')
+}
+
+const isDefinedTitle = function(title) {
+  return title !== undefined && title.trim() !== ''
 }
 
 module.exports = {

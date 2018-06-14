@@ -8,28 +8,46 @@ const { getCoreErrorProps } = require('./core_error_props')
 
 // Get `task.errorProps`, i.e. plugin-specific error properties printed on reporting
 const getErrorProps = function({ task, plugins }) {
+  const reportFuncs = getReportFuncs({ plugins })
+
+  const { titles, errorProps } = callReportFuncs({ reportFuncs, task })
+
+  const title = getTitle({ titles })
+
+  const errorPropsA = printErrorProps({ errorProps })
+
+  return { title, errorProps: errorPropsA }
+}
+
+const getReportFuncs = function({ plugins }) {
   const reportFuncs = plugins
     .map(({ report }) => report)
     .filter(reportFunc => reportFunc !== undefined)
 
   // Core has merging priority
   const reportFuncsA = [...reportFuncs, getCoreErrorProps]
-
-  const reportResult = reportFuncsA.map(reportFunc => getPluginErrorProps({ reportFunc, task }))
-
-  const title = getTitle({ reportResult })
-
-  const errorProps = reportResult.map(({ errorProps }) => errorProps)
-  const errorPropsA = Object.assign({}, ...errorProps)
-
-  const errorPropsB = printErrorProps({ errorProps: errorPropsA })
-  return { title, errorProps: errorPropsB }
+  return reportFuncsA
 }
 
-const getPluginErrorProps = function({ reportFunc, task }) {
+const callReportFuncs = function({ reportFuncs, task }) {
+  const reportResult = reportFuncs.map(reportFunc => callReportFunc({ reportFunc, task }))
+
+  // Separate `title` from the rest as it is handled differently
+  const titles = reportResult.map(({ title }) => title)
+  const errorProps = reportResult.map(({ errorProps }) => errorProps)
+
+  // Merge all `plugin.report()` results
+  const errorPropsA = Object.assign({}, ...errorProps)
+
+  return { titles, errorProps: errorPropsA }
+}
+
+// Call `plugin.report()`
+const callReportFunc = function({ reportFunc, task }) {
   const errorProps = reportFunc(task)
 
   const { title, ...errorPropsA } = omitBy(errorProps, isEmptyProp)
+
   return { title, errorProps: errorPropsA }
 }
 
@@ -38,13 +56,13 @@ const isEmptyProp = function(value) {
   return value === undefined
 }
 
-const getTitle = function({ reportResult }) {
-  return reportResult
-    .map(({ title }) => title)
-    .filter(title => title !== undefined && title.trim() !== '')
-    .join(' ')
+// Retrieve printed task title by concatenating all `title` from `plugin.report()`
+// result
+const getTitle = function({ titles }) {
+  return titles.filter(title => title !== undefined && title.trim() !== '').join(' ')
 }
 
+// Print/prettify all `plugin.report()` return values
 const printErrorProps = function({ errorProps }) {
   return Object.entries(errorProps)
     .map(printErrorProp)

@@ -14,7 +14,7 @@ const errorProps = function({
   const request = getRequest(rawRequest)
   const response = getResponse(rawResponse)
 
-  return [{ name: 'Request', value: request }, { name: 'Response', value: response }]
+  return { Request: request, Response: response }
 }
 
 // Print HTTP request in error messages

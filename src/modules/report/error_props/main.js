@@ -5,12 +5,12 @@ const { omit, omitBy } = require('lodash')
 const { getCoreErrorProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
-const getErrorProps = function({ task, plugins }) {
+const getErrorProps = function({ task, plugins, noCore = false }) {
   const { titles, errorProps } = callReportFuncs({ task, plugins })
 
   const title = getTitle({ titles })
 
-  const errorPropsA = addCoreErrorProps({ errorProps, task })
+  const errorPropsA = addCoreErrorProps({ errorProps, task, noCore })
 
   const errorPropsB = errorPropsA.map(removeEmptyProps)
 
@@ -54,7 +54,11 @@ const isDefinedTitle = function(title) {
 
 // Add core `errorProps`
 // Enforce properties order
-const addCoreErrorProps = function({ errorProps, task }) {
+const addCoreErrorProps = function({ errorProps, task, noCore }) {
+  if (noCore) {
+    return errorProps
+  }
+
   const coreErrorProps = getCoreErrorProps(task)
   return [coreErrorProps, ...errorProps]
 }

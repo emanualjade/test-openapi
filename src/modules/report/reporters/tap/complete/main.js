@@ -1,6 +1,6 @@
 'use strict'
 
-const { getErrorProps: getProps } = require('../../../error_props')
+const { getErrorProps: getReportProps } = require('../../../error_props')
 
 const { getErrorProps } = require('./error_props')
 
@@ -10,21 +10,18 @@ const complete = function({ options: { tap }, ...task }, { plugins }) {
   return tap.assert(assert)
 }
 
-const getAssert = function({ task, task: { aborted, error }, plugins }) {
-  const ok = error === undefined
-  const name = getName({ task, plugins })
-  const directive = { skip: Boolean(aborted) }
-  const errorPropsA = getErrorProps({ ok, error })
+const getAssert = function({ task, task: { key, aborted, error }, plugins }) {
+  const { title, errorProps: reportProps } = getReportProps({ task, plugins, noCore: true })
 
-  return { ok, name, directive, error: errorPropsA }
+  const ok = error === undefined
+  const name = getName({ key, title })
+  const directive = { skip: Boolean(aborted) }
+  const errorProps = getErrorProps({ ok, error, reportProps })
+
+  return { ok, name, directive, error: errorProps }
 }
 
-const getName = function({ task, task: { key }, plugins }) {
-  // We are not using other properties from `plugin.report()` because:
-  //  - TAP would only allow printing them on errors, not on success
-  //  - because of bugs with some TAP parsers, their values cannot be multi-line
-  const { title } = getProps({ task, plugins })
-
+const getName = function({ key, title }) {
   if (title.trim() === '') {
     return key
   }

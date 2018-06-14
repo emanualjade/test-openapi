@@ -1,6 +1,6 @@
 'use strict'
 
-const { isObject } = require('../../../utils')
+const { isSimpleSchema } = require('../../../utils')
 
 // Core `errorProps` always present on error
 const getCoreErrorProps = function({ error: { expected, actual, property, schema } = {} }) {
@@ -17,15 +17,11 @@ const getCoreErrorProps = function({ error: { expected, actual, property, schema
 const getJsonSchema = function({ schema }) {
   // Do not print JSON schemas which are simplistic, as they do not provide extra
   // information over `Expected value`
-  if (isShortcut(schema)) {
+  if (isSimpleSchema(schema)) {
     return
   }
 
   return schema
-}
-
-const isShortcut = function(schema) {
-  return isObject(schema) && Array.isArray(schema.enum) && schema.enum.length === 1
 }
 
 module.exports = {

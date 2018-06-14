@@ -1,5 +1,7 @@
 'use strict'
 
+const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
+
 // Validation error
 // Properties often assigned:
 //  - `errors` `{array}`: all errors if it was a `task` error
@@ -26,17 +28,11 @@ class TestOpenApiError extends Error {
 
 // Tries to guess `error.expected` from simple `error.schema`
 const addExpected = function({ obj, properties: { schema, expected } }) {
-  if (schema === undefined || expected !== undefined) {
+  if (expected !== undefined || !isSimpleSchema(schema)) {
     return
   }
 
-  const { enum: enumVal } = schema
-  if (!Array.isArray(enumVal) || enumVal.length !== 1) {
-    return
-  }
-
-  const [expectedA] = enumVal
-  obj.expected = expectedA
+  obj.expected = getSimpleSchemaConstant(schema)
 }
 
 module.exports = {

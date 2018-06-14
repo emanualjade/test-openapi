@@ -5,12 +5,20 @@ const { titleize } = require('underscore.string')
 const { removePrefixes } = require('../../../utils')
 const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
 
-// Print HTTP request in error messages
-const getRequest = function({
+const errorProps = function({
   call: {
-    request: { raw: { method, url, body, ...rest } = {} },
+    request: { raw: rawRequest = {} },
+    response: { raw: rawResponse = {} },
   },
 }) {
+  const request = getRequest(rawRequest)
+  const response = getResponse(rawResponse)
+
+  return [{ name: 'Request', value: request }, { name: 'Response', value: response }]
+}
+
+// Print HTTP request in error messages
+const getRequest = function({ method, url, body, ...rest }) {
   const methodA = printMethod({ method })
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
@@ -19,11 +27,7 @@ const getRequest = function({
 }
 
 // Print HTTP response in error messages
-const getResponse = function({
-  call: {
-    response: { raw: { status, body, ...rest } = {} },
-  },
-}) {
+const getResponse = function({ status, body, ...rest }) {
   const statusA = printStatus({ status })
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
@@ -60,11 +64,6 @@ const printBody = function({ body }) {
   const bodyB = highlightValueAuto(bodyA)
   return `\n\n${bodyB}`
 }
-
-const errorProps = [
-  { name: 'Request', value: getRequest },
-  { name: 'Response', value: getResponse },
-]
 
 module.exports = {
   errorProps,

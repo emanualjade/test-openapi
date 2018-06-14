@@ -3,18 +3,11 @@
 const { orange, indentValue, stringifyValue, highlightValue } = require('../utils')
 
 // Print `error.*` properties in error printed message
-const printErrorProps = function({ task, errorProps }) {
+const printErrorProps = function({ errorProps }) {
   return errorProps
-    .map(errorProp => addErrorPropValue(errorProp, task))
     .filter(filterErrorProps)
     .map(printErrorProp)
     .join('\n\n')
-}
-
-// Get `errorProp.value` which can be a path or a function
-const addErrorPropValue = function(errorProp, task) {
-  const value = errorProp.value(task)
-  return { ...errorProp, value }
 }
 
 // Do not print error.* properties that are not present

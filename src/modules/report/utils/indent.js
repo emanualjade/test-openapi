@@ -20,7 +20,7 @@ const indent = function(string) {
 }
 
 const fullIndent = function(string) {
-  return `${INDENT}${indent(string)}`
+  return string.replace(/\n|^/g, `\n${INDENT}`)
 }
 
 const INDENT_SIZE = 2

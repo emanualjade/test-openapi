@@ -14,7 +14,6 @@ const getErrorMessage = function({ task, plugins }) {
 ${HORIZONTAL_LINE}
 ${CROSS_MARK} ${indent(header)}
 ${HORIZONTAL_LINE}
-
 ${fullIndent(errorProps)}
 `
 }

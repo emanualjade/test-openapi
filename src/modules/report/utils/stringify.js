@@ -2,7 +2,7 @@
 
 const { dump: yamlDump } = require('js-yaml')
 
-const { indent } = require('./indent')
+const { fullIndent } = require('./indent')
 
 // Stringify value, prettifying it to YAML if it's an object or an array
 const stringifyValue = function(value) {
@@ -12,7 +12,7 @@ const stringifyValue = function(value) {
 
   const string = yamlDump(value, YAML_OPTS)
   const stringA = string.replace(/\n$/, '')
-  const stringB = indent(`\n${stringA}`)
+  const stringB = `\n${fullIndent(stringA)}`
   return stringB
 }
 

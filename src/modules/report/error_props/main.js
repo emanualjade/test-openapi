@@ -3,6 +3,8 @@
 const { omit, omitBy } = require('lodash')
 const { mergeAll } = require('lodash/fp')
 
+const { getAddedProps } = require('../../../utils')
+
 const { addCoreErrorProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
@@ -48,12 +50,14 @@ const callReportFunc = function({ plugin, plugin: { report, name }, task, origin
   return { title, [name]: errorPropsA }
 }
 
-const callReport = function({ report, plugin: { name }, task }) {
+const callReport = function({ report, plugin, plugin: { name }, task }) {
   if (report !== undefined) {
     return report(task[name])
   }
 
-  return {}
+  // By default, `plugin.report()` returns all the properties that haven been
+  // added by the plugin but are not part of `plugin.config.task.*`
+  return getAddedProps({ task, plugin })
 }
 
 // Add `originalTask.*` to `errorProps`

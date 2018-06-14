@@ -11,8 +11,9 @@ const stringifyValue = function(value) {
   }
 
   const string = yamlDump(value, YAML_OPTS)
-  const stringA = indent(`\n${string}`)
-  return stringA
+  const stringA = string.replace(/\n$/, '')
+  const stringB = indent(`\n${stringA}`)
+  return stringB
 }
 
 const YAML_OPTS = { noRefs: true }

@@ -6,7 +6,8 @@ const { removePrefixes } = require('../../utils')
 const { yellow, highlightValueAuto, prettifyJson } = require('../report/utils')
 
 const report = function({
-  call: { request: { raw: rawRequest = {} } = {}, response: { raw: rawResponse = {} } = {} },
+  request: { raw: rawRequest = {} } = {},
+  response: { raw: rawResponse = {} } = {},
 }) {
   const title = getTitle({ rawRequest, rawResponse })
   const request = getRequest(rawRequest)

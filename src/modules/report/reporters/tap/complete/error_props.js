@@ -27,7 +27,7 @@ const getErrorProps = function({
   const errorA = omit(error, NOT_REPORTED_PROPS)
 
   // Enforce properties order
-  const errorProps = {
+  return {
     message,
     operator,
     severity: 'fail',
@@ -39,7 +39,6 @@ const getErrorProps = function({
     task,
     ...errorA,
   }
-  return errorProps
 }
 
 const NOT_REPORTED_PROPS = ['config', 'plugins']

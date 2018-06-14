@@ -2,8 +2,8 @@
 
 const { isObject } = require('../../../utils')
 
-// Core `errorProps` always present
-const getCoreErrorProps = function({ error: { expected, actual, property, schema } }) {
+// Core `errorProps` always present on error
+const getCoreErrorProps = function({ error: { expected, actual, property, schema } = {} }) {
   const schemaA = getJsonSchema({ schema })
 
   return {

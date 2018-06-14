@@ -14,8 +14,10 @@ const task = function({
     only: { patterns, enabled },
   },
   key,
+  isNested,
 }) {
-  if (!enabled || isOnly({ only, patterns, key })) {
+  // Nested tasks are not skipped
+  if (isNested || !enabled || isOnly({ only, patterns, key })) {
     return
   }
 

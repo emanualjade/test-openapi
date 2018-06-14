@@ -13,7 +13,7 @@ const { abortTask } = require('../../errors')
 // might be emptier than expected (if they are skipped).
 const task = function({ isNested, skip = false, key, config }) {
   // Nested tasks are not skipped
-  if (!isNested && !isSkipped({ skip, key, config })) {
+  if (isNested || !isSkipped({ skip, key, config })) {
     return
   }
 

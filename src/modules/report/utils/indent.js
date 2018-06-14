@@ -6,7 +6,7 @@ const indentValue = function({ string }) {
     return string
   }
 
-  return indent(string)
+  return `\n${indent(string)}`
 }
 
 // Indent multi-line stringds
@@ -16,7 +16,7 @@ const shouldIndent = function({ string }) {
 
 // Indent a string
 const indent = function(string) {
-  return string.replace(/\n|^/g, `\n${INDENT}`)
+  return INDENT + string.replace(/\n/g, `\n${INDENT}`)
 }
 
 const INDENT_SIZE = 2

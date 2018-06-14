@@ -7,7 +7,7 @@ const getEndMessage = function({ tasks }) {
   const summary = getSummary({ tasks })
   const line = getLine({ summary })
   const endMessage = printSummary({ summary })
-  return `${line}${indent(endMessage)}\n\n`
+  return `${line}\n${indent(endMessage)}\n\n`
 }
 
 // Only show separator line when there were some errors

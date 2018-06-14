@@ -18,9 +18,12 @@ const getErrorMessage = function({
   return `
 ${HORIZONTAL_LINE}
 ${CROSS_MARK} ${red.bold(key)}
+
 ${indent(dim(title))}
+
 ${indent(message)}
 ${HORIZONTAL_LINE}
+
 ${indent(errorProps)}
 `
 }

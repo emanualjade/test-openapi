@@ -41,7 +41,7 @@ const AT_REGEXP = /^.*at /
 const serializeErrorProps = function({ error }) {
   const errorProps = yamlDump(error, YAML_OPTS)
   const errorPropsA = indent(errorProps)
-  const errorPropsB = `\n  ---${errorPropsA}...`
+  const errorPropsB = `\n  ---\n${errorPropsA}...`
   return errorPropsB
 }
 

@@ -24,8 +24,8 @@ const getReportFuncs = function({ plugins }) {
     .map(({ report }) => report)
     .filter(reportFunc => reportFunc !== undefined)
 
-  // Core has merging priority
-  const reportFuncsA = [...reportFuncs, getCoreErrorProps]
+  // Core has merging priority, but they should also appear first
+  const reportFuncsA = [getCoreErrorProps, ...reportFuncs, getCoreErrorProps]
   return reportFuncsA
 }
 

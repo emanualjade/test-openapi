@@ -19,7 +19,7 @@ const getErrorMessage = function({
 ${HORIZONTAL_LINE}
 ${CROSS_MARK} ${red.bold(key)}
 
-${indent(dim(title))}
+${dim(indent(title))}
 
 ${indent(message)}
 ${HORIZONTAL_LINE}

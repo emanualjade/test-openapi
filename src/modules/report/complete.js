@@ -14,12 +14,13 @@ const complete = async function(task) {
       report: { taskKeys, tasks, index },
     },
     plugins,
+    originalTask,
   } = task
 
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks
-  tasks[key] = task
+  tasks[key] = { ...task, originalTask }
 
   // Only use keys not reported yet
   const keys = taskKeys.slice(index)

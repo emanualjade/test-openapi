@@ -6,7 +6,10 @@ const indentValue = function(string) {
     return string
   }
 
-  return `\n${indent(string)}`
+  // Multi-line strings should be on next line
+  const stringA = string.replace(/^\n*/, '\n')
+
+  return indent(stringA)
 }
 
 // Indent multi-line stringds

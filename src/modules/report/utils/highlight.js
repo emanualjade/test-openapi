@@ -12,8 +12,20 @@ const highlightValue = function(string) {
     return string
   }
 
-  return highlight('yaml', string, THEME).value
+  const stringA = string.replace(KEY_CHARS_REGEXP, KEY_MARKER)
+
+  const stringB = highlight('yaml', stringA, THEME).value
+
+  const stringC = stringB.replace(KEY_MARKER_REGEXP, KEY_CHARS)
+  return stringC
 }
+
+// `emphasize` has issues highlighting YAML keys which contain dots
+// We temporarily convert them to a special marker to work around the problem
+const KEY_CHARS = '.'
+const KEY_CHARS_REGEXP = /\./g
+const KEY_MARKER = '_'.repeat(10)
+const KEY_MARKER_REGEXP = new RegExp(KEY_MARKER, 'g')
 
 // Console (ANSI sequences) syntax color highlighting
 // Automatically guesses MIME type/format

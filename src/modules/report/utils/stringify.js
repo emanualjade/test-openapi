@@ -10,7 +10,8 @@ const stringifyValue = function(value) {
 
   const string = yamlDump(value, YAML_OPTS)
   const stringA = string.replace(/\n$/, '')
-  return stringA
+  // Value should be on next line, even if it's a single property
+  return `\n${stringA}`
 }
 
 const YAML_OPTS = { noRefs: true }

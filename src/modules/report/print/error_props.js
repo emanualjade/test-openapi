@@ -6,7 +6,7 @@ const { orange, indentValue, stringifyValue, highlightValue } = require('../util
 
 const { getCoreErrorProps } = require('./core_error_props')
 
-// Get `task.errorProps`, i.e. plugin-specific error properties printed on reporting
+// Get plugin-specific properties printed on reporting
 const getErrorProps = function({ task, plugins }) {
   const reportFuncs = getReportFuncs({ plugins })
 
@@ -19,13 +19,13 @@ const getErrorProps = function({ task, plugins }) {
   return { title, errorProps: errorPropsA }
 }
 
+// Find all `plugin.report()`
 const getReportFuncs = function({ plugins }) {
   const reportFuncs = plugins
     .map(({ report }) => report)
     .filter(reportFunc => reportFunc !== undefined)
 
-  // Core has merging priority, but they should also appear first
-  const reportFuncsA = [getCoreErrorProps, ...reportFuncs, getCoreErrorProps]
+  const reportFuncsA = [getCoreErrorProps, ...reportFuncs]
   return reportFuncsA
 }
 

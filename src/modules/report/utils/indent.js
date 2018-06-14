@@ -1,12 +1,17 @@
 'use strict'
 
-// Indent value if `errorProp.indented: true`
-const indentValue = function({ string, indented }) {
-  if (!indented) {
+// Indent value if multi-line
+const indentValue = function({ string }) {
+  if (!shouldIndent({ string })) {
     return string
   }
 
   return indent(`\n${string}`)
+}
+
+// Indent multi-line stringds
+const shouldIndent = function({ string }) {
+  return string.includes('\n')
 }
 
 // Indent a string

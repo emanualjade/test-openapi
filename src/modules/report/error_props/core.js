@@ -3,13 +3,13 @@
 const { isSimpleSchema } = require('../../../utils')
 
 // Add core `errorProps`
-// Enforce properties order
 const addCoreErrorProps = function({ errorProps, task, noCore }) {
   if (noCore) {
     return errorProps
   }
 
   const coreErrorProps = getCoreErrorProps(task)
+  // Merged with lower priority, and appear at beginning
   return [coreErrorProps, ...errorProps]
 }
 

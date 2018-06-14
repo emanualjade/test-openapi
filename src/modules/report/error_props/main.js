@@ -1,9 +1,9 @@
 'use strict'
 
-const { omit, omitBy, mapKeys } = require('lodash')
-const { capitalize } = require('underscore.string')
+const { omit, omitBy } = require('lodash')
 
 const { addCoreErrorProps } = require('./core')
+const { addOriginalProps } = require('./original')
 
 // Get plugin-specific properties printed on reporting
 const getErrorProps = function({ task: { originalTask, ...task }, plugins, noCore = false }) {
@@ -13,14 +13,14 @@ const getErrorProps = function({ task: { originalTask, ...task }, plugins, noCor
 
   const errorPropsA = addCoreErrorProps({ errorProps, task, noCore })
 
-  const errorPropsB = errorPropsA.map(removeEmptyProps)
+  const errorPropsB = addOriginalProps({ errorProps: errorPropsA, originalTask })
 
-  const originalProps = getOriginalProps({ originalTask })
+  const errorPropsC = errorPropsB.map(removeEmptyProps)
 
   // Merge all `plugin.report()` results
-  const errorPropsC = Object.assign({}, ...errorPropsB, originalProps)
+  const errorPropsD = Object.assign({}, ...errorPropsC)
 
-  return { title, errorProps: errorPropsC }
+  return { title, errorProps: errorPropsD }
 }
 
 // Find and call all `plugin.report()`
@@ -53,16 +53,6 @@ const getTitle = function({ titles }) {
 
 const isDefinedTitle = function(title) {
   return title !== undefined && title.trim() !== ''
-}
-
-const getOriginalProps = function({ originalTask }) {
-  const originalTaskA = removeEmptyProps(originalTask)
-  const originalTaskB = mapKeys(originalTaskA, normalizeOriginalTaskKey)
-  return originalTaskB
-}
-
-const normalizeOriginalTaskKey = function(value, name) {
-  return capitalize(name)
 }
 
 // Do not print properties that are not present

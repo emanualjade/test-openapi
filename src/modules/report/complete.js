@@ -55,7 +55,7 @@ const completeTask = async function({ keys: [key, ...keys], tasks, config, plugi
   }
 
   const task = tasks[key]
-  await callReporters({ config, type: 'complete' }, task, { plugins })
+  await callReporters({ config, type: 'complete' }, task, { config, plugins })
 
   // Async iteration through recursion
   await completeTask({ keys, tasks, config, plugins })

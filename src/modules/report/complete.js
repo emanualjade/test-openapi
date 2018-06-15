@@ -1,7 +1,7 @@
 'use strict'
 
 const { callReporters } = require('./call')
-const { getResultType } = require('./utils')
+const { isSilent, isSilentTask, filterTaskData } = require('./level')
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
@@ -9,22 +9,21 @@ const { getResultType } = require('./utils')
 const complete = async function({
   task,
   task: { key },
-  originalTask,
   config,
   config: {
     report,
-    report: { taskKeys, tasks, index, level },
+    report: { taskKeys, tasks, index },
   },
   plugins,
 }) {
-  if (level.types.length === 0) {
+  if (isSilent({ config })) {
     return
   }
 
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks
-  tasks[key] = { ...task, originalTask }
+  tasks[key] = task
 
   // Only use keys not reported yet
   const keys = taskKeys.slice(index)
@@ -66,21 +65,12 @@ const completeTask = async function({ keys: [key, ...keys], tasks, config, plugi
   await completeTask({ keys, tasks, config, plugins })
 }
 
-const callComplete = async function({
-  task,
-  config,
-  config: {
-    report: {
-      level: { types },
-    },
-  },
-  plugins,
-}) {
-  // Use `config.report.level` to see if task should be silent
-  const resultType = getResultType(task)
-  const silent = !types.includes(resultType)
+const callComplete = async function({ task, config, plugins }) {
+  const silent = isSilentTask({ task, config })
 
-  await callReporters({ config, type: 'complete' }, task, { config, plugins, silent })
+  const taskA = filterTaskData({ task, config, plugins })
+
+  await callReporters({ config, type: 'complete' }, taskA, { config, plugins, silent })
 }
 
 module.exports = {

@@ -3,45 +3,33 @@
 const notifier = require('node-notifier')
 
 const { getSummary } = require('../../utils')
+const { isSilentSummary } = require('../../level')
 
 // Show notification at end of run if `config.report.notify: true`
-const end = function({
-  tasks,
-  config: {
-    report: {
-      level: { types },
-    },
-  },
-}) {
-  const opts = getOpts({ tasks, types })
+const end = function({ tasks, config }) {
+  const opts = getOpts({ tasks, config })
 
-  if (opts.message === '') {
+  if (opts === undefined) {
     return
   }
 
   notifier.notify(opts)
 }
 
-const getOpts = function({ tasks, types }) {
+const getOpts = function({ tasks, config }) {
   const { ok, total, pass, fail, skip } = getSummary({ tasks })
 
-  const opts = OPTS[ok]
+  const { resultType, ...opts } = OPTS[ok]
 
-  const message = getMainMessage({ opts, ok, total, pass, fail, types })
-
-  const messageA = addSkipMessage({ message, skip, types })
-
-  return { ...opts, message: messageA }
-}
-
-const getMainMessage = function({ opts, ok, total, pass, fail, types }) {
-  // Apply `config.report.level`
-  const silent = (ok && !types.includes('pass')) || (!ok && !types.includes('fail'))
-  if (silent) {
-    return ''
+  if (isSilentSummary({ resultType, config })) {
+    return
   }
 
-  return opts.message({ total, pass, fail })
+  const message = opts.message({ total, pass, fail })
+
+  const messageA = addSkipMessage({ message, skip, config })
+
+  return { ...opts, message: messageA }
 }
 
 const getPassMessage = function({ total, pass }) {
@@ -52,8 +40,8 @@ const getFailMessage = function({ total, fail }) {
   return `${fail} of ${total} tasks failed.`
 }
 
-const addSkipMessage = function({ message, skip, types }) {
-  if (skip === 0 || !types.includes('skip')) {
+const addSkipMessage = function({ message, skip, config }) {
+  if (skip === 0 || isSilentSummary({ resultType: 'skip', config })) {
     return message
   }
 
@@ -65,6 +53,7 @@ const PASS_OPTS = {
   message: getPassMessage,
   icon: `${__dirname}/passed.png`,
   sound: false,
+  resultType: 'pass',
 }
 
 const FAIL_OPTS = {
@@ -72,6 +61,7 @@ const FAIL_OPTS = {
   message: getFailMessage,
   icon: `${__dirname}/failed.png`,
   sound: 'Basso',
+  resultType: 'fail',
 }
 
 const OPTS = {

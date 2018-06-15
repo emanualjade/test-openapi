@@ -41,11 +41,11 @@ const performRun = async function({ config, plugins }) {
 
   const tasks = await fireTasks({ config: configA, mRunTask, plugins })
 
-  await endTasks({ tasks, plugins, config: configA })
+  const tasksA = await endTasks({ tasks, plugins, config: configA })
 
-  handleFinalFailure({ tasks })
+  handleFinalFailure({ tasks: tasksA })
 
-  return tasks
+  return tasksA
 }
 
 // Add `error.plugins` to every thrown error
@@ -62,10 +62,10 @@ const fireTasks = function({ config, config: { tasks }, mRunTask, plugins }) {
   return Promise.all(tasksA)
 }
 
-const fireTask = async function({ task, task: { originalTask }, config, mRunTask, plugins }) {
+const fireTask = async function({ task, config, mRunTask, plugins }) {
   const taskA = await bootTask({ task, config, mRunTask, plugins })
 
-  const taskB = await completeTask({ task: taskA, originalTask, plugins, config })
+  const taskB = await completeTask({ task: taskA, plugins, config })
 
   return taskB
 }

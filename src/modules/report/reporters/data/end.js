@@ -1,36 +1,23 @@
 'use strict'
 
 const { convertPlainObject } = require('../../../../errors')
-const { getSummary, getResultType } = require('../../utils')
+const { getSummary } = require('../../utils')
+const { isSilentTask } = require('../../level')
 
 // JSON reporter
-const end = function({
-  options: { spinner },
-  tasks,
-  config: {
-    report: {
-      level: { types },
-    },
-  },
-}) {
+const end = function({ options: { spinner }, tasks, config }) {
   spinner.stop()
 
-  const tasksA = getTasks({ tasks, types })
+  const tasksA = getTasks({ tasks, config })
   const tasksB = JSON.stringify(tasksA, null, 2)
   return tasksB
 }
 
-const getTasks = function({ tasks, types }) {
+const getTasks = function({ tasks, config }) {
   const summary = getSummary({ tasks })
-  const tasksA = tasks.filter(task => filterTask({ task, types })).map(getTask)
+  const tasksA = tasks.filter(task => !isSilentTask({ task, config })).map(getTask)
 
   return { summary, tasks: tasksA }
-}
-
-// Apply `config.report.level`
-const filterTask = function({ task, types }) {
-  const resultType = getResultType(task)
-  return types.includes(resultType)
 }
 
 const getTask = function(task) {

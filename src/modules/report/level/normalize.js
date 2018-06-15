@@ -22,27 +22,31 @@ const getLevel = function({ reporters, level }) {
   return DEFAULT_LEVEL
 }
 
-const DEFAULT_LEVEL = 'log'
+const DEFAULT_LEVEL = 'info'
 
 // `types` decides whether to show errors, successes, skipped tasks
+// `taskData` decided whether to include task.PLUGIN.*
+//    - `added` means only the added props (i.e. not in `task.config.task.*`)
 const LEVELS = {
   silent: {
     types: [],
+    taskData: 'none',
   },
   error: {
     types: ['fail'],
+    taskData: 'none',
   },
   warn: {
     types: ['fail'],
-  },
-  log: {
-    types: ['fail', 'pass', 'skip'],
+    taskData: 'added',
   },
   info: {
     types: ['fail', 'pass', 'skip'],
+    taskData: 'added',
   },
   debug: {
     types: ['fail', 'pass', 'skip'],
+    taskData: 'all',
   },
 }
 

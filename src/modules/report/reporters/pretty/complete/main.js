@@ -26,7 +26,7 @@ const getMessage = function({ task, plugins }) {
 
   const header = getHeader({ task, title, resultType })
 
-  const reportPropsA = printReportProps({ task, reportProps, resultType })
+  const reportPropsA = printReportProps({ reportProps, resultType })
 
   return `\n${header}${reportPropsA}\n`
 }

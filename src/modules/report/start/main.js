@@ -1,8 +1,8 @@
 'use strict'
 
 const { callReporters } = require('../call')
+const { normalizeLevel, isSilent } = require('../level')
 
-const { normalizeLevel } = require('./level')
 const { addOutput } = require('./output')
 const { addReporters } = require('./reporters')
 const { addReportersOptions } = require('./options')
@@ -15,7 +15,7 @@ const start = async function(config) {
 
   const reportB = normalizeLevel({ report: reportA })
 
-  if (reportB.level.types.length === 0) {
+  if (isSilent({ config: { report: reportB } })) {
     return { report: reportB }
   }
 

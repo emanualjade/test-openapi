@@ -46,6 +46,10 @@ const getStatus = function({ status }) {
 
 // Print HTTP request in error messages
 const getRequest = function({ method, url, body, ...rest }) {
+  if (url === undefined) {
+    return
+  }
+
   const methodA = printMethod({ method })
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
@@ -55,6 +59,10 @@ const getRequest = function({ method, url, body, ...rest }) {
 
 // Print HTTP response in error messages
 const getResponse = function({ status, body, ...rest }) {
+  if (status === undefined) {
+    return
+  }
+
   const statusA = printStatus({ status })
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })

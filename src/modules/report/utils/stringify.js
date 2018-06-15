@@ -10,7 +10,13 @@ const stringifyValue = function(value) {
 
   const string = yamlDump(value, YAML_OPTS)
   const stringA = string.replace(/\n$/, '')
+
   // Value should be on next line, even if it's a single property
+  // unless it's an empty object or array
+  if (['{}', '[]'].includes(stringA)) {
+    return stringA
+  }
+
   return `\n${stringA}`
 }
 

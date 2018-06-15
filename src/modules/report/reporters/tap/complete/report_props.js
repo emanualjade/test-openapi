@@ -4,6 +4,8 @@ const stripAnsi = require('strip-ansi')
 const { mapValues, mapKeys } = require('lodash')
 const { underscored } = require('underscore.string')
 
+const { isObject } = require('../../../../../utils')
+
 // `plugin.report()` is optimized for `pretty` reporter
 // With TAP we want to:
 //  - exclude core report properties, because we directly use `error.*` and
@@ -20,6 +22,10 @@ const normalizeReportProps = function({ reportProps }) {
 }
 
 const normalizeReportPropValue = function(value) {
+  if (isObject(value)) {
+    return mapValues(value, normalizeReportPropValue)
+  }
+
   return stripAnsi(value)
 }
 

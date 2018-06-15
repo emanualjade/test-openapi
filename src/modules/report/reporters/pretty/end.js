@@ -12,24 +12,15 @@ const end = function({ options: { spinner }, tasks }) {
 
 // Print final reporting message with counter of passed|failed|skipped tasks
 const getEndMessage = function({ tasks }) {
+  const summaryString = printSummary({ tasks })
+  return `\n${HORIZONTAL_LINE}\n\n${indent(summaryString)}\n\n`
+}
+
+const printSummary = function({ tasks }) {
   const summary = getSummary({ tasks })
-  const line = getLine({ summary })
-  const endMessage = printSummary({ summary })
-  return `${line}\n${indent(endMessage)}\n\n`
-}
 
-// Only show separator line when there were some errors
-const getLine = function({ summary: { fail } }) {
-  if (fail === 0) {
-    return ''
-  }
-
-  return `\n${HORIZONTAL_LINE}\n`
-}
-
-const printSummary = function({ summary, summary: { total } }) {
   // Pad numbers to the right
-  const padLength = String(total).length
+  const padLength = String(summary.total).length
 
   return Object.entries(summary)
     .filter(shouldPrint)

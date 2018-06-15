@@ -4,6 +4,7 @@ const { capitalize } = require('underscore.string')
 
 const { isObject } = require('../../../../utils')
 const {
+  green,
   red,
   dim,
   yellow,
@@ -18,52 +19,64 @@ const { getReportProps } = require('../../props')
 
 // Print task errors and update spinner
 const complete = function({ options: { spinner }, ...task }, { plugins }) {
-  const failed = task.error !== undefined
+  spinner.update({ clear: true })
 
-  spinner.update({ clear: failed })
-
-  if (!failed) {
-    return
-  }
-
-  const errorMessage = getErrorMessage({ task, plugins })
-  return errorMessage
+  const message = getMessage({ task, plugins })
+  return message
 }
 
-// Retrieve task's error to print
-const getErrorMessage = function({
-  task,
-  task: {
-    key,
-    error: { message },
-  },
-  plugins,
-}) {
+// Retrieve task's message to print
+const getMessage = function({ task, plugins }) {
+  const taskKey = getTaskKey({ task })
+
   const { title, reportProps } = getReportProps({ task, plugins })
+
+  const titleA = getTitle({ title })
 
   const reportPropsA = printReportProps({ reportProps })
 
   return `
 ${HORIZONTAL_LINE}
-${CROSS_MARK} ${red.bold(key)}
-
-${dim(indent(title))}
-
-${indent(message)}
-${HORIZONTAL_LINE}
-
-${indent(reportPropsA)}
+${taskKey}${titleA}
+${HORIZONTAL_LINE}${reportPropsA}
 `
 }
 
+// First line of the the message, with the task key and an indication on whether
+// the task failed
+const getTaskKey = function({ task: { key, error } }) {
+  if (error !== undefined) {
+    return red.bold(`${CROSS_MARK} ${key}`)
+  }
+
+  return green.bold(`${CHECK_MARK} ${key}`)
+}
+
+// Check symbol
+const CHECK_MARK = '\u2714'
 // Red cross symbol
-const CROSS_MARK = red.bold('\u2718')
+const CROSS_MARK = '\u2718'
+
+// All concatenated `title` from `plugin.report()`
+const getTitle = function({ title }) {
+  if (title.trim() === '') {
+    return ''
+  }
+
+  return `\n\n${dim(indent(title))}`
+}
 
 // Print/prettify all `plugin.report()` return values
 const printReportProps = function({ reportProps }) {
-  return Object.entries(reportProps)
+  if (Object.keys(reportProps).length === 0) {
+    return ''
+  }
+
+  const reportPropsA = Object.entries(reportProps)
     .map(printTopPair)
     .join('\n\n')
+
+  return `\n\n${indent(reportPropsA)}`
 }
 
 // Print top-level level pairs
@@ -78,6 +91,10 @@ const printReportProp = function(value) {
   // There is no second depth level, e.g. core `reportProps`
   if (!isObject(value)) {
     return prettifyValue(value)
+  }
+
+  if (Object.keys(value).length === 0) {
+    return '{}'
   }
 
   const valueA = Object.entries(value)

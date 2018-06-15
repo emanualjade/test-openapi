@@ -14,13 +14,14 @@ const addCoreReportProps = function({ reportProps, task, noCore }) {
 }
 
 // Core `reportProps` always present on error
-const getCoreReportProps = function({ error, error: { property, schema } = {} }) {
+const getCoreReportProps = function({ error = {}, error: { message, property, schema } = {} }) {
   const expected = getCoreValue(error, 'expected')
   const actual = getCoreValue(error, 'actual')
 
   const schemaA = getJsonSchema({ schema })
 
   return {
+    message,
     'expected value': expected,
     'actual value': actual,
     property,

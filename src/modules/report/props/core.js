@@ -2,19 +2,19 @@
 
 const { isSimpleSchema } = require('../../../utils')
 
-// Add core `errorProps`
-const addCoreErrorProps = function({ errorProps, task, noCore }) {
+// Add core `reportProps`
+const addCoreReportProps = function({ reportProps, task, noCore }) {
   if (noCore) {
-    return errorProps
+    return reportProps
   }
 
-  const coreErrorProps = getCoreErrorProps(task)
+  const coreReportProps = getCoreReportProps(task)
   // Merged with lower priority, and appear at beginning
-  return [coreErrorProps, ...errorProps]
+  return [coreReportProps, ...reportProps]
 }
 
-// Core `errorProps` always present on error
-const getCoreErrorProps = function({ error, error: { property, schema } = {} }) {
+// Core `reportProps` always present on error
+const getCoreReportProps = function({ error, error: { property, schema } = {} }) {
   const expected = getCoreValue(error, 'expected')
   const actual = getCoreValue(error, 'actual')
 
@@ -49,5 +49,5 @@ const getJsonSchema = function({ schema }) {
 }
 
 module.exports = {
-  addCoreErrorProps,
+  addCoreReportProps,
 }

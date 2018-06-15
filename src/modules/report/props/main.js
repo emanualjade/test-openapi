@@ -5,22 +5,22 @@ const { mergeAll } = require('lodash/fp')
 
 const { isObject } = require('../../../utils')
 
-const { addCoreErrorProps } = require('./core')
+const { addCoreReportProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
-const getErrorProps = function({ task: { originalTask, ...task }, plugins, noCore = false }) {
-  const { titles, errorProps } = callReportFuncs({ task, originalTask, plugins })
+const getReportProps = function({ task: { originalTask, ...task }, plugins, noCore = false }) {
+  const { titles, reportProps } = callReportFuncs({ task, originalTask, plugins })
 
   const title = getTitle({ titles })
 
-  const errorPropsA = addCoreErrorProps({ errorProps, task, noCore })
+  const reportPropsA = addCoreReportProps({ reportProps, task, noCore })
 
-  const errorPropsB = errorPropsA.map(removeEmptyProps)
+  const reportPropsB = reportPropsA.map(removeEmptyProps)
 
   // Merge all `plugin.report()` results
-  const errorPropsC = mergeAll(errorPropsB)
+  const reportPropsC = mergeAll(reportPropsB)
 
-  return { title, errorProps: errorPropsC }
+  return { title, reportProps: reportPropsC }
 }
 
 // Find and call all `plugin.report()`
@@ -31,9 +31,9 @@ const callReportFuncs = function({ task, originalTask, plugins }) {
 
   // Separate `title` from the rest as it is handled differently
   const titles = reportResult.map(({ title }) => title)
-  const errorProps = reportResult.map(errorProps => omit(errorProps, 'title'))
+  const reportProps = reportResult.map(props => omit(props, 'title'))
 
-  return { titles, errorProps }
+  return { titles, reportProps }
 }
 
 // Call `plugin.report()`
@@ -54,8 +54,8 @@ const callReportFunc = function({ plugin: { report, name }, task }) {
 
   // Merge `plugin.report()` to task.PLUGIN.*
   // It should have priority, but also be first in properties order
-  const { title, ...errorProps } = { ...newValue, ...taskValue, ...newValue }
-  return { title, [name]: errorProps }
+  const { title, ...reportProps } = { ...newValue, ...taskValue, ...newValue }
+  return { title, [name]: reportProps }
 }
 
 // Retrieve printed task title by concatenating all `title` from `plugin.report()`
@@ -78,5 +78,5 @@ const removeEmptyProps = function(object) {
 }
 
 module.exports = {
-  getErrorProps,
+  getReportProps,
 }

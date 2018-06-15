@@ -1,6 +1,6 @@
 'use strict'
 
-const { getErrorProps: getReportProps } = require('../../../props')
+const { getReportProps } = require('../../../props')
 
 const { getErrorProps } = require('./error_props')
 
@@ -11,7 +11,7 @@ const complete = function({ options: { tap }, ...task }, { plugins }) {
 }
 
 const getAssert = function({ task, task: { key, aborted, error }, plugins }) {
-  const { title, errorProps: reportProps } = getReportProps({ task, plugins, noCore: true })
+  const { title, reportProps } = getReportProps({ task, plugins, noCore: true })
 
   const ok = error === undefined
   const name = getName({ key, title })

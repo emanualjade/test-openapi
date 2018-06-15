@@ -14,7 +14,7 @@ const {
   highlightValue,
   HORIZONTAL_LINE,
 } = require('../../utils')
-const { getErrorProps } = require('../../props')
+const { getReportProps } = require('../../props')
 
 // Print task errors and update spinner
 const complete = function({ options: { spinner }, ...task }, { plugins }) {
@@ -39,9 +39,9 @@ const getErrorMessage = function({
   },
   plugins,
 }) {
-  const { title, errorProps } = getErrorProps({ task, plugins })
+  const { title, reportProps } = getReportProps({ task, plugins })
 
-  const errorPropsA = printErrorProps({ errorProps })
+  const reportPropsA = printReportProps({ reportProps })
 
   return `
 ${HORIZONTAL_LINE}
@@ -52,7 +52,7 @@ ${dim(indent(title))}
 ${indent(message)}
 ${HORIZONTAL_LINE}
 
-${indent(errorPropsA)}
+${indent(reportPropsA)}
 `
 }
 
@@ -60,22 +60,22 @@ ${indent(errorPropsA)}
 const CROSS_MARK = red.bold('\u2718')
 
 // Print/prettify all `plugin.report()` return values
-const printErrorProps = function({ errorProps }) {
-  return Object.entries(errorProps)
+const printReportProps = function({ reportProps }) {
+  return Object.entries(reportProps)
     .map(printTopPair)
     .join('\n\n')
 }
 
 // Print top-level level pairs
 const printTopPair = function([name, value]) {
-  const valueA = printErrorProp(value)
+  const valueA = printReportProp(value)
   return `${orange(`${capitalize(name, true)}:`)} ${indentValue(valueA)}`
 }
 
 // Print `error.*` properties in error printed message
 // Do it each second depth level, i.e. under error.PLUGIN_NAME.*
-const printErrorProp = function(value) {
-  // There is no second depth level, e.g. core `errorProps`
+const printReportProp = function(value) {
+  // There is no second depth level, e.g. core `reportProps`
   if (!isObject(value)) {
     return prettifyValue(value)
   }

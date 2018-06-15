@@ -74,7 +74,6 @@ const fireTask = async function({ task, task: { originalTask }, config, mRunTask
 // `start`, i.e. before all tasks:
 //   - `glob`: merge tasks whose name include globbing matching other task names.
 //   - `only`: check if `config|task.only` is used
-//   - `skip`: set dry run (`report.output: false`) if `config.skip: *`
 //   - `spec`: parse, validate and normalize an OpenAPI specification
 //   - `report`: start reporting
 //   - `repeat`: repeat each task `config.repeat` times

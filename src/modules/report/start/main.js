@@ -8,7 +8,11 @@ const { addReportersOptions } = require('./options')
 
 // Starts reporting
 const start = async function(config) {
-  const { report = {} } = config
+  const { report = {}, report: { level } = {} } = config
+
+  if (level === 'silent') {
+    return
+  }
 
   const reportA = await addOutput({ report })
 

@@ -5,7 +5,7 @@ const { createWriteStream } = require('fs')
 
 const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
-// Add stream to write to, according to `config.report.output`
+// Where to output report according to `config.report.output`
 const addOutput = async function({ report }) {
   const output = await getOutput({ report })
   return { ...report, output }
@@ -17,12 +17,7 @@ const getOutput = async function({ report: { output } }) {
     return stdout
   }
 
-  // When `config.report.output` is `false`, silent output
-  if (String(output) === 'false') {
-    return false
-  }
-
-  // When `config.report.output` is a string, write to a file
+  // Otherwise write to a file
   const stream = await eGetFileStream({ output })
   return stream
 }

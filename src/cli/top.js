@@ -47,7 +47,14 @@ const CONFIG = {
     string: true,
     alias: 'o',
     requiresArg: true,
-    describe: 'File output (default: stdout). Silent if false.',
+    describe: 'File output (default: stdout)',
+  },
+  'report.level': {
+    string: true,
+    alias: 'l',
+    requiresArg: true,
+    describe:
+      'Verbosity among "debug", "info", "log" (default for most reporting styles), "warn" (default for "pretty" reporting styles), "error" or "silent"',
   },
   'report.styles': {
     array: true,

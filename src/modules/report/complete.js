@@ -12,10 +12,14 @@ const complete = async function({
   config,
   config: {
     report,
-    report: { taskKeys, tasks, index },
+    report: { taskKeys, tasks, index, level },
   },
   plugins,
 }) {
+  if (level === 'silent') {
+    return
+  }
+
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks

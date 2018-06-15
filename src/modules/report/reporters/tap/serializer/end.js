@@ -7,13 +7,13 @@ const end = function() {
   const { pass, fail, skip, count: initialCount } = this
   const count = pass + fail + skip
 
-  const planString = getPlan({ initialCount, count })
+  const planString = getPlan.call(this, { initialCount, count })
 
   const endCommentString = getEndCommentString({ pass, fail, skip, count })
 
-  const endComment = [...planString, endCommentString].join('\n\n')
+  const endComment = [...planString, this.colors.final(endCommentString)].join('\n\n')
 
-  return this.colors.final(`${endComment}\n`)
+  return `${endComment}\n`
 }
 
 // Add final plan if not initially specified
@@ -23,7 +23,7 @@ const getPlan = function({ initialCount, count }) {
   }
 
   const planString = getPlanString({ count })
-  return [planString]
+  return [this.colors.plan(planString)]
 }
 
 const getEndCommentString = function({ pass, fail, skip, count }) {

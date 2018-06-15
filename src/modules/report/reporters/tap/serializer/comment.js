@@ -6,7 +6,7 @@ const { checkArgument } = require('./check')
 const comment = function(comment) {
   checkArgument(comment, 'string')
 
-  return this.colors.gray(`# ${comment}\n\n`)
+  return this.colors.comment(`# ${comment}\n\n`)
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 'use strict'
 
-const { getSummary, yellow, grey, HORIZONTAL_LINE, indent } = require('../../utils')
+const { getSummary, yellow, gray, HORIZONTAL_LINE, indent } = require('../../utils')
 
 // Clears spinner and print final counters message
 const end = function({ options: { spinner }, tasks }) {
@@ -13,7 +13,7 @@ const end = function({ options: { spinner }, tasks }) {
 // Print final reporting message with counter of passed|failed|skipped tasks
 const getEndMessage = function({ tasks }) {
   const summaryString = printSummary({ tasks })
-  return `\n${grey(HORIZONTAL_LINE)}\n\n${indent(summaryString)}\n\n`
+  return `\n${gray(HORIZONTAL_LINE)}\n\n${indent(summaryString)}\n\n`
 }
 
 const printSummary = function({ tasks }) {

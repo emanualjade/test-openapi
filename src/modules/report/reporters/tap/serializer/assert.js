@@ -18,8 +18,9 @@ const assert = function({ ok, name = '', directive = {}, error }) {
 
   const errorProps = getErrorProps({ ok, error })
 
-  const color = COLORS[category]
-  return this.colors[color](`${okString} ${index}${nameString}${directiveString}${errorProps}\n\n`)
+  return this.colors[category](
+    `${okString} ${index}${nameString}${directiveString}${errorProps}\n\n`,
+  )
 }
 
 const getCategory = function({ ok, directive: { skip } }) {
@@ -59,12 +60,6 @@ const getName = function({ name }) {
   }
 
   return ` ${name}`
-}
-
-const COLORS = {
-  pass: 'green',
-  fail: 'red',
-  skip: 'grey',
 }
 
 module.exports = {

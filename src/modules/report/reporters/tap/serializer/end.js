@@ -13,7 +13,7 @@ const end = function() {
 
   const endComment = [...planString, endCommentString].join('\n\n')
 
-  return this.colors.yellow(`${endComment}\n`)
+  return this.colors.final(`${endComment}\n`)
 }
 
 // Add final plan if not initially specified

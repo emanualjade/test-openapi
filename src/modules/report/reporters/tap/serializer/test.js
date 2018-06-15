@@ -16,17 +16,17 @@ const test = function(testName, asserts = []) {
 }
 
 const getTestHeader = function({ testName, asserts }) {
-  const color = getColor({ asserts })
-  return this.colors[color](`# ${testName}`)
+  const category = getCategory({ asserts })
+  return this.colors[category](`# ${testName}`)
 }
 
-const getColor = function({ asserts }) {
+const getCategory = function({ asserts }) {
   const failed = asserts.some(({ ok }) => !ok)
   if (failed) {
-    return 'red'
+    return 'fail'
   }
 
-  return 'green'
+  return 'pass'
 }
 
 module.exports = {

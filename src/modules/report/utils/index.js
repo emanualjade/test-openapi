@@ -9,4 +9,5 @@ module.exports = {
   ...require('./stringify'),
   ...require('./summary'),
   ...require('./line'),
+  ...require('./result_type'),
 }

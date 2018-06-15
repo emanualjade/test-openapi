@@ -1,5 +1,6 @@
 'use strict'
 
+const { getResultType } = require('../../../utils')
 const { getReportProps } = require('../../../props')
 
 const { getErrorProps } = require('./error_props')
@@ -10,12 +11,14 @@ const complete = function({ options: { tap }, ...task }, { plugins }) {
   return tap.assert(assert)
 }
 
-const getAssert = function({ task, task: { key, aborted, error }, plugins }) {
+const getAssert = function({ task, task: { key, error }, plugins }) {
   const { title, reportProps } = getReportProps({ task, plugins, noCore: true })
 
-  const ok = error === undefined
+  const resultType = getResultType(task)
+
+  const ok = resultType !== 'fail'
   const name = getName({ key, title })
-  const directive = { skip: Boolean(aborted) }
+  const directive = { skip: resultType === 'skip' }
   const errorProps = getErrorProps({ ok, error, reportProps })
 
   return { ok, name, directive, error: errorProps }

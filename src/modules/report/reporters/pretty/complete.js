@@ -4,16 +4,20 @@ const { capitalize } = require('underscore.string')
 
 const { isObject } = require('../../../../utils')
 const {
-  green,
-  red,
-  dim,
+  darkGrey,
+  darkRed,
+  darkGreen,
   yellow,
   orange,
+  inverse,
   indent,
   indentValue,
   stringifyValue,
   highlightValue,
-  HORIZONTAL_LINE,
+  FULL_LOWER_LINE,
+  FULL_UPPER_LINE,
+  LINE_SIZE,
+  getResultType,
 } = require('../../utils')
 const { getReportProps } = require('../../props')
 
@@ -27,41 +31,51 @@ const complete = function({ options: { spinner }, ...task }, { plugins }) {
 
 // Retrieve task's message to print
 const getMessage = function({ task, plugins }) {
-  const taskKey = getTaskKey({ task })
+  const resultType = getResultType(task)
 
   const { title, reportProps } = getReportProps({ task, plugins })
 
+  const header = getHeader({ task, title, resultType })
+
+  const reportPropsA = printReportProps({ task, reportProps, resultType })
+
+  return `\n${header}${reportPropsA}\n`
+}
+
+// Header of the the message, with:
+//  - a symbol indicating whether the task passed, failed or was skipped
+//  - the task key
+//  - the `title` (as returned by `plugin.report()`)
+const getHeader = function({ task, title, resultType }) {
+  const headerContent = getHeaderContent({ task, title, resultType })
+
+  const header = `${FULL_LOWER_LINE}\n${headerContent}\n${FULL_UPPER_LINE}`
+
+  const headerA = HEADER_COLORS[resultType].bold(header)
+  return headerA
+}
+
+const getHeaderContent = function({ task: { key }, title, resultType }) {
+  const mark = MARKS[resultType]
+
   const titleA = getTitle({ title })
 
-  const reportPropsA = printReportProps({ task, reportProps })
+  const headerContent = ` ${mark}  ${key}${titleA}`
 
-  return `
-${HORIZONTAL_LINE}
-${taskKey}${titleA}
-${HORIZONTAL_LINE}${reportPropsA}
-`
+  const headerContentA = padHeaderContent({ headerContent })
+
+  const headerContentB = inverse(headerContentA)
+  return headerContentB
 }
 
-// First line of the the message, with the task key and an indication on whether
-// the task failed
-const getTaskKey = function({ task: { key, error, aborted } }) {
-  if (error !== undefined) {
-    return red.bold(` ${CROSS_MARK}  ${key}`)
-  }
-
-  if (aborted) {
-    return dim(` ${SKIP_MARK}  ${key}`)
-  }
-
-  return green.bold(` ${CHECK_MARK}  ${key}`)
+const MARKS = {
+  // Check symbol
+  pass: '\u2714',
+  // Cross symbol
+  fail: '\u2718',
+  // Pause symbol
+  skip: '\u23f8',
 }
-
-// Check symbol
-const CHECK_MARK = '\u2714'
-// Red cross symbol
-const CROSS_MARK = '\u2718'
-// Skip symbol
-const SKIP_MARK = '\u23f8'
 
 // All concatenated `title` from `plugin.report()`
 const getTitle = function({ title }) {
@@ -69,12 +83,26 @@ const getTitle = function({ title }) {
     return ''
   }
 
-  return `\n\n${dim(indent(title))}`
+  return `\n\n${indent(title)}`
+}
+
+// Pad header content so that `chalk.inverse()` covers the whole line
+const padHeaderContent = function({ headerContent }) {
+  return headerContent
+    .split('\n')
+    .map(string => string.padEnd(LINE_SIZE))
+    .join('\n')
+}
+
+const HEADER_COLORS = {
+  pass: darkGreen,
+  fail: darkRed,
+  skip: darkGrey,
 }
 
 // Print/prettify all `plugin.report()` return values
-const printReportProps = function({ task: { aborted }, reportProps }) {
-  if (aborted || Object.keys(reportProps).length === 0) {
+const printReportProps = function({ reportProps, resultType }) {
+  if (resultType === 'skip' || Object.keys(reportProps).length === 0) {
     return ''
   }
 

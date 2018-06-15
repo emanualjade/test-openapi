@@ -2,29 +2,32 @@
 
 const { callReporters } = require('../call')
 
+const { normalizeLevel } = require('./level')
 const { addOutput } = require('./output')
 const { addReporters } = require('./reporters')
 const { addReportersOptions } = require('./options')
 
 // Starts reporting
 const start = async function(config) {
-  const { report = {}, report: { level } = {} } = config
+  const { report = {} } = config
 
-  if (level === 'silent') {
-    return
+  const reportA = addReporters({ report })
+
+  const reportB = normalizeLevel({ report: reportA })
+
+  if (reportB.level.types.length === 0) {
+    return { report: reportB }
   }
-
-  const reportA = await addOutput({ report })
-
-  const reportB = addReporters({ report: reportA })
 
   const reportC = addReportersOptions({ config, report: reportB })
 
-  await callReporters({ config: { report: reportC }, type: 'start' }, config)
+  const reportD = await addOutput({ report: reportC })
 
-  const reportD = addOrdering({ config, report: reportC })
+  await callReporters({ config: { report: reportD }, type: 'start' }, config)
 
-  return { report: reportD }
+  const reportE = addOrdering({ config, report: reportD })
+
+  return { report: reportE }
 }
 
 // Used to ensure tasks ordering

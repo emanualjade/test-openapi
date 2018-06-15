@@ -1,6 +1,7 @@
 'use strict'
 
 const { callReporters } = require('./call')
+const { getResultType } = require('./utils')
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
@@ -16,7 +17,7 @@ const complete = async function({
   },
   plugins,
 }) {
-  if (level === 'silent') {
+  if (level.types.length === 0) {
     return
   }
 
@@ -59,10 +60,27 @@ const completeTask = async function({ keys: [key, ...keys], tasks, config, plugi
   }
 
   const task = tasks[key]
-  await callReporters({ config, type: 'complete' }, task, { config, plugins })
+  await callComplete({ task, config, plugins })
 
   // Async iteration through recursion
   await completeTask({ keys, tasks, config, plugins })
+}
+
+const callComplete = async function({
+  task,
+  config,
+  config: {
+    report: {
+      level: { types },
+    },
+  },
+  plugins,
+}) {
+  // Use `config.report.level` to see if task should be silent
+  const resultType = getResultType(task)
+  const silent = !types.includes(resultType)
+
+  await callReporters({ config, type: 'complete' }, task, { config, plugins, silent })
 }
 
 module.exports = {

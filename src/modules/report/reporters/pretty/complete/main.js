@@ -7,8 +7,12 @@ const { getHeader } = require('./header')
 const { printReportProps } = require('./report_props')
 
 // Print task errors and update spinner
-const complete = function({ options: { spinner }, ...task }, { plugins }) {
+const complete = function({ options: { spinner }, ...task }, { plugins, silent }) {
   spinner.update({ clear: true })
+
+  if (silent) {
+    return ''
+  }
 
   const message = getMessage({ task, plugins })
   return message

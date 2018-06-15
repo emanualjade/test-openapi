@@ -10,11 +10,11 @@ const end = async function({
     report: { level },
   },
 }) {
-  if (level === 'silent') {
+  if (level.types.length === 0) {
     return
   }
 
-  await callReporters({ config, type: 'end' }, { tasks })
+  await callReporters({ config, type: 'end' }, { tasks, config })
 }
 
 module.exports = {

@@ -8,4 +8,5 @@ module.exports = {
   options,
   complete,
   end,
+  level: 'warn',
 }

@@ -5,35 +5,59 @@ const notifier = require('node-notifier')
 const { getSummary } = require('../../utils')
 
 // Show notification at end of run if `config.report.notify: true`
-const end = function({ tasks }) {
-  const opts = getOpts({ tasks })
+const end = function({
+  tasks,
+  config: {
+    report: {
+      level: { types },
+    },
+  },
+}) {
+  const opts = getOpts({ tasks, types })
+
+  if (opts.message === '') {
+    return
+  }
+
   notifier.notify(opts)
 }
 
-const getOpts = function({ tasks }) {
+const getOpts = function({ tasks, types }) {
   const { ok, total, pass, fail, skip } = getSummary({ tasks })
 
   const opts = OPTS[ok]
-  const message = opts.message({ total, pass, fail, skip })
 
-  return { ...opts, message }
+  const message = getMainMessage({ opts, ok, total, pass, fail, types })
+
+  const messageA = addSkipMessage({ message, skip, types })
+
+  return { ...opts, message: messageA }
 }
 
-const getPassMessage = function({ total, pass, skip }) {
-  const skipMessage = getSkipMessage({ skip })
-  return `${pass} of ${total} tasks passed.${skipMessage}`
-}
-
-const getSkipMessage = function({ skip }) {
-  if (skip === 0) {
+const getMainMessage = function({ opts, ok, total, pass, fail, types }) {
+  // Apply `config.report.level`
+  const silent = (ok && !types.includes('pass')) || (!ok && !types.includes('fail'))
+  if (silent) {
     return ''
   }
 
-  return `\n${skip} tasks were skipped.`
+  return opts.message({ total, pass, fail })
+}
+
+const getPassMessage = function({ total, pass }) {
+  return `${pass} of ${total} tasks passed.`
 }
 
 const getFailMessage = function({ total, fail }) {
   return `${fail} of ${total} tasks failed.`
+}
+
+const addSkipMessage = function({ message, skip, types }) {
+  if (skip === 0 || !types.includes('skip')) {
+    return message
+  }
+
+  return `${message}\n${skip} tasks were skipped.`
 }
 
 const PASS_OPTS = {

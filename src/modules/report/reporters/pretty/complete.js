@@ -33,7 +33,7 @@ const getMessage = function({ task, plugins }) {
 
   const titleA = getTitle({ title })
 
-  const reportPropsA = printReportProps({ reportProps })
+  const reportPropsA = printReportProps({ task, reportProps })
 
   return `
 ${HORIZONTAL_LINE}
@@ -44,18 +44,24 @@ ${HORIZONTAL_LINE}${reportPropsA}
 
 // First line of the the message, with the task key and an indication on whether
 // the task failed
-const getTaskKey = function({ task: { key, error } }) {
+const getTaskKey = function({ task: { key, error, aborted } }) {
   if (error !== undefined) {
-    return red.bold(`${CROSS_MARK} ${key}`)
+    return red.bold(` ${CROSS_MARK}  ${key}`)
   }
 
-  return green.bold(`${CHECK_MARK} ${key}`)
+  if (aborted) {
+    return dim(` ${SKIP_MARK}  ${key}`)
+  }
+
+  return green.bold(` ${CHECK_MARK}  ${key}`)
 }
 
 // Check symbol
 const CHECK_MARK = '\u2714'
 // Red cross symbol
 const CROSS_MARK = '\u2718'
+// Skip symbol
+const SKIP_MARK = '\u23f8'
 
 // All concatenated `title` from `plugin.report()`
 const getTitle = function({ title }) {
@@ -67,8 +73,8 @@ const getTitle = function({ title }) {
 }
 
 // Print/prettify all `plugin.report()` return values
-const printReportProps = function({ reportProps }) {
-  if (Object.keys(reportProps).length === 0) {
+const printReportProps = function({ task: { aborted }, reportProps }) {
+  if (aborted || Object.keys(reportProps).length === 0) {
     return ''
   }
 

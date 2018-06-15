@@ -14,7 +14,10 @@ const addCoreErrorProps = function({ errorProps, task, noCore }) {
 }
 
 // Core `errorProps` always present on error
-const getCoreErrorProps = function({ error: { expected, actual, property, schema } = {} }) {
+const getCoreErrorProps = function({ error, error: { property, schema } = {} }) {
+  const expected = getCoreValue(error, 'expected')
+  const actual = getCoreValue(error, 'actual')
+
   const schemaA = getJsonSchema({ schema })
 
   return {
@@ -23,6 +26,16 @@ const getCoreErrorProps = function({ error: { expected, actual, property, schema
     property,
     'JSON schema': schemaA,
   }
+}
+
+const getCoreValue = function(error, name) {
+  // When `error.expected|actual` is `undefined` but its key is defined, we still
+  // want to report it, so we make it a string
+  if (error.propertyIsEnumerable(name) && error[name] === undefined) {
+    return 'undefined'
+  }
+
+  return error[name]
 }
 
 const getJsonSchema = function({ schema }) {

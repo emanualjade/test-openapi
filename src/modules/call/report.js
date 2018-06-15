@@ -8,7 +8,7 @@ const { yellow, highlightValueAuto, prettifyJson } = require('../report/utils')
 const report = function({
   request: { raw: rawRequest = {} } = {},
   response: { raw: rawResponse = {} } = {},
-}) {
+} = {}) {
   const title = getTitle({ rawRequest, rawResponse })
   const request = getRequest(rawRequest)
   const response = getResponse(rawResponse)

@@ -13,13 +13,15 @@ const topLevelHandler = function(error, config = {}) {
 
   const errorB = bundleSingleError({ error: errorA })
 
-  const errorC = handleBugs({ error: errorB })
+  const errorC = addEmptyTasks({ error: errorB })
 
-  const errorD = cleanError({ error: errorC })
+  const errorD = handleBugs({ error: errorC })
 
-  errorD.plugin = getPluginName(errorD)
+  const errorE = cleanError({ error: errorD })
 
-  throw errorD
+  errorE.plugin = getPluginName(errorE)
+
+  throw errorE
 }
 
 // Bundle single error with `bundleErrors()` unless it's already bundled
@@ -29,6 +31,13 @@ const bundleSingleError = function({ error }) {
   }
 
   return bundleErrors({ errors: [error] })
+}
+
+// If the error was thrown before tasks run, `error.tasks` should be `[]`
+const addEmptyTasks = function({ error, error: { tasks = [] } }) {
+  Object.assign(error, { tasks })
+
+  return error
 }
 
 const cleanError = function({ error, error: { errors } }) {

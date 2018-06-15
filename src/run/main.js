@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, topLevelHandler } = require('../errors')
+const { addErrorHandler, topLevelHandler, handleFinalFailure } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 const { getPlugins } = require('../plugins')
@@ -9,7 +9,6 @@ const { startTasks } = require('./start')
 const { bootTask } = require('./task')
 const { completeTask } = require('./complete')
 const { endTasks } = require('./end')
-const { getFinalReturn } = require('./final')
 
 // Main entry point
 // Does in order:
@@ -21,7 +20,7 @@ const { getFinalReturn } = require('./final')
 //     - run each `plugin.task()`
 //     - run each `plugin.complete()`
 //  - run each `plugin.end()`
-//  - normalize return value to an array of event objects
+// Return tasks on success
 // If any task failed, throw an error instead
 const run = async function(config = {}) {
   const configA = loadConfig({ config })
@@ -42,10 +41,11 @@ const performRun = async function({ config, plugins }) {
 
   const tasks = await fireTasks({ config: configA, mRunTask, plugins })
 
-  const events = await endTasks({ tasks, plugins, config: configA })
+  await endTasks({ tasks, plugins, config: configA })
 
-  const tasksC = getFinalReturn({ tasks, events })
-  return tasksC
+  handleFinalFailure({ tasks })
+
+  return tasks
 }
 
 // Add `error.plugins` to every thrown error

@@ -69,7 +69,7 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 // `plugin.end` `{function}`
 //  - fired after all tasks
 //  - arguments: none
-//  - this type of handlers can return new `events`
+//  - this type of handlers cannot return anything
 //  - it also has the following read-only properties:
 //     - `plugins`: list of available plugins
 //     - `config`: the configuration object (after being modified by `plugin.start()`)

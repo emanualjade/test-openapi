@@ -12,5 +12,4 @@ module.exports = {
   ...require('./flat'),
   ...require('./plugins'),
   ...require('./prefix'),
-  ...require('./added_props'),
 }

@@ -3,9 +3,8 @@
 const { callReporters } = require('./call')
 
 // Ends reporting
-const end = async function(input) {
-  const { config } = input
-  await callReporters({ config, type: 'end' }, input)
+const end = async function({ tasks, config }) {
+  await callReporters({ config, type: 'end' }, { tasks })
 }
 
 module.exports = {

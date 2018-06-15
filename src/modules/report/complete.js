@@ -5,18 +5,17 @@ const { callReporters } = require('./call')
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
 // We do so by buffering each task until its reporting time comes.
-const complete = async function(task) {
-  const {
-    key,
-    config,
-    config: {
-      report,
-      report: { taskKeys, tasks, index },
-    },
-    plugins,
-    originalTask,
-  } = task
-
+const complete = async function({
+  task,
+  task: { key },
+  originalTask,
+  config,
+  config: {
+    report,
+    report: { taskKeys, tasks, index },
+  },
+  plugins,
+}) {
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks

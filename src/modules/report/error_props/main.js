@@ -3,7 +3,7 @@
 const { omit, omitBy } = require('lodash')
 const { mergeAll } = require('lodash/fp')
 
-const { getAddedProps } = require('../../../utils')
+const { isObject } = require('../../../utils')
 
 const { addCoreErrorProps } = require('./core')
 
@@ -37,33 +37,25 @@ const callReportFuncs = function({ task, originalTask, plugins }) {
 }
 
 // Call `plugin.report()`
-const callReportFunc = function({ plugin, plugin: { report, name }, task, originalTask }) {
-  const { title, ...errorProps } = callReport({ report, plugin, task })
+const callReportFunc = function({ plugin: { report, name }, task }) {
+  const taskValue = task[name]
 
-  const errorPropsA = addOriginalTask({ errorProps, originalTask, name })
-
-  // If there is no `task.*`, do not report anything
-  if (Object.keys(errorPropsA).length === 0) {
-    return { title }
+  // If no `plugin.report()`, reports task as is
+  if (report === undefined) {
+    return { [name]: taskValue }
   }
 
-  return { title, [name]: errorPropsA }
-}
+  const newValue = report(taskValue)
 
-const callReport = function({ report, plugin, plugin: { name }, task }) {
-  if (report !== undefined) {
-    return report(task[name])
+  // If not an object, including `undefined`, no need to merge or destructure
+  if (!isObject(newValue)) {
+    return { [name]: newValue }
   }
 
-  // By default, `plugin.report()` returns all the properties that haven been
-  // added by the plugin but are not part of `plugin.config.task.*`
-  return getAddedProps({ task, plugin })
-}
-
-// Add `originalTask.*` to `errorProps`
-// Merged with lower priority, but should appear at end
-const addOriginalTask = function({ errorProps, originalTask, name }) {
-  return { ...errorProps, ...originalTask[name], ...errorProps }
+  // Merge `plugin.report()` to task.PLUGIN.*
+  // It should have priority, but also be first in properties order
+  const { title, ...errorProps } = { ...newValue, ...taskValue, ...newValue }
+  return { title, [name]: errorProps }
 }
 
 // Retrieve printed task title by concatenating all `title` from `plugin.report()`

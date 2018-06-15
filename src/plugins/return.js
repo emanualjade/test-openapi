@@ -1,6 +1,8 @@
 'use strict'
 
-const { getAddedProps } = require('../utils')
+const { omitBy } = require('lodash')
+
+const { isObject } = require('../utils')
 
 // Each task plugin returns itself (i.e. `task.PLUGIN_NAME`):
 //  - task config properties (i.e. specified in `plugin.config.task.*`) are
@@ -53,14 +55,68 @@ const getReturnValue = function({ task, originalTask, plugin, plugin: { name } }
 
   const originalValue = originalTask[name]
 
-  // This means `originalTask.*` was undefined, but plugin added an empty object.
-  // We do not return those because this might just be normalization logic.
-  // This is done e.g. by `random` plugin
-  if (originalValue === undefined && Object.keys(addedProps).length === 0) {
-    return
+  if (addedProps === undefined) {
+    return originalValue
+  }
+
+  if (!isObject(addedProps)) {
+    return addedProps
   }
 
   return { ...addedProps, ...originalValue }
+}
+
+// Retrieve the properties from `task.PLUGIN.*` that have been added by this
+// plugin, i.e. not in `originalTask.*`
+const getAddedProps = function({ task, plugin: { name, config: { task: taskConfig } = {} } }) {
+  const taskValue = task[name]
+
+  // If there is no `plugin.config.task`, return `task.*` as is
+  if (taskConfig === undefined) {
+    return taskValue
+  }
+
+  // Since `task.*` never has priority, only `originalTask.*` is returned
+  if (!isObjectType({ taskConfig })) {
+    return
+  }
+
+  // `plugin.config.task` is an object. We remove its properties from `task.*`
+  const taskValueA = omitBy(taskValue, (value, key) => isConfigProp({ taskConfig, key }))
+
+  if (Object.keys(taskValueA).length === 0) {
+    return
+  }
+
+  return taskValueA
+}
+
+// Check if JSON schema is `type` `object`
+const isObjectType = function({ taskConfig, taskConfig: { type } }) {
+  return type === 'object' || OBJECT_PROPS.some(prop => taskConfig[prop] !== undefined)
+}
+
+// `type` is optional, so we guess by looking at properties
+const OBJECT_PROPS = [
+  'properties',
+  'patternProperties',
+  'additionalProperties',
+  'minProperties',
+  'maxProperties',
+  'required',
+  'dependencies',
+  'propertyNames',
+]
+
+const isConfigProp = function({
+  key,
+  taskConfig: { additionalProperties, properties = {}, patternProperties },
+}) {
+  return (
+    (additionalProperties !== undefined && additionalProperties !== false) ||
+    properties[key] !== undefined ||
+    Object.keys(patternProperties).some(pattern => new RegExp(pattern).test(key))
+  )
 }
 
 module.exports = {

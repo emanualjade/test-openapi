@@ -18,9 +18,9 @@ const getCoreErrorProps = function({ error: { expected, actual, property, schema
   const schemaA = getJsonSchema({ schema })
 
   return {
-    'Expected value': expected,
-    'Actual value': actual,
-    Property: property,
+    'expected value': expected,
+    'actual value': actual,
+    property,
     'JSON schema': schemaA,
   }
 }

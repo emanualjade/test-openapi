@@ -42,15 +42,20 @@ const DEFAULT_THEME = {
 
 const getThemeColor = function({ defaultColor, colors, key, chalk }) {
   const color = getColor({ defaultColor, colors, key })
+
+  if (typeof color === 'function') {
+    return color
+  }
+
   return get(chalk, color)
 }
 
 const getColor = function({ defaultColor, colors, key }) {
-  if (isObject(colors) && typeof colors[key] === 'string') {
-    return colors[key]
+  if (!isObject(colors) || colors[key] === undefined) {
+    return defaultColor
   }
 
-  return defaultColor
+  return colors[key]
 }
 
 module.exports = {

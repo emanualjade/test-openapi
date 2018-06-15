@@ -3,26 +3,29 @@
 const chalk = require('chalk')
 
 // Colors used in reporting
-const { red, dim, yellow, magenta, reset, italic, bold, inverse } = chalk
+const { yellow, magenta, reset, italic, bold, inverse } = chalk
 
+const red = chalk.rgb(200, 0, 0)
+const green = chalk.rgb(0, 150, 0)
+const gray = chalk.rgb(100, 100, 100)
 const orange = chalk.rgb(250, 100, 50)
-const gray = chalk.rgb(150, 150, 150)
-const darkGrey = chalk.rgb(100, 100, 100)
-const darkRed = chalk.rgb(200, 0, 0)
-const darkGreen = chalk.rgb(0, 150, 0)
 
 module.exports = {
+  // Main colors, e.g. for fail, pass and skip|comment
   red,
-  dim,
-  yellow,
-  magenta,
-  orange,
+  green,
   gray,
-  darkGrey,
-  darkRed,
-  darkGreen,
 
+  // Top-level keys
+  orange,
+  // Nested keys
+  yellow,
+  // Non-string values
+  magenta,
+  // String values
   reset,
+
+  // Modifiers
   italic,
   bold,
   inverse,

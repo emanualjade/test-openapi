@@ -1,5 +1,7 @@
 'use strict'
 
+const { green, red, gray, yellow } = require('../../utils')
+
 const { Tap } = require('./serializer')
 
 // Set TAP state
@@ -10,13 +12,13 @@ const options = function({ config: { tasks } }) {
 }
 
 const THEME = {
-  pass: 'green',
-  fail: 'red',
-  comment: 'gray',
-  skip: 'gray',
-  version: 'gray',
-  plan: 'gray',
-  final: 'yellow',
+  pass: green,
+  fail: red,
+  comment: gray,
+  skip: gray,
+  version: gray,
+  plan: gray,
+  final: yellow,
 }
 
 module.exports = {

@@ -1,9 +1,9 @@
 'use strict'
 
 const {
-  darkGrey,
-  darkRed,
-  darkGreen,
+  gray,
+  red,
+  green,
   inverse,
   indent,
   FULL_LOWER_LINE,
@@ -62,9 +62,9 @@ const padContent = function({ content }) {
 }
 
 const HEADER_COLORS = {
-  pass: darkGreen,
-  fail: darkRed,
-  skip: darkGrey,
+  pass: green,
+  fail: red,
+  skip: gray,
 }
 
 module.exports = {

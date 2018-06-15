@@ -42,8 +42,6 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //  - fired before all tasks
 //  - arguments: `(config)`
 //  - this type of handlers can modify the configuration object
-//  - `config` also has the following read-only properties:
-//     - `plugins`: list of available plugins
 
 // `plugin.task` `{function}`
 //  - fired for each task
@@ -51,9 +49,22 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //  - this type of handlers can modify the current task
 //  - the task is the same object as the one specified in tasks files
 //  - `task` also has the following read-only properties:
-//     - `plugins`: list of available plugins
 //     - `config`: the configuration object (after being modified by `plugin.start()`)
-//     - `runTask(task)`: function allowing a task to fire another task
+
+// `plugin.end` `{function}`
+//  - fired after all tasks
+//  - arguments: none
+//  - this type of handlers cannot return anything
+//  - it also has the following read-only properties:
+//     - `config`: the configuration object (after being modified by `plugin.start()`)
+
+// `plugin.report` `{function}`
+// Returns properties to merge to `task.PLUGIN`, but only for reporting.
+// Values will be automatically formatted, and do not have to be strings.
+// Has same signature as `plugin.task()`
+// Can also return a `title`, shown as a sub-title during reporting.
+
+// ADVANCED API
 
 // `plugin.complete` `{function}`
 //  - fired for each task, but after `task` type.
@@ -66,21 +77,14 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //     - `plugins`: list of available plugins
 //     - `config`: the configuration object (after being modified by `plugin.start()`)
 
-// `plugin.end` `{function}`
-//  - fired after all tasks
-//  - arguments: none
-//  - this type of handlers cannot return anything
-//  - it also has the following read-only properties:
-//     - `plugins`: list of available plugins
-//     - `config`: the configuration object (after being modified by `plugin.start()`)
+// `plugin.task`:
+//   - read-only arguments:
+//     - `runTask(task)`: function allowing a task to fire another task
 //     - `tasks`
 
-// `plugin.report.title` `{function}`
-// Function that take current task as input and return a string shown as a
-// sub-title during error reporting
-
-// `plugin.report.errorProps` `{object[]}`
-// Properties to print during error reporting
+// `plugin.start|task|end`
+//   - read-only arguments:
+//     - `plugins`: list of available plugins
 
 module.exports = {
   getPlugins,

@@ -14,7 +14,7 @@ const {
   highlightValue,
   HORIZONTAL_LINE,
 } = require('../../utils')
-const { getErrorProps } = require('../../error_props')
+const { getErrorProps } = require('../../props')
 
 // Print task errors and update spinner
 const complete = function({ options: { spinner }, ...task }, { plugins }) {

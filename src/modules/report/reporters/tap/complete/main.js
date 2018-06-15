@@ -1,6 +1,6 @@
 'use strict'
 
-const { getErrorProps: getReportProps } = require('../../../error_props')
+const { getErrorProps: getReportProps } = require('../../../props')
 
 const { getErrorProps } = require('./error_props')
 

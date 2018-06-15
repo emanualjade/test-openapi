@@ -65,9 +65,9 @@ const fireTasks = function({ config, config: { tasks }, mRunTask, plugins }) {
 const fireTask = async function({ task, task: { originalTask }, config, mRunTask, plugins }) {
   const taskA = await bootTask({ task, config, mRunTask, plugins })
 
-  await completeTask({ task: taskA, originalTask, plugins, config })
+  const taskB = await completeTask({ task: taskA, originalTask, plugins, config })
 
-  return taskA
+  return taskB
 }
 
 // The following plugins can be run (in order).

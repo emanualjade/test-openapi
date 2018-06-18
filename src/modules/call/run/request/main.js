@@ -1,16 +1,16 @@
 'use strict'
 
-const { fireFetch } = require('./fetch')
-const { getFetchResponse } = require('./response')
+const { fireRequest } = require('./fetch')
+const { getRawResponse } = require('./response')
 
 // Fire actual HTTP call
 const request = async function(
   { call, call: { rawRequest } },
   { config: { call: { timeout = DEFAULT_TIMEOUT } = {} } },
 ) {
-  const rawResponse = await fireFetch({ rawRequest, timeout })
+  const rawResponse = await fireRequest({ rawRequest, timeout })
 
-  const rawResponseA = await getFetchResponse({ rawResponse, timeout })
+  const rawResponseA = await getRawResponse({ rawResponse, timeout })
 
   return { call: { ...call, rawResponse: rawResponseA } }
 }

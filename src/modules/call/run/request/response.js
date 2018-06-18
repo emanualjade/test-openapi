@@ -3,7 +3,7 @@
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response
-const getFetchResponse = async function({ rawResponse, rawResponse: { status }, timeout }) {
+const getRawResponse = async function({ rawResponse, rawResponse: { status }, timeout }) {
   const headers = getHeaders({ rawResponse })
   const body = await eGetBody({ rawResponse, timeout })
 
@@ -38,5 +38,5 @@ const getBodyHandler = function({ message, type }, { timeout }) {
 const eGetBody = addErrorHandler(getBody, getBodyHandler)
 
 module.exports = {
-  getFetchResponse,
+  getRawResponse,
 }

@@ -61,7 +61,7 @@ const prettifyValue = function(value) {
   // Stringify and prettify to YAML
   const string = stringifyValue(value)
   // Syntax highlighting, unless already highlighted
-  const stringA = highlightValue(string)
+  const stringA = highlightValue(string, value)
   return stringA
 }
 

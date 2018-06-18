@@ -6,9 +6,11 @@ const hasAnsi = require('has-ansi')
 const { red, gray, yellow, magenta, reset, italic, bold, inverse } = require('./colors')
 
 // Syntax highlighting, as YAML
-const highlightValue = function(string) {
+const highlightValue = function(string, value) {
   // Already highlighted
-  if (hasAnsi(string)) {
+  // Also we do not highlight values that were already a string at the beginning,
+  // as they are probably not YAML (e.g. `error.message`)
+  if (hasAnsi(string) || typeof value === 'string') {
     return string
   }
 

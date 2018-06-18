@@ -24,12 +24,16 @@ const getTaskReturn = function({
   const pluginReturns = getPluginReturns({ plugins, task, originalTask })
 
   // Enforce properties order: `key`, `error`, added `task.*`, original `task.*`, `aborted`
-  return { key, ...errorObj, ...pluginReturns, aborted }
+  return { key, ...errorObj, ...pluginReturns }
 }
 
 // When aborting a task, this means it was stopped but should be considered a success
 const getError = function({ error, aborted }) {
-  if (aborted || error === undefined) {
+  if (aborted) {
+    return { aborted }
+  }
+
+  if (error === undefined) {
     return
   }
 

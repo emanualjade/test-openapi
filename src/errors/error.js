@@ -3,23 +3,21 @@
 const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
 
 // Validation error
-// Properties often assigned:
+// Properties (all might not be present):
 //  - `config` `{object}`: initial configuration object
 //  - `plugins` `{string[]}`: list of loaded plugins
-//  - `plugin` `{string}`: plugin that triggered the error.
-//    Will be `bug` if it was a bug in the library.
-//    Will be `config` if it was outside of any plugin
-//    Will be `task` if a task failed
+//  - `plugin` `{string}`: plugin that triggered the first error.
+//  - `bug` `{boolean}`: true if it was a bug
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in `task`, `actual` or `config`
 //  - `actual` `{value}`: actual value
 //  - `expected` `{value}`: expected value
 //  - `schema` `{object}`: JSON schema v4 matched against `actual`
-// Top-level error also has:
+// When all errors were thrown during task running, and there were not bugs,
+// all above properties will be `undefined` (except `config`) and the following
+// will be defined:
 //  - `errors` `{array}`: all errors.
-//    Will be single undefined if no task was run or it's a bug
 //  - `tasks` `{array}`: all tasks.
-//    Will be single undefined if no task was run or it's a bug
 class TestOpenApiError extends Error {
   constructor(message, properties = {}) {
     super(message)

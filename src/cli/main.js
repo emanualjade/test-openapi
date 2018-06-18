@@ -17,8 +17,10 @@ const runCli = async function() {
 }
 
 // If an error is thrown, print error's description, then exit with exit code 1
-const runCliHandler = function({ plugin, message }) {
-  if (plugin !== 'task') {
+const runCliHandler = function({ tasks, message }) {
+  // Do not print error message if the error happened during task running, as
+  // it's already been reported using `report`
+  if (tasks === undefined) {
     console.error(message)
   }
 

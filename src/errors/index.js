@@ -3,7 +3,7 @@
 module.exports = {
   ...require('./error'),
   ...require('./handler'),
-  ...require('./bundle'),
+  ...require('./convert'),
   ...require('./final'),
   ...require('./top'),
   ...require('./abort'),

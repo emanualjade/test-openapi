@@ -6,7 +6,6 @@ const { platform } = require('os')
 const { version: libraryVersion } = require('../../package')
 
 const { TestOpenApiError } = require('./error')
-const { getPluginName, DEFAULT_PLUGIN } = require('./plugin')
 
 // Any error not using `TestOpenApiError` is a bug
 const handleBugs = function({ error }) {
@@ -17,8 +16,7 @@ const handleBugs = function({ error }) {
 
   const message = getBugMessage({ bugError })
 
-  // `error.errors|tasks` is `undefined` with a `bug` error
-  return new TestOpenApiError(message, { plugin: 'bug' })
+  return new TestOpenApiError(message, { bug: true })
 }
 
 const findBugError = function({ error, error: { errors = [error] } }) {
@@ -32,7 +30,7 @@ const isBugError = function({ name }) {
 const getBugMessage = function({ bugError, bugError: { stack } }) {
   const repositoryName = getRepositoryName({ bugError })
 
-  return `A bug occured.
+  return `A bug occurred.
 Please report an issue on the '${repositoryName}' code repository and paste the following lines:
 
 OS: ${platform()}
@@ -42,10 +40,8 @@ test-openapi: ${libraryVersion}
 ${stack}`
 }
 
-const getRepositoryName = function({ bugError }) {
-  const plugin = getPluginName(bugError)
-
-  if (plugin === DEFAULT_PLUGIN) {
+const getRepositoryName = function({ bugError: { plugin } }) {
+  if (plugin === undefined) {
     return DEFAULT_REPOSITORY
   }
 

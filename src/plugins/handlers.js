@@ -40,7 +40,8 @@ const getHandler = function({
 }
 
 const callHandler = function({ handler, readOnlyArgs, plugins }, input, ...args) {
-  const inputA = { ...input, ...readOnlyArgs, plugins }
+  const pluginNames = plugins.map(({ name }) => name)
+  const inputA = { ...input, ...readOnlyArgs, plugins, pluginNames }
   const maybePromise = handler(inputA, ...args)
   return maybePromise
 }

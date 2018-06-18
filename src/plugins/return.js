@@ -14,7 +14,7 @@ const getTaskReturn = function({
   task: { key },
   config: { originalTasks },
   plugins,
-  aborted = false,
+  aborted,
   error,
 }) {
   const errorObj = getError({ error, aborted })

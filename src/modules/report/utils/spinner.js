@@ -10,27 +10,21 @@ class Spinner {
 
     Object.assign(this, { index, total, instance })
 
-    this.updateText()
+    this.update()
 
     this.instance.start()
   }
 
-  updateText() {
+  // Increment CLI spinner index
+  update() {
     this.index++
 
     this.instance.text = `${this.index}/${this.total}`
   }
 
-  // Increment CLI spinner index
-  update({ clear = false } = {}) {
-    this.updateText()
-
-    if (!clear) {
-      return
-    }
-
-    // If `clear` `true`, temporarily hide the spinner, so that some output can
-    // be done without the spinner persisting in terminal
+  // Temporarily hide the spinner, so that some output can be done without the
+  // spinner persisting in terminal
+  clear() {
     this.instance.clear()
   }
 

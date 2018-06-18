@@ -8,10 +8,10 @@ const { addErrorHandler } = require('../errors')
 // They also receive `readOnlyArgs` as input, but cannot modify it
 // An error handler can also be added to every handler
 // Handlers can be async
-const runHandlers = function(input, plugins, type, readOnlyArgs, errorHandler) {
+const runHandlers = function(input, plugins, type, readOnlyArgs, errorHandler, stopFunc) {
   const handlers = getHandlers({ plugins, type, readOnlyArgs, errorHandler })
 
-  return reduceAsync(handlers, runHandler, input, mergeReturnValue)
+  return reduceAsync(handlers, runHandler, input, mergeReturnValue, stopFunc)
 }
 
 const getHandlers = function({ plugins, type, errorHandler, readOnlyArgs }) {

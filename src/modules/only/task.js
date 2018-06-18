@@ -2,8 +2,6 @@
 
 const { isMatch } = require('micromatch')
 
-const { abortTask } = require('../../errors')
-
 // `config.only: 'glob' or ['glob', ...]` will only run tasks whose name matches
 // the globbing patterns
 // `task.only: true` will only run those tasks
@@ -17,11 +15,11 @@ const task = function({
   isNested,
 }) {
   // Nested tasks are not skipped
-  if (!enabled || isNested || isOnly({ only, patterns, key })) {
+  if (!enabled || isNested || !isOnly({ only, patterns, key })) {
     return
   }
 
-  abortTask()
+  return { done: true, skipped: true }
 }
 
 const isOnly = function({ only, patterns, key }) {

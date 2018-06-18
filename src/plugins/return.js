@@ -9,30 +9,25 @@ const { isObject } = require('../utils')
 //    kept as their original input. The reason is to make it predictable that
 //    any user input is also present unchanged in the output.
 //  - other properties that have been added by the task handler are returned too
+// Note that `task.done` is not kept
 const getTaskReturn = function({
   task,
-  task: { key },
+  task: { key, skipped },
   config: { originalTasks },
   plugins,
-  aborted,
   error,
 }) {
-  const errorObj = getError({ error, aborted })
+  const errorObj = getError({ error })
 
   const originalTask = originalTasks[key]
 
   const pluginReturns = getPluginReturns({ plugins, task, originalTask })
 
-  // Enforce properties order: `key`, `error`, added `task.*`, original `task.*`, `aborted`
-  return { key, ...errorObj, ...pluginReturns }
+  // Enforce properties order: `key`, `skipped`, `error`, added `task.*`, original `task.*`
+  return { key, skipped, ...errorObj, ...pluginReturns }
 }
 
-// When aborting a task, this means it was stopped but should be considered a success
-const getError = function({ error, aborted }) {
-  if (aborted) {
-    return { aborted }
-  }
-
+const getError = function({ error }) {
   if (error === undefined) {
     return
   }

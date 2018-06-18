@@ -1,12 +1,12 @@
 'use strict'
 
 // Get whether a `task` failed, passed or was skipped
-const getResultType = function({ error, aborted }) {
+const getResultType = function({ error, skipped }) {
   if (error !== undefined) {
     return 'fail'
   }
 
-  if (aborted) {
+  if (skipped) {
     return 'skip'
   }
 

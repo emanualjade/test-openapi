@@ -6,8 +6,9 @@ const { validateFromSchema, removePrefixes } = require('../../../utils')
 const { checkRequired } = require('./required')
 
 // Validates response headers against OpenAPI specification
-const validateHeaders = function({ validate, response: { headers } }) {
+const validateHeaders = function({ validate, response }) {
   const validateHeaders = removePrefixes(validate, 'headers')
+  const headers = removePrefixes(response, 'headers')
 
   Object.entries(validateHeaders).forEach(([name, schema]) =>
     validateHeader({ name, schema, headers }),
@@ -27,7 +28,7 @@ const validateHeader = function({ name, schema, headers }) {
 }
 
 const getResponseHeader = function({ headers, name }) {
-  const nameB = Object.keys(headers).find(nameA => nameA.toLowerCase() === `headers.${name}`)
+  const nameB = Object.keys(headers).find(nameA => nameA.toLowerCase() === name)
 
   if (nameB === undefined) {
     return

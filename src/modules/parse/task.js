@@ -15,7 +15,7 @@ const task = function({
   const headersA = parseHeaders({ headers })
   const bodyA = parseBody({ body, headers: headersA })
 
-  const response = { status, headers: headersA, body: bodyA }
+  const response = { status, ...headersA, body: bodyA }
   return { call: { ...call, response } }
 }
 

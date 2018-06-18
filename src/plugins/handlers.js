@@ -24,7 +24,7 @@ const runHandlers = function(
 }
 
 const getArgs = function({ plugins, context, advancedContext }) {
-  const pluginNames = plugins.map(({ name }) => name)
+  const pluginNames = plugins.filter(({ isCore }) => !isCore).map(({ name }) => name)
   return [{ ...context, pluginNames }, { ...advancedContext, plugins }]
 }
 

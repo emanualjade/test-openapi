@@ -25,7 +25,7 @@ const getReportProps = function({ task, config, plugins, noCore = false }) {
 
 // Find and call all `plugin.report()`
 const callReportFuncs = function({ task, config, plugins }) {
-  const pluginNames = plugins.map(({ name }) => name)
+  const pluginNames = plugins.filter(({ isCore }) => !isCore).map(({ name }) => name)
 
   const reportResult = plugins
     .map(plugin => callReportFunc({ plugin, config, pluginNames, task }))

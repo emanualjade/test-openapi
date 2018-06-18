@@ -13,8 +13,10 @@ const end = function({ options: { spinner }, tasks }) {
 // Print final reporting message with counter of passed|failed|skipped tasks
 const getEndMessage = function({ tasks }) {
   const summaryString = printSummary({ tasks })
-  return `\n${gray(HORIZONTAL_LINE)}\n\n${indent(summaryString)}\n\n`
+  return `${LINE}\n${indent(summaryString)}\n${LINE}\n`
 }
+
+const LINE = `\n${gray(HORIZONTAL_LINE)}\n`
 
 const printSummary = function({ tasks }) {
   const summary = getSummary({ tasks })

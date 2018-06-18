@@ -7,10 +7,14 @@ const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 const fireRequest = function({ rawRequest: { method, url, body, ...rest }, timeout }) {
   const headers = removePrefixes(rest, 'headers')
+  return eFireFetch({ url, method, headers, body, timeout })
+}
+
+const fireFetch = function({ url, method, headers, body, timeout }) {
   return fetch(url, { method, headers, body, timeout })
 }
 
-const fireRequestHandler = function({ message, type }, { rawRequest: { url }, timeout }) {
+const fireFetchHandler = function({ message, type }, { rawRequest: { url }, timeout }) {
   if (type === 'request-timeout') {
     throw new TestOpenApiError(`The request to '${url}' took more than ${timeout} milliseconds`)
   }
@@ -18,8 +22,8 @@ const fireRequestHandler = function({ message, type }, { rawRequest: { url }, ti
   throw new TestOpenApiError(`Could not connect to '${url}': ${message}`)
 }
 
-const eFireRequest = addErrorHandler(fireRequest, fireRequestHandler)
+const eFireFetch = addErrorHandler(fireFetch, fireFetchHandler)
 
 module.exports = {
-  fireRequest: eFireRequest,
+  fireRequest,
 }

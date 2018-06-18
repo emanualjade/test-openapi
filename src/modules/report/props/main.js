@@ -80,10 +80,9 @@ const isDefinedTitle = function(title) {
 }
 
 // Do not print properties that are not present
-// If we want to report some properties that are `undefined`, they must be
-// converted to a string `'undefined'`. This is for example done for core
-// properties `actual` and `expected` (providing their key was defined on
-// `error` object)
+// It's not possible to report properties as `undefined`. The reasons are:
+//  - it makes it simpler to reason about reporting
+//  - `undefined` is not JSON serializable
 const removeEmptyProps = function(object) {
   return omitBy(object, value => value === undefined)
 }

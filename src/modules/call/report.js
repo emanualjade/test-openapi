@@ -5,15 +5,12 @@ const { titleize } = require('underscore.string')
 const { removePrefixes } = require('../../utils')
 const { yellow, highlightValueAuto, prettifyJson } = require('../report/utils')
 
-const report = function({
-  request: { raw: rawRequest = {} } = {},
-  response: { raw: rawResponse = {} } = {},
-} = {}) {
+const report = function({ rawRequest = {}, rawResponse = {} } = {}) {
   const title = getTitle({ rawRequest, rawResponse })
   const request = getRequest(rawRequest)
   const response = getResponse(rawResponse)
 
-  return { title, request, response }
+  return { title, rawRequest: undefined, rawResponse: undefined, request, response }
 }
 
 // Add `METHOD URL (STATUS)` to reporting

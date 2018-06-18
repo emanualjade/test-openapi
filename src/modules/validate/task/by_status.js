@@ -4,12 +4,7 @@ const { mergeAll } = require('lodash/fp')
 
 // `validate.byStatus.*` is like `validate.*` but as map according to status code.
 // Used e.g. with OpenAPI specification which allow different responses per status.
-const addByStatus = function({
-  validate: { byStatus, ...validate },
-  response: {
-    raw: { status },
-  },
-}) {
+const addByStatus = function({ validate: { byStatus, ...validate }, response: { status } }) {
   if (byStatus === undefined) {
     return validate
   }

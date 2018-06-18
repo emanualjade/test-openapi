@@ -9,16 +9,13 @@ const { findBodyHandler } = require('../format')
 const task = function({
   call,
   call: {
-    response: {
-      raw,
-      raw: { status, body, ...headers },
-    },
+    rawResponse: { status, body, ...headers },
   },
 }) {
   const headersA = parseHeaders({ headers })
   const bodyA = parseBody({ body, headers: headersA })
 
-  const response = { raw, status, headers: headersA, body: bodyA }
+  const response = { status, headers: headersA, body: bodyA }
   return { call: { ...call, response } }
 }
 

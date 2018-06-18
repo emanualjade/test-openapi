@@ -18,9 +18,7 @@ const task = function({ call = {} }) {
 
   const rawRequest = mapValues(request, stringifyParam)
 
-  const requestA = { ...request, raw: rawRequest }
-
-  return { call: { ...call, request: requestA } }
+  return { call: { ...call, request, rawRequest } }
 }
 
 // Specifying `null` means 'do not send this parameter'.

@@ -6,16 +6,14 @@ const { getFetchResponse } = require('./response')
 // Fire actual HTTP call
 const task = async function({
   call,
-  call: {
-    request: { raw: rawRequest },
-  },
+  call: { rawRequest },
   config: { call: { timeout = DEFAULT_TIMEOUT } = {} },
 }) {
   const rawResponse = await fireFetch({ rawRequest, timeout })
 
   const rawResponseA = await getFetchResponse({ rawResponse, timeout })
 
-  return { call: { ...call, response: { raw: rawResponseA } } }
+  return { call: { ...call, rawResponse: rawResponseA } }
 }
 
 const DEFAULT_TIMEOUT = 1e4

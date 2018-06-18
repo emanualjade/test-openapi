@@ -12,7 +12,7 @@ const completeTask = async function({ task, plugins, config }) {
 }
 
 // Errors in `complete` handlers return `task.error`, just like the ones in
-// `task` handlers
+// `run` handlers
 const completeTaskHandler = function(error, { task }) {
   return { ...task, error }
 }

@@ -3,7 +3,7 @@
 // Repeat each task `config|task.repeat` times.
 // It will be reported only as a single task.
 // Run all tasks in parallel.
-const task = async function(task, { config }, { isNested, runTask }) {
+const run = async function(task, { config }, { isNested, runTask }) {
   if (isNested) {
     return
   }
@@ -25,5 +25,5 @@ const getRepeat = function({ task, config }) {
 const DEFAULT_REPEAT = 10
 
 module.exports = {
-  task,
+  run,
 }

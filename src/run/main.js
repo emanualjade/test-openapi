@@ -6,7 +6,7 @@ const { getTasks } = require('../tasks')
 const { getPlugins } = require('../plugins')
 
 const { startTasks } = require('./start')
-const { runTask } = require('./task')
+const { runTask } = require('./run')
 const { completeTask } = require('./complete')
 const { endTasks } = require('./end')
 
@@ -17,7 +17,7 @@ const { endTasks } = require('./end')
 //  - load plugins
 //  - run each `plugin.start()`
 //  - for each task, in parallel:
-//     - run each `plugin.task()`
+//     - run each `plugin.run()`
 //     - run each `plugin.complete()`
 //  - run each `plugin.end()`
 // Return tasks on success

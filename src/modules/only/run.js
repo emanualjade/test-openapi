@@ -6,7 +6,7 @@ const { isMatch } = require('micromatch')
 // the globbing patterns
 // `task.only: true` will only run those tasks
 // Behaves similarly to `skip` plugin
-const task = function(
+const run = function(
   { only = false, key },
   {
     config: {
@@ -28,5 +28,5 @@ const isOnly = function({ only, patterns, key }) {
 }
 
 module.exports = {
-  task,
+  run,
 }

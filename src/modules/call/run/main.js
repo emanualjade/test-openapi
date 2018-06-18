@@ -10,8 +10,8 @@ const { parse } = require('./parse')
 //  - build request URL
 //  - send HTTP request
 //  - parse HTTP response
-const task = [serialize, addUrl, request, parse]
+const run = [serialize, addUrl, request, parse]
 
 module.exports = {
-  task,
+  run,
 }

@@ -7,7 +7,7 @@ const { TestOpenApiError } = require('../../errors')
 const { validateIsSchema, stringifyFlat } = require('../../utils')
 
 // Generates random values based on `task.random.*` JSON schemas
-const task = function({ random, call }) {
+const run = function({ random, call }) {
   if (random === undefined) {
     return
   }
@@ -73,5 +73,5 @@ const addSeparators = function({ value, schema: { 'x-separator': separator } }) 
 }
 
 module.exports = {
-  task,
+  run,
 }

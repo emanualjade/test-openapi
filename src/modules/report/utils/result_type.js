@@ -1,6 +1,6 @@
 'use strict'
 
-// Get whether a `task` failed, passed or was skipped
+// Get whether a task failed, passed or was skipped
 const getResultType = function({ error, skipped }) {
   if (error !== undefined) {
     return 'fail'

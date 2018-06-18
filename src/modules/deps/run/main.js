@@ -5,7 +5,7 @@ const { runDeps } = require('./run')
 const { setRefs } = require('./set')
 
 // Replace all `deps`, i.e. references to other tasks.
-const taskFunc = function(task, { config: { tasks } }, { runTask }) {
+const run = function(task, { config: { tasks } }, { runTask }) {
   const refs = findRefs({ task, tasks })
 
   if (refs.length === 0) {
@@ -23,5 +23,5 @@ const runAndSetDeps = async function({ task, tasks, refs, runTask }) {
 }
 
 module.exports = {
-  task: taskFunc,
+  run,
 }

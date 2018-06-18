@@ -27,15 +27,15 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 // `plugin.config.task` `{object}`
 // JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
 
-// `plugin.start|task|complete|end` `{function|function[]}`
+// `plugin.start|run|complete|end` `{function|function[]}`
 // Handlers, i.e. functions fired by each plugin. This is where the logic is.
 // Types:
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.task(task, { config, pluginNames }, { plugins, runTasks, isNested })` `{function}`
+//  - `plugin.run(task, { config, pluginNames }, { plugins, runTasks, isNested })` `{function}`
 //     - fired for each task
 //  - `plugin.complete(task, { config, pluginNames }, { plugins })` `{function}`
-//     - fired for each task, but after `task` type, whether it has failed or not
+//     - fired for each task, but after `run` type, whether it has failed or not
 //     - only for advanced plugins
 //  - `plugin.end(tasks, { config, pluginNames }, { plugins })` `{function}`
 //     - fired after all tasks
@@ -48,14 +48,14 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //      - `plugins` `{array}`: list of available plugins
 //      - `runTask(task)` `{function}`: function allowing a task to fire another task
 //      - `isNested` `{boolean}`: whether task was run through recursive `runTask()`
-//   - `start` and `task` can modify their first argument by returning it:
+//   - `start` and `run` can modify their first argument by returning it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.
 //   - the second and third arguments are read-only.
 //   - the third argument is only for advanced plugins.
 // Throwing an exception in:
 //  - `start` or `end`: will stop the whole run
-//  - `task`: stop the current `task`, but other tasks are still run.
+//  - `run`: stop the current task, but other tasks are still run.
 //    Also `plugin.complete()` is still run.
 //  - `complete`: stop the current `complete`, but other tasks are still run.
 

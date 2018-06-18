@@ -3,7 +3,7 @@
 const { addErrorHandler } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
-// Run each `plugin.task()`
+// Run each `plugin.run()`
 const runTask = async function({ task, config, plugins, isNested }) {
   const taskA = await eRunAll({ task, config, plugins, isNested })
 
@@ -18,7 +18,7 @@ const runAll = function({ task, config, plugins, isNested }) {
   const recursiveRunTask = task => runTask({ task, config, plugins, isNested: true })
 
   return runHandlers(
-    'task',
+    'run',
     plugins,
     task,
     { config },
@@ -58,7 +58,7 @@ const runPluginHandler = function(error, task) {
   throw error
 }
 
-// Returning `done: true` in any `task` handler stops the iteration but without
+// Returning `done: true` in any `run` handler stops the iteration but without
 // errors (as opposed to throwing an exception)
 // This implies successful tasks might be emptier than expected.
 // This is used e.g. by `skip|only` or `repeat` plugins

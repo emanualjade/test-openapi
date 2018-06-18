@@ -1,12 +1,12 @@
 'use strict'
 
 const { start, loadOpenApiSpec } = require('./start')
-const { task } = require('./task')
+const { run } = require('./run')
 const config = require('./config')
 
 module.exports = {
   config,
   start,
-  task,
+  run,
   loadOpenApiSpec,
 }

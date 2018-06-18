@@ -2,10 +2,10 @@
 
 const { config } = require('./config.js')
 const { report } = require('./report')
-const { task } = require('./task')
+const { run } = require('./run')
 
 module.exports = {
   config,
   report,
-  task,
+  run,
 }

@@ -1,7 +1,7 @@
 'use strict'
 
-const { task } = require('./task')
+const { run } = require('./run')
 
 module.exports = {
-  task,
+  run,
 }

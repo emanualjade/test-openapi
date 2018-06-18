@@ -51,7 +51,7 @@ const getRequest = function({ method, url, body, ...rest }) {
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
 
-  return `${methodA} ${url}\n\n${headersA}${bodyA}`
+  return `${methodA} ${url}\n\n${headersA}${bodyA}\n`
 }
 
 // Print HTTP response in error messages
@@ -64,7 +64,7 @@ const getResponse = function({ status, body, ...rest }) {
   const headersA = printHeaders(rest)
   const bodyA = printBody({ body })
 
-  return `${statusA}\n\n${headersA}${bodyA}`
+  return `${statusA}\n\n${headersA}${bodyA}\n`
 }
 
 const printMethod = function({ method }) {

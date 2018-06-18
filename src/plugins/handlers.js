@@ -36,7 +36,7 @@ const getHandlers = function({ plugins, type, errorHandler, args }) {
   return handlersB
 }
 
-const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
+const getPluginHandlers = function({ plugin, type }) {
   const handlers = plugin[type]
   if (handlers === undefined) {
     return []
@@ -47,8 +47,14 @@ const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
   // error is thrown at the middle of the handler
   const handlersA = Array.isArray(handlers) ? handlers : [handlers]
 
-  const handlersB = handlersA.map(func => ({ func, plugin: name }))
+  const handlersB = handlersA.map(func => getPluginHandler({ func, plugin }))
   return handlersB
+}
+
+const getPluginHandler = function({ func, plugin: { isCore, name } }) {
+  // `error.plugin` is `core` for core plugins
+  const plugin = isCore ? 'core' : name
+  return { func, plugin }
 }
 
 const wrapHandler = function({ handler: { func, plugin }, errorHandler, args }) {

@@ -17,11 +17,11 @@ const handleBugs = function({ error }) {
 
   const message = getBugMessage({ bugError })
 
-  // `error.errors` is `undefined` with a `bug` error
+  // `error.errors|tasks` is `undefined` with a `bug` error
   return new TestOpenApiError(message, { plugin: 'bug' })
 }
 
-const findBugError = function({ error: { errors } }) {
+const findBugError = function({ error, error: { errors = [error] } }) {
   return errors.find(isBugError)
 }
 

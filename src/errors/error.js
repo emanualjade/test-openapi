@@ -17,9 +17,9 @@ const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
 //  - `schema` `{object}`: JSON schema v4 matched against `actual`
 // Top-level error also has:
 //  - `errors` `{array}`: all errors.
-//    Will be single rror if no task was run, or if it's a bug
+//    Will be single undefined if no task was run or it's a bug
 //  - `tasks` `{array}`: all tasks.
-//    Will be empty array if no task was run, or if it's a bug
+//    Will be single undefined if no task was run or it's a bug
 class TestOpenApiError extends Error {
   constructor(message, properties = {}) {
     super(message)

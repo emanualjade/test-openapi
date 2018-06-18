@@ -2,31 +2,25 @@
 
 const { omit } = require('lodash')
 
+const { convertPlainObject } = require('../../../../../errors')
+
 const { normalizeReportProps } = require('./report_props')
 
 // Retrieve TAP error properties
 const getErrorProps = function({
   ok,
-  error: {
-    name,
-    message,
-    stack,
-    plugin: operator,
-    actual,
-    expected,
-    schema,
-    property,
-    ...error
-  } = {},
+  error,
+  error: { message, plugin: operator, actual, expected, schema, property, ...rest } = {},
   reportProps,
 }) {
   if (ok) {
     return
   }
 
-  const stackProp = getStackProp({ name, stack })
+  // Only report `error.stack` when it's a bug error
+  const { stack } = convertPlainObject(error)
 
-  const errorA = omit(error, NOT_REPORTED_PROPS)
+  const restA = omit(rest, NOT_REPORTED_PROPS)
 
   const reportPropsA = normalizeReportProps({ reportProps })
 
@@ -39,22 +33,13 @@ const getErrorProps = function({
     expected,
     schema,
     property,
-    ...stackProp,
-    ...errorA,
+    stack,
+    ...restA,
     ...reportPropsA,
   }
 }
 
 const NOT_REPORTED_PROPS = ['config', 'plugins']
-
-// Only report `error.stack` when it's a bug error
-const getStackProp = function({ name, stack }) {
-  if (name === 'TestOpenApiError') {
-    return {}
-  }
-
-  return { stack }
-}
 
 module.exports = {
   getErrorProps,

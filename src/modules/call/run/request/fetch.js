@@ -14,7 +14,7 @@ const fireFetch = function({ url, method, headers, body, timeout }) {
   return fetch(url, { method, headers, body, timeout })
 }
 
-const fireFetchHandler = function({ message, type }, { rawRequest: { url }, timeout }) {
+const fireFetchHandler = function({ message, type }, { url, timeout }) {
   if (type === 'request-timeout') {
     throw new TestOpenApiError(`The request to '${url}' took more than ${timeout} milliseconds`)
   }

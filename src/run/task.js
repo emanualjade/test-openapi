@@ -38,20 +38,20 @@ const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, tas
   return taskA
 }
 
-const runTask = async function({ originalTask, ...task }, { plugins, readOnlyArgs }) {
+const runTask = async function(task, { plugins, readOnlyArgs, readOnlyArgs: { config } }) {
   const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler)
 
-  const taskB = getTaskReturn({ task: taskA, originalTask, plugins })
+  const taskB = getTaskReturn({ task: taskA, config, plugins })
   return taskB
 }
 
 // Let calling code handle errored tasks.
 // I.e. on exception, successfully return `{ task, error }` instead of throwing it.
-const runTaskHandler = function(error, { originalTask }, { plugins }) {
-  const { task, aborted } = extractErrorProps({ error })
+const runTaskHandler = function(error, task, { plugins, readOnlyArgs: { config } }) {
+  const { task: taskA, aborted } = extractErrorProps({ error })
 
-  const taskA = getTaskReturn({ task, originalTask, plugins, aborted, error })
-  return taskA
+  const taskB = getTaskReturn({ task: taskA, config, plugins, aborted, error })
+  return taskB
 }
 
 // We only assign those properties to `error` to carry information during throw.

@@ -41,11 +41,11 @@ const performRun = async function({ config, plugins }) {
 
   const tasks = await fireTasks({ config: configA, mRunTask, plugins })
 
-  const tasksA = await endTasks({ tasks, plugins, config: configA })
+  await endTasks({ tasks, plugins, config: configA })
 
-  handleFinalFailure({ tasks: tasksA })
+  handleFinalFailure({ tasks })
 
-  return tasksA
+  return tasks
 }
 
 // Add `error.plugins` to every thrown error

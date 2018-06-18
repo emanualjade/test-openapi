@@ -1,7 +1,5 @@
 'use strict'
 
-const { omit } = require('lodash')
-
 const { isSilent, filterTaskData } = require('./level')
 const { callReporters } = require('./call')
 
@@ -11,15 +9,9 @@ const end = async function({ tasks, config, plugins }) {
     return
   }
 
-  const tasksA = tasks.map(task => mapTask({ task, config, plugins }))
+  const tasksA = tasks.map(task => filterTaskData({ task, config, plugins }))
 
   await callReporters({ config, type: 'end' }, { tasks: tasksA, config })
-}
-
-const mapTask = function({ task, config, plugins }) {
-  const taskA = filterTaskData({ task, config, plugins })
-  const taskB = omit(taskA, 'originalTask')
-  return taskB
 }
 
 module.exports = {

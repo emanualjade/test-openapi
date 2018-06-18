@@ -8,8 +8,8 @@ const { isObject } = require('../../../utils')
 const { addCoreReportProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
-const getReportProps = function({ task: { originalTask, ...task }, plugins, noCore = false }) {
-  const { titles, reportProps } = callReportFuncs({ task, originalTask, plugins })
+const getReportProps = function({ task, plugins, noCore = false }) {
+  const { titles, reportProps } = callReportFuncs({ task, plugins })
 
   const title = getTitle({ titles })
 
@@ -24,9 +24,9 @@ const getReportProps = function({ task: { originalTask, ...task }, plugins, noCo
 }
 
 // Find and call all `plugin.report()`
-const callReportFuncs = function({ task, originalTask, plugins }) {
+const callReportFuncs = function({ task, plugins }) {
   const reportResult = plugins
-    .map(plugin => callReportFunc({ plugin, task, originalTask }))
+    .map(plugin => callReportFunc({ plugin, task }))
     .filter(value => value !== undefined)
 
   // Separate `title` from the rest as it is handled differently

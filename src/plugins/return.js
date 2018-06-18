@@ -12,12 +12,14 @@ const { isObject } = require('../utils')
 const getTaskReturn = function({
   task,
   task: { key },
-  originalTask,
+  config: { originalTasks },
   plugins,
   aborted = false,
   error,
 }) {
   const errorObj = getError({ error, aborted })
+
+  const originalTask = originalTasks[key]
 
   const pluginReturns = getPluginReturns({ plugins, task, originalTask })
 

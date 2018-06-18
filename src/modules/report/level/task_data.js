@@ -7,29 +7,36 @@ const { isObject } = require('../../../utils')
 // Apply `config.report.level` to remove some `task.PLUGIN.*`
 const filterTaskData = function({
   task,
+  task: { key },
   config: {
+    originalTasks,
     report: {
       level: { taskData },
     },
   },
   plugins,
 }) {
-  return plugins.reduce((taskA, { name }) => reduceTaskData({ task: taskA, name, taskData }), task)
+  const originalTask = originalTasks[key]
+
+  return plugins.reduce(
+    (taskA, { name }) => reduceTaskData({ task: taskA, originalTask, name, taskData }),
+    task,
+  )
 }
 
-const reduceTaskData = function({ task, name, taskData }) {
+const reduceTaskData = function({ task, originalTask, name, taskData }) {
   if (task[name] === undefined) {
     return task
   }
 
-  return TASK_DATA[taskData]({ task, name })
+  return TASK_DATA[taskData]({ task, originalTask, name })
 }
 
 const keepNone = function({ task, name }) {
   return omit(task, name)
 }
 
-const keepAdded = function({ task, task: { originalTask }, name }) {
+const keepAdded = function({ task, originalTask, name }) {
   if (originalTask[name] === undefined) {
     return task
   }

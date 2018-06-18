@@ -24,16 +24,15 @@ const getBody = function({ rawResponse }) {
 }
 
 const getBodyHandler = function({ message, type }, { timeout }) {
-  const properties = { property: 'call.response.body' }
+  const property = 'call.response.body'
 
   if (type === 'body-timeout') {
-    throw new TestOpenApiError(
-      `Parsing the response body took more than ${timeout} milliseconds`,
-      properties,
-    )
+    throw new TestOpenApiError(`Parsing the response body took more than ${timeout} milliseconds`, {
+      property,
+    })
   }
 
-  throw new TestOpenApiError(`Could not read response body: ${message}`, properties)
+  throw new TestOpenApiError(`Could not read response body: ${message}`, { property })
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)

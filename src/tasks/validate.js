@@ -38,7 +38,7 @@ const validateJson = function([key, task]) {
     return
   }
 
-  throw new TestOpenApiError(`Task '${key}' is not valid JSON`, { key })
+  throw new TestOpenApiError(`Task '${key}' is not valid JSON`, { task: key })
 }
 
 const cloneTask = function({ task }) {
@@ -46,7 +46,7 @@ const cloneTask = function({ task }) {
 }
 
 const cloneTaskHandler = function({ message }, { key }) {
-  throw new TestOpenApiError(`Task '${key}' is not valid JSON: ${message}`, { key })
+  throw new TestOpenApiError(`Task '${key}' is not valid JSON: ${message}`, { task: key })
 }
 
 const eCloneTask = addErrorHandler(cloneTask, cloneTaskHandler)

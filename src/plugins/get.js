@@ -42,14 +42,17 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //  - fired before all tasks
 //  - arguments: `(config)`
 //  - this type of handlers can modify the configuration object
+//  - it also has the following read-only properties:
+//     - `pluginNames` `{array}`: list of plugins
 
 // `plugin.task` `{function}`
 //  - fired for each task
 //  - arguments: `(task)`
 //  - this type of handlers can modify the current task
 //  - the task is the same object as the one specified in tasks files
-//  - `task` also has the following read-only properties:
+//  - it also has the following read-only properties:
 //     - `config`: the configuration object (after being modified by `plugin.start()`)
+//     - `pluginNames` `{array}`: list of plugins
 
 // `plugin.end` `{function}`
 //  - fired after all tasks
@@ -57,6 +60,7 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //  - this type of handlers cannot return anything
 //  - it also has the following read-only properties:
 //     - `config`: the configuration object (after being modified by `plugin.start()`)
+//     - `pluginNames` `{array}`: list of plugins
 
 // `plugin.report` `{function}`
 // Returns properties to merge to `task.PLUGIN`, but only for reporting.

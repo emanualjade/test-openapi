@@ -14,21 +14,14 @@ const isSilent = function({
 }
 
 // Some `config.report.level` will only show errors, i.e. see if task should be silent
-const isSilentTask = function({
-  task,
-  config: {
-    report: {
-      level: { types },
-    },
-  },
-}) {
+const isSilentTask = function({ task, config }) {
   const resultType = getResultType(task)
-  return !types.includes(resultType)
+  return isSilentType({ resultType, config })
 }
 
 // When reporters only show summary (e.g. `notify`), we silent summary according
 // to `config.report.level`
-const isSilentSummary = function({
+const isSilentType = function({
   resultType,
   config: {
     report: {
@@ -42,5 +35,5 @@ const isSilentSummary = function({
 module.exports = {
   isSilent,
   isSilentTask,
-  isSilentSummary,
+  isSilentType,
 }

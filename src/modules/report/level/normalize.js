@@ -1,5 +1,10 @@
 'use strict'
 
+// `types` decides whether to show errors, successes, skipped tasks
+// `taskData` decided whether to include task.PLUGIN.*
+//    - `added` means only the added props (i.e. not in `task.config.task.*`)
+const LEVELS = require('./levels')
+
 // Normalize `config.report.level`
 // The reporting level should affect individual tasks reporting, not the summary
 const normalizeLevel = function({ report, report: { reporters, level } }) {
@@ -23,32 +28,6 @@ const getLevel = function({ reporters, level }) {
 }
 
 const DEFAULT_LEVEL = 'info'
-
-// `types` decides whether to show errors, successes, skipped tasks
-// `taskData` decided whether to include task.PLUGIN.*
-//    - `added` means only the added props (i.e. not in `task.config.task.*`)
-const LEVELS = {
-  silent: {
-    types: [],
-    taskData: 'none',
-  },
-  error: {
-    types: ['fail'],
-    taskData: 'none',
-  },
-  warn: {
-    types: ['fail'],
-    taskData: 'added',
-  },
-  info: {
-    types: ['fail', 'pass', 'skip'],
-    taskData: 'added',
-  },
-  debug: {
-    types: ['fail', 'pass', 'skip'],
-    taskData: 'all',
-  },
-}
 
 module.exports = {
   normalizeLevel,

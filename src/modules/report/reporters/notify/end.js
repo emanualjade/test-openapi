@@ -3,7 +3,7 @@
 const notifier = require('node-notifier')
 
 const { getSummary } = require('../../utils')
-const { isSilentSummary } = require('../../level')
+const { isSilentType } = require('../../level')
 
 // Show notification at end of run if `config.report.notify: true`
 const end = function({ tasks, config }) {
@@ -21,7 +21,7 @@ const getOpts = function({ tasks, config }) {
 
   const { resultType, ...opts } = OPTS[ok]
 
-  if (isSilentSummary({ resultType, config })) {
+  if (isSilentType({ resultType, config })) {
     return
   }
 
@@ -41,7 +41,7 @@ const getFailMessage = function({ total, fail }) {
 }
 
 const addSkipMessage = function({ message, skip, config }) {
-  if (skip === 0 || isSilentSummary({ resultType: 'skip', config })) {
+  if (skip === 0 || isSilentType({ resultType: 'skip', config })) {
     return message
   }
 

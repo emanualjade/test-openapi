@@ -42,7 +42,7 @@ const keepAdded = function({ task, originalTask, name }) {
   }
 
   if (!isObject(originalTask[name]) || !isObject(task[name])) {
-    return
+    return omit(task, name)
   }
 
   const originalTaskKeys = Object.keys(originalTask[name])

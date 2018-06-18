@@ -5,7 +5,8 @@ const { runHandlers } = require('../plugins')
 
 // Run each `plugin.complete()`
 const completeTask = async function({ task, plugins, config }) {
-  await runHandlers({}, plugins, 'complete', { task, config })
+  // `task` cannot be modified
+  await runHandlers('complete', plugins, task, { config })
 
   return task
 }

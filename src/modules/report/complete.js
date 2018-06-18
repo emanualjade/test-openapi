@@ -6,16 +6,17 @@ const { isSilent, isSilentTask, filterTaskData } = require('./level')
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
 // We do so by buffering each task until its reporting time comes.
-const complete = async function({
+const complete = async function(
   task,
-  task: { key },
-  config,
-  config: {
-    report,
-    report: { taskKeys, tasks, index },
+  {
+    config,
+    config: {
+      report,
+      report: { taskKeys, tasks, index },
+    },
   },
-  plugins,
-}) {
+  { plugins },
+) {
   if (isSilent({ config })) {
     return
   }
@@ -23,7 +24,7 @@ const complete = async function({
   // Save current task's result (i.e. reporting input)
   // `config.report.inputs|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks
-  tasks[key] = task
+  tasks[task.key] = task
 
   // Only use keys not reported yet
   const keys = taskKeys.slice(index)

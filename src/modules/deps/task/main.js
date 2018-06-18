@@ -5,7 +5,7 @@ const { runDeps } = require('./run')
 const { setRefs } = require('./set')
 
 // Replace all `deps`, i.e. references to other tasks.
-const taskFunc = function({ config: { tasks }, runTask, ...task }) {
+const taskFunc = function(task, { config: { tasks } }, { runTask }) {
   const refs = findRefs({ task, tasks })
 
   if (refs.length === 0) {

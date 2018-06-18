@@ -5,27 +5,27 @@ const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run each `plugin.task()`
 const runTask = async function({ task, config, plugins, isNested }) {
-  const readOnlyArgs = getReadOnlyArgs({ config, plugins, isNested })
-
-  const taskA = await eRunAll({ task, plugins, readOnlyArgs, isNested })
+  const taskA = await eRunAll({ task, config, plugins, isNested })
 
   const taskB = getTaskReturn({ task: taskA, config, plugins })
   return taskB
 }
 
-// Passed to every task handler
-const getReadOnlyArgs = function({ config, plugins, isNested }) {
+const runAll = function({ task, config, plugins, isNested }) {
   // Pass simplified `runTask()` for recursive tasks
   // Tasks can use `isNested` to know if this is a recursive call
   // As opposed to regular `runTask()`, failed task throws.
   const recursiveRunTask = task => runTask({ task, config, plugins, isNested: true })
 
-  // Those arguments are passed to each task, but cannot be modified
-  return { config, runTask: recursiveRunTask, isNested }
-}
-
-const runAll = function({ task, plugins, readOnlyArgs }) {
-  return runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler, stopOnDone)
+  return runHandlers(
+    'task',
+    plugins,
+    task,
+    { config },
+    { runTask: recursiveRunTask, isNested },
+    runPluginHandler,
+    stopOnDone,
+  )
 }
 
 const runAllHandler = function(error, { isNested }) {

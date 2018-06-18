@@ -4,11 +4,10 @@ const { fireFetch } = require('./fetch')
 const { getFetchResponse } = require('./response')
 
 // Fire actual HTTP call
-const task = async function({
-  call,
-  call: { rawRequest },
-  config: { call: { timeout = DEFAULT_TIMEOUT } = {} },
-}) {
+const task = async function(
+  { call, call: { rawRequest } },
+  { config: { call: { timeout = DEFAULT_TIMEOUT } = {} } },
+) {
   const rawResponse = await fireFetch({ rawRequest, timeout })
 
   const rawResponseA = await getFetchResponse({ rawResponse, timeout })

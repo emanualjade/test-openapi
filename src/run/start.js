@@ -4,7 +4,7 @@ const { runHandlers } = require('../plugins')
 
 // Run each `plugin.start()`
 const startTasks = function({ config, plugins }) {
-  return runHandlers(config, plugins, 'start')
+  return runHandlers('start', plugins, config)
 }
 
 module.exports = {

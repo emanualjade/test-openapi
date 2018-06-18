@@ -6,14 +6,15 @@ const { isMatch } = require('micromatch')
 // the globbing patterns
 // `task.only: true` will only run those tasks
 // Behaves similarly to `skip` plugin
-const task = function({
-  only = false,
-  config: {
-    only: { patterns, enabled },
+const task = function(
+  { only = false, key },
+  {
+    config: {
+      only: { patterns, enabled },
+    },
   },
-  key,
-  isNested,
-}) {
+  { isNested },
+) {
   // Nested tasks are not skipped
   if (!enabled || isNested || isOnly({ only, patterns, key })) {
     return

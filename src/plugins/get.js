@@ -28,67 +28,42 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 // JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
 
 // `plugin.start|task|complete|end` `{function}`
-// Handlers are the functions fired by each plugin. This is where the logic is.
-// The goal of each handler is to usually to modify its input (first argument).
-// However it should do so not by mutating its arguments, but by returning
-// properties, which will be automatically shallowly merged into the current input.
+// Handlers, i.e. functions fired by each plugin. This is where the logic is.
+// Types:
+//  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
+//     - fired before all tasks
+//  - `plugin.task(task, { config, pluginNames }, { plugins, runTasks, isNested })` `{function}`
+//     - fired for each task
+//  - `plugin.complete(task, { config, pluginNames }, { plugins })` `{function}`
+//     - fired for each task, but after `task` type, whether it has failed or not
+//     - only for advanced plugins
+//  - `plugin.end(tasks, { config, pluginNames }, { plugins })` `{function}`
+//     - fired after all tasks
+// Arguments:
+//   - available depends on the handler type, but can be:
+//      - `config` `{object}`: the configuration object (after being modified by `plugin.start()`)
+//      - `task` `{object}`: same object as the one specified in tasks files
+//      - `tasks` `{array}`
+//      - `pluginNames` `{array}`: list of plugins names
+//      - `plugins` `{array}`: list of available plugins
+//      - `runTask(task)` `{function}`: function allowing a task to fire another task
+//      - `isNested` `{boolean}`: whether task was run through recursive `runTask()`
+//   - `start` and `task` can modify their first argument by returning it:
+//      - which will be automatically shallowly merged into the current input.
+//      - arguments should not be mutated.
+//   - the second and third arguments are read-only.
+//   - the third argument is only for advanced plugins.
 // Throwing an exception in:
 //  - `start` or `end`: will stop the whole run
 //  - `task`: stop the current `task`, but other tasks are still run.
 //    Also `plugin.complete()` is still run.
 //  - `complete`: stop the current `complete`, but other tasks are still run.
 
-// `plugin.start` `{function}`
-//  - fired before all tasks
-//  - arguments: `(config)`
-//  - this type of handlers can modify the configuration object
-//  - it also has the following read-only properties:
-//     - `pluginNames` `{array}`: list of plugins
-
-// `plugin.task` `{function}`
-//  - fired for each task
-//  - arguments: `(task)`
-//  - this type of handlers can modify the current task
-//  - the task is the same object as the one specified in tasks files
-//  - it also has the following read-only properties:
-//     - `config`: the configuration object (after being modified by `plugin.start()`)
-//     - `pluginNames` `{array}`: list of plugins
-
-// `plugin.end` `{function}`
-//  - fired after all tasks
-//  - arguments: none
-//  - this type of handlers cannot return anything
-//  - it also has the following read-only properties:
-//     - `config`: the configuration object (after being modified by `plugin.start()`)
-//     - `pluginNames` `{array}`: list of plugins
-
 // `plugin.report` `{function}`
 // Returns properties to merge to `task.PLUGIN`, but only for reporting.
 // Values will be automatically formatted, and do not have to be strings.
 // Has same signature as `plugin.task()`
 // Can also return a `title`, shown as a sub-title during reporting.
-
-// ADVANCED API
-
-// `plugin.complete` `{function}`
-//  - fired for each task, but after `task` type.
-//  - fired whether `task` has failed or not
-//  - arguments: `({ task, error })`
-//     - `error` is only defined if `task` failed
-//     - when using `repeat` plugin, `tasks` and `errors` will also be set
-//  - this type of handlers can modify the current `task` or `error`
-//  - it also has the following read-only properties:
-//     - `plugins`: list of available plugins
-//     - `config`: the configuration object (after being modified by `plugin.start()`)
-
-// `plugin.task`:
-//   - read-only arguments:
-//     - `runTask(task)`: function allowing a task to fire another task
-//     - `tasks`
-
-// `plugin.start|task|end`
-//   - read-only arguments:
-//     - `plugins`: list of available plugins
 
 module.exports = {
   getPlugins,

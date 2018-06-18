@@ -7,7 +7,7 @@ const { isMatch } = require('micromatch')
 // Only `task` plugin handlers are skipped, i.e. `start`, `complete` and `end`
 // handlers are still run for those tasks.
 // This means they will be stopped and reported as `skipped`
-const task = function({ skip = false, config: { skip: patterns }, key, isNested }) {
+const task = function({ skip = false, key }, { config: { skip: patterns } }, { isNested }) {
   // Nested tasks are not skipped
   if (isNested || !isSkipped({ skip, patterns, key })) {
     return

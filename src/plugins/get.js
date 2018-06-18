@@ -59,10 +59,9 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 //    Also `plugin.complete()` is still run.
 //  - `complete`: stop the current `complete`, but other tasks are still run.
 
-// `plugin.report` `{function}`
+// `plugin.report(task, { config, pluginNames })` `{function}`
 // Returns properties to merge to `task.PLUGIN`, but only for reporting.
 // Values will be automatically formatted, and do not have to be strings.
-// Has same signature as `plugin.task()`
 // Can also return a `title`, shown as a sub-title during reporting.
 
 module.exports = {

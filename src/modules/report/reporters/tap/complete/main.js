@@ -6,8 +6,8 @@ const { getReportProps } = require('../../../props')
 const { getErrorProps } = require('./error_props')
 
 // Add TAP output for each task, as a single assert
-const complete = function({ options: { tap }, ...task }, { plugins, silent }) {
-  const assert = getAssert({ task, plugins })
+const complete = function({ options: { tap }, ...task }, { config, plugins, silent }) {
+  const assert = getAssert({ task, config, plugins })
   const message = tap.assert(assert)
 
   if (silent) {
@@ -17,8 +17,8 @@ const complete = function({ options: { tap }, ...task }, { plugins, silent }) {
   return message
 }
 
-const getAssert = function({ task, task: { key, error }, plugins }) {
-  const { title, reportProps } = getReportProps({ task, plugins, noCore: true })
+const getAssert = function({ task, task: { key, error }, config, plugins }) {
+  const { title, reportProps } = getReportProps({ task, config, plugins, noCore: true })
 
   const resultType = getResultType(task)
 

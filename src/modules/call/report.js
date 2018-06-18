@@ -2,7 +2,7 @@
 
 const { titleize } = require('underscore.string')
 
-const { removePrefixes } = require('../../utils')
+const { removePrefixes, sortArray } = require('../../utils')
 const { yellow, highlightValueAuto, prettifyJson } = require('../report/utils')
 
 const report = function({ rawRequest = {}, rawResponse = {} } = {}) {
@@ -77,9 +77,10 @@ const printStatus = function({ status }) {
 
 const printHeaders = function(object) {
   const headers = removePrefixes(object, 'headers')
-  return Object.entries(headers)
-    .map(printHeader)
-    .join('\n')
+  const headersA = Object.entries(headers).map(printHeader)
+  const headersB = sortArray(headersA)
+  const headersC = headersB.join('\n')
+  return headersC
 }
 
 const printHeader = function([name, value]) {

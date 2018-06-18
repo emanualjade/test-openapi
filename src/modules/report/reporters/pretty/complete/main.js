@@ -8,8 +8,6 @@ const { printReportProps } = require('./report_props')
 
 // Print task errors and update spinner
 const complete = function({ options: { spinner }, ...task }, { config, plugins, silent }) {
-  spinner.update()
-
   if (silent) {
     return ''
   }

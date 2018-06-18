@@ -26,6 +26,12 @@ const complete = async function(
   // they need to be shared between parallel tasks
   tasks[task.key] = task
 
+  // `reporter.tick()` is `reporter.complete()` except:
+  //   - does not get task as input
+  //   - not buffered
+  // I.e. meant for example to increment a progress bar or spinner
+  await callReporters({ config, type: 'tick' }, {}, { config, plugins })
+
   // Only use keys not reported yet
   const keys = taskKeys.slice(index)
 

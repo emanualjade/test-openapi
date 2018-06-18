@@ -1,12 +1,12 @@
 'use strict'
 
 const { options } = require('./options')
-const { complete } = require('./complete')
+const { tick } = require('./tick')
 const { end } = require('./end')
 
 module.exports = {
   options,
-  complete,
+  tick,
   end,
   level: 'debug',
 }

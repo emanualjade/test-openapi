@@ -2,17 +2,9 @@
 
 const { runHandlers } = require('../plugins')
 
-const { runTask } = require('./task')
-
 // Run each `plugin.start()`
-const startTasks = async function({ config, plugins }) {
-  // `runTask()` can be monkey patched
-  const { runTask: mRunTask, ...configA } = await runHandlers(
-    { ...config, runTask },
-    plugins,
-    'start',
-  )
-  return { config: configA, mRunTask }
+const startTasks = function({ config, plugins }) {
+  return runHandlers(config, plugins, 'start')
 }
 
 module.exports = {

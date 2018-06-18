@@ -4,65 +4,57 @@ const { addErrorHandler } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run each `plugin.task()`
-const bootTask = async function({ task, config, mRunTask, plugins }) {
-  const readOnlyArgs = getTaskReadOnlyArgs({ config, mRunTask, plugins })
+const runTask = async function({ task, config, plugins, isNested }) {
+  const readOnlyArgs = getReadOnlyArgs({ config, plugins, isNested })
 
-  // Use potentially monkey-patched `runTask`
-  const taskA = await mRunTask(task, { readOnlyArgs, plugins })
-  return taskA
-}
-
-// Passed to every task handler
-const getTaskReadOnlyArgs = function({ config, mRunTask, plugins }) {
-  // Those arguments are passed to each task, but cannot be modified
-  const readOnlyArgs = { config }
-
-  // Must directly mutate to handle recursion
-  readOnlyArgs.runTask = runRecursiveTask.bind(null, { mRunTask, plugins, readOnlyArgs })
-
-  return readOnlyArgs
-}
-
-// Pass `runTask` for recursive tasks, with the second argument bound
-// Also tasks can use `isNested` to know if this is a recursive call
-const runRecursiveTask = async function({ mRunTask, plugins, readOnlyArgs }, task) {
-  const readOnlyArgsA = { ...readOnlyArgs, isNested: true }
-  const taskA = await mRunTask(task, { plugins, readOnlyArgs: readOnlyArgsA })
-
-  // Propagate to parent
-  const { error } = taskA
-  if (error !== undefined) {
-    throw error
-  }
-
-  return taskA
-}
-
-const runTask = async function(task, { plugins, readOnlyArgs, readOnlyArgs: { config } }) {
-  const taskA = await runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler, stopOnDone)
+  const taskA = await eRunAll({ task, plugins, readOnlyArgs, isNested })
 
   const taskB = getTaskReturn({ task: taskA, config, plugins })
   return taskB
 }
 
-// Let calling code handle errored tasks.
-// I.e. on exception, successfully return `{ task, error }` instead of throwing it.
-const runTaskHandler = function(error, originalTask, { plugins, readOnlyArgs: { config } }) {
-  // We only assign those properties to `error` to carry information during throw.
-  // But we don't want to persist those
+// Passed to every task handler
+const getReadOnlyArgs = function({ config, plugins, isNested }) {
+  // Pass simplified `runTask()` for recursive tasks
+  // Tasks can use `isNested` to know if this is a recursive call
+  // As opposed to regular `runTask()`, failed task throws.
+  const recursiveRunTask = task => runTask({ task, config, plugins, isNested: true })
+
+  // Those arguments are passed to each task, but cannot be modified
+  return { config, runTask: recursiveRunTask, isNested }
+}
+
+const runAll = function({ task, plugins, readOnlyArgs }) {
+  return runHandlers(task, plugins, 'task', readOnlyArgs, runPluginHandler, stopOnDone)
+}
+
+const runAllHandler = function(error, { isNested }) {
+  // Nested `runTask()` errors are propagated
+  if (isNested) {
+    throw error
+  }
+
+  // Top-level errors are returned as `task.error`
   const { task } = error
   delete error.task
 
-  const taskB = getTaskReturn({ task, config, plugins, error })
-  return taskB
+  task.error = error
+  return task
 }
 
-const eRunTask = addErrorHandler(runTask, runTaskHandler)
+const eRunAll = addErrorHandler(runAll, runAllHandler)
 
 // Error handler for each plugin handler
-// Persist current `task` values by setting it to thrown error
+// We want to rememeber the current task on the first handler that throws.
+// We do this by attaching it to `error.task`, then extracting it on a top-level
+// error handler.
+// The error is finally set to `task.error`
 const runPluginHandler = function(error, task) {
-  error.task = task
+  // Recursive tasks already have `error.task` defined
+  if (error.task === undefined) {
+    error.task = task
+  }
+
   throw error
 }
 
@@ -75,6 +67,5 @@ const stopOnDone = function({ done }) {
 }
 
 module.exports = {
-  bootTask,
-  runTask: eRunTask,
+  runTask,
 }

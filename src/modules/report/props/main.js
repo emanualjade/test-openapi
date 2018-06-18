@@ -54,18 +54,16 @@ const callReportFunc = function({ plugin: { report, name }, task }) {
 
   const { title, ...reportProps } = newValue
 
-  // If `plugin.report()` does not return any new props, do not merge as it would
-  // set an empty object even when `taskValue` is `undefined`
-  if (Object.keys(reportProps).length === 0) {
-    return { [name]: taskValue }
-  }
-
   // Merge `plugin.report()` to task.PLUGIN.*
   // It should have priority, but also be first in properties order
   const reportPropsA = { ...reportProps, ...taskValue, ...reportProps }
 
   // Returning `undefined` properties from `plugin.report()` unsets them
   const reportPropsB = removeEmptyProps(reportPropsA)
+
+  if (Object.keys(reportPropsB).length === 0 && taskValue === undefined) {
+    return { title }
+  }
 
   return { title, [name]: reportPropsB }
 }

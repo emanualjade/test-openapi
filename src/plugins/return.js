@@ -12,27 +12,21 @@ const { isObject } = require('../utils')
 // Note that `task.done` is not kept
 const getTaskReturn = function({
   task,
-  task: { key, skipped },
+  task: { key, skipped, error },
   config: { originalTasks },
   plugins,
-  error,
 }) {
-  const errorObj = getError({ error })
-
   const originalTask = originalTasks[key]
 
   const pluginReturns = getPluginReturns({ plugins, task, originalTask })
 
   // Enforce properties order: `key`, `skipped`, `error`, added `task.*`, original `task.*`
-  return { key, skipped, ...errorObj, ...pluginReturns }
-}
+  const taskA = { key, skipped, error, ...pluginReturns }
 
-const getError = function({ error }) {
-  if (error === undefined) {
-    return
-  }
+  // Make sure value is similar to its JSON serialization, and avoid cluttering it
+  const taskB = omitBy(taskA, value => value === undefined)
 
-  return { error }
+  return taskB
 }
 
 // Keep `originalTask.*` for properties in `plugin.config.task.*`

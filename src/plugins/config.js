@@ -12,6 +12,7 @@ const DEFAULT_PLUGINS = [
 
   'only',
   'skip',
+  'repeat',
   'deps',
   'spec',
   'random',
@@ -22,7 +23,6 @@ const DEFAULT_PLUGINS = [
   'validate',
 
   'report',
-  'repeat',
 ]
 
 module.exports = {

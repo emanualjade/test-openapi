@@ -6,7 +6,7 @@ const { getTasks } = require('../tasks')
 const { getPlugins } = require('../plugins')
 
 const { startTasks } = require('./start')
-const { bootTask } = require('./task')
+const { runTask } = require('./task')
 const { completeTask } = require('./complete')
 const { endTasks } = require('./end')
 
@@ -37,9 +37,9 @@ const eRun = addErrorHandler(run, topLevelHandler)
 
 // Fire all plugin handlers for all tasks
 const performRun = async function({ config, plugins }) {
-  const { config: configA, mRunTask } = await startTasks({ config, plugins })
+  const configA = await startTasks({ config, plugins })
 
-  const tasks = await fireTasks({ config: configA, mRunTask, plugins })
+  const tasks = await fireTasks({ config: configA, plugins })
 
   await endTasks({ tasks, plugins, config: configA })
 
@@ -57,13 +57,13 @@ const performRunHandler = function(error, { plugins }) {
 const ePerformRun = addErrorHandler(performRun, performRunHandler)
 
 // Fire all tasks in parallel
-const fireTasks = function({ config, config: { tasks }, mRunTask, plugins }) {
-  const tasksA = tasks.map(task => fireTask({ task, config, mRunTask, plugins }))
+const fireTasks = function({ config, config: { tasks }, plugins }) {
+  const tasksA = tasks.map(task => fireTask({ task, config, plugins }))
   return Promise.all(tasksA)
 }
 
-const fireTask = async function({ task, config, mRunTask, plugins }) {
-  const taskA = await bootTask({ task, config, mRunTask, plugins })
+const fireTask = async function({ task, config, plugins }) {
+  const taskA = await runTask({ task, config, plugins })
 
   const taskB = await completeTask({ task: taskA, plugins, config })
 

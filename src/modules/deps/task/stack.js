@@ -42,6 +42,10 @@ const handleDepError = function(error, { deps: { stack, stackPath } }) {
 
   // Avoid repeating the same message several times across the stack
   if (message.includes(DEP_ERROR_MESSAGE) || message.includes(RECURSION_ERROR_MESSAGE)) {
+    // `error.plugin|task` should be of the top-level task, not the nested one
+    delete error.plugin
+    delete error.task
+
     throw error
   }
 

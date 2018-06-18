@@ -2,14 +2,14 @@
 
 const { omitBy, mapValues } = require('lodash')
 
-const { keyToLocation, stringifyFlat } = require('../../../utils')
-const { findBodyHandler } = require('../../format')
+const { keyToLocation, stringifyFlat } = require('../../../../utils')
+const { findBodyHandler } = require('../../body')
 
 const { normalizeContentType } = require('./content_type')
 const { normalizeMethod } = require('./method')
 
-// Stringify request parameters
-const task = function({ call = {} }) {
+// Serialize request parameters
+const serialize = function({ call = {} }) {
   const callA = removeNull({ call })
 
   const callB = normalizeContentType({ call: callA })
@@ -65,5 +65,5 @@ const PARAM_STRINGIFIERS = {
 }
 
 module.exports = {
-  task,
+  serialize,
 }

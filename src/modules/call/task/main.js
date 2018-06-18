@@ -1,21 +1,16 @@
 'use strict'
 
-const { fireFetch } = require('./fetch')
-const { getFetchResponse } = require('./response')
+const { serialize } = require('./serialize')
+const { addUrl } = require('./url')
+const { request } = require('./request')
+const { parse } = require('./parse')
 
-// Fire actual HTTP call
-const task = async function(
-  { call, call: { rawRequest } },
-  { config: { call: { timeout = DEFAULT_TIMEOUT } = {} } },
-) {
-  const rawResponse = await fireFetch({ rawRequest, timeout })
-
-  const rawResponseA = await getFetchResponse({ rawResponse, timeout })
-
-  return { call: { ...call, rawResponse: rawResponseA } }
-}
-
-const DEFAULT_TIMEOUT = 1e4
+// Does in order:
+//  - serialize request parameters
+//  - build request URL
+//  - send HTTP request
+//  - parse HTTP response
+const task = [serialize, addUrl, request, parse]
 
 module.exports = {
   task,

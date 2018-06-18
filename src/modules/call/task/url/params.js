@@ -1,6 +1,6 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../../errors')
 
 // Replace `url` request parameters to the request URL
 // Can replace `{...}` in both `task.call.server` and `task.call.path`

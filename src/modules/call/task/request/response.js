@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, TestOpenApiError } = require('../../../errors')
+const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response
 const getFetchResponse = async function({ rawResponse, rawResponse: { status }, timeout }) {

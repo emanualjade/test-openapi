@@ -1,6 +1,6 @@
 'use strict'
 
-const { isObject } = require('../../../utils')
+const { isObject } = require('../../../../utils')
 
 // `invalid` values are `{ format: 'invalid' }` JSON schemas
 const isInvalidFormat = function({ isRandom, value }) {

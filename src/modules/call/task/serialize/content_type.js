@@ -1,6 +1,6 @@
 'use strict'
 
-const { isObject } = require('../../../utils')
+const { isObject } = require('../../../../utils')
 
 // `Content-Type` should be empty if no request body is going to be sent.
 // Also add a default one.

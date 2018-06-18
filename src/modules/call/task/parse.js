@@ -2,11 +2,11 @@
 
 const { mapValues } = require('lodash')
 
-const { parseFlat } = require('../../utils')
-const { findBodyHandler } = require('../format')
+const { parseFlat } = require('../../../utils')
+const { findBodyHandler } = require('../body')
 
 // Parse response
-const task = function({
+const parse = function({
   call,
   call: {
     rawResponse: { status, body, ...headers },
@@ -65,5 +65,5 @@ const trimBody = function({ body }) {
 }
 
 module.exports = {
-  task,
+  parse,
 }

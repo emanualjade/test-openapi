@@ -19,10 +19,7 @@ const getConfigPlugins = function({ config: { plugins, ...config } }) {
 //   - `deps`: replace all `deps`, i.e. references to other tasks
 //   - `spec`: add OpenAPI specification to `task.random|validate.*`
 //   - `random`: generates random values based on `task.random.*` JSON schemas
-//   - `serialize`: stringify request parameters
-//   - `url`: build request URL from request parameters
-//   - `call`: fire actual HTTP call
-//   - `parse`: parse response
+//   - `call`: fire HTTP call
 //   - `validate`: validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:
 //   - `report`: reporting for current task
@@ -37,10 +34,7 @@ const DEFAULT_PLUGINS = [
   'deps',
   'spec',
   'random',
-  'serialize',
-  'url',
   'call',
-  'parse',
   'validate',
 
   'report',

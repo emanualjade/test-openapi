@@ -2,7 +2,7 @@
 
 const { URL } = require('url')
 
-const { addErrorHandler, TestOpenApiError } = require('../../../errors')
+const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Escape, normalize and validate the request URL
 const normalizeUrl = function({ url: originalUrl }) {

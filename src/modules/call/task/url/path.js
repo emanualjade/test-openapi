@@ -1,6 +1,6 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
+const { TestOpenApiError } = require('../../../../errors')
 
 // Retrieve `task.call.path`
 const addPath = function({ url, rawRequest: { path = '' } }) {

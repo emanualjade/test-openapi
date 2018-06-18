@@ -1,7 +1,6 @@
 'use strict'
 
-const { getConfigPlugins } = require('./config')
-const { loadAllPlugins } = require('./load')
+const { loadPlugins } = require('./load')
 const { validateExports } = require('./exports')
 const { validatePluginsConfig } = require('./schema')
 
@@ -16,7 +15,7 @@ const applyReducer = function(input, reducer) {
   return { ...input, ...output }
 }
 
-const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePluginsConfig]
+const REDUCERS = [loadPlugins, validateExports, validatePluginsConfig]
 
 // Plugins are the way most functionalities is implemented.
 // A plugin is a plain object that exports the following properties.

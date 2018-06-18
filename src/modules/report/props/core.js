@@ -15,9 +15,10 @@ const addCoreReportProps = function({ reportProps, task, noCore }) {
 
 // Core `reportProps` always present on error
 const getCoreReportProps = function({
-  error: { expected, actual, message, property, schema } = {},
+  error: { expected, actual, message, property, schema, plugin } = {},
 }) {
   const schemaA = getJsonSchema({ schema })
+  const pluginA = getPlugin({ plugin })
 
   return {
     message,
@@ -25,6 +26,7 @@ const getCoreReportProps = function({
     'actual value': actual,
     property,
     'JSON schema': schemaA,
+    plugin: pluginA,
   }
 }
 
@@ -36,6 +38,15 @@ const getJsonSchema = function({ schema }) {
   }
 
   return schema
+}
+
+// Only report `error.plugin` for external plugins
+const getPlugin = function({ plugin }) {
+  if (plugin === 'core') {
+    return
+  }
+
+  return plugin
 }
 
 module.exports = {

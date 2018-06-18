@@ -27,7 +27,7 @@ const REDUCERS = [getConfigPlugins, loadAllPlugins, validateExports, validatePlu
 // `plugin.config.task` `{object}`
 // JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
 
-// `plugin.start|task|complete|end` `{function}`
+// `plugin.start|task|complete|end` `{function|function[]}`
 // Handlers, i.e. functions fired by each plugin. This is where the logic is.
 // Types:
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`

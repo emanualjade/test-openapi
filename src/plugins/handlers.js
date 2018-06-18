@@ -29,33 +29,45 @@ const getArgs = function({ plugins, context, advancedContext }) {
 }
 
 const getHandlers = function({ plugins, type, errorHandler, args }) {
-  return plugins
-    .map(plugin => getHandler({ plugin, type, errorHandler, args }))
-    .filter(handler => handler !== undefined)
+  const handlers = plugins.map(plugin => getPluginHandlers({ plugin, type }))
+  const handlersA = [].concat(...handlers)
+
+  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, args }))
+  return handlersB
 }
 
-const getHandler = function({ plugin, plugin: { name }, type, errorHandler, args }) {
-  const handler = plugin[type]
-  if (handler === undefined) {
-    return
+const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
+  const handlers = plugin[type]
+  if (handlers === undefined) {
+    return []
   }
 
-  const handlerA = callHandler.bind(null, { handler, args })
+  // `plugin.start|task|complete|end()` can be an array of functions
+  // It is useful to make sure some values are assigned to `task.*` even if an
+  // error is thrown at the middle of the handler
+  const handlersA = Array.isArray(handlers) ? handlers : [handlers]
 
-  const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, name))
+  const handlersB = handlersA.map(func => ({ func, plugin: name }))
+  return handlersB
+}
+
+const wrapHandler = function({ handler: { func, plugin }, errorHandler, args }) {
+  const handlerA = callHandler.bind(null, { func, args })
+
+  const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, plugin))
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return handlerC
 }
 
-const callHandler = function({ handler, args }, input) {
-  return handler(input, ...args)
+const callHandler = function({ func, args }, input) {
+  return func(input, ...args)
 }
 
 // Add `error.plugin` to every thrown error
-const pluginErrorHandler = function(name, error) {
+const pluginErrorHandler = function(plugin, error) {
   // Recursive handlers already have `error.plugin` defined
   if (error.plugin === undefined) {
-    error.plugin = name
+    error.plugin = plugin
   }
 
   throw error

@@ -26,15 +26,6 @@ const complete = async function(
   // they need to be shared between parallel tasks
   tasks[task.key] = task
 
-  // `reporter.tick()` is like `reporter.complete()` except it is not buffered.
-  // I.e. meant for example to increment a progress bar or spinner. Doing this
-  // in `reporter.complete()` would make progress bar be buffered, which would
-  // make it look it's stalling.
-  // However we do want to buffer `reporter.complete()`, as reporters like TAP
-  // add indexes on each task, i.e. need to be run in output order.
-  // `reporter.tick()` does not get task as input.
-  await callReporters({ config, type: 'tick' }, {}, { config, plugins })
-
   // Only use keys not reported yet
   const keys = taskKeys.slice(index)
 
@@ -43,6 +34,15 @@ const complete = async function(
 
   // Update index to last reported task
   report.index += count
+
+  // `reporter.tick()` is like `reporter.complete()` except it is not buffered.
+  // I.e. meant for example to increment a progress bar or spinner. Doing this
+  // in `reporter.complete()` would make progress bar be buffered, which would
+  // make it look it's stalling.
+  // However we do want to buffer `reporter.complete()`, as reporters like TAP
+  // add indexes on each task, i.e. need to be run in output order.
+  // `reporter.tick()` does not get task as input.
+  await callReporters({ config, type: 'tick' }, {}, { config, plugins })
 
   // Unbuffer tasks, i.e. report them
   await completeTasks({ count, keys, tasks, config, plugins })

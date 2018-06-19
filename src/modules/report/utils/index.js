@@ -7,6 +7,7 @@ module.exports = {
   ...require('./indent'),
   ...require('./prettify'),
   ...require('./stringify'),
+  ...require('./truncate'),
   ...require('./summary'),
   ...require('./line'),
   ...require('./result_type'),

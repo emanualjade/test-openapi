@@ -2,8 +2,16 @@
 
 const { titleize } = require('underscore.string')
 
-const { removePrefixes, sortArray } = require('../../utils')
-const { yellow, highlightValueAuto, prettifyJson } = require('../report/utils')
+const { removePrefixes, sortArray } = require('../../../utils')
+const {
+  yellow,
+  highlightValueAuto,
+  prettifyJson,
+  truncate,
+  addTruncateDots,
+} = require('../../report/utils')
+
+const { getTitle } = require('./title')
 
 const report = function({ rawRequest = {}, rawResponse = {} } = {}) {
   const title = getTitle({ rawRequest, rawResponse })
@@ -11,34 +19,6 @@ const report = function({ rawRequest = {}, rawResponse = {} } = {}) {
   const response = getResponse(rawResponse)
 
   return { title, rawRequest: undefined, rawResponse: undefined, request, response }
-}
-
-// Add `METHOD URL (STATUS)` to reporting
-const getTitle = function({ rawRequest, rawResponse }) {
-  const url = getUrl(rawRequest)
-  const status = getStatus(rawResponse)
-  return [url, status].filter(part => part !== undefined).join(' ')
-}
-
-const getUrl = function({ method, url }) {
-  if (method === undefined || url === undefined) {
-    return
-  }
-
-  const urlA = url.replace(QUERY_REGEXP, '')
-
-  return `${method.toUpperCase()} ${urlA}`
-}
-
-// Remove query variables from URL
-const QUERY_REGEXP = /\?.*/
-
-const getStatus = function({ status }) {
-  if (status === undefined) {
-    return
-  }
-
-  return `(${status})`
 }
 
 // Print HTTP request in error messages
@@ -94,8 +74,11 @@ const printBody = function({ body }) {
   }
 
   const bodyA = prettifyJson(body)
-  const bodyB = highlightValueAuto(bodyA)
-  return `\n\n${bodyB}`
+  const { value: bodyB, isTruncated } = truncate(bodyA)
+  const bodyC = highlightValueAuto(bodyB)
+  const bodyD = addTruncateDots({ value: bodyC, isTruncated })
+
+  return `\n\n${bodyD}`
 }
 
 module.exports = {

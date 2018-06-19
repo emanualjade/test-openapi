@@ -10,6 +10,8 @@ const {
   indentValue,
   stringifyValue,
   highlightValue,
+  truncate,
+  addTruncateDots,
 } = require('../../../utils')
 
 // Print/prettify all `plugin.report()` return values
@@ -60,9 +62,13 @@ const printDeepPair = function([name, value]) {
 const prettifyValue = function(value) {
   // Stringify and prettify to YAML
   const string = stringifyValue(value)
+  // Truncate value
+  const { value: stringA, isTruncated } = truncate(string)
   // Syntax highlighting, unless already highlighted
-  const stringA = highlightValue(string, value)
-  return stringA
+  const stringB = highlightValue(stringA, value)
+  // Add truncating dots
+  const stringC = addTruncateDots({ value: stringB, isTruncated })
+  return stringC
 }
 
 module.exports = {

@@ -2,6 +2,7 @@
 
 const jsonSchemaFaker = require('json-schema-faker')
 const { mapValues } = require('lodash')
+const { mergeAll } = require('lodash/fp')
 const formatRegExps = require('ajv/lib/compile/formats')
 
 const { TestOpenApiError } = require('../../errors')
@@ -14,8 +15,11 @@ const run = function({ random, call }) {
   }
 
   const randomParams = mapValues(random, generateParam)
+
   // `task.random.*` have less priority than `task.call.*`
-  return { call: { ...randomParams, ...call } }
+  const callA = mergeAll([randomParams, call])
+
+  return { call: callA }
 }
 
 // Generate value based on a single JSON schema

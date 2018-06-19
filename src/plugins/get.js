@@ -31,7 +31,7 @@ const REDUCERS = [loadPlugins, validateExports, validatePluginsConfig]
 // Types:
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, pluginNames }, { plugins, runTasks, isNested })` `{function}`
+//  - `plugin.run(task, { config, pluginNames }, { plugins, runTask, isNested })` `{function}`
 //     - fired for each task
 //  - `plugin.complete(task, { config, pluginNames }, { plugins })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not

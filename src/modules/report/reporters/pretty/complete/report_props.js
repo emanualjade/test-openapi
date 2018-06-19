@@ -28,7 +28,7 @@ const printReportProps = function({ reportProps, resultType }) {
 // Print top-level level pairs
 const printTopPair = function([name, value]) {
   const valueA = printReportProp(value)
-  return `${orange(`${capitalize(name, true)}:`)} ${indentValue(valueA)}`
+  return `${orange(`${capitalize(name)}:`)} ${indentValue(valueA)}`
 }
 
 // Print `error.*` properties in error printed message

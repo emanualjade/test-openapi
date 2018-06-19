@@ -5,9 +5,13 @@ const { getRawResponse } = require('./response')
 
 // Fire actual HTTP call
 const request = async function(
-  { call, call: { rawRequest } },
+  { call, call: { rawRequest } = {} },
   { config: { call: { timeout = DEFAULT_TIMEOUT } = {} } },
 ) {
+  if (call === undefined) {
+    return
+  }
+
   const rawResponse = await fireRequest({ rawRequest, timeout })
 
   const rawResponseA = await getRawResponse({ rawResponse, timeout })

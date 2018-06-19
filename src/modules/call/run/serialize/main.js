@@ -9,7 +9,11 @@ const { normalizeContentType } = require('./content_type')
 const { normalizeMethod } = require('./method')
 
 // Serialize request parameters
-const serialize = function({ call = {} }) {
+const serialize = function({ call }) {
+  if (call === undefined) {
+    return
+  }
+
   const callA = removeNull({ call })
 
   const callB = normalizeContentType({ call: callA })

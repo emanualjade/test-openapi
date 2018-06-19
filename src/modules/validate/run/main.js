@@ -9,7 +9,11 @@ const { validateHeaders } = require('./headers')
 const { validateBody } = require('./body')
 
 // Validate response against `task.validate.*` JSON schemas
-const run = function({ validate = {}, call: { response } }) {
+const run = function({ validate = {}, call, call: { response } = {} }) {
+  if (call === undefined) {
+    return
+  }
+
   const validateA = normalizeCase({ validate })
 
   const validateB = addByStatus({ validate: validateA, response })

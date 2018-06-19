@@ -1,45 +1,66 @@
 'use strict'
 
-const { omit } = require('lodash')
+const stripAnsi = require('strip-ansi')
+const { mapValues, mapKeys } = require('lodash')
+const { underscored } = require('underscore.string')
 
-const { convertPlainObject } = require('../../../../../errors')
-
-const { normalizeReportProps } = require('./report_props')
+const { isObject } = require('../../../../../utils')
 
 // Retrieve TAP error properties
-const getErrorProps = function({
-  ok,
-  error,
-  error: { message, plugin: operator, actual, expected, schema, property, ...rest } = {},
-  reportProps,
-}) {
+const getErrorProps = function({ ok, reportProps }) {
   if (ok) {
     return
   }
 
-  // Only report `error.stack` when it's a bug error
-  const { stack } = convertPlainObject(error)
-
-  const restA = omit(rest, NOT_REPORTED_PROPS)
-
   const reportPropsA = normalizeReportProps({ reportProps })
 
   // Enforce properties order
-  return {
-    message,
-    operator,
-    severity: 'fail',
-    actual,
-    expected,
-    schema,
-    property,
-    stack,
-    ...restA,
-    ...reportPropsA,
-  }
+  const { message, operator, expected, actual, schema, property, ...rest } = reportPropsA
+
+  return { message, operator, severity: 'fail', expected, actual, schema, property, ...rest }
 }
 
-const NOT_REPORTED_PROPS = ['config', 'plugins']
+// `plugin.report()` is optimized for `pretty` reporter
+// With TAP we want to:
+//  - exclude core report properties, because we directly use `error.*` and
+//    make sure they becomes valid/common TAP error properties
+//  - newlines should be escaped, because of bugs with some TAP parsers
+//  - only print them on errors, as successes should not have properties
+//    according to TAP
+//  - remove ANSI color sequences
+//  - rename keys to underscore style
+const normalizeReportProps = function({ reportProps }) {
+  const reportPropsA = mapValues(reportProps, normalizeReportPropValue)
+  const reportPropsB = mapKeys(reportPropsA, normalizeReportPropKey)
+  return reportPropsB
+}
+
+const normalizeReportPropValue = function(value) {
+  if (isObject(value)) {
+    return mapValues(value, normalizeReportPropValue)
+  }
+
+  return stripAnsi(value)
+}
+
+const normalizeReportPropKey = function(value, name) {
+  const tapName = TAP_NAMES[name]
+  if (tapName !== undefined) {
+    return tapName
+  }
+
+  return underscored(name)
+}
+
+// Rename core properties names to names common in TAP output
+const TAP_NAMES = {
+  message: 'message',
+  plugin: 'operator',
+  'expected value': 'expected',
+  'actual value': 'actual',
+  'JSON schema': 'schema',
+  property: 'property',
+}
 
 module.exports = {
   getErrorProps,

@@ -17,15 +17,15 @@ const complete = function({ options: { tap }, ...task }, { config, plugins, sile
   return message
 }
 
-const getAssert = function({ task, task: { key, error }, config, plugins }) {
-  const { title, reportProps } = getReportProps({ task, config, plugins, noCore: true })
+const getAssert = function({ task, task: { key }, config, plugins }) {
+  const { title, reportProps } = getReportProps({ task, config, plugins })
 
   const resultType = getResultType(task)
 
   const ok = resultType !== 'fail'
   const name = getName({ key, title })
   const directive = { skip: resultType === 'skip' }
-  const errorProps = getErrorProps({ ok, error, reportProps })
+  const errorProps = getErrorProps({ ok, reportProps })
 
   return { ok, name, directive, error: errorProps }
 }

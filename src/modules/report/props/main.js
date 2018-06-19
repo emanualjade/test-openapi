@@ -8,12 +8,12 @@ const { isObject } = require('../../../utils')
 const { addCoreReportProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
-const getReportProps = function({ task, config, plugins, noCore = false }) {
+const getReportProps = function({ task, config, plugins }) {
   const { titles, reportProps } = callReportFuncs({ task, config, plugins })
 
   const title = getTitle({ titles })
 
-  const reportPropsA = addCoreReportProps({ reportProps, task, noCore })
+  const reportPropsA = addCoreReportProps({ reportProps, task })
 
   const reportPropsB = reportPropsA.map(removeEmptyProps)
 

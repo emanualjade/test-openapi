@@ -7,7 +7,7 @@ module.exports = {
   ...require('./func_name'),
   ...require('./sort'),
   ...require('./location'),
-  ...require('./json_schema'),
+  ...require('./validation'),
   ...require('./simple_schema'),
   ...require('./flat'),
   ...require('./prefix'),

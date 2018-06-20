@@ -1,67 +1,15 @@
 'use strict'
 
-const Ajv = require('ajv')
-const AjvKeywords = require('ajv-keywords')
 const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
-const memoize = require('fast-memoize')
 
-// Validate a value against a JSON schema
-const validateFromSchema = function({ schema, value, name }) {
-  const passed = validator.validate(schema, value)
+const { validateFromSchema } = require('./main')
+const { CUSTOM_KEYWORDS } = require('./validator')
 
-  if (passed) {
-    return {}
-  }
-
-  const {
-    errors: [error],
-  } = validator
-  const errorA = getError({ error, name })
-
-  const { dataPath } = error
-  const path = dataPath.replace(/^./, '')
-
-  return { error: errorA, path }
+// Validate that `value` is a valid JSON schema v4
+const validateIsSchema = function({ value }) {
+  return validateFromSchema({ schema: jsonSchemaSchema, value })
 }
-
-// Human-friendly error
-const getError = function({ error, name = '' }) {
-  return validator.errorsText([error], { dataVar: name })
-}
-
-const getValidator = function() {
-  const ajv = new Ajv(AJV_OPTS)
-
-  AjvKeywords(ajv, CUSTOM_KEYWORDS)
-
-  return ajv
-}
-
-const CUSTOM_KEYWORDS = ['typeof']
-
-// Make logging silent (e.g. warn on unknown format) but throws on errors
-const logger = {
-  log() {},
-  warn() {},
-  error(message) {
-    throw message
-  },
-}
-
-const AJV_OPTS = {
-  // AJV error messages can look overwhelming, so let's keep only the first one
-  allErrors: false,
-  format: 'full',
-  // JSON schema allows unknown formats
-  unknownFormats: 'ignore',
-  logger,
-}
-
-const validator = getValidator()
-
-// Compilation is automatically memoized by `ajv` but not validation
-const mValidateFromSchema = memoize(validateFromSchema)
 
 const getJsonSchemaSchema = function() {
   return SCHEMA_FIXES.reduce((schema, fix) => fix(schema), JSON_SCHEMA_SCHEMA)
@@ -105,11 +53,6 @@ const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties, a
 
 const jsonSchemaSchema = getJsonSchemaSchema()
 
-const validateIsSchema = function({ value }) {
-  return validateFromSchema({ schema: jsonSchemaSchema, value })
-}
-
 module.exports = {
-  validateFromSchema: mValidateFromSchema,
   validateIsSchema,
 }

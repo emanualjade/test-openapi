@@ -4,10 +4,10 @@ const { isMatch } = require('micromatch')
 
 // `config.only: 'glob' or ['glob', ...]` will only run tasks whose name matches
 // the globbing patterns
-// `task.only: true` will only run those tasks
+// `task.only: anyValue` will only run those tasks
 // Behaves similarly to `skip` plugin
 const run = function(
-  { only = false, key },
+  { only, key },
   {
     config: {
       only: { patterns, enabled },
@@ -24,7 +24,7 @@ const run = function(
 }
 
 const isOnly = function({ only, patterns, key }) {
-  return only || (patterns !== undefined && isMatch(key, patterns))
+  return only !== undefined || (patterns !== undefined && isMatch(key, patterns))
 }
 
 module.exports = {

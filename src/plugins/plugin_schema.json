@@ -4,7 +4,6 @@
     "name": {
       "type": "string"
     },
-    "report": {},
     "config": {
       "type": "object",
       "properties": {
@@ -16,7 +15,8 @@
     "start": {},
     "task": {},
     "complete": {},
-    "end": {}
+    "end": {},
+    "report": {}
   },
   "required": ["name"]
 }

@@ -3,7 +3,7 @@
 const { addErrorHandler, topLevelHandler, handleFinalFailure } = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
-const { getPlugins } = require('../plugins')
+const { loadPlugins } = require('../plugins')
 
 const { startTasks } = require('./start')
 const { runTask } = require('./run')
@@ -27,7 +27,7 @@ const run = async function(config = {}) {
 
   const configB = await getTasks({ config: configA })
 
-  const { config: configC, plugins } = getPlugins({ config: configB })
+  const { config: configC, plugins } = loadPlugins({ config: configB })
 
   const tasks = await ePerformRun({ config: configC, plugins })
   return tasks

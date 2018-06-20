@@ -2,20 +2,16 @@
 
 const { validateFromSchema, validateIsSchema } = require('../utils')
 
-const EXPORT_SCHEMA = require('./export_schema')
+const PLUGIN_SCHEMA = require('./plugin_schema.json')
 
-// Validate export values from each plugin
-const validateExports = function({ plugins }) {
-  plugins.forEach(validateExport)
-}
-
-const validateExport = function(plugin) {
+// Validate export value from plugin
+const validatePlugin = function({ plugin }) {
   validateSchema({ plugin })
   validateJsonSchemas({ plugin })
 }
 
 const validateSchema = function({ plugin, plugin: { name } }) {
-  const { error } = validateFromSchema({ schema: EXPORT_SCHEMA, value: plugin, name })
+  const { error } = validateFromSchema({ schema: PLUGIN_SCHEMA, value: plugin, name })
   if (error === undefined) {
     return
   }
@@ -48,10 +44,10 @@ const validateJsonSchema = function({ schema, plugin, propName }) {
 // Throw a `bug` error
 const throwPluginError = function({ plugin, message }) {
   const error = new Error(message)
-  Object.assign(error, { plugin })
+  error.plugin = plugin
   throw error
 }
 
 module.exports = {
-  validateExports,
+  validatePlugin,
 }

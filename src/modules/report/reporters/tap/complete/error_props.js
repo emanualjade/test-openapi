@@ -51,7 +51,7 @@ const normalizeObject = function(value) {
   }
 
   const string = stringifyValue(value)
-  const stringA = truncate({ string, colors: false })
+  const stringA = truncate(string)
   return stringA
 }
 

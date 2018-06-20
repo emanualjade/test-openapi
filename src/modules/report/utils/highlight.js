@@ -6,11 +6,13 @@ const hasAnsi = require('has-ansi')
 const { red, gray, yellow, magenta, reset, italic, bold, inverse } = require('./colors')
 
 // Syntax highlighting, as YAML
-const highlightValue = function(string, value) {
+const highlightValue = function(originalString, value) {
+  const string = originalString.replace(FINAL_DOTS_REGEXP, FINAL_DOTS_COLORED)
+
   // Already highlighted
   // Also we do not highlight values that were already a string at the beginning,
   // as they are probably not YAML (e.g. `error.message`)
-  if (hasAnsi(string) || typeof value === 'string') {
+  if (hasAnsi(originalString) || typeof value === 'string') {
     return string
   }
 
@@ -21,6 +23,10 @@ const highlightValue = function(string, value) {
   const stringC = stringB.replace(KEY_MARKER_REGEXP, KEY_CHARS)
   return stringC
 }
+
+// Highlight truncating final dots
+const FINAL_DOTS_REGEXP = /\.\.\.$/
+const FINAL_DOTS_COLORED = gray('...')
 
 // `emphasize` has issues highlighting YAML keys which contain dots
 // We temporarily convert them to a special marker to work around the problem

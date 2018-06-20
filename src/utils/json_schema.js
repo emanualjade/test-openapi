@@ -1,6 +1,7 @@
 'use strict'
 
 const Ajv = require('ajv')
+const AjvKeywords = require('ajv-keywords')
 const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
 const memoize = require('fast-memoize')
@@ -30,8 +31,14 @@ const getError = function({ error, name = '' }) {
 }
 
 const getValidator = function() {
-  return new Ajv(AJV_OPTS)
+  const ajv = new Ajv(AJV_OPTS)
+
+  AjvKeywords(ajv, CUSTOM_KEYWORDS)
+
+  return ajv
 }
+
+const CUSTOM_KEYWORDS = ['typeof']
 
 // Make logging silent (e.g. warn on unknown format) but throws on errors
 const logger = {
@@ -71,7 +78,6 @@ const fixMultipleOf = function(schema) {
   return {
     ...schema,
     properties: { ...schema.properties, multipleOf },
-    additionalProperties: false,
   }
 }
 
@@ -84,10 +90,18 @@ const fixFormat = function(schema) {
 // `x-*` custom properties are not present in JSON schema v4 meta-schema but are
 // actually allowed
 const fixCustomProperties = function(schema) {
-  return { ...schema, patternProperties: { '^x-*': {} } }
+  return { ...schema, patternProperties: { '^x-*': {} }, additionalProperties: false }
 }
 
-const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties]
+// Allow `ajv-keywords` properties
+const addCustomKeywords = function(schema) {
+  const keywords = CUSTOM_KEYWORDS.map(name => ({ [name]: {} }))
+  const keywordsA = Object.assign({}, ...keywords)
+
+  return { ...schema, properties: { ...schema.properties, ...keywordsA } }
+}
+
+const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties, addCustomKeywords]
 
 const jsonSchemaSchema = getJsonSchemaSchema()
 

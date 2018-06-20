@@ -17,37 +17,38 @@ const validateSchema = function({ plugin, plugin: { name } }) {
   }
 
   const message = `Plugin '${name}' is invalid: ${error}`
-  throwPluginError({ plugin: name, message })
+  throwPluginError({ name, message })
 }
 
-const validateJsonSchemas = function({ plugin: { name: plugin, config: pluginConfig = {} } }) {
+const validateJsonSchemas = function({ plugin: { name, config: pluginConfig = {} } }) {
   Object.entries(pluginConfig).forEach(([propName, schema]) =>
-    validateJsonSchema({ schema, plugin, propName }),
+    validateJsonSchema({ schema, name, propName }),
   )
 }
 
-const validateJsonSchema = function({ schema, plugin, propName }) {
+const validateJsonSchema = function({ schema, name, propName }) {
   if (schema === undefined) {
     return
   }
 
-  const name = `config.${propName}`
-  const { error } = validateIsSchema({ value: schema, name })
+  const configPropName = `config.${propName}`
+  const { error } = validateIsSchema({ value: schema, name: configPropName })
   if (error === undefined) {
     return
   }
 
-  const message = `Plugin '${plugin}' is invalid: '${name}' is not a valid JSON schema: ${error}`
-  throwPluginError({ plugin, message })
+  const message = `Plugin '${name}' is invalid: '${configPropName}' is not a valid JSON schema: ${error}`
+  throwPluginError({ name, message })
 }
 
 // Throw a `bug` error
-const throwPluginError = function({ plugin, message }) {
+const throwPluginError = function({ name, message }) {
   const error = new Error(message)
-  error.plugin = plugin
+  error.plugin = name
   throw error
 }
 
 module.exports = {
   validatePlugin,
+  throwPluginError,
 }

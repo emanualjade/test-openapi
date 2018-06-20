@@ -4,7 +4,7 @@ const { uniq, difference } = require('lodash')
 
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
-const { validatePlugin } = require('./validate')
+const { validatePlugin, throwPluginError } = require('./validate')
 
 // Retrieve `config.plugins` then `require()` all the plugins
 // Also validate their configuration
@@ -48,11 +48,17 @@ const requirePlugin = function(name) {
   return { ...plugin, name }
 }
 
-// TODO: distinguish between error while loading and module not existing
-const requirePluginHandler = function(_, name) {
-  throw new TestOpenApiError(
-    `The plugin '${name}' is used in the configuration but is not installed. Please run 'npm install test-openapi-plugin-${name}'.`,
-  )
+const requirePluginHandler = function({ code, message }, name) {
+  const nameA = `'test-openapi-plugin-${name}'`
+
+  if (code === 'MODULE_NOT_FOUND') {
+    throw new TestOpenApiError(
+      `The plugin ${nameA} is used in the configuration but is not installed`,
+    )
+  }
+
+  const messageA = `The plugin ${nameA} could not be loaded: ${message}`
+  throwPluginError({ message: messageA, name })
 }
 
 const eRequirePlugin = addErrorHandler(requirePlugin, requirePluginHandler)

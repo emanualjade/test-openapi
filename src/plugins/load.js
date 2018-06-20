@@ -5,13 +5,14 @@ const { uniq, difference } = require('lodash')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { validatePlugin, throwPluginError } = require('./validate')
+const { verifyConfig } = require('./verify')
 
 // Retrieve `config.plugins` then `require()` all the plugins
 // Also validate their configuration
 const loadPlugins = function({ config: { plugins, ...config } }) {
   const pluginsA = normalizePlugins({ plugins })
 
-  const pluginsB = pluginsA.map(loadPlugin)
+  const pluginsB = pluginsA.map(name => loadPlugin({ name, config }))
 
   return { config, plugins: pluginsB }
 }
@@ -27,15 +28,17 @@ const normalizePlugins = function({ plugins }) {
 }
 
 // Plugins always included
-const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'helpers', 'deps', 'report']
+const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'deps', 'report']
 
 // TODO: use a separate bundled package instead
 const DEFAULT_PLUGINS = ['spec', 'random', 'call', 'validate']
 
-const loadPlugin = function(name) {
+const loadPlugin = function({ name, config }) {
   const plugin = eRequirePlugin(name)
 
   validatePlugin({ plugin })
+
+  verifyConfig({ plugin, config })
 
   const pluginA = addIsCore({ plugin })
   return pluginA

@@ -36,7 +36,7 @@ const getLastLine = function({ end }) {
   return lastLine
 }
 
-const MAX_BODY_SIZE = 7e2
+const MAX_BODY_SIZE = 1e4
 const MAX_BODY_LINE_SIZE = 1e3
 
 const getDots = function({ colors }) {

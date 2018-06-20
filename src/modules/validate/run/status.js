@@ -18,7 +18,7 @@ const validateStatus = function({
   }
 
   const property = 'validate.status'
-  throw new TestOpenApiError(`Status code${error}.`, { property, schema, actual: status })
+  throw new TestOpenApiError(`Status code${error}.`, { property, schema, value: status })
 }
 
 const DEFAULT_STATUS = { type: 'integer', enum: [200] }

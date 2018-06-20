@@ -47,7 +47,7 @@ const validateHeaderValue = function({ name, schema, header }) {
   throw new TestOpenApiError(`${NAME(name)}${error}.`, {
     property: PROPERTY(name),
     schema,
-    actual: header,
+    value: header,
   })
 }
 

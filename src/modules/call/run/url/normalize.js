@@ -31,7 +31,7 @@ const parseUrlHandler = function({ message }, { originalUrl }) {
   throw new TestOpenApiError(`Request URL '${originalUrl}' is not a valid full URL: ${message}`, {
     // It could come from either `server` or `path`
     property: 'call',
-    actual: originalUrl,
+    value: originalUrl,
   })
 }
 

@@ -26,7 +26,7 @@ const validateBodyValue = function({ schema, body }) {
     return
   }
 
-  throw new TestOpenApiError(`${NAME}${error}.`, { property: PROPERTY, schema, actual: body })
+  throw new TestOpenApiError(`${NAME}${error}.`, { property: PROPERTY, schema, value: body })
 }
 
 const PROPERTY = 'validate.body'

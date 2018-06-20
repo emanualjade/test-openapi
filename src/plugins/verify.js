@@ -32,12 +32,7 @@ const verify = function({ value, schema, name, message, plugin }) {
   }
 
   const property = getProperty({ name, path })
-  throw new TestOpenApiError(`${message} is invalid: ${error}`, {
-    property,
-    schema,
-    actual: value,
-    plugin,
-  })
+  throw new TestOpenApiError(`${message} is invalid: ${error}`, { property, schema, value, plugin })
 }
 
 const getProperty = function({ name, path }) {

@@ -9,10 +9,10 @@ const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
 //  - `plugin` `{string}`: plugin that triggered the first error.
 //  - `bug` `{boolean}`: true if it was a bug
 //  - `task` `{object}`: current task
-//  - `property` `{string}`: path to the property in `task`, `actual` or `config`
-//  - `actual` `{value}`: actual value
+//  - `property` `{string}`: path to the property in `task` or `config`
+//  - `value` `{value}`: errored value
 //  - `expected` `{value}`: expected value
-//  - `schema` `{object}`: JSON schema v4 matched against `actual`
+//  - `schema` `{object}`: JSON schema v4 matched against `value`
 // When all errors were thrown during task running, and there were not bugs,
 // all above properties will be `undefined` (except `config`) and the following
 // will be defined:
@@ -46,7 +46,7 @@ const validateProperty = function(property) {
   )
 }
 
-const USER_VALID_PROPERTIES = ['property', 'actual', 'expected', 'schema']
+const USER_VALID_PROPERTIES = ['property', 'value', 'expected', 'schema']
 const CORE_VALID_PROPERTIES = ['config', 'plugins', 'plugin', 'bug', 'task', 'tasks', 'errors']
 const VALID_PROPERTIES = [...USER_VALID_PROPERTIES, ...CORE_VALID_PROPERTIES]
 

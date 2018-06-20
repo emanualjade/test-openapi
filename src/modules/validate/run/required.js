@@ -14,7 +14,7 @@ const checkRequired = function({ schema, value, property, name }) {
     return
   }
 
-  throw new TestOpenApiError(`${name} ${message}`, { property, schema, actual: value })
+  throw new TestOpenApiError(`${name} ${message}`, { property, schema, value })
 }
 
 const validateRequiredness = function({ schema: { type = [] }, value }) {

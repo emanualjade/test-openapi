@@ -35,10 +35,10 @@ const get = function({ obj, path, depKey, propPath }) {
 
 const throwGetError = function({ depKey, propPath, path }) {
   const property = propPath.join('.')
-  const actual = `${depKey}.${path}`
+  const value = `${depKey}.${path}`
   throw new TestOpenApiError(
-    `This task targets another task '${actual}' but this key could not be found`,
-    { property, actual },
+    `This task targets another task '${value}' but this key could not be found`,
+    { property, value },
   )
 }
 

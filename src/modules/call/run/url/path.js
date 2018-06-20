@@ -16,7 +16,7 @@ const validatePath = function({ path }) {
 
   throw new TestOpenApiError('Request path must start with a slash', {
     property: 'call.path',
-    actual: path,
+    value: path,
   })
 }
 

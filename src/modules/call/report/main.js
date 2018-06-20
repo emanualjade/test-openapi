@@ -3,13 +3,7 @@
 const { titleize } = require('underscore.string')
 
 const { removePrefixes, sortArray } = require('../../../utils')
-const {
-  yellow,
-  highlightValueAuto,
-  prettifyJson,
-  truncate,
-  addTruncateDots,
-} = require('../../report/utils')
+const { yellow, highlightValueAuto, prettifyJson } = require('../../report/utils')
 
 const { getTitle } = require('./title')
 
@@ -74,11 +68,8 @@ const printBody = function({ body }) {
   }
 
   const bodyA = prettifyJson(body)
-  const { value: bodyB, isTruncated } = truncate(bodyA)
-  const bodyC = highlightValueAuto(bodyB)
-  const bodyD = addTruncateDots({ value: bodyC, isTruncated })
-
-  return `\n\n${bodyD}`
+  const bodyB = highlightValueAuto(bodyA)
+  return `\n\n${bodyB}`
 }
 
 module.exports = {

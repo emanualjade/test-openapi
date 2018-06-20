@@ -5,26 +5,20 @@ const stringWidth = require('string-width')
 const { gray } = require('./colors')
 
 // If reported value is too big, we truncate it
-const truncate = function(value) {
+const truncate = function(string) {
   // We use `string-width` to ignore width taken by ANSI sequences coming from
   // syntax highlighting done by `plugin.report()`
-  const isTruncated = stringWidth(value) > MAX_BODY_SIZE
-
-  const valueA = truncateValue({ value, isTruncated })
-  return { value: valueA, isTruncated }
-}
-
-const truncateValue = function({ value, isTruncated }) {
-  if (!isTruncated) {
-    return value
+  if (stringWidth(string) <= MAX_BODY_SIZE) {
+    return string
   }
 
-  const start = value.substr(0, MAX_BODY_SIZE)
-  const end = value.substr(MAX_BODY_SIZE)
+  const start = string.substr(0, MAX_BODY_SIZE)
+  const end = string.substr(MAX_BODY_SIZE)
 
   const lastLine = getLastLine({ end })
 
-  return `${start}${lastLine}`
+  const stringA = `${start}${lastLine}${gray('...')}`
+  return stringA
 }
 
 // We keep the last line non-truncated as it's more user-friendly
@@ -40,20 +34,9 @@ const getLastLine = function({ end }) {
   return lastLine
 }
 
-const MAX_BODY_SIZE = 5e3
+const MAX_BODY_SIZE = 7e2
 const MAX_BODY_LINE_SIZE = 1e3
-
-// We add `...` after truncation. This must be done after syntax highlighting,
-// otherwise it interfers with it.
-const addTruncateDots = function({ value, isTruncated }) {
-  if (!isTruncated) {
-    return value
-  }
-
-  return `${value}${gray('...')}`
-}
 
 module.exports = {
   truncate,
-  addTruncateDots,
 }

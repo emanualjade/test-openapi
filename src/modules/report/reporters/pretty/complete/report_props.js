@@ -11,7 +11,6 @@ const {
   stringifyValue,
   highlightValue,
   truncate,
-  addTruncateDots,
 } = require('../../../utils')
 
 // Print/prettify all `plugin.report()` return values
@@ -63,12 +62,11 @@ const prettifyValue = function(value) {
   // Stringify and prettify to YAML
   const string = stringifyValue(value)
   // Truncate value
-  const { value: stringA, isTruncated } = truncate(string)
+  const stringA = truncate(string)
   // Syntax highlighting, unless already highlighted
   const stringB = highlightValue(stringA, value)
   // Add truncating dots
-  const stringC = addTruncateDots({ value: stringB, isTruncated })
-  return stringC
+  return stringB
 }
 
 module.exports = {

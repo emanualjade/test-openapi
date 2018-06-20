@@ -5,7 +5,7 @@ const stringWidth = require('string-width')
 const { gray } = require('./colors')
 
 // If reported value is too big, we truncate it
-const truncate = function(string) {
+const truncate = function({ string, colors = true }) {
   // We use `string-width` to ignore width taken by ANSI sequences coming from
   // syntax highlighting done by `plugin.report()`
   if (stringWidth(string) <= MAX_BODY_SIZE) {
@@ -17,7 +17,9 @@ const truncate = function(string) {
 
   const lastLine = getLastLine({ end })
 
-  const stringA = `${start}${lastLine}${gray('...')}`
+  const dots = getDots({ colors })
+
+  const stringA = `${start}${lastLine}${dots}`
   return stringA
 }
 
@@ -36,6 +38,16 @@ const getLastLine = function({ end }) {
 
 const MAX_BODY_SIZE = 7e2
 const MAX_BODY_LINE_SIZE = 1e3
+
+const getDots = function({ colors }) {
+  if (!colors) {
+    return DOTS
+  }
+
+  return gray(DOTS)
+}
+
+const DOTS = '...'
 
 module.exports = {
   truncate,

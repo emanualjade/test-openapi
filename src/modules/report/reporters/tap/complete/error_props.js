@@ -1,10 +1,9 @@
 'use strict'
 
-const stripAnsi = require('strip-ansi')
 const { mapValues, mapKeys } = require('lodash')
 const { underscored } = require('underscore.string')
 
-const { isObject } = require('../../../../../utils')
+const { removeColors, stringifyValue, truncate } = require('../../../utils')
 
 // Retrieve TAP error properties
 const getErrorProps = function({ ok, reportProps }) {
@@ -36,11 +35,24 @@ const normalizeReportProps = function({ reportProps }) {
 }
 
 const normalizeReportPropValue = function(value) {
-  if (isObject(value)) {
-    return mapValues(value, normalizeReportPropValue)
+  const valueA = removeColors(value)
+  const valueB = normalizeObject(valueA)
+  return valueB
+}
+
+const normalizeObject = function(value) {
+  // We serialize objects and arrays:
+  //  - so that they can be truncated
+  //  - to avoid too many backslash escaping in output
+  // But numbers, booleans, etc. should remain as is otherwise they will appear
+  // quoted in output.
+  if (typeof value !== 'object' || value === null) {
+    return value
   }
 
-  return stripAnsi(value)
+  const string = stringifyValue(value)
+  const stringA = truncate({ string, colors: false })
+  return stringA
 }
 
 const normalizeReportPropKey = function(value, name) {

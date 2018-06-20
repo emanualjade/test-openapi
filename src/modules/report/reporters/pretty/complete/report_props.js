@@ -62,7 +62,7 @@ const prettifyValue = function(value) {
   // Stringify and prettify to YAML
   const string = stringifyValue(value)
   // Truncate value
-  const stringA = truncate(string)
+  const stringA = truncate({ string })
   // Syntax highlighting, unless already highlighted
   const stringB = highlightValue(stringA, value)
   // Add truncating dots

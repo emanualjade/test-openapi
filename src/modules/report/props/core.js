@@ -13,17 +13,19 @@ const addCoreReportProps = function({ reportProps, task }) {
 const getCoreReportProps = function({
   error: { expected, actual, message, property, schema, plugin } = {},
 }) {
+  const values = getValues({ expected, actual })
   const schemaA = getJsonSchema({ schema })
   const pluginA = getPlugin({ plugin })
 
-  return {
-    message,
-    'expected value': expected,
-    'actual value': actual,
-    property,
-    'JSON schema': schemaA,
-    plugin: pluginA,
+  return { message, ...values, property, 'JSON schema': schemaA, plugin: pluginA }
+}
+
+const getValues = function({ expected, actual }) {
+  if (expected === undefined) {
+    return { value: actual }
   }
+
+  return { 'actual value': actual, 'expected value': expected }
 }
 
 const getJsonSchema = function({ schema }) {

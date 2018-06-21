@@ -132,19 +132,41 @@ const parseEscape = function({ name, arg }) {
 // Since helpers can return other helpers which then get evaluated, we need
 // to check for infinite recursions.
 const checkRecursion = function({ name, arg, path }, { stack = [], ...info }) {
-  const stackElem = { name, arg: JSON.stringify(arg), path: path.join('.') }
+  const stackElem = getStackElem({ name, arg, path })
 
   const alreadyPresent = stack.some(stackElemA => isSameStackElem(stackElem, stackElemA))
+
+  const stackA = [...stack, stackElem]
+
   if (!alreadyPresent) {
-    return { ...info, stack: [...stack, stackElem] }
+    return { ...info, stack: stackA }
   }
 
-  const [{ name: firstHelper }] = stack
-  throw new TestOpenApiError(`Infinite recursion when evaluating the helper '${firstHelper}'`)
+  const [{ name: firstHelper }] = stackA
+  const pathA = stackToPath({ stack: stackA, info })
+  throw new TestOpenApiError(`Infinite recursion when evaluating the helper '${firstHelper}'`, {
+    path: pathA,
+  })
+}
+
+const getStackElem = function({ name, arg, path }) {
+  const property = [...path, name].join('.')
+  const argA = JSON.stringify(arg)
+  return { name, property, arg: argA }
 }
 
 const isSameStackElem = function(stackElemA, stackElemB) {
   return stackElemA.name === stackElemB.name && stackElemA.arg === stackElemB.arg
+}
+
+// From template recursion `info.stack` to `error.path`
+const stackToPath = function({
+  stack,
+  info: {
+    task: { key: task },
+  },
+}) {
+  return stack.map(({ property }) => ({ task, property }))
 }
 
 const evaluateHelper = function({ name, arg, info }) {

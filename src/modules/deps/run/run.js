@@ -33,7 +33,7 @@ const runDep = async function({ task, tasks, refs, depKey, runDepTask }) {
   // `task.deps` will only be used|returned in `dep` tasks
   const depTaskA = { ...depTask, deps: stackInfo }
 
-  const depReturn = await runDepTask(depTaskA)
+  const depReturn = await runDepTask({ task: depTaskA })
   return { [depKey]: depReturn }
 }
 

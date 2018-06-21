@@ -7,9 +7,9 @@ const { isMatch } = require('micromatch')
 // Only `run` plugin handlers are skipped, i.e. `start`, `complete` and `end`
 // handlers are still run for those tasks.
 // This means they will be stopped and reported as `skipped`
-const run = function({ skip, key }, { config: { skip: patterns } }, { isNested }) {
+const run = function({ skip, key }, { config: { skip: patterns } }, { nestedPath }) {
   // Nested tasks are not skipped
-  if (isNested || !isSkipped({ skip, patterns, key })) {
+  if (nestedPath !== undefined || !isSkipped({ skip, patterns, key })) {
     return
   }
 

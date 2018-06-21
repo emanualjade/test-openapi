@@ -37,7 +37,14 @@ const getStackPath = function({ depKey, stackPath, refs }) {
 }
 
 // Handle errors coming from `deps`
-const handleDepError = function(error, { deps: { stack, stackPath } }) {
+const handleDepError = function(
+  error,
+  {
+    task: {
+      deps: { stack, stackPath },
+    },
+  },
+) {
   const { message } = error
 
   // Avoid repeating the same message several times across the stack

@@ -13,10 +13,10 @@ const run = function(
       only: { patterns, enabled },
     },
   },
-  { isNested },
+  { nestedPath },
 ) {
   // Nested tasks are not skipped
-  if (!enabled || isNested || isOnly({ only, patterns, key })) {
+  if (!enabled || nestedPath !== undefined || isOnly({ only, patterns, key })) {
     return
   }
 

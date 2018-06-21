@@ -105,7 +105,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // Types:
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, pluginNames }, { plugins, runTask, isNested })` `{function}`
+//  - `plugin.run(task, { config, pluginNames }, { plugins, runTask, nestedPath })` `{function}`
 //     - fired for each task
 //  - `plugin.complete(task, { config, pluginNames }, { plugins })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
@@ -119,8 +119,9 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //      - `tasks` `{array}`
 //      - `pluginNames` `{array}`: list of plugins names
 //      - `plugins` `{array}`: list of available plugins
-//      - `runTask(task)` `{function}`: function allowing a task to fire another task
-//      - `isNested` `{boolean}`: whether task was run through recursive `runTask()`
+//      - `runTask({ task, property, self })` `{function}`:
+//         function allowing a task to fire another task
+//      - `nestedPath` `{array}`: set when task was run through recursive `runTask()`
 //   - `start` and `run` can modify their first argument by returning it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.

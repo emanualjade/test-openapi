@@ -28,18 +28,39 @@ const prettifyPath = function({ path }) {
     return path
   }
 
-  return path.map(prettifyPathElem).join('\n')
+  const pathA = path.map(prettifyPathElem).join('\n')
+  return `  ${pathA}`
 }
 
 const prettifyPathElem = function({ task, property }, index) {
-  const indent = getPathIndent({ index })
+  const taskText = getTaskText({ task, index })
+  const atText = getAtText({ property })
   // We append two spaces to make it readable when serialized (e.g. in TAP output)
-  return `${gray(indent)}${gray('task')} ${reset(task)} ${gray('at')} ${reset(property)}  `
+  return `${[taskText, atText].filter(value => value !== '').join(' ')}  `
+}
+
+// `error.path.*.task` is optional for the first element
+const getTaskText = function({ task, index }) {
+  if (task === undefined) {
+    return gray('current task')
+  }
+
+  const indent = getPathIndent({ index })
+  return `${gray(indent)}${gray('task')} ${reset(task)}`
+}
+
+// `error.path.*.property` is optional
+const getAtText = function({ property }) {
+  if (property === undefined) {
+    return ''
+  }
+
+  return `${gray('at')} ${reset(property)}`
 }
 
 const getPathIndent = function({ index }) {
   if (index === 0) {
-    return '  '
+    return ''
   }
 
   return `${RIGHT_ARROW} `

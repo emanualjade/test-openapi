@@ -71,28 +71,23 @@ const completeTask = async function({ keys: [key, ...keys], tasks, config, plugi
   const task = tasks[key]
   await callComplete({ task, config, plugins })
 
-  await callCompleteNested({ task, config, plugins })
-
   // Async iteration through recursion
   await completeTask({ keys, tasks, config, plugins })
 }
 
-const callComplete = async function({ task, config, plugins }) {
+const callComplete = async function({ task, task: { error: { nested } = {} }, config, plugins }) {
   const silent = isSilentTask({ task, config })
 
   const taskA = filterTaskData({ task, config, plugins })
 
   await callReporters({ config, type: 'complete' }, taskA, { config, plugins, silent })
-}
 
-// Report nested task, i.e. `task.error.nested`
-const callCompleteNested = async function({ task: { error: { nested } = {} }, config, plugins }) {
   if (nested === undefined) {
     return
   }
 
-  const task = { ...nested, isNested: true }
-  await callComplete({ task, config, plugins })
+  // Recurse over `task.error.nested`
+  await callComplete({ task: { ...nested, isNested: true }, config, plugins })
 }
 
 module.exports = {

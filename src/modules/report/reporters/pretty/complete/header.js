@@ -31,11 +31,19 @@ const getHeader = function({ task, task: { isNested }, title, resultType }) {
 
 // Header for nested tasks
 const getNestedHeader = function({ task: { key }, title }) {
-  return red(`${HORIZONTAL_LINE}
-${indent(`Nested task: ${key}`)}
+  const titleA = getNestedTitle({ title })
 
-${indent(title)}
+  return red(`${HORIZONTAL_LINE}
+${indent(`Nested task: ${key}`)}${titleA}
 ${HORIZONTAL_LINE}`)
+}
+
+const getNestedTitle = function({ title }) {
+  if (title === '') {
+    return ''
+  }
+
+  return `\n\n${indent(title)}`
 }
 
 const getContent = function({ task: { key }, title, resultType }) {

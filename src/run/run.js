@@ -138,8 +138,9 @@ const throwNonNestedError = function({ error, nestedPath }) {
 
 // When `getError()` is specified, we throw that error instead but with
 // `error.nested` set to the nested task.
+// This can be done recursively, leading to a chain of `error.nested`
 const throwNestedError = function({ task, nestedPath, getError }) {
-  // Each nested task recreated a new error, ensuring `error.task|plugin|etc.`
+  // Each nested task re-creates a new error, ensuring `error.task|plugin|etc.`
   // are set each time
   const topError = getError()
 
@@ -148,19 +149,7 @@ const throwNestedError = function({ task, nestedPath, getError }) {
   throw topError
 }
 
-const getNestedError = function({
-  task,
-  task: {
-    error,
-    error: { nested },
-  },
-  nestedPath,
-}) {
-  // Only keep deepest task as `error.nested`
-  if (nested !== undefined) {
-    return nested
-  }
-
+const getNestedError = function({ task, task: { error }, nestedPath }) {
   const errorA = convertPlainObject(error)
 
   // This will only be set to the deepest `error.path`

@@ -6,13 +6,13 @@ const { TestOpenApiError } = require('../errors')
 
 // `{ $task: 'TASK PATH [OPT,...]' }` helper
 // Runs TASK and replace helper with `task[PATH]`
-const taskHelper = async function(taskArg, { config: { tasks }, property }, { runTask }) {
+const taskHelper = async function(taskArg, { config: { tasks } }, { runTask }) {
   const { taskKey, path, options } = parseTaskArg({ taskArg })
 
   const task = findTask({ taskKey, tasks })
 
   const getError = getTaskError.bind(null, { task })
-  const taskA = await runTask({ task, property, getError })
+  const taskA = await runTask({ task, getError })
 
   const taskProp = await getTaskProp({ task: taskA, path, options })
   return taskProp

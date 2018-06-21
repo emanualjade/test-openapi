@@ -65,11 +65,11 @@ const stopOnDone = function({ done }) {
 // As opposed to regular `runTask()`, failed task throws.
 const recursiveRunTask = async function(
   { config, plugins, nestedPath },
-  { task, task: { key }, property, self, getError },
+  { task, task: { key }, self, getError },
 ) {
-  const nestedPathA = appendNestedPath({ nestedPath, key, property, self })
+  checkRecursion({ nestedPath, key, self })
 
-  checkRecursion({ nestedPath: nestedPathA })
+  const nestedPathA = appendNestedPath({ nestedPath, key, self })
 
   const taskA = await runTask({ task, config, plugins, nestedPath: nestedPathA })
 
@@ -79,83 +79,48 @@ const recursiveRunTask = async function(
     return taskA
   }
 
-  if (getError === undefined) {
-    throwNonNestedError({ error, nestedPath: nestedPathA })
-  }
-
-  throwNestedError({ task: taskA, nestedPath: nestedPathA, getError })
+  throwRecursiveError({ task: taskA, error, getError })
 }
 
-const appendNestedPath = function({ nestedPath = [], key, property, self }) {
+// Check for infinite recursion in `runTask()`
+const checkRecursion = function({ nestedPath = [], key, self }) {
+  if (self || !nestedPath.includes(key)) {
+    return
+  }
+
+  const cycle = [...nestedPath, key].join(`\n ${RIGHT_ARROW} `)
+  throw new TestOpenApiError(`Infinite task recursion:\n   ${cycle}`)
+}
+
+const RIGHT_ARROW = '\u21aa'
+
+const appendNestedPath = function({ nestedPath = [], key, self }) {
   // `nestedPath` is unchanged if `self: true`
   // Used when `runTask()` is called to call current task, e.g. by `repeat` plugin
   if (self) {
     return nestedPath
   }
 
-  const nestedPathA = addProperty({ nestedPath, property })
-
-  return [...nestedPathA, { task: key }]
-}
-
-// `property` is added to parent task, not current one
-const addProperty = function({ nestedPath, property }) {
-  if (property === undefined) {
-    return nestedPath
-  }
-
-  // If first nested task, create a root task with no `task` name
-  if (nestedPath.length === 0) {
-    return [{ property }]
-  }
-
-  const nestedPathA = nestedPath.slice(0, -1)
-  const lastPath = nestedPath[nestedPath.length - 1]
-  return [...nestedPathA, { ...lastPath, property }]
-}
-
-// Check for infinite recursion in `runTask()`
-const checkRecursion = function({ nestedPath }) {
-  const tasks = nestedPath.map(({ task }) => task)
-  const lastTask = tasks[tasks.length - 1]
-  const tasksA = tasks.slice(0, -1)
-  if (!tasksA.includes(lastTask)) {
-    return
-  }
-
-  throw new TestOpenApiError(`Infinite task recursion`)
+  return [...nestedPath, key]
 }
 
 // When `getError()` is undefined, the nested error is propagated as is.
-const throwNonNestedError = function({ error, nestedPath }) {
-  // Only keep deepest `error.path`
-  if (error.path === undefined && nestedPath.length > 0) {
-    error.path = nestedPath
-  }
-
-  throw error
-}
-
 // When `getError()` is specified, we throw that error instead but with
 // `error.nested` set to the nested task.
 // This can be done recursively, leading to a chain of `error.nested`
-const throwNestedError = function({ task, nestedPath, getError }) {
+const throwRecursiveError = function({ task, error, getError }) {
+  if (getError === undefined) {
+    throw error
+  }
+
   // Each nested task re-creates a new error, ensuring `error.task|plugin|etc.`
   // are set each time
   const topError = getError()
 
-  topError.nested = getNestedError({ task, nestedPath })
+  const errorA = convertPlainObject(error)
+  topError.nested = { ...task, error: errorA }
 
   throw topError
-}
-
-const getNestedError = function({ task, task: { error }, nestedPath }) {
-  const errorA = convertPlainObject(error)
-
-  // This will only be set to the deepest `error.path`
-  const errorB = { ...errorA, path: nestedPath }
-
-  return { ...task, error: errorB }
 }
 
 module.exports = {

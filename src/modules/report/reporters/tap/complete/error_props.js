@@ -14,30 +14,9 @@ const getErrorProps = function({ ok, reportProps }) {
   const reportPropsA = normalizeReportProps({ reportProps })
 
   // Enforce properties order
-  const {
-    message,
-    operator,
-    expected,
-    actual,
-    value,
-    schema,
-    property,
-    path,
-    ...rest
-  } = reportPropsA
+  const { message, operator, expected, actual, value, schema, property, ...rest } = reportPropsA
 
-  return {
-    message,
-    operator,
-    severity: 'fail',
-    expected,
-    actual,
-    value,
-    schema,
-    property,
-    path,
-    ...rest,
-  }
+  return { message, operator, severity: 'fail', expected, actual, value, schema, property, ...rest }
 }
 
 // `plugin.report()` is optimized for `pretty` reporter

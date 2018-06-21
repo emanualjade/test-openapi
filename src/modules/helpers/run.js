@@ -76,11 +76,9 @@ const evaluateNode = function(value, path, info) {
     return unescapedValue
   }
 
-  const property = [...path, name].join('.')
+  const infoA = checkRecursion({ name, arg }, info)
 
-  const infoA = checkRecursion({ name, arg, property }, info)
-
-  const valueA = evaluateHelper({ name, arg, property, info: infoA })
+  const valueA = evaluateHelper({ name, arg, info: infoA })
 
   // An helper evaluation can contain other helpers, which are then processed
   // recursively.
@@ -138,8 +136,8 @@ const parseEscape = function({ name, arg }) {
 
 // Since helpers can return other helpers which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ name, arg, property }, { stack = [], ...info }) {
-  const stackElem = { name, arg: JSON.stringify(arg), property }
+const checkRecursion = function({ name, arg }, { stack = [], ...info }) {
+  const stackElem = { name, arg: JSON.stringify(arg) }
 
   const alreadyPresent = stack.some(stackElemA => isSameStackElem(stackElem, stackElemA))
 
@@ -149,38 +147,31 @@ const checkRecursion = function({ name, arg, property }, { stack = [], ...info }
     return { ...info, stack: stackA }
   }
 
-  const [{ name: firstHelper }] = stackA
-  const pathA = stackToPath({ stack: stackA, info })
-  throw new TestOpenApiError(`Infinite recursion when evaluating the helper '${firstHelper}'`, {
-    path: pathA,
-  })
+  const cycle = getCycle({ stack: stackA })
+  throw new TestOpenApiError(`Infinite recursion when evaluating the helper:\n   ${cycle}`)
 }
+
+// Pretty printing of the recursion stack
+const getCycle = function({ stack }) {
+  return stack.map(printStackElem).join(`\n ${RIGHT_ARROW} `)
+}
+
+const printStackElem = function({ name, arg }) {
+  return `${name}: ${arg}`
+}
+
+const RIGHT_ARROW = '\u21aa'
 
 const isSameStackElem = function(stackElemA, stackElemB) {
   return stackElemA.name === stackElemB.name && stackElemA.arg === stackElemB.arg
 }
 
-// From template recursion `info.stack` to `error.path`
-const stackToPath = function({
-  stack,
-  info: {
-    task: { key: task },
-    advancedContext: { nestedPath = [] },
-  },
-}) {
-  const path = stack.map(({ property }) => ({ task, property }))
-
-  // If inside a nested task, keep `nestedPath` in `error.path`
-  const nestedPathA = nestedPath.slice(0, -1)
-  return [...nestedPathA, ...path]
-}
-
-const evaluateHelper = function({ name, arg, property, info }) {
+const evaluateHelper = function({ name, arg, info }) {
   const helperFunc = getHelperFunc({ name, info })
 
   const options = getHelperOptions({ name, info })
 
-  return eFireHelper({ helperFunc, arg, property, options, info })
+  return eFireHelper({ helperFunc, arg, options, info })
 }
 
 const getHelperFunc = function({
@@ -244,11 +235,10 @@ const getHelperOptions = function({
 const fireHelper = function({
   helperFunc,
   arg,
-  property,
   options,
   info: { task, context, advancedContext },
 }) {
-  return helperFunc(arg, { options, task, property, ...context }, advancedContext)
+  return helperFunc(arg, { options, task, ...context }, advancedContext)
 }
 
 const fireHelperHandler = function(error) {

@@ -55,7 +55,6 @@ const CORE_VALID_PROPERTIES = [
   'task',
   'tasks',
   'errors',
-  'path',
   'nested',
 ]
 const VALID_PROPERTIES = [...USER_VALID_PROPERTIES, ...CORE_VALID_PROPERTIES]

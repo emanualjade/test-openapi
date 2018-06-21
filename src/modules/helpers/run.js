@@ -11,17 +11,9 @@ const { TestOpenApiError, addErrorHandler } = require('../../errors')
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$random`
 //    or `$task` helper s
 const run = function(task, context, advancedContext) {
-  crawlTask(task, context, advancedContext)
-}
-
-const crawlTask = function(task, context, advancedContext) {
-  const info = { task, context, advancedContext }
-
-  const maybePromise = crawlNode(task, [], info)
-  console.log('Is promise', maybePromise.then !== undefined)
-  return promiseThen(maybePromise, nodes => {
-    console.log(JSON.stringify(nodes, null, 2))
-  })
+  // Might be a promise or not
+  const taskA = crawlNode(task, [], { task, context, advancedContext })
+  return taskA
 }
 
 // Crawl a task recursively to find helpers.
@@ -155,7 +147,7 @@ const evaluateHelper = function({ name, arg, info }) {
 
   const options = getHelperOptions({ name, info })
 
-  return eFireHelper({ helperFunc, arg, options, info })
+  return eFireHelper({ helperFunc, arg, name, options, info })
 }
 
 const getHelperFunc = function({
@@ -242,37 +234,6 @@ const RECURSION_ERROR_MESSAGE = 'Infinite recursion when evaluating the followin
 const HELPER_ERROR_MESSAGE = 'Error when evaluating the helper'
 
 const eFireHelper = addErrorHandler(fireHelper, fireHelperHandler)
-
-const CONFIG = {
-  helpers: {
-    $var: {
-      thisVar: 5,
-    },
-  },
-}
-
-crawlTask(
-  {
-    a: [
-      {
-        c: true,
-      },
-      5,
-    ],
-    e: {
-      f: {
-        g: 8,
-        h: 9,
-        i: {
-          $env: 'TEST',
-        },
-      },
-    },
-    j: false,
-  },
-  { config: CONFIG, pluginNames: [] },
-  { plugins: [] },
-)
 
 module.exports = {
   run,

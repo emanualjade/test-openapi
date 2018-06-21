@@ -87,9 +87,14 @@ const evaluateNode = function(value, path, info) {
   return crawlNode(valueA, path, infoA)
 }
 
-// Attach `error.property`. In case of recursion, the top-level node should prevail.
+// Attach `error.property: path.to.$FUNC` and `error.value: helperArg` to every
+// error thrown during helpers substitution: helper-thrown error, helper loading
+// problem, recursion error, etc.
+// In case of recursive helper, the top-level node should prevail.
 const evaluateNodeHandler = function(error, value, path) {
-  error.property = path.join('.')
+  const { name, arg } = parseHelper(value)
+  const property = [...path, name].join('.')
+  Object.assign(error, { property, value: arg })
   throw error
 }
 
@@ -205,7 +210,8 @@ const requireHelper = function(name) {
   return require(`../../helpers/${removePrefix(name)}`)
 }
 
-const requireHelperHandler = function({ code, message }, name) {
+const requireHelperHandler = function(error, name) {
+  const { code, message } = error
   const nameA = `'test-openapi-helper-${removePrefix(name)}'`
 
   if (code === 'MODULE_NOT_FOUND') {
@@ -213,7 +219,8 @@ const requireHelperHandler = function({ code, message }, name) {
   }
 
   // Throw a `bug` error
-  throw new Error(`The helper ${nameA} could not be loaded: ${message}`)
+  error.message = `The helper ${nameA} could not be loaded: ${message}`
+  throw error
 }
 
 const eRequireHelper = addErrorHandler(requireHelper, requireHelperHandler)
@@ -242,8 +249,9 @@ const fireHelper = function({
   return helperFunc(arg, { options, task, ...context }, advancedContext)
 }
 
-const fireHelperHandler = function({ message }, { name }) {
-  throw new TestOpenApiError(`Error when evaluating the helper '${name}': ${message}`)
+const fireHelperHandler = function(error, { name }) {
+  error.message = `Error when evaluating helper '${name}': ${error.message}`
+  throw error
 }
 
 const eFireHelper = addErrorHandler(fireHelper, fireHelperHandler)

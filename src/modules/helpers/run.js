@@ -53,7 +53,18 @@ const crawlChildren = function(value, path, info) {
 
 const crawlProperty = function({ key, child, path, info }) {
   const maybePromise = crawlNode(child, [...path, key], info)
-  return promiseThen(maybePromise, childA => ({ [key]: childA }))
+  return promiseThen(maybePromise, childA => getProperty({ key, child: childA }))
+}
+
+const getProperty = function({ key, child }) {
+  // Helpers that return `undefined` are omitted (as opposed to being set to
+  // `undefined`) to keep task JSON-serializable and avoid properties that
+  // are defined but set to `undefined`
+  if (child === undefined) {
+    return
+  }
+
+  return { [key]: child }
 }
 
 const mergeProperties = function(children) {
@@ -254,7 +265,7 @@ crawlTask(
         g: 8,
         h: 9,
         i: {
-          $var: 'thisVar',
+          $var: 'thisVarr.yo',
         },
       },
     },

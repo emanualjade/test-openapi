@@ -243,7 +243,6 @@ const HELPER_ERROR_MESSAGE = 'Error when evaluating the helper'
 
 const eFireHelper = addErrorHandler(fireHelper, fireHelperHandler)
 
-/*
 const CONFIG = {
   helpers: {
     $var: {
@@ -265,7 +264,7 @@ crawlTask(
         g: 8,
         h: 9,
         i: {
-          $var: 'thisVarr.yo',
+          $env: 'TEST',
         },
       },
     },
@@ -274,7 +273,6 @@ crawlTask(
   { config: CONFIG, pluginNames: [] },
   { plugins: [] },
 )
-*/
 
 module.exports = {
   run,

@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, TestOpenApiError } = require('../errors')
+const { addErrorHandler, TestOpenApiError, convertPlainObject } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run each `plugin.run()`
@@ -40,13 +40,54 @@ const recursiveRunTask = function(
 }
 
 // Add `error.path` to every thrown error
-const recursiveRunTaskHandler = function(error, { nestedPath }, { task: { key }, property, self }) {
+const recursiveRunTaskHandler = function(
+  error,
+  { nestedPath },
+  { task: { key }, property, self, getError },
+) {
+  const nestedPathA = appendNestedPath({ nestedPath, key, property, self })
+
+  // When `getError()` is specified, we throw that error instead but with
+  // `error.nested` set to the nested task.
+  // When `getError()` is undefined, the nested error is propagated as is.
+  if (getError === undefined) {
+    return nonNestedTaskHandler({ error, nestedPath: nestedPathA })
+  }
+
+  return nestedTaskHandler({ error, nestedPath: nestedPathA, getError })
+}
+
+const nonNestedTaskHandler = function({ error, nestedPath }) {
   // Only keep deepest `error.path`
-  if (error.path === undefined) {
-    error.path = appendNestedPath({ nestedPath, key, property, self })
+  if (error.path === undefined && nestedPath.length > 0) {
+    error.path = nestedPath
   }
 
   throw error
+}
+
+const nestedTaskHandler = function({ error, nestedPath, getError }) {
+  // Each nested task recreated a new error, ensuring `error.task|plugin|etc.`
+  // are set each time
+  const topError = getError()
+
+  topError.nested = getNestedError({ error, nestedPath })
+
+  throw topError
+}
+
+const getNestedError = function({ error, error: { nested }, nestedPath }) {
+  // Only keep deepest task as `error.nested`
+  if (nested !== undefined) {
+    return nested
+  }
+
+  // This will only be set to the deepest `error.path`
+  error.path = nestedPath
+
+  const nestedA = errorToTask({ error })
+  nestedA.error = convertPlainObject(nestedA.error)
+  return nestedA
 }
 
 const eRecursiveRunTask = addErrorHandler(recursiveRunTask, recursiveRunTaskHandler)
@@ -98,10 +139,14 @@ const runAllHandler = function(error, { nestedPath }) {
   }
 
   // Top-level errors are returned as `task.error`
-  const { task } = error
-  delete error.task
+  return errorToTask({ error })
+}
 
+// From `error: { task }` to `task: { error }`
+const errorToTask = function({ error, error: { task } }) {
+  delete error.task
   task.error = error
+
   return task
 }
 

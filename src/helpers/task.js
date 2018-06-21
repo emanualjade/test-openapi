@@ -11,7 +11,8 @@ const taskHelper = async function(taskArg, { config: { tasks }, property }, { ru
 
   const task = findTask({ taskKey, tasks })
 
-  const taskA = await runTask({ task, property })
+  const getError = getTaskError.bind(null, { task })
+  const taskA = await runTask({ task, property, getError })
 
   const taskProp = await getTaskProp({ task: taskA, path, options })
   return taskProp
@@ -39,6 +40,10 @@ const findTask = function({ taskKey, tasks }) {
   }
 
   return task
+}
+
+const getTaskError = function({ task: { key } }) {
+  return new TestOpenApiError(`task '${key}' failed`)
 }
 
 // Retrieve task property

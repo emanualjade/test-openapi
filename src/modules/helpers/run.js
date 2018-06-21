@@ -76,9 +76,9 @@ const evaluateNode = function(value, path, info) {
     return unescapedValue
   }
 
-  const infoA = checkRecursion({ name, arg }, info)
+  const infoA = checkRecursion({ name, arg, path }, info)
 
-  const valueA = evaluateHelper({ name, arg, info })
+  const valueA = evaluateHelper({ name, arg, info: infoA })
 
   // An helper evaluation can contain other helpers, which are then processed
   // recursively.
@@ -131,15 +131,20 @@ const parseEscape = function({ name, arg }) {
 
 // Since helpers can return other helpers which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ name, arg }, { stack = [], ...info }) {
-  const helperStr = `${name}: ${JSON.stringify(arg)}`
+const checkRecursion = function({ name, arg, path }, { stack = [], ...info }) {
+  const stackElem = { name, arg: JSON.stringify(arg), path: path.join('.') }
 
-  if (!stack.includes(helperStr)) {
-    return { ...info, stack: [...stack, helperStr] }
+  const alreadyPresent = stack.some(stackElemA => isSameStackElem(stackElem, stackElemA))
+  if (!alreadyPresent) {
+    return { ...info, stack: [...stack, stackElem] }
   }
 
-  const stackA = stack.join('\n-> ')
-  throw new TestOpenApiError(`${RECURSION_ERROR_MESSAGE}:\n   ${stackA}`)
+  const [{ name: firstHelper }] = stack
+  throw new TestOpenApiError(`Infinite recursion when evaluating the helper '${firstHelper}'`)
+}
+
+const isSameStackElem = function(stackElemA, stackElemB) {
+  return stackElemA.name === stackElemB.name && stackElemA.arg === stackElemB.arg
 }
 
 const evaluateHelper = function({ name, arg, info }) {
@@ -215,23 +220,9 @@ const fireHelper = function({
   return helperFunc(arg, { options, task, ...context }, advancedContext)
 }
 
-const fireHelperHandler = function(error, { name }) {
-  const { message } = error
-
-  // Avoid repeating the same message several times
-  if (message.includes(HELPER_ERROR_MESSAGE) || message.includes(RECURSION_ERROR_MESSAGE)) {
-    // `error.plugin|task` should be of the top-level task, not the nested one
-    delete error.plugin
-    delete error.task
-
-    throw error
-  }
-
-  throw new TestOpenApiError(`${HELPER_ERROR_MESSAGE} '${name}': ${message}`)
+const fireHelperHandler = function({ message }, { name }) {
+  throw new TestOpenApiError(`Error when evaluating the helper '${name}': ${message}`)
 }
-
-const RECURSION_ERROR_MESSAGE = 'Infinite recursion when evaluating the following helper'
-const HELPER_ERROR_MESSAGE = 'Error when evaluating the helper'
 
 const eFireHelper = addErrorHandler(fireHelper, fireHelperHandler)
 

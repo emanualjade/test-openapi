@@ -6,4 +6,5 @@ module.exports = {
   ...require('./convert'),
   ...require('./final'),
   ...require('./top'),
+  ...require('./bug'),
 }

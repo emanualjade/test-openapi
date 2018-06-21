@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, TestOpenApiError, convertPlainObject } = require('../errors')
+const { addErrorHandler, TestOpenApiError, convertPlainObject, isBugError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run each `plugin.run()`
@@ -109,7 +109,8 @@ const appendNestedPath = function({ nestedPath = [], key, self }) {
 // `error.nested` set to the nested task.
 // This can be done recursively, leading to a chain of `error.nested`
 const throwRecursiveError = function({ task, error, getError }) {
-  if (getError === undefined) {
+  // Propagate bugs
+  if (getError === undefined || isBugError(error)) {
     throw error
   }
 

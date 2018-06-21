@@ -1,6 +1,6 @@
 'use strict'
 
-const { env } = require('process')
+const envHelper = require('../../../../helpers/env')
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
@@ -22,24 +22,20 @@ const getDefaultServer = function() {
 
 // Defaults to environment variable HOST or to `localhost`
 const getHostname = function() {
-  return getEnv('host') || DEFAULT_HOSTNAME
+  return envHelper('host') || DEFAULT_HOSTNAME
 }
 
 const DEFAULT_HOSTNAME = 'localhost'
 
 // Defaults to environment variable PORT or the protocol's default port
 const getPort = function() {
-  const port = getEnv('port')
+  const port = envHelper('port')
 
   if (port) {
     return `:${port}`
   }
 
   return ''
-}
-
-const getEnv = function(name) {
-  return env[name] || env[name.toUpperCase()] || env[name.toLowerCase()]
 }
 
 // Remove trailing slashes in base URL

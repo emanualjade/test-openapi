@@ -42,7 +42,7 @@ const prettifyPathElem = function({ task, property }, index) {
 // `error.path.*.task` is optional for the first element
 const getTaskText = function({ task, index }) {
   if (task === undefined) {
-    return gray('current task')
+    return gray('parent task')
   }
 
   const indent = getPathIndent({ index })

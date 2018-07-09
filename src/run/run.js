@@ -109,8 +109,9 @@ const appendNestedPath = function({ nestedPath = [], key, self }) {
 // `error.nested` set to the nested task.
 // This can be done recursively, leading to a chain of `error.nested`
 const throwRecursiveError = function({ task, error, getError }) {
-  // Propagate bugs
+  // Also propagate bugs
   if (getError === undefined || isBugError(error)) {
+    error.task = task
     throw error
   }
 

@@ -6,13 +6,13 @@ const coreHelpers = require('../../helpers')
 const { isObject, promiseThen, promiseAll, promiseAllThen } = require('../../utils')
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
 
-// Helpers use a special notation `{ $name: arg }` inside any task, including
+// Helpers use a special notation `{ $$name: arg }` inside any task, including
 // in deep properties, for dynamic values. Helpers functions are evaluated
 // before the task run, e.g. plugins do not need to be helpers-aware.
 // Helpers still happen after:
 //  - `task|only` plugin: to avoid unnecessary long helpers evaluation on skipped task
-//  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$random`
-//    or `$task` helpers
+//  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$$random`
+//    or `$$task` helpers
 const run = function(task, context, advancedContext) {
   const taskA = crawlNode(task, [], { task, context, advancedContext })
   return promiseThen(taskA, updateOriginalTask)
@@ -84,12 +84,12 @@ const evaluateNode = function(value, path, info) {
 
   // An helper evaluation can contain other helpers, which are then processed
   // recursively.
-  // This can be used e.g. to create aliases with the `$var` helper:
-  //   `{ $var: alias }` with `config.helpers.$var: { alias: { $otherHelper: arg } }`
+  // This can be used e.g. to create aliases with the `$$var` helper:
+  //   `{ $$var: alias }` with `config.helpers.$$var: { alias: { $$otherHelper: arg } }`
   return crawlNode(valueA, path, infoA)
 }
 
-// Attach `error.property: path.to.$FUNC` and `error.value: helperArg` to every
+// Attach `error.property: path.to.$$FUNC` and `error.value: helperArg` to every
 // error thrown during helpers substitution: helper-thrown error, helper loading
 // problem, recursion error, etc.
 // In case of recursive helper, the top-level node should prevail.
@@ -102,7 +102,7 @@ const evaluateNodeHandler = function(error, value, path) {
 
 const eEvaluateNode = addErrorHandler(evaluateNode, evaluateNodeHandler)
 
-// Parse `{ $name: arg }` into `{ name, arg }`
+// Parse `{ $$name: arg }` into `{ name, arg }`
 const parseHelper = function(object) {
   if (!isObject(object)) {
     return
@@ -200,7 +200,11 @@ const getHelper = function({
 }
 
 const fireHelper = function({ helper, arg, info: { task, context, advancedContext } }) {
-  return helper(arg, { task, ...context }, advancedContext)
+  // Can use `{ $$helper: [...] }` to pass several arguments to the helper
+  // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context, advancedContext)`
+  const args = Array.isArray(arg) ? arg : [arg]
+
+  return helper(...args, { task, ...context }, advancedContext)
 }
 
 const fireHelperHandler = function(error) {

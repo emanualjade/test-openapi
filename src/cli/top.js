@@ -32,7 +32,6 @@ const CONFIG = {
   // Timeout for both:
   //  - sending and receiving each HTTP request
   //  - parsing the HTTP response
-  // I.e. this is the timeout for a single task, but excluding the time its `deps` take
   // 0 to disable
   'call.timeout': {
     number: true,

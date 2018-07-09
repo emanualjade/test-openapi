@@ -3,7 +3,7 @@
 const { get } = require('../utils')
 const { TestOpenApiError } = require('../errors')
 
-// `{ $task: 'TASK PATH [OPT,...]' }` helper
+// `{ $$task: 'TASK PATH [OPT,...]' }` helper
 // Runs TASK and replace helper with `task[PATH]`
 const taskHelper = async function(taskArg, { config: { tasks } }, { runTask }) {
   const { taskKey, path, options } = parseTaskArg({ taskArg })

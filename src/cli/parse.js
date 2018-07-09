@@ -13,9 +13,7 @@ const parseConfig = function({ yargs }) {
 
   const tasksA = tasks.length === 0 ? undefined : tasks
   const configC = { ...configB, tasks: tasksA }
-
-  const configD = omitBy(configC, value => value === undefined)
-  return configD
+  return configC
 }
 
 module.exports = {

@@ -10,18 +10,12 @@ const { isObject } = require('../utils')
 //    any user input is also present unchanged in the output.
 //  - other properties that have been added by the task handler are returned too
 // Note that `task.done` is not kept
-const getTaskReturn = function({
-  task,
-  task: { key, skipped, error },
-  config: { originalTasks },
-  plugins,
-}) {
-  const originalTask = originalTasks[key]
-
-  const pluginReturns = getPluginReturns({ plugins, task, originalTask })
+const getTaskReturn = function({ task, task: { key, skipped, error, originalTask }, plugins }) {
+  const pluginReturns = getPluginReturns({ plugins, task })
 
   // Enforce properties order: `key`, `skipped`, `error`, added `task.*`, original `task.*`
-  const taskA = { key, skipped, error, ...pluginReturns }
+  // `originalTask` is kept only for reporters
+  const taskA = { key, skipped, error, ...pluginReturns, originalTask }
 
   // Make sure value is similar to its JSON serialization, and avoid cluttering it
   const taskB = omitBy(taskA, value => value === undefined)
@@ -30,14 +24,14 @@ const getTaskReturn = function({
 }
 
 // Keep `originalTask.*` for properties in `plugin.config.task.*`
-const getPluginReturns = function({ plugins, task, originalTask }) {
-  const pluginReturns = plugins.map(plugin => getPluginReturn({ task, originalTask, plugin }))
+const getPluginReturns = function({ plugins, task }) {
+  const pluginReturns = plugins.map(plugin => getPluginReturn({ task, plugin }))
   const pluginReturnsA = Object.assign({}, ...pluginReturns)
   return pluginReturnsA
 }
 
-const getPluginReturn = function({ task, originalTask, plugin, plugin: { name } }) {
-  const returnValue = getReturnValue({ task, originalTask, plugin })
+const getPluginReturn = function({ task, plugin, plugin: { name } }) {
+  const returnValue = getReturnValue({ task, plugin })
   if (returnValue === undefined) {
     return
   }
@@ -45,7 +39,7 @@ const getPluginReturn = function({ task, originalTask, plugin, plugin: { name } 
   return { [name]: returnValue }
 }
 
-const getReturnValue = function({ task, originalTask, plugin, plugin: { name } }) {
+const getReturnValue = function({ task, task: { originalTask }, plugin, plugin: { name } }) {
   const addedProps = getAddedProps({ task, plugin })
 
   const originalValue = originalTask[name]

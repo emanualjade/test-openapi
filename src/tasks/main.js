@@ -11,9 +11,7 @@ const getTasks = async function({ config, config: { tasks } }) {
 
   const tasksB = normalizeTasks({ tasks: tasksA })
 
-  // Keep track of original tasks as this is used during return value and reporting
-  const configA = { ...config, originalTasks: tasksA, tasks: tasksB }
-  return configA
+  return { ...config, tasks: tasksB }
 }
 
 // Normalize tasks from object to array.
@@ -22,7 +20,10 @@ const normalizeTasks = function({ tasks }) {
 }
 
 const normalizeTask = function([key, task]) {
-  return { ...task, key }
+  const taskA = { ...task, key }
+  // Keep track of original tasks as this is used during return value and reporting
+  const taskB = { ...taskA, originalTask: taskA }
+  return taskB
 }
 
 module.exports = {

@@ -7,7 +7,7 @@ const { runHandlers, getTaskReturn } = require('../plugins')
 const runTask = async function({ task, config, plugins, nestedPath }) {
   const taskA = await eRunAll({ task, config, plugins, nestedPath })
 
-  const taskB = getTaskReturn({ task: taskA, config, plugins })
+  const taskB = getTaskReturn({ task: taskA, plugins })
   return taskB
 }
 

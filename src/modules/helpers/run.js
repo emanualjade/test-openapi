@@ -51,9 +51,9 @@ const crawlProperty = function({ key, child, path, info }) {
 }
 
 const getProperty = function({ key, child }) {
-  // Helpers that return `undefined` are omitted (as opposed to being set to
-  // `undefined`) to keep task JSON-serializable and avoid properties that
-  // are defined but set to `undefined`
+  // Helpers that do not exist or that return `undefined` are omitted
+  // (as opposed to being set to `undefined`) to keep task JSON-serializable
+  // and avoid properties that are defined but set to `undefined`
   if (child === undefined) {
     return
   }
@@ -189,17 +189,17 @@ const getHelper = function({
   const helpersA = { ...coreHelpers, ...helpers }
 
   const helper = get(helpersA, name)
-
-  // We do not allow unknown helpers, so that adding new helpers (user-defined
-  // or core-defined) is predictable and non-breaking
-  if (helper === undefined) {
-    throw new TestOpenApiError(`The helper '${name}' does not exist`)
-  }
-
   return helper
 }
 
 const fireHelper = function({ helper, arg, info: { task, context, advancedContext } }) {
+  // Unkwnown helpers or helpers with `undefined` values return `undefined`,
+  // instead of throwing an error. This allows users to use dynamic helpers, where
+  // some properties might be defined or not.
+  if (helper === undefined) {
+    return
+  }
+
   // Can use `{ $$helper: [...] }` to pass several arguments to the helper
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context, advancedContext)`
   const args = Array.isArray(arg) ? arg : [arg]

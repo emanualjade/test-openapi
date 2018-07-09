@@ -151,6 +151,10 @@ const checkRecursion = function({ name, arg }, { stack = [], ...info }) {
   throw new TestOpenApiError(`Infinite recursion when evaluating the helper:\n   ${cycle}`)
 }
 
+const isSameStackElem = function(stackElemA, stackElemB) {
+  return stackElemA.name === stackElemB.name && stackElemA.arg === stackElemB.arg
+}
+
 // Pretty printing of the recursion stack
 const getCycle = function({ stack }) {
   return stack.map(printStackElem).join(`\n ${RIGHT_ARROW} `)
@@ -161,10 +165,6 @@ const printStackElem = function({ name, arg }) {
 }
 
 const RIGHT_ARROW = '\u21aa'
-
-const isSameStackElem = function(stackElemA, stackElemB) {
-  return stackElemA.name === stackElemB.name && stackElemA.arg === stackElemB.arg
-}
 
 const evaluateHelper = function({ name, arg, info }) {
   const helperFunc = getHelperFunc({ name, info })

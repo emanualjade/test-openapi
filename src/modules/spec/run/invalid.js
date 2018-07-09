@@ -2,7 +2,7 @@
 
 const { omit } = require('lodash')
 
-// Using `task.call.*: 'invalid'` inverse OpenAPI specification parameters
+// Using `task.call.*: 'invalid value'` inverse OpenAPI specification parameters
 const handleInvalid = function({ params, call = {} }) {
   const keys = Object.keys(call).filter(key => isInvalid({ call, key }))
 
@@ -18,7 +18,9 @@ const isInvalid = function({ call, key }) {
   return call[key] === INVALID_TOKEN
 }
 
-const INVALID_TOKEN = 'invalid'
+// We do not provide a way to escape, i.e. when users actually want to use
+// a parameter with this string value, because it is unlikely
+const INVALID_TOKEN = 'invalid value'
 
 const getInvalidParams = function({ params, keys }) {
   const invalidParams = keys.map(key => getInvalidParam({ params, key }))
@@ -32,12 +34,12 @@ const getInvalidParam = function({ params, key }) {
   const type = addNullType({ param })
 
   // TODO: json-schema-faker support for the `not` keyword is lacking
-  // E.g. `type` array is not supported, so `invalid` actually does not work
+  // E.g. `type` array is not supported, so `invalid value` actually does not work
   // at the moment.
   return { [key]: { not: { ...param, type } } }
 }
 
-// When using 'invalid', we want to make sure the value is generated, i.e. it
+// When using 'invalid value', we want to make sure the value is generated, i.e. it
 // should never be `null`
 // If `param` is `undefined`, nothing to negate, but it should still be generated,
 // i.e. will return `['null']`

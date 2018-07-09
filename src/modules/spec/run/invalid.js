@@ -4,7 +4,7 @@ const { omit } = require('lodash')
 
 // Using `task.call.*: 'invalid'` inverse OpenAPI specification parameters
 const handleInvalid = function({ params, call = {} }) {
-  const keys = Object.keys(call).filter(key => isInvalid({ params, call, key }))
+  const keys = Object.keys(call).filter(key => isInvalid({ call, key }))
 
   // Otherwise `task.call` has priority over OpenAPI parameters
   const callA = omit(call, keys)
@@ -14,8 +14,8 @@ const handleInvalid = function({ params, call = {} }) {
   return { call: callA, params: paramsA }
 }
 
-const isInvalid = function({ params, call, key }) {
-  return call[key] === INVALID_TOKEN && params[key] !== undefined
+const isInvalid = function({ call, key }) {
+  return call[key] === INVALID_TOKEN
 }
 
 const INVALID_TOKEN = 'invalid'
@@ -32,14 +32,18 @@ const getInvalidParam = function({ params, key }) {
   const type = addNullType({ param })
 
   // TODO: json-schema-faker support for the `not` keyword is lacking
+  // E.g. `type` array is not supported, so `invalid` actually does not work
+  // at the moment.
   return { [key]: { not: { ...param, type } } }
 }
 
 // When using 'invalid', we want to make sure the value is generated, i.e. it
 // should never be `null`
+// If `param` is `undefined`, nothing to negate, but it should still be generated,
+// i.e. will return `['null']`
 // TODO: use `{ allOf: [{ not: { enum: [null] } }, ...] }` instead
 // This is unfortunately not supported at the moment by json-schema-faker
-const addNullType = function({ param: { type = [] } }) {
+const addNullType = function({ param: { type = [] } = {} }) {
   if (type === 'null') {
     return type
   }

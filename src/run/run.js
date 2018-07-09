@@ -37,10 +37,12 @@ const getContexts = function({ task, config, plugins, nestedPath }) {
   const recursiveRunTaskA = recursiveRunTask.bind(null, { config, plugins, nestedPath })
   const advancedContext = { runTask: recursiveRunTaskA, nestedPath }
 
-  // Do a direct mutation to handle recursion
-  context.helpers = substituteHelpers.bind(null, { task, context, advancedContext })
+  // `context.helpers` is overriden during recursion, so it's ok if
+  // `context.helpers -> context.helpers` is `undefined`
+  const helpers = substituteHelpers.bind(null, { task, context, advancedContext })
+  const contextA = { ...context, helpers }
 
-  return { context, advancedContext }
+  return { context: contextA, advancedContext }
 }
 
 // Error handler for each plugin handler
@@ -88,6 +90,10 @@ const recursiveRunTask = async function(
 }
 
 // Check for infinite recursion in `runTask()`
+// This is separate from helpers recursion check:
+//  - helpers check recursions only within a given task
+//  - tasks recursion can happen even without any helpers involved
+//    (when any plugin uses `runTask()`)
 const checkRecursion = function({ nestedPath = [], key, self }) {
   if (self || !nestedPath.includes(key)) {
     return

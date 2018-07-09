@@ -11,8 +11,8 @@ const coreHelpers = require('./core')
 // When an helper is found, it is replaced by its evaluated value.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // no helpers is found or when helpers are synchronous.
-const substituteHelpers = function({ task, context, advancedContext }, value) {
-  return crawlNode(value, [], { task, context, advancedContext })
+const substituteHelpers = function(info, value) {
+  return crawlNode(value, [], info)
 }
 
 const crawlNode = function(value, path, info) {
@@ -128,7 +128,7 @@ const HELPERS_ESCAPE = '$'
 
 // Since helpers can return other helpers which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ helper, info: { stack = [], ...info } }) {
+const checkRecursion = function({ helper, info, info: { stack = [] } }) {
   const alreadyPresent = stack.some(helperA => isEqual(helper, helperA))
 
   const stackA = [...stack, helper]
@@ -148,7 +148,7 @@ const getCycle = function({ stack }) {
 
 const printHelper = function({ type, name, arg }) {
   if (type === 'function') {
-    return `${name}: ${arg}`
+    return `${name}: ${JSON.stringify(arg)}`
   }
 
   return name
@@ -181,7 +181,7 @@ const getHelperValue = function({
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const helpersA = { ...coreHelpers, ...helpers, $$status: 401 }
+  const helpersA = { ...coreHelpers, ...helpers }
 
   const value = get(helpersA, name)
   return value
@@ -190,10 +190,12 @@ const getHelperValue = function({
 const evalHelperValue = function({
   value,
   helper: { type, arg },
-  path,
   info,
   info: { task, context, advancedContext },
 }) {
+  // Update `info.stack` for recursive helper
+  const recursiveSubstitute = substituteHelpers.bind(null, info)
+
   if (type === 'value') {
     // An helper `$$name` can contain other helpers, which are then processed
     // recursively.
@@ -201,8 +203,8 @@ const evalHelperValue = function({
     // This is done only on `$$name` not `{ $$name: arg }` because:
     //  - in functions, it is most likely not the desired intention of the user
     //  - it would require complex escaping (if user does not desire recursion)
-    //  - recursion can be achieved by using `context.variable()`
-    return crawlNode(value, path, info)
+    //  - recursion can be achieved by using `context.helpers()`
+    return recursiveSubstitute(value)
   }
 
   // Can use `{ $$helper: [...] }` to pass several arguments to the helper
@@ -210,7 +212,9 @@ const evalHelperValue = function({
   const args = Array.isArray(arg) ? arg : [arg]
 
   // Helper functions get `context.task` with the original task (before helpers evaluation)
-  return value(...args, { task, ...context }, advancedContext)
+  const contextA = { ...context, task, helpers: recursiveSubstitute }
+
+  return value(...args, contextA, advancedContext)
 }
 
 const evalHelperValueHelper = function(error, { value, helper, path }) {

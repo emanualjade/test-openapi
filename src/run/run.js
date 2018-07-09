@@ -47,6 +47,7 @@ const getContexts = function({ task: { originalTask }, config, plugins, nestedPa
   const advancedContext = { runTask: recursiveRunTaskA, nestedPath }
 
   // Helper functions get `context.task` with the original task (before helpers evaluation)
+  // not the current task, because it's more predictable for the user.
   const helpersContext = { ...context, task: originalTask }
   const helpers = substituteHelpers.bind(null, { context: helpersContext, advancedContext })
   // `context.helpers` is overriden during recursion, so it's ok if

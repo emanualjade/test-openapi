@@ -64,6 +64,7 @@ const getHelperValue = function({
   // either good or bad).
   const helpersA = { ...coreHelpers, ...helpers }
 
+  // `$$name` and `{ $$name: arg }` can both use dot notations
   const value = get(helpersA, name)
   return value
 }

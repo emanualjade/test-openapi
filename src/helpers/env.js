@@ -32,4 +32,6 @@ const getEnvVar = function({ envVarName }) {
   return envVar[1]
 }
 
-module.exports = envHelper
+module.exports = {
+  $$env: envHelper,
+}

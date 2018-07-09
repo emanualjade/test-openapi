@@ -11,4 +11,6 @@ const varHelper = function(path, { options }) {
   return value
 }
 
-module.exports = varHelper
+module.exports = {
+  $$var: varHelper,
+}

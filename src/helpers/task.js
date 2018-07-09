@@ -56,4 +56,6 @@ const getTaskProp = function({ task, task: { key }, path, options }) {
   return taskProp
 }
 
-module.exports = taskHelper
+module.exports = {
+  $$task: taskHelper,
+}

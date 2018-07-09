@@ -2,19 +2,8 @@
   "general": {
     "type": "object",
     "patternProperties": {
-      "^\\$[\\w-]+$": {}
+      "^\\$\\$[^\\$]": {}
     },
-    "additionalProperties": false,
-    "properties": {
-      "custom": {
-        "type": "object",
-        "patternProperties": {
-          "^\\$[\\w-]+$": {
-            "typeof": "function"
-          }
-        },
-        "additionalProperties": false
-      }
-    }
+    "additionalProperties": false
   }
 }

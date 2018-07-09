@@ -1,7 +1,8 @@
 'use strict'
 
-const { omit } = require('lodash')
+const { omit, get } = require('lodash')
 
+const coreHelpers = require('../../helpers')
 const { isObject, promiseThen, promiseAll, promiseAllThen } = require('../../utils')
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
 
@@ -108,14 +109,14 @@ const parseHelper = function(object) {
   }
 
   const keys = Object.keys(object)
-  // Helpers are objects with a single property starting with `$`
+  // Helpers are objects with a single property starting with `$$`
   // This allows objects with several properties not to need escaping
   if (keys.length !== 1) {
     return
   }
 
   const [name] = keys
-  if (!name.startsWith('$')) {
+  if (!name.startsWith('$$')) {
     return
   }
 
@@ -124,10 +125,10 @@ const parseHelper = function(object) {
 }
 
 // To escape an object that could be taken for an helper (but is not), one can
-// add an extra `$`, i.e. `{ $$name: arg }` becomes `{ $name: arg }`
+// add an extra `$`, i.e. `{ $$$name: arg }` becomes `{ $$name: arg }`
 // This works with multiple `$` as well
 const parseEscape = function({ name, arg }) {
-  if (!name.startsWith('$$')) {
+  if (!name.startsWith('$$$')) {
     return
   }
 
@@ -168,18 +169,16 @@ const printStackElem = function({ name, arg }) {
 const RIGHT_ARROW = '\u21aa'
 
 const evaluateHelper = function({ name, arg, info }) {
-  const helperFunc = getHelperFunc({ name, info })
+  const helper = getHelper({ name, info })
 
-  const options = getHelperOptions({ name, info })
-
-  return eFireHelper({ helperFunc, arg, options, info })
+  return eFireHelper({ helper, arg, info })
 }
 
-const getHelperFunc = function({
+const getHelper = function({
   name,
   info: {
     context: {
-      config: { helpers: { custom: helpersFuncs = {} } = {} },
+      config: { helpers },
     },
   },
 }) {
@@ -187,59 +186,21 @@ const getHelperFunc = function({
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const userFunc = helpersFuncs[name]
-  if (userFunc !== undefined) {
-    return userFunc
+  const helpersA = { ...coreHelpers, ...helpers }
+
+  const helper = get(helpersA, name)
+
+  // We do not allow unknown helpers, so that adding new helpers (user-defined
+  // or core-defined) is predictable and non-breaking
+  if (helper === undefined) {
+    throw new TestOpenApiError(`The helper '${name}' does not exist`)
   }
 
-  return eRequireHelper(name)
+  return helper
 }
 
-// We do not allow unknown helpers, so that adding new helpers (user-defined
-// or core-defined) is predictable and non-breaking
-// TODO: separate helpers in their own node modules instead
-const requireHelper = function(name) {
-  // eslint-disable-next-line import/no-dynamic-require
-  return require(`../../helpers/${removePrefix(name)}`)
-}
-
-const requireHelperHandler = function(error, name) {
-  const { code, message } = error
-  const nameA = `'test-openapi-helper-${removePrefix(name)}'`
-
-  if (code === 'MODULE_NOT_FOUND') {
-    throw new TestOpenApiError(`The helper ${nameA} is used but is not installed`)
-  }
-
-  // Throw a `bug` error
-  error.message = `The helper ${nameA} could not be loaded: ${message}`
-  throw error
-}
-
-const eRequireHelper = addErrorHandler(requireHelper, requireHelperHandler)
-
-const removePrefix = function(name) {
-  return name.replace('$', '')
-}
-
-const getHelperOptions = function({
-  name,
-  info: {
-    context: {
-      config: { helpers: helpersOptions = {} },
-    },
-  },
-}) {
-  return helpersOptions[name]
-}
-
-const fireHelper = function({
-  helperFunc,
-  arg,
-  options,
-  info: { task, context, advancedContext },
-}) {
-  return helperFunc(arg, { options, task, ...context }, advancedContext)
+const fireHelper = function({ helper, arg, info: { task, context, advancedContext } }) {
+  return helper(arg, { task, ...context }, advancedContext)
 }
 
 const fireHelperHandler = function(error) {

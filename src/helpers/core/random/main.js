@@ -22,12 +22,12 @@ const randomHelper = function(schema) {
 // Validate random parameters are valid JSON schema v4
 // We cannot use later versions because json-schema-faker does not support them
 const validateJsonSchema = function({ schema }) {
-  const { error } = validateIsSchema({ value: schema })
+  const { error } = validateIsSchema({ value: schema, name: '$$random' })
   if (error === undefined) {
     return
   }
 
-  throw new TestOpenApiError(`Value is not a valid JSON schema v4:${error}`)
+  throw new TestOpenApiError(`Value is not a valid JSON schema v4: ${error}`)
 }
 
 // json-schema-faker does not work properly with array schema that do not have

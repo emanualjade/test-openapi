@@ -7,8 +7,8 @@ const { validateFromSchema } = require('./main')
 const { CUSTOM_KEYWORDS } = require('./validator')
 
 // Validate that `value` is a valid JSON schema v4
-const validateIsSchema = function({ value }) {
-  return validateFromSchema({ schema: jsonSchemaSchema, value })
+const validateIsSchema = function({ value, name }) {
+  return validateFromSchema({ schema: jsonSchemaSchema, value, name })
 }
 
 const getJsonSchemaSchema = function() {

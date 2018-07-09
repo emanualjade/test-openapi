@@ -162,7 +162,7 @@ const evalHelper = function({ helper, path, info }) {
   // Unkwnown helpers or helpers with `undefined` values return `undefined`,
   // instead of throwing an error. This allows users to use dynamic helpers, where
   // some properties might be defined or not.
-  if (helper === undefined) {
+  if (value === undefined) {
     return
   }
 

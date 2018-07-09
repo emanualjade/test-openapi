@@ -131,20 +131,34 @@ operationId.testName:
       type: array
 ```
 
-# Random parameter
+# Random value
 
-The `random` property can be used to generate random parameters. It's exactly
-like the `call` property except that values are [JSON schemas](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
+The `$$random` helper can be used to generate random values based on a
+[JSON schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
 
 For example to generate a random password of minimum 12 characters:
 
 ```yml
 operationId.testName:
-  random:
+  call:
     query.password:
-      type: string
-      minLength: 12
-      pattern: '[a-zA-Z0-9]'
+      $$random:
+        type: string
+        minLength: 12
+        pattern: '[a-zA-Z0-9]'
+```
+
+# Re-using another request's response
+
+The `$$task` helper can be used to re-use the response of another request.
+This can be useful to for example re-use an access token created by another request.
+Its value is `testKey testProperty`:
+
+```yml
+operationId.testName:
+  call:
+    query.accessToken:
+      $$task: createAccessToken call.response.body.accessToken
 ```
 
 # Empty parameter

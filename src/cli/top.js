@@ -82,7 +82,7 @@ const CONFIG = {
     requiresArg: true,
     describe: 'File path or URL to the OpenAPI specification',
   },
-  // Number of times each `it()` is repeated (each time with new random parameters)
+  // Number of times each `it()` is repeated (helpers are re-evaluated each time)
   repeat: {
     number: true,
     requiresArg: true,

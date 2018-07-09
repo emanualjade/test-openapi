@@ -20,10 +20,7 @@ const normalizeTasks = function({ tasks }) {
 }
 
 const normalizeTask = function([key, task]) {
-  const taskA = { ...task, key }
-  // Keep track of original tasks as this is used during return value and reporting
-  const taskB = { ...taskA, originalTask: taskA }
-  return taskB
+  return { ...task, key }
 }
 
 module.exports = {

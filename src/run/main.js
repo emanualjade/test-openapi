@@ -1,10 +1,8 @@
 'use strict'
 
-const { omit } = require('lodash')
-
 const { addErrorHandler, topLevelHandler, handleFinalFailure } = require('../errors')
 const { loadConfig } = require('../config')
-const { getTasks } = require('../tasks')
+const { getTasks, addOriginalTasks, removeOriginalTasks } = require('../tasks')
 const { loadPlugins } = require('../plugins')
 
 const { loadTasks } = require('./load')
@@ -42,14 +40,15 @@ const eRun = addErrorHandler(run, topLevelHandler)
 const performRun = async function({ config, plugins }) {
   const configA = await loadTasks({ config, plugins })
 
-  const configB = await startTasks({ config: configA, plugins })
+  const configB = addOriginalTasks({ config: configA })
 
-  const tasks = await fireTasks({ config: configB, plugins })
+  const configC = await startTasks({ config: configB, plugins })
 
-  await endTasks({ tasks, plugins, config: configB })
+  const tasks = await fireTasks({ config: configC, plugins })
 
-  // `originalTask` is kept only for reporters, but is neither reported nor returned
-  const tasksA = tasks.map(task => omit(task, 'originalTask'))
+  await endTasks({ tasks, plugins, config: configC })
+
+  const tasksA = removeOriginalTasks({ tasks })
 
   handleFinalFailure({ tasks: tasksA })
 

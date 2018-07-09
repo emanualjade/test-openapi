@@ -2,6 +2,7 @@
 
 const { addErrorHandler, TestOpenApiError, convertPlainObject, isBugError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
+const { substituteHelpers } = require('../helpers')
 
 // Run each `plugin.run()`
 const runTask = async function({ task, config, plugins, nestedPath }) {
@@ -12,17 +13,9 @@ const runTask = async function({ task, config, plugins, nestedPath }) {
 }
 
 const runAll = function({ task, config, plugins, nestedPath }) {
-  const runTaskA = recursiveRunTask.bind(null, { config, plugins, nestedPath })
+  const { context, advancedContext } = getContexts({ task, config, plugins, nestedPath })
 
-  return runHandlers(
-    'run',
-    plugins,
-    task,
-    { config },
-    { runTask: runTaskA, nestedPath },
-    runPluginHandler,
-    stopOnDone,
-  )
+  return runHandlers('run', plugins, task, context, advancedContext, runPluginHandler, stopOnDone)
 }
 
 // Top-level errors are returned as `task.error`
@@ -37,6 +30,18 @@ const runAllHandler = function(error) {
 }
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
+
+const getContexts = function({ task, config, plugins, nestedPath }) {
+  const context = { config }
+
+  const recursiveRunTaskA = recursiveRunTask.bind(null, { config, plugins, nestedPath })
+  const advancedContext = { runTask: recursiveRunTaskA, nestedPath }
+
+  // Do a direct mutation to handle recursion
+  context.helpers = substituteHelpers.bind(null, { task, context, advancedContext })
+
+  return { context, advancedContext }
+}
 
 // Error handler for each plugin handler
 // We want to rememeber the current task on the first handler that throws.

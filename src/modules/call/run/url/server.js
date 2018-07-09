@@ -1,6 +1,6 @@
 'use strict'
 
-const envHelper = require('../../../../helpers/env')
+const envHelper = require('../../../../helpers/core/env')
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced

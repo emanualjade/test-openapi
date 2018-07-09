@@ -81,6 +81,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //   - `only`: select tasks according to `config|task.only`
 //   - `skip`: skip task if `task.skip: true`
 //   - `repeat`: repeat each task `config.repeat` times
+//   - `helpers`: substitute helpers values
 //   - `deps`: replace all `deps`, i.e. references to other tasks
 //   - `spec`: add OpenAPI specification to `task.random|validate.*`
 //   - `random`: generates random values based on `task.random.*` JSON schemas
@@ -105,7 +106,8 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // Types:
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, pluginNames }, { plugins, runTask, nestedPath })` `{function}`
+//  - `plugin.run(task, { config, pluginNames, helpers }, { plugins, runTask, nestedPath })`
+//    `{function}`
 //     - fired for each task
 //  - `plugin.complete(task, { config, pluginNames }, { plugins })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
@@ -122,6 +124,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //      - `runTask({ task, property, self })` `{function}`:
 //         function allowing a task to fire another task
 //      - `nestedPath` `{array}`: set when task was run through recursive `runTask()`
+//      - `helpers(value)` `{function}`: substitute helpers
 //   - `start` and `run` can modify their first argument by returning it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.

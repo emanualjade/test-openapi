@@ -12,7 +12,16 @@ const runTask = async function({ task, config, plugins, nestedPath }) {
   return taskB
 }
 
-const runAll = function({ task, config, plugins, nestedPath }) {
+const runAll = function({ task, task: { skipped }, config, plugins, nestedPath }) {
+  // Task marked as skipped, e.g. by `skip|only` plugins
+  // Only `run` plugin handlers are skipped, i.e. `start`, `complete` and `end`
+  // handlers are still run for those tasks.
+  // This means they will be stopped and reported as `skipped`
+  // Can still be used by as nested tasks
+  if (skipped && nestedPath === undefined) {
+    return task
+  }
+
   const { context, advancedContext } = getContexts({ task, config, plugins, nestedPath })
 
   return runHandlers('run', plugins, task, context, advancedContext, runPluginHandler, stopOnDone)
@@ -43,28 +52,6 @@ const getContexts = function({ task, config, plugins, nestedPath }) {
   const contextA = { ...context, helpers }
 
   return { context: contextA, advancedContext }
-}
-
-// Error handler for each plugin handler
-// We want to rememeber the current task on the first handler that throws.
-// We do this by attaching it to `error.task`, then extracting it on a top-level
-// error handler.
-// The error is finally set to `task.error`
-const runPluginHandler = function(error, task) {
-  // Recursive tasks already have `error.task` defined
-  if (error.task === undefined) {
-    error.task = task
-  }
-
-  throw error
-}
-
-// Returning `done: true` in any `run` handler stops the iteration but without
-// errors (as opposed to throwing an exception)
-// This implies successful tasks might be emptier than expected.
-// This is used e.g. by `skip|only` or `repeat` plugins
-const stopOnDone = function({ done }) {
-  return done
 }
 
 // Pass simplified `runTask()` for recursive tasks
@@ -134,6 +121,28 @@ const throwRecursiveError = function({ task, error, getError }) {
   topError.nested = { ...task, error: errorA }
 
   throw topError
+}
+
+// Error handler for each plugin handler
+// We want to rememeber the current task on the first handler that throws.
+// We do this by attaching it to `error.task`, then extracting it on a top-level
+// error handler.
+// The error is finally set to `task.error`
+const runPluginHandler = function(error, task) {
+  // Recursive tasks already have `error.task` defined
+  if (error.task === undefined) {
+    error.task = task
+  }
+
+  throw error
+}
+
+// Returning `done: true` in any `run` handler stops the iteration but without
+// errors (as opposed to throwing an exception)
+// This implies successful tasks might be emptier than expected.
+// This is used e.g. by `skip|only` or `repeat` plugins
+const stopOnDone = function({ done }) {
+  return done
 }
 
 module.exports = {

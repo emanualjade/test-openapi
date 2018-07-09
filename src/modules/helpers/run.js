@@ -8,7 +8,7 @@ const { promiseThen } = require('../../utils')
 // Including in deep properties.
 // Helpers are substituted before the task run, e.g. plugins do not need to be helpers-aware.
 // Helpers still happen after:
-//  - `task|only` plugin: to avoid unnecessary long helpers evaluation on skipped task
+//  - `task|only` plugins: to avoid unnecessary long helpers evaluation on skipped task
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$$random`
 //    or `$$task` helpers
 // Make sure `task.key` is not checked for helpers

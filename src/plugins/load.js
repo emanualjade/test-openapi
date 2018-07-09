@@ -74,12 +74,11 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 
 // `start`, i.e. before all tasks:
 //   - `glob`: merge tasks whose name include globbing matching other task names.
-//   - `only`: check if `config|task.only` is used
+//   - `only`: select tasks according to `config|task.only`
+//   - `skip`: skip tasks according to `config|task.skip`
 //   - `spec`: parse, validate and normalize an OpenAPI specification
 //   - `report`: start reporting
 // `task`, i.e. for each task:
-//   - `only`: select tasks according to `config|task.only`
-//   - `skip`: skip task if `task.skip: true`
 //   - `repeat`: repeat each task `config.repeat` times
 //   - `helpers`: substitute helpers values
 //   - `spec`: add OpenAPI specification to `task.call|validate.*`

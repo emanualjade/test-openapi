@@ -4,16 +4,17 @@ const { isMatch } = require('micromatch')
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'glob' or ['glob', ...]`
-// Only `run` plugin handlers are skipped, i.e. `start`, `complete` and `end`
-// handlers are still run for those tasks.
-// This means they will be stopped and reported as `skipped`
-const run = function({ skip, key }, { config: { skip: patterns } }, { nestedPath }) {
-  // Nested tasks are not skipped
-  if (nestedPath !== undefined || !isSkipped({ skip, patterns, key })) {
-    return
+const start = function({ skip: patterns, tasks }) {
+  const tasksA = tasks.map(task => addSkipped({ task, patterns }))
+  return { tasks: tasksA }
+}
+
+const addSkipped = function({ task, task: { skip, key }, patterns }) {
+  if (!isSkipped({ skip, patterns, key })) {
+    return task
   }
 
-  return { done: true, skipped: true }
+  return { ...task, skipped: true }
 }
 
 // Any value in `task.skip` will be same as `true`. This is because helpers
@@ -25,5 +26,5 @@ const isSkipped = function({ skip, patterns, key }) {
 }
 
 module.exports = {
-  run,
+  start,
 }

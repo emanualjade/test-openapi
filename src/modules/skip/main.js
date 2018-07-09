@@ -1,9 +1,9 @@
 'use strict'
 
-const { run } = require('./run')
+const { start } = require('./start')
 const config = require('./config')
 
 module.exports = {
   config,
-  run,
+  start,
 }

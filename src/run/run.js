@@ -40,15 +40,17 @@ const runAllHandler = function(error) {
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
-const getContexts = function({ task, config, plugins, nestedPath }) {
+const getContexts = function({ task: { originalTask }, config, plugins, nestedPath }) {
   const context = { config }
 
   const recursiveRunTaskA = recursiveRunTask.bind(null, { config, plugins, nestedPath })
   const advancedContext = { runTask: recursiveRunTaskA, nestedPath }
 
+  // Helper functions get `context.task` with the original task (before helpers evaluation)
+  const helpersContext = { ...context, task: originalTask }
+  const helpers = substituteHelpers.bind(null, { context: helpersContext, advancedContext })
   // `context.helpers` is overriden during recursion, so it's ok if
   // `context.helpers -> context.helpers` is `undefined`
-  const helpers = substituteHelpers.bind(null, { task, context, advancedContext })
   const contextA = { ...context, helpers }
 
   return { context: contextA, advancedContext }

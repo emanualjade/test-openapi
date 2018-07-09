@@ -10,7 +10,7 @@ const { checkRecursion } = require('./recursion')
 const { helperHandler } = require('./error')
 const coreHelpers = require('./core')
 
-// Crawl a task recursively to find helpers.
+// Crawl a value recursively to find helpers.
 // When an helper is found, it is replaced by its evaluated value.
 const substituteHelpers = function(info, value) {
   return crawlNode(value, [], info, evalNode)
@@ -73,7 +73,7 @@ const evalHelperValue = function({
   value,
   helper: { type, arg },
   info,
-  info: { task, context, advancedContext },
+  info: { context, advancedContext },
 }) {
   // Update `info.stack` for recursive helper
   const recursiveSubstitute = substituteHelpers.bind(null, info)
@@ -93,8 +93,7 @@ const evalHelperValue = function({
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context, advancedContext)`
   const args = Array.isArray(arg) ? arg : [arg]
 
-  // Helper functions get `context.task` with the original task (before helpers evaluation)
-  const contextA = { ...context, task, helpers: recursiveSubstitute }
+  const contextA = { ...context, helpers: recursiveSubstitute }
 
   return value(...args, contextA, advancedContext)
 }

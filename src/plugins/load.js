@@ -28,7 +28,7 @@ const normalizePlugins = function({ plugins }) {
 }
 
 // Plugins always included
-const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'deps', 'report']
+const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'report']
 
 // TODO: use a separate bundled package instead
 const DEFAULT_PLUGINS = ['spec', 'random', 'call', 'validate']
@@ -82,7 +82,6 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //   - `skip`: skip task if `task.skip: true`
 //   - `repeat`: repeat each task `config.repeat` times
 //   - `helpers`: substitute helpers values
-//   - `deps`: replace all `deps`, i.e. references to other tasks
 //   - `spec`: add OpenAPI specification to `task.random|validate.*`
 //   - `random`: generates random values based on `task.random.*` JSON schemas
 //   - `call`: fire HTTP call

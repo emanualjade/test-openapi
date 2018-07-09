@@ -2,45 +2,26 @@
 
 const { mapValues, omit, omitBy } = require('lodash')
 
-const { isObject } = require('../../../utils')
-
 // Spec parameters are only generated if either:
 //  - they are required
-//  - the parameter is also specified in `task.call|random.*`
+//  - the parameter is also specified in `task.call.*`
 //    (including as an empty object)
 // This works both top-level and for nested properties
-const removeOptionals = function({ params, call, random }) {
-  const definedProps = getDefinedProps({ call, random })
-
-  const paramsA = removeTopLevel({ params, definedProps })
-  const paramsB = removeNested({ params: paramsA, definedProps })
+const removeOptionals = function({ params, call = {} }) {
+  const paramsA = removeTopLevel({ params, call })
+  const paramsB = removeNested({ params: paramsA, call })
   return paramsB
 }
 
-// Retrieve all nested properties that have been defined in `task.call|random.*`
-const getDefinedProps = function({ call, random }) {
-  const randomProperties = getProperties({ properties: random })
-  return { ...call, ...randomProperties }
-}
-
-// Turn JSON schema `properties` into a plain object
-const getProperties = function({ properties }) {
-  if (!isObject(properties)) {
-    return true
-  }
-
-  return mapValues(properties, getProperties)
-}
-
 // Spec parameters are marked as required by using `optional: false` (default)
-const removeTopLevel = function({ params, definedProps }) {
-  const paramsA = omitBy(params, (param, key) => isSkippedOptional({ param, key, definedProps }))
+const removeTopLevel = function({ params, call }) {
+  const paramsA = omitBy(params, (param, key) => isSkippedOptional({ param, key, call }))
   const paramsB = mapValues(paramsA, removeOptionalProp)
   return paramsB
 }
 
-const isSkippedOptional = function({ param: { optional }, key, definedProps }) {
-  return optional && definedProps[key] === undefined
+const isSkippedOptional = function({ param: { optional }, key, call }) {
+  return optional && call[key] === undefined
 }
 
 // Remove `optional` now that it's been used (it is not valid JSON schema)
@@ -49,10 +30,8 @@ const removeOptionalProp = function(param) {
 }
 
 // Spec nested properties are marked as required by using JSON schema `required`
-const removeNested = function({ params, definedProps }) {
-  return mapValues(params, (schema, key) =>
-    removeNonRequired({ schema, definedProps: definedProps[key] }),
-  )
+const removeNested = function({ params, call }) {
+  return mapValues(params, (schema, key) => removeNonRequired({ schema, definedProps: call[key] }))
 }
 
 // Remove properties that are neither required nor specified in `definedProps`

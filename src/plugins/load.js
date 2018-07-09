@@ -31,7 +31,7 @@ const normalizePlugins = function({ plugins }) {
 const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'report']
 
 // TODO: use a separate bundled package instead
-const DEFAULT_PLUGINS = ['spec', 'random', 'call', 'validate']
+const DEFAULT_PLUGINS = ['spec', 'call', 'validate']
 
 const loadPlugin = function({ name, config }) {
   const plugin = eRequirePlugin(name)
@@ -82,8 +82,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //   - `skip`: skip task if `task.skip: true`
 //   - `repeat`: repeat each task `config.repeat` times
 //   - `helpers`: substitute helpers values
-//   - `spec`: add OpenAPI specification to `task.random|validate.*`
-//   - `random`: generates random values based on `task.random.*` JSON schemas
+//   - `spec`: add OpenAPI specification to `task.call|validate.*`
 //   - `call`: fire HTTP call
 //   - `validate`: validate response against `task.validate.*` JSON schemas
 // `complete`, i.e. after each tasks:

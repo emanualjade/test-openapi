@@ -1,6 +1,6 @@
 'use strict'
 
-// Turn OpenAPI `collectionFormat` into `task.random.*.x-separator`
+// Turn OpenAPI `collectionFormat` into `$$random` `x-separator`
 const addSeparator = function({ schema, collectionFormat = 'csv' }) {
   const separator = COLLECTION_FORMATS[collectionFormat]
   return { ...schema, 'x-separator': separator }

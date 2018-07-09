@@ -1,13 +1,13 @@
 'use strict'
 
-const { addSpecToRandom } = require('./random')
+const { addSpecToCall } = require('./call')
 const { addSpecToValidate } = require('./validate')
 
-// Add OpenAPI specification to `task.random|validate.*`
-const run = function({ key, random, call, validate }, { pluginNames, config: { spec } }) {
-  const randomA = addSpecToRandom({ spec, key, random, call, pluginNames })
+// Add OpenAPI specification to `task.call|validate.*`
+const run = function({ key, call, validate }, { pluginNames, config: { spec }, helpers }) {
+  const callA = addSpecToCall({ spec, key, call, helpers })
   const validateA = addSpecToValidate({ spec, key, validate, pluginNames })
-  return { random: randomA, validate: validateA }
+  return { call: callA, validate: validateA }
 }
 
 module.exports = {

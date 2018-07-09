@@ -1,5 +1,7 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { isObject, promiseThen, promiseAll, promiseAllThen } = require('../../utils')
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
 
@@ -11,9 +13,8 @@ const { TestOpenApiError, addErrorHandler } = require('../../errors')
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$random`
 //    or `$task` helpers
 const run = function(task, context, advancedContext) {
-  // Might be a promise or not
   const taskA = crawlNode(task, [], { task, context, advancedContext })
-  return taskA
+  return promiseThen(taskA, updateOriginalTask)
 }
 
 // Crawl a task recursively to find helpers.
@@ -254,6 +255,14 @@ const fireHelperHandler = function(error) {
 const HELPER_ERROR_MESSAGE = 'Error when evaluating helper: '
 
 const eFireHelper = addErrorHandler(fireHelper, fireHelperHandler)
+
+// Update `originalTask` so that helpers are shown evaluated in both return value
+// and reporting
+const updateOriginalTask = function(task) {
+  // No nested `originalTask`
+  const originalTask = omit(task, 'originalTask')
+  return { ...task, originalTask }
+}
 
 module.exports = {
   run,

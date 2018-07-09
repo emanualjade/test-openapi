@@ -4,10 +4,17 @@ const { env } = require('process')
 
 const { parseFlat } = require('../utils')
 
-// `{ $env: 'envVarName' }` helper
+// `$$env.envVarName` helper
 // Replaced by `process.env.envVarName`
-const envHelper = function(envVarName) {
-  const envVar = getEnvVar({ envVarName })
+const getEnvHelper = function() {
+  // We use a proxy (instead of a reference to `process.env` to add some logic:
+  //  - case-insensitive names
+  //  - value parsing
+  return new Proxy({}, { get: getEnvVar })
+}
+
+const getEnvVar = function(proxy, envVarName) {
+  const envVar = findEnvVar({ envVarName })
   if (envVar === undefined) {
     return
   }
@@ -17,7 +24,7 @@ const envHelper = function(envVarName) {
   return envVarA
 }
 
-const getEnvVar = function({ envVarName }) {
+const findEnvVar = function({ envVarName }) {
   if (env[envVarName] !== undefined) {
     return env[envVarName]
   }
@@ -31,6 +38,8 @@ const getEnvVar = function({ envVarName }) {
 
   return envVar[1]
 }
+
+const envHelper = getEnvHelper()
 
 module.exports = {
   $$env: envHelper,

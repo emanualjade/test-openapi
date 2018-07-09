@@ -1,7 +1,6 @@
 'use strict'
 
-const { get } = require('lodash')
-
+const { get } = require('../utils')
 const { TestOpenApiError } = require('../errors')
 
 // `{ $task: 'TASK PATH [OPT,...]' }` helper
@@ -26,7 +25,7 @@ const parseTaskArg = function({ taskArg }) {
     throw new TestOpenApiError('argument must be a task name followed by a property path')
   }
 
-  const optionsA = options.split(',')
+  const optionsA = options.split(',').filter(option => option !== '')
 
   return { taskKey, path, options: optionsA }
 }

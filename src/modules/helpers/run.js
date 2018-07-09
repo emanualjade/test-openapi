@@ -1,6 +1,6 @@
 'use strict'
 
-const { omit, get } = require('lodash')
+const { omit, get, isEqual } = require('lodash')
 
 const coreHelpers = require('../../helpers')
 const { isObject, promiseThen, promiseAll, promiseAllThen } = require('../../utils')
@@ -25,7 +25,7 @@ const run = function(task, context, advancedContext) {
 const crawlNode = function(value, path, info) {
   // Children must be evaluated before parents
   const valueA = crawlChildren(value, path, info)
-  return promiseThen(valueA, valueB => eEvalNode(valueB, path, info))
+  return promiseThen(valueA, valueB => evalNode(valueB, path, info))
 }
 
 // Siblings evaluation is done in parallel for best performance.
@@ -71,44 +71,30 @@ const evalNode = function(value, path, info) {
     return value
   }
 
-  const { name, arg } = helper
-
-  const unescapedValue = parseEscape({ name, arg })
+  const unescapedValue = parseEscape({ helper })
   if (unescapedValue !== undefined) {
     return unescapedValue
   }
 
-  const infoA = checkRecursion({ name, arg }, info)
+  const infoA = checkRecursion({ helper, info })
 
-  const valueA = evalHelper({ name, arg, info: infoA })
-
-  // An helper evaluation can contain other helpers, which are then processed
-  // recursively.
-  // This can be used e.g. to create aliases with the `$$var` helper:
-  //   `{ $$var: alias }` with `config.helpers.$$var: { alias: { $$otherHelper: arg } }`
-  return crawlNode(valueA, path, infoA)
+  const valueA = evalHelper({ helper, path, info: infoA })
+  return valueA
 }
 
-// Attach `error.property: path.to.$$FUNC` and `error.value: helperArg` to every
-// error thrown during helpers substitution: helper-thrown error, helper loading
-// problem, recursion error, etc.
-// In case of recursive helper, the top-level node should prevail.
-const evalNodeHandler = function(error, value, path) {
-  const { name, arg } = parseHelper(value)
-  const property = [...path, name].join('.')
-  Object.assign(error, { property, value: arg })
-  throw error
-}
+// Parse `{ $$name: arg }` into `{ name: '$$name', arg }`
+// and `$$name` into `{ name: '$$name' }`
+const parseHelper = function(value) {
+  // `$$name`
+  if (typeof value === 'string' && value.startsWith(HELPERS_PREFIX)) {
+    return { type: 'value', name: value }
+  }
 
-const eEvalNode = addErrorHandler(evalNode, evalNodeHandler)
-
-// Parse `{ $$name: arg }` into `{ name, arg }`
-const parseHelper = function(object) {
-  if (!isObject(object)) {
+  if (!isObject(value)) {
     return
   }
 
-  const keys = Object.keys(object)
+  const keys = Object.keys(value)
   // Helpers are objects with a single property starting with `$$`
   // This allows objects with several properties not to need escaping
   if (keys.length !== 1) {
@@ -116,66 +102,82 @@ const parseHelper = function(object) {
   }
 
   const [name] = keys
-  if (!name.startsWith('$$')) {
+  if (!name.startsWith(HELPERS_PREFIX)) {
     return
   }
 
-  const arg = object[name]
-  return { name, arg }
+  // `{ $$name: arg }`
+  const arg = value[name]
+  return { type: 'function', name, arg }
 }
 
 // To escape an object that could be taken for an helper (but is not), one can
 // add an extra `$`, i.e. `{ $$$name: arg }` becomes `{ $$name: arg }`
+// and `$$$name` becomes `$$name`
 // This works with multiple `$` as well
-const parseEscape = function({ name, arg }) {
-  if (!name.startsWith('$$$')) {
+const parseEscape = function({ helper: { type, name, arg } }) {
+  if (!name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)) {
     return
   }
 
-  const nameA = name.replace('$', '')
-  return { [nameA]: arg }
+  const nameA = name.replace(HELPERS_ESCAPE, '')
+
+  if (type === 'function') {
+    return { [nameA]: arg }
+  }
+
+  return nameA
 }
+
+const HELPERS_PREFIX = '$$'
+// Escape `$$name` with an extra dollar sign, i.e. `$$$name`
+const HELPERS_ESCAPE = '$'
 
 // Since helpers can return other helpers which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ name, arg }, { stack = [], ...info }) {
-  const stackElem = { name, arg: JSON.stringify(arg) }
+const checkRecursion = function({ helper, info: { stack = [], ...info } }) {
+  const alreadyPresent = stack.some(helperA => isEqual(helper, helperA))
 
-  const alreadyPresent = stack.some(stackElemA => isSameStackElem(stackElem, stackElemA))
-
-  const stackA = [...stack, stackElem]
+  const stackA = [...stack, helper]
 
   if (!alreadyPresent) {
     return { ...info, stack: stackA }
   }
 
   const cycle = getCycle({ stack: stackA })
-  throw new TestOpenApiError(`Infinite recursion when evaluating the helper:\n   ${cycle}`)
-}
-
-const isSameStackElem = function(stackElemA, stackElemB) {
-  return stackElemA.name === stackElemB.name && stackElemA.arg === stackElemB.arg
+  throw new TestOpenApiError(`Infinite recursion:\n   ${cycle}`)
 }
 
 // Pretty printing of the recursion stack
 const getCycle = function({ stack }) {
-  return stack.map(printStackElem).join(`\n ${RIGHT_ARROW} `)
+  return stack.map(printHelper).join(`\n ${RIGHT_ARROW} `)
 }
 
-const printStackElem = function({ name, arg }) {
-  return `${name}: ${arg}`
+const printHelper = function({ type, name, arg }) {
+  if (type === 'function') {
+    return `${name}: ${arg}`
+  }
+
+  return name
 }
 
 const RIGHT_ARROW = '\u21aa'
 
-const evalHelper = function({ name, arg, info }) {
-  const helper = getHelper({ name, info })
+const evalHelper = function({ helper, path, info }) {
+  const value = getHelperValue({ helper, info })
 
-  return eEvalHelperFunc({ helper, arg, info })
+  // Unkwnown helpers or helpers with `undefined` values return `undefined`,
+  // instead of throwing an error. This allows users to use dynamic helpers, where
+  // some properties might be defined or not.
+  if (helper === undefined) {
+    return
+  }
+
+  return eEvalHelperValue({ value, helper, path, info })
 }
 
-const getHelper = function({
-  name,
+const getHelperValue = function({
+  helper: { name },
   info: {
     context: {
       config: { helpers },
@@ -188,38 +190,73 @@ const getHelper = function({
   // either good or bad).
   const helpersA = { ...coreHelpers, ...helpers }
 
-  const helper = get(helpersA, name)
-  return helper
+  const value = get(helpersA, name)
+  return value
 }
 
-const evalHelperFunc = function({ helper, arg, info: { task, context, advancedContext } }) {
-  // Unkwnown helpers or helpers with `undefined` values return `undefined`,
-  // instead of throwing an error. This allows users to use dynamic helpers, where
-  // some properties might be defined or not.
-  if (helper === undefined) {
-    return
+const evalHelperValue = function({
+  value,
+  helper: { type, arg },
+  path,
+  info,
+  info: { task, context, advancedContext },
+}) {
+  if (type === 'value') {
+    // An helper `$$name` can contain other helpers, which are then processed
+    // recursively.
+    // This can be used e.g. to create aliases.
+    // This is done only on `$$name` not `{ $$name: arg }` because:
+    //  - in functions, it is most likely not the desired intention of the user
+    //  - it would require complex escaping (if user does not desire recursion)
+    //  - recursion can be achieved by using `context.variable()`
+    return crawlNode(value, path, info)
   }
 
   // Can use `{ $$helper: [...] }` to pass several arguments to the helper
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context, advancedContext)`
   const args = Array.isArray(arg) ? arg : [arg]
 
-  return helper(...args, { task, ...context }, advancedContext)
+  return value(...args, { task, ...context }, advancedContext)
 }
 
-const evalHelperFuncHelper = function(error) {
+const evalHelperValueHelper = function(error, { value, helper, path }) {
   const { message } = error
 
   if (!message.includes(HELPER_ERROR_MESSAGE)) {
     error.message = `${HELPER_ERROR_MESSAGE}${message}`
   }
 
+  setHelperErrorProps({ error, value, helper, path })
+
   throw error
 }
 
+const eEvalHelperValue = addErrorHandler(evalHelperValue, evalHelperValueHelper)
+
 const HELPER_ERROR_MESSAGE = 'Error when evaluating helper: '
 
-const eEvalHelperFunc = addErrorHandler(evalHelperFunc, evalHelperFuncHelper)
+// Attach error properties to every error thrown during helpers substitution:
+// helper-thrown error, recursion error:
+//  - `property`: `path.to.$$FUNC`
+//  - `value`: `helperArg` (if function) or `value`: `helperValue` (if `value`)
+// In case of recursive helper, the top-level node should prevail.
+const setHelperErrorProps = function({ error, value, helper, path }) {
+  const errorProps = getHelperErrorProps({ value, helper, path })
+  Object.assign(error, errorProps)
+
+  // `error.expected` does not make any more sense since we remove `error.value`
+  delete error.expected
+}
+
+const getHelperErrorProps = function({ value, helper: { type, name, arg }, path }) {
+  const property = [...path, name].join('.')
+
+  if (type === 'function') {
+    return { property, value: arg }
+  }
+
+  return { property, value }
+}
 
 // Update `originalTask` so that helpers are shown evaluated in both return value
 // and reporting

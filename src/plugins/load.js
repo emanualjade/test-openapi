@@ -102,7 +102,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // `plugin.load|start|run|complete|end` `{function|function[]}`
 // Handlers, i.e. functions fired by each plugin. This is where the logic is.
 // Types:
-//  - `plugin.load({ tasks }, { config, pluginNames }, { plugins })` `{function}`
+//  - `plugin.load(tasks, { config, pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks

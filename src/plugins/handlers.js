@@ -1,6 +1,6 @@
 'use strict'
 
-const { reduceAsync } = require('../utils')
+const { reduceAsync, isObject } = require('../utils')
 const { addErrorHandler } = require('../errors')
 
 // Run plugin `handlers` of a given `type`
@@ -94,7 +94,16 @@ const runHandler = function(input, handler) {
 }
 
 const mergeReturnValue = function(input, newInput) {
-  return { ...input, ...newInput }
+  // `load` handlers input is an array, not an object
+  if (isObject(input)) {
+    return { ...input, ...newInput }
+  }
+
+  if (newInput === undefined) {
+    return input
+  }
+
+  return newInput
 }
 
 module.exports = {

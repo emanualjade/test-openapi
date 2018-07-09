@@ -8,7 +8,7 @@ const { runHandlers } = require('../plugins')
 // For example, plugins should flag tasks as `skipped` but not filter them out
 // even if could still be used in recursive tasks.
 const loadTasks = async function({ config, config: { tasks }, plugins }) {
-  const { tasks: tasksA } = await runHandlers('load', plugins, { tasks }, { config })
+  const tasksA = await runHandlers('load', plugins, tasks, { config })
   return { ...config, tasks: tasksA }
 }
 

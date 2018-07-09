@@ -217,6 +217,7 @@ const evalHelperValue = function({
   return value(...args, contextA, advancedContext)
 }
 
+// Exceptions thrown by a helper
 const evalHelperValueHelper = function(error, { value, helper, path }) {
   const { message } = error
 

@@ -1,7 +1,7 @@
 'use strict'
 
-const { start } = require('./start')
+const { load } = require('./load')
 
 module.exports = {
-  start,
+  load,
 }

@@ -12,6 +12,7 @@
       },
       "additionalProperties": false
     },
+    "load": {},
     "start": {},
     "task": {},
     "complete": {},

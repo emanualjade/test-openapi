@@ -4,7 +4,7 @@ const { isMatch } = require('micromatch')
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'glob' or ['glob', ...]`
-const start = function({ skip: patterns, tasks }) {
+const load = function({ tasks }, { config: { skip: patterns } }) {
   const tasksA = tasks.map(task => addSkipped({ task, patterns }))
   return { tasks: tasksA }
 }
@@ -26,5 +26,5 @@ const isSkipped = function({ skip, patterns, key }) {
 }
 
 module.exports = {
-  start,
+  load,
 }

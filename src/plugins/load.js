@@ -72,10 +72,11 @@ const addIsCore = function({ plugin, plugin: { name } }) {
   return { ...plugin, isCore }
 }
 
-// `start`, i.e. before all tasks:
+// `load`, i.e. before all tasks:
 //   - `glob`: merge tasks whose name include globbing matching other task names.
 //   - `only`: select tasks according to `config|task.only`
 //   - `skip`: skip tasks according to `config|task.skip`
+// `start`, i.e. before all tasks:
 //   - `spec`: parse, validate and normalize an OpenAPI specification
 //   - `report`: start reporting
 // `task`, i.e. for each task:
@@ -98,9 +99,11 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // `plugin.config.task` `{object}`
 // JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
 
-// `plugin.start|run|complete|end` `{function|function[]}`
+// `plugin.load|start|run|complete|end` `{function|function[]}`
 // Handlers, i.e. functions fired by each plugin. This is where the logic is.
 // Types:
+//  - `plugin.load({ tasks }, { config, pluginNames }, { plugins })` `{function}`
+//     - fired before all tasks
 //  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
 //  - `plugin.run(task, { config, pluginNames, helpers }, { plugins, runTask, nestedPath })`
@@ -122,13 +125,13 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //         function allowing a task to fire another task
 //      - `nestedPath` `{array}`: set when task was run through recursive `runTask()`
 //      - `helpers(value)` `{function}`: substitute helpers
-//   - `start` and `run` can modify their first argument by returning it:
+//   - `load`, `start` and `run` can modify their first argument by returning it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.
 //   - the second and third arguments are read-only.
 //   - the third argument is only for advanced plugins.
 // Throwing an exception in:
-//  - `start` or `end`: will stop the whole run
+//  - `load`, `start` or `end`: will stop the whole run
 //  - `run`: stop the current task, but other tasks are still run.
 //    Also `plugin.complete()` is still run.
 //  - `complete`: stop the current `complete`, but other tasks are still run.

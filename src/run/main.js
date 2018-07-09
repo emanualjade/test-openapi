@@ -7,6 +7,7 @@ const { loadConfig } = require('../config')
 const { getTasks } = require('../tasks')
 const { loadPlugins } = require('../plugins')
 
+const { loadTasks } = require('./load')
 const { startTasks } = require('./start')
 const { runTask } = require('./run')
 const { completeTask } = require('./complete')
@@ -39,11 +40,13 @@ const eRun = addErrorHandler(run, topLevelHandler)
 
 // Fire all plugin handlers for all tasks
 const performRun = async function({ config, plugins }) {
-  const configA = await startTasks({ config, plugins })
+  const configA = await loadTasks({ config, plugins })
 
-  const tasks = await fireTasks({ config: configA, plugins })
+  const configB = await startTasks({ config: configA, plugins })
 
-  await endTasks({ tasks, plugins, config: configA })
+  const tasks = await fireTasks({ config: configB, plugins })
+
+  await endTasks({ tasks, plugins, config: configB })
 
   // `originalTask` is kept only for reporters, but is neither reported nor returned
   const tasksA = tasks.map(task => omit(task, 'originalTask'))

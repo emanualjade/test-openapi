@@ -3,5 +3,4 @@
 module.exports = {
   ...require('./env'),
   ...require('./task'),
-  ...require('./var'),
 }

@@ -9,7 +9,7 @@ const { TestOpenApiError, addErrorHandler } = require('../../errors')
 // Helpers still happen after:
 //  - `task|only` plugin: to avoid unnecessary long helpers evaluation on skipped task
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$random`
-//    or `$task` helper s
+//    or `$task` helpers
 const run = function(task, context, advancedContext) {
   // Might be a promise or not
   const taskA = crawlNode(task, [], { task, context, advancedContext })

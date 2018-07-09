@@ -27,7 +27,7 @@ const validateJsonSchema = function({ schema }) {
     return
   }
 
-  throw new TestOpenApiError(`Value is not a valid JSON schema v4: ${error}`)
+  throw new TestOpenApiError(`value is not a valid JSON schema v4: ${error}`)
 }
 
 // json-schema-faker does not work properly with array schema that do not have

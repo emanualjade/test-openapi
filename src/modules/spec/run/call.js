@@ -5,6 +5,7 @@ const { mapValues } = require('lodash')
 
 const { getSpecOperation } = require('./operation')
 const { removeOptionals } = require('./optional')
+const { handleInvalid } = require('./invalid')
 
 // Add OpenAPI specification parameters to `task.call.*`
 const addSpecToCall = function({ spec, key, call, helpers }) {
@@ -24,11 +25,14 @@ const addSpecToCall = function({ spec, key, call, helpers }) {
 
   const paramsA = removeOptionals({ params, call })
 
-  const paramsB = mapValues(paramsA, schema => generateRandom({ schema, helpers }))
+  const { call: callA, params: paramsB } = handleInvalid({ params: paramsA, call })
+
+  const paramsC = mapValues(paramsB, schema => generateRandom({ schema, helpers }))
 
   // Specification params have less priority than `task.call.*`
-  const callA = mergeAll([paramsB, call])
-  return callA
+  const callB = mergeAll([paramsC, callA])
+
+  return callB
 }
 
 const generateRandom = function({ schema, helpers }) {

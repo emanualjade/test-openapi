@@ -25,7 +25,7 @@ const run = function(task, context, advancedContext) {
 const crawlNode = function(value, path, info) {
   // Children must be evaluated before parents
   const valueA = crawlChildren(value, path, info)
-  return promiseThen(valueA, valueB => eEvaluateNode(valueB, path, info))
+  return promiseThen(valueA, valueB => eEvalNode(valueB, path, info))
 }
 
 // Siblings evaluation is done in parallel for best performance.
@@ -65,7 +65,7 @@ const mergeProperties = function(children) {
   return Object.assign({}, ...children)
 }
 
-const evaluateNode = function(value, path, info) {
+const evalNode = function(value, path, info) {
   const helper = parseHelper(value)
   if (helper === undefined) {
     return value
@@ -80,7 +80,7 @@ const evaluateNode = function(value, path, info) {
 
   const infoA = checkRecursion({ name, arg }, info)
 
-  const valueA = evaluateHelper({ name, arg, info: infoA })
+  const valueA = evalHelper({ name, arg, info: infoA })
 
   // An helper evaluation can contain other helpers, which are then processed
   // recursively.
@@ -93,14 +93,14 @@ const evaluateNode = function(value, path, info) {
 // error thrown during helpers substitution: helper-thrown error, helper loading
 // problem, recursion error, etc.
 // In case of recursive helper, the top-level node should prevail.
-const evaluateNodeHandler = function(error, value, path) {
+const evalNodeHandler = function(error, value, path) {
   const { name, arg } = parseHelper(value)
   const property = [...path, name].join('.')
   Object.assign(error, { property, value: arg })
   throw error
 }
 
-const eEvaluateNode = addErrorHandler(evaluateNode, evaluateNodeHandler)
+const eEvalNode = addErrorHandler(evalNode, evalNodeHandler)
 
 // Parse `{ $$name: arg }` into `{ name, arg }`
 const parseHelper = function(object) {
@@ -168,10 +168,10 @@ const printStackElem = function({ name, arg }) {
 
 const RIGHT_ARROW = '\u21aa'
 
-const evaluateHelper = function({ name, arg, info }) {
+const evalHelper = function({ name, arg, info }) {
   const helper = getHelper({ name, info })
 
-  return eFireHelper({ helper, arg, info })
+  return eEvalHelperFunc({ helper, arg, info })
 }
 
 const getHelper = function({
@@ -192,7 +192,7 @@ const getHelper = function({
   return helper
 }
 
-const fireHelper = function({ helper, arg, info: { task, context, advancedContext } }) {
+const evalHelperFunc = function({ helper, arg, info: { task, context, advancedContext } }) {
   // Unkwnown helpers or helpers with `undefined` values return `undefined`,
   // instead of throwing an error. This allows users to use dynamic helpers, where
   // some properties might be defined or not.
@@ -207,7 +207,7 @@ const fireHelper = function({ helper, arg, info: { task, context, advancedContex
   return helper(...args, { task, ...context }, advancedContext)
 }
 
-const fireHelperHandler = function(error) {
+const evalHelperFuncHelper = function(error) {
   const { message } = error
 
   if (!message.includes(HELPER_ERROR_MESSAGE)) {
@@ -219,7 +219,7 @@ const fireHelperHandler = function(error) {
 
 const HELPER_ERROR_MESSAGE = 'Error when evaluating helper: '
 
-const eFireHelper = addErrorHandler(fireHelper, fireHelperHandler)
+const eEvalHelperFunc = addErrorHandler(evalHelperFunc, evalHelperFuncHelper)
 
 // Update `originalTask` so that helpers are shown evaluated in both return value
 // and reporting

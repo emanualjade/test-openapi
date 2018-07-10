@@ -5,8 +5,9 @@ const { readFile } = require('fs')
 
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
+const { mapValues } = require('lodash')
 
-const { isObject, sortArray } = require('../utils')
+const { isObject, sortArray, findCommonPrefix } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { validateTaskFile } = require('./validate')
@@ -19,26 +20,29 @@ const loadTasks = async function({ tasks }) {
   }
 
   // Can use globbing
-  const tasksA = await fastGlob(tasks)
+  const paths = await fastGlob(tasks)
 
   // Ensure task object keys order is always the same, because it's the one
   // used for reporting and we want an ordered and stable output
-  const tasksB = sortArray(tasksA)
+  const pathsA = sortArray(paths)
 
-  const tasksC = await Promise.all(tasksB.map(loadTaskFile))
-  const tasksD = Object.assign({}, ...tasksC)
+  const commonPrefix = findCommonPrefix(pathsA)
 
-  return tasksD
+  const tasksA = await Promise.all(pathsA.map(path => loadTaskFile({ path, commonPrefix })))
+  const tasksB = Object.assign({}, ...tasksA)
+
+  return tasksB
 }
 
 // Load and parse each task file in parallel
-const loadTaskFile = async function(path) {
+const loadTaskFile = async function({ path, commonPrefix }) {
   const content = await eReadFile(path)
   const tasks = eParseTaskFile({ path, content })
 
   validateTaskFile({ tasks, path })
 
-  return tasks
+  const tasksA = addPath({ tasks, path, commonPrefix })
+  return tasksA
 }
 
 const readFileHandler = function({ message }, path) {
@@ -65,6 +69,14 @@ const parseTaskFileHandler = function({ message }, { path }) {
 }
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)
+
+// Add `task.path`
+// Make it as short as possible
+const addPath = function({ tasks, path, commonPrefix }) {
+  const pathA = path.replace(commonPrefix, '')
+  const tasksA = mapValues(tasks, task => ({ ...task, path: pathA }))
+  return tasksA
+}
 
 module.exports = {
   loadTasks,

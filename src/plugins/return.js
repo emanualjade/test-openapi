@@ -10,12 +10,16 @@ const { isObject } = require('../utils')
 //    any user input is also present unchanged in the output.
 //  - other properties that have been added by the task handler are returned too
 // Note that `task.done` is not kept
-const getTaskReturn = function({ task, task: { key, skipped, error, originalTask }, plugins }) {
+const getTaskReturn = function({
+  task,
+  task: { key, path, skipped, error, originalTask },
+  plugins,
+}) {
   const pluginReturns = getPluginReturns({ plugins, task })
 
   // Enforce properties order: `key`, `skipped`, `error`, added `task.*`, original `task.*`
   // `originalTask` is kept only for reporters
-  const taskA = { key, skipped, error, ...pluginReturns, originalTask }
+  const taskA = { key, path, skipped, error, ...pluginReturns, originalTask }
 
   // Make sure value is similar to its JSON serialization, and avoid cluttering it
   const taskB = omitBy(taskA, value => value === undefined)

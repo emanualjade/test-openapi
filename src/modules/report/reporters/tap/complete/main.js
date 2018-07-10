@@ -17,25 +17,24 @@ const complete = function({ options: { tap }, ...task }, { config, plugins, sile
   return message
 }
 
-const getAssert = function({ task, task: { key }, config, plugins }) {
+const getAssert = function({ task, task: { key, path }, config, plugins }) {
   const { title, reportProps } = getReportProps({ task, config, plugins })
 
   const resultType = getResultType(task)
 
   const ok = resultType !== 'fail'
-  const name = getName({ key, title })
+  const name = getName({ key, path, title })
   const directive = { skip: resultType === 'skip' }
   const errorProps = getErrorProps({ ok, reportProps })
 
   return { ok, name, directive, error: errorProps }
 }
 
-const getName = function({ key, title }) {
-  if (title.trim() === '') {
-    return key
-  }
-
-  return `${key} - ${title}`
+const getName = function({ key, path, title }) {
+  return [key, path, title]
+    .map(string => string.trim())
+    .filter(string => string !== '')
+    .join(' - ')
 }
 
 module.exports = {

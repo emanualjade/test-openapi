@@ -16,14 +16,14 @@ const {
 //  - a symbol indicating whether the task passed, failed or was skipped
 //  - the task key
 //  - the `title` (as returned by `plugin.report()`)
-const getHeader = function({ task, task: { isNested }, title, resultType }) {
-  const titleA = getTitle({ title })
+const getHeader = function({ task, task: { path, isNested }, title, resultType }) {
+  const subKeys = getSubKeys({ path, title })
 
   if (isNested) {
-    return getNestedHeader({ task, title: titleA })
+    return getNestedHeader({ task, subKeys })
   }
 
-  const content = getContent({ task, title: titleA, resultType })
+  const content = getContent({ task, subKeys, resultType })
 
   const header = `${FULL_LOWER_LINE}\n${inverse(content)}\n${FULL_UPPER_LINE}`
 
@@ -31,26 +31,32 @@ const getHeader = function({ task, task: { isNested }, title, resultType }) {
   return headerA
 }
 
-// All concatenated `title` from `plugin.report()`
-const getTitle = function({ title }) {
-  if (title.trim() === '') {
+// Show `task.path` and all concatenated `title` from `plugin.report()`
+const getSubKeys = function({ path, title }) {
+  return [path, title].map(getSubKey).join('')
+}
+
+const getSubKey = function(string) {
+  const stringA = string.trim()
+
+  if (stringA === '') {
     return ''
   }
 
-  return `\n\n${indent(title)}`
+  return `\n\n${indent(stringA)}`
 }
 
 // Header for nested tasks
-const getNestedHeader = function({ task: { key }, title }) {
+const getNestedHeader = function({ task: { key }, subKeys }) {
   return red(`${HORIZONTAL_LINE}
-${indent(`Nested task: ${key}`)}${title}
+${indent(`Nested task: ${key}`)}${subKeys}
 ${HORIZONTAL_LINE}`)
 }
 
-const getContent = function({ task: { key }, title, resultType }) {
+const getContent = function({ task: { key }, subKeys, resultType }) {
   const mark = MARKS[resultType]
 
-  const content = ` ${mark}  ${key}${title}`
+  const content = ` ${mark}  ${key}${subKeys}`
 
   const contentA = padContent({ content })
   return contentA

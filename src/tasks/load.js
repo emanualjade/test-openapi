@@ -5,12 +5,12 @@ const { readFile } = require('fs')
 
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
-const { mapValues } = require('lodash')
 
 const { isObject, sortArray, findCommonPrefix } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { validateTaskFile } = require('./validate')
+const { addTaskPath } = require('./path')
 
 // Load YAML/JSON task files
 const loadTasks = async function({ tasks }) {
@@ -41,7 +41,7 @@ const loadTaskFile = async function({ path, commonPrefix }) {
 
   validateTaskFile({ tasks, path })
 
-  const tasksA = addPath({ tasks, path, commonPrefix })
+  const tasksA = addTaskPath({ tasks, path, commonPrefix })
   return tasksA
 }
 
@@ -69,26 +69,6 @@ const parseTaskFileHandler = function({ message }, { path }) {
 }
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)
-
-// Add `task.path`
-// Make it as short as possible
-const addPath = function({ tasks, path, commonPrefix }) {
-  const pathA = getPath({ path, commonPrefix })
-  const tasksA = mapValues(tasks, task => ({ ...task, path: pathA }))
-  return tasksA
-}
-
-const getPath = function({ path, commonPrefix }) {
-  const pathA = path.replace(commonPrefix, '')
-
-  // If there is only a filename, do not start with `/`
-  // Otherwise, should always start with `/`
-  if (pathA.includes('/') && pathA[0] !== '/') {
-    return `/${pathA}`
-  }
-
-  return pathA
-}
 
 module.exports = {
   loadTasks,

@@ -24,7 +24,16 @@ const runAll = function({ task, task: { skipped }, config, plugins, nestedPath }
 
   const { context, advancedContext } = getContexts({ task, config, plugins, nestedPath })
 
-  return runHandlers('run', plugins, task, context, advancedContext, runPluginHandler, stopOnDone)
+  return runHandlers(
+    'run',
+    plugins,
+    task,
+    context,
+    undefined,
+    advancedContext,
+    runPluginHandler,
+    stopOnDone,
+  )
 }
 
 // Top-level errors are returned as `task.error`

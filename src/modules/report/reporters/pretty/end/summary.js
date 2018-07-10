@@ -1,27 +1,13 @@
 'use strict'
 
-const { getSummary, yellow, gray, HORIZONTAL_LINE, indent } = require('../../utils')
-
-const { NAMES } = require('./constants')
-
-// Clears spinner and print final counters message
-const end = function({ options: { spinner }, tasks }) {
-  spinner.stop()
-
-  const endMessage = getEndMessage({ tasks })
-  return endMessage
-}
+const { getSummary, yellow } = require('../../../utils')
+const { NAMES } = require('../constants')
 
 // Print final reporting message with counter of passed|failed|skipped tasks
-const getEndMessage = function({ tasks }) {
-  const summaryString = printSummary({ tasks })
-  return `${LINE}\n${indent(summaryString)}\n${LINE}\n`
-}
-
-const LINE = `\n${gray(HORIZONTAL_LINE)}\n`
-
 const printSummary = function({ tasks }) {
-  const summary = getSummary({ tasks })
+  const { skip, pass, fail } = getSummary({ tasks })
+  // Order matters
+  const summary = { skip, pass, fail }
 
   // Pad numbers to the right
   const padLength = String(summary.total).length
@@ -44,5 +30,5 @@ const printEntry = function({ name, count, padLength }) {
 }
 
 module.exports = {
-  end,
+  printSummary,
 }

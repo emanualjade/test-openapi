@@ -1,30 +1,33 @@
 'use strict'
 
-const { gray, red, green } = require('../../utils')
+const { gray, red, green, HORIZONTAL_LINE } = require('../../utils')
 
 const MARKS = {
+  // Pause symbol
+  skip: '\u23f8',
   // Check symbol
   pass: '\u2714',
   // Cross symbol
   fail: '\u2718',
-  // Pause symbol
-  skip: '\u23f8',
 }
 
 const COLORS = {
+  skip: gray,
   pass: green,
   fail: red,
-  skip: gray,
 }
 
 const NAMES = {
+  skip: 'Skipped: ',
   pass: 'Passed:  ',
   fail: 'Failed:  ',
-  skip: 'Skipped: ',
 }
+
+const LINE = `\n${gray(HORIZONTAL_LINE)}\n`
 
 module.exports = {
   MARKS,
   COLORS,
   NAMES,
+  LINE,
 }

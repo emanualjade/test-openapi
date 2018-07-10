@@ -2,6 +2,8 @@
 
 const { getSummary, yellow, gray, HORIZONTAL_LINE, indent } = require('../../utils')
 
+const { NAMES } = require('./constants')
+
 // Clears spinner and print final counters message
 const end = function({ options: { spinner }, tasks }) {
   spinner.stop()
@@ -39,12 +41,6 @@ const printEntry = function({ name, count, padLength }) {
   const nameA = NAMES[name]
   const countA = String(count).padStart(padLength)
   return `${yellow.bold(nameA)}${countA}`
-}
-
-const NAMES = {
-  pass: 'Passed:  ',
-  fail: 'Failed:  ',
-  skip: 'Skipped: ',
 }
 
 module.exports = {

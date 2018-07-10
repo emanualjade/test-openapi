@@ -1,9 +1,7 @@
 'use strict'
 
 const {
-  gray,
   red,
-  green,
   inverse,
   indent,
   FULL_LOWER_LINE,
@@ -11,6 +9,7 @@ const {
   LINE_SIZE,
   HORIZONTAL_LINE,
 } = require('../../../utils')
+const { MARKS, COLORS } = require('../constants')
 
 // Header of the the message, with:
 //  - a symbol indicating whether the task passed, failed or was skipped
@@ -27,7 +26,7 @@ const getHeader = function({ task, task: { path, isNested }, title, resultType }
 
   const header = `${FULL_LOWER_LINE}\n${inverse(content)}\n${FULL_UPPER_LINE}`
 
-  const headerA = HEADER_COLORS[resultType].bold(header)
+  const headerA = COLORS[resultType].bold(header)
   return headerA
 }
 
@@ -62,27 +61,12 @@ const getContent = function({ task: { key }, subKeys, resultType }) {
   return contentA
 }
 
-const MARKS = {
-  // Check symbol
-  pass: '\u2714',
-  // Cross symbol
-  fail: '\u2718',
-  // Pause symbol
-  skip: '\u23f8',
-}
-
 // Pad header content so that `chalk.inverse()` covers the whole line
 const padContent = function({ content }) {
   return content
     .split('\n')
     .map(string => string.padEnd(LINE_SIZE))
     .join('\n')
-}
-
-const HEADER_COLORS = {
-  pass: green,
-  fail: red,
-  skip: gray,
 }
 
 module.exports = {

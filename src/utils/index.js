@@ -11,5 +11,6 @@ module.exports = {
   ...require('./simple_schema'),
   ...require('./flat'),
   ...require('./prefix'),
+  ...require('./common_prefix'),
   ...require('./get'),
 }

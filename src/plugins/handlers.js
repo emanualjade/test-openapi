@@ -14,12 +14,13 @@ const runHandlers = function(
   input,
   context,
   mergeReturn = defaultMergeReturn,
+  returnHandler = defaultReturnHandler,
   advancedContext,
   errorHandler,
   stopFunc,
 ) {
   const args = getArgs({ plugins, context, advancedContext })
-  const handlers = getHandlers({ plugins, type, errorHandler, args })
+  const handlers = getHandlers({ plugins, type, errorHandler, returnHandler, args })
 
   return reduceAsync(handlers, runHandler, input, mergeReturn, stopFunc)
 }
@@ -29,11 +30,13 @@ const getArgs = function({ plugins, context, advancedContext }) {
   return [{ ...context, pluginNames }, { ...advancedContext, plugins }]
 }
 
-const getHandlers = function({ plugins, type, errorHandler, args }) {
+const getHandlers = function({ plugins, type, errorHandler, returnHandler, args }) {
   const handlers = plugins.map(plugin => getPluginHandlers({ plugin, type }))
   const handlersA = [].concat(...handlers)
 
-  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, args }))
+  const handlersB = handlersA.map(handler =>
+    wrapHandler({ handler, errorHandler, returnHandler, args, type }),
+  )
   return handlersB
 }
 
@@ -58,15 +61,21 @@ const getPluginHandler = function({ func, plugin: { isCore, name } }) {
   return { func, plugin }
 }
 
-const wrapHandler = function({ handler: { func, plugin }, errorHandler, args }) {
-  const handlerA = callHandler.bind(null, { func, args })
+const wrapHandler = function({
+  handler: { func, plugin },
+  errorHandler,
+  returnHandler,
+  args,
+  type,
+}) {
+  const handlerA = returnHandler.bind(null, { func, args, type })
 
   const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, plugin))
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return handlerC
 }
 
-const callHandler = function({ func, args }, input) {
+const defaultReturnHandler = function({ func, args }, input) {
   return func(input, ...args)
 }
 

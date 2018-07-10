@@ -30,6 +30,7 @@ const runAll = function({ task, task: { skipped }, config, plugins, nestedPath }
     task,
     context,
     undefined,
+    undefined,
     advancedContext,
     runPluginHandler,
     stopOnDone,

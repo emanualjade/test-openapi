@@ -73,9 +73,21 @@ const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)
 // Add `task.path`
 // Make it as short as possible
 const addPath = function({ tasks, path, commonPrefix }) {
-  const pathA = path.replace(commonPrefix, '')
+  const pathA = getPath({ path, commonPrefix })
   const tasksA = mapValues(tasks, task => ({ ...task, path: pathA }))
   return tasksA
+}
+
+const getPath = function({ path, commonPrefix }) {
+  const pathA = path.replace(commonPrefix, '')
+
+  // If there is only a filename, do not start with `/`
+  // Otherwise, should always start with `/`
+  if (pathA.includes('/') && pathA[0] !== '/') {
+    return `/${pathA}`
+  }
+
+  return pathA
 }
 
 module.exports = {

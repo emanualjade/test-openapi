@@ -1,6 +1,6 @@
 'use strict'
 
-const { getResultType } = require('../../../utils')
+const { getResultType, SEPARATOR } = require('../../../utils')
 const { getReportProps } = require('../../../props')
 
 const { getErrorProps } = require('./error_props')
@@ -34,7 +34,7 @@ const getName = function({ key, path, title }) {
   return [key, path, title]
     .map(string => string.trim())
     .filter(string => string !== '')
-    .join(' - ')
+    .join(SEPARATOR)
 }
 
 module.exports = {

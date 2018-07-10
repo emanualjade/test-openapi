@@ -17,11 +17,13 @@ const {
 //  - the task key
 //  - the `title` (as returned by `plugin.report()`)
 const getHeader = function({ task, task: { isNested }, title, resultType }) {
+  const titleA = getTitle({ title })
+
   if (isNested) {
-    return getNestedHeader({ task, title })
+    return getNestedHeader({ task, title: titleA })
   }
 
-  const content = getContent({ task, title, resultType })
+  const content = getContent({ task, title: titleA, resultType })
 
   const header = `${FULL_LOWER_LINE}\n${inverse(content)}\n${FULL_UPPER_LINE}`
 
@@ -29,29 +31,26 @@ const getHeader = function({ task, task: { isNested }, title, resultType }) {
   return headerA
 }
 
-// Header for nested tasks
-const getNestedHeader = function({ task: { key }, title }) {
-  const titleA = getNestedTitle({ title })
-
-  return red(`${HORIZONTAL_LINE}
-${indent(`Nested task: ${key}`)}${titleA}
-${HORIZONTAL_LINE}`)
-}
-
-const getNestedTitle = function({ title }) {
-  if (title === '') {
+// All concatenated `title` from `plugin.report()`
+const getTitle = function({ title }) {
+  if (title.trim() === '') {
     return ''
   }
 
   return `\n\n${indent(title)}`
 }
 
+// Header for nested tasks
+const getNestedHeader = function({ task: { key }, title }) {
+  return red(`${HORIZONTAL_LINE}
+${indent(`Nested task: ${key}`)}${title}
+${HORIZONTAL_LINE}`)
+}
+
 const getContent = function({ task: { key }, title, resultType }) {
   const mark = MARKS[resultType]
 
-  const titleA = getTitle({ title })
-
-  const content = ` ${mark}  ${key}${titleA}`
+  const content = ` ${mark}  ${key}${title}`
 
   const contentA = padContent({ content })
   return contentA
@@ -64,15 +63,6 @@ const MARKS = {
   fail: '\u2718',
   // Pause symbol
   skip: '\u23f8',
-}
-
-// All concatenated `title` from `plugin.report()`
-const getTitle = function({ title }) {
-  if (title.trim() === '') {
-    return ''
-  }
-
-  return `\n\n${indent(title)}`
 }
 
 // Pad header content so that `chalk.inverse()` covers the whole line

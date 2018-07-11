@@ -3,9 +3,9 @@
 ![node](https://img.shields.io/node/v/test-openapi.svg)
 ![maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
-# Features
-
 Automatic API integration testing.
+
+# Features
 
 - **Declarative**. Tests are specified in simple YAML files.
 - **Easy**. Each test is a single HTTP request/response. You only need to specify

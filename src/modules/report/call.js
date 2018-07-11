@@ -1,6 +1,7 @@
 'use strict'
 
 const { stdout } = require('process')
+const { promisify } = require('util')
 
 // Call reporters' functions then write return value to output
 const callReporters = async function(
@@ -37,9 +38,20 @@ const callReporter = async function({
     output.write(message)
   }
 
-  if (type === 'end' && output !== stdout) {
-    output.destroy()
+  if (type === 'end') {
+    await endReporting({ output })
   }
+}
+
+const endReporting = async function({ output }) {
+  // Give enough time for `output` stream to be flushed
+  await promisify(setTimeout)()
+
+  if (output === stdout) {
+    return
+  }
+
+  output.destroy()
 }
 
 module.exports = {

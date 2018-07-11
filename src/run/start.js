@@ -14,7 +14,12 @@ const { runHandlers } = require('../plugins')
 //  - make `run` handler a function that returns a function.
 //    This does not allow cleanup though.
 const startTasks = function({ config, plugins }) {
-  return runHandlers('start', plugins, {}, { config })
+  return runHandlers({
+    type: 'start',
+    plugins,
+    input: {},
+    context: { config },
+  })
 }
 
 module.exports = {

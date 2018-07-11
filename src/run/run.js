@@ -24,16 +24,15 @@ const runAll = function({ task, task: { skipped }, config, startData, plugins, n
 
   const { context, advancedContext } = getContexts({ task, config, startData, plugins, nestedPath })
 
-  return runHandlers(
-    'run',
+  return runHandlers({
+    type: 'run',
     plugins,
-    task,
+    input: task,
     context,
-    undefined,
     advancedContext,
-    runPluginHandler,
-    stopOnDone,
-  )
+    errorHandler: runPluginHandler,
+    stopFunc,
+  })
 }
 
 // Top-level errors are returned as `task.error`
@@ -153,7 +152,7 @@ const runPluginHandler = function(error, task) {
 // errors (as opposed to throwing an exception)
 // This implies successful tasks might be emptier than expected.
 // This is used e.g. by `skip|only` or `repeat` plugins
-const stopOnDone = function({ done }) {
+const stopFunc = function({ done }) {
   return done
 }
 

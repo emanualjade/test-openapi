@@ -104,6 +104,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // Types:
 //  - `plugin.load(tasks, { config, pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
+//     - only for advanced plugins
 //  - `plugin.start(startData, { config, pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
 //  - `plugin.run(task, { config, startData, pluginNames, helpers }, { plugins, runTask, nestedPath })` `{function}`

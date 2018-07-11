@@ -6,7 +6,12 @@ const { runHandlers } = require('../plugins')
 // They should not throw.
 const endTasks = async function({ tasks, plugins, config, startData }) {
   // `config` and `tasks` cannot be modified
-  await runHandlers('end', plugins, tasks, { config, startData })
+  await runHandlers({
+    type: 'end',
+    plugins,
+    input: tasks,
+    context: { config, startData },
+  })
 }
 
 module.exports = {

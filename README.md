@@ -3,32 +3,46 @@
 ![node](https://img.shields.io/node/v/test-openapi.svg)
 ![maintenance](https://img.shields.io/maintenance/yes/2018.svg)
 
+# Features
+
+Automatic API integration testing.
+
+- **Declarative**. Tests are specified in simple YAML files.
+- **Easy**. Each test is a single HTTP request/response. You only need to specify
+  the request parameters and the response validation.
+- Integrated to [**OpenAPI**](https://www.openapis.org/). Tests re-use your
+  [OpenAPI](https://www.openapis.org/) specification by default, making them
+  less verbose and ensuring they match your documentation.
+- **Fast**. Tests have minimum overhead and run in parallel.
+- Nice **developer experience**. Reporting is pretty, informative and usable.
+- **Flexible**. Core functionalities can be extended with plugins.
+
 # Usage
 
 ```shell
 yarn integrationTest
 ```
 
-# Test files
+# Tests
 
-Test files are YAML (or JSON) files at `specification/**/*.tasks.yml`
+Tests are specified in YAML (or JSON) files at `./**/*.tasks.yml`
 
-Each test file is a plain object where each key/property is a single test.
+Those files are plain objects where each key represents a single test.
 
 A single test performs the following:
 
-- it sends an HTTP request to our API. The request parameters are specified
+- sends an HTTP request to the API. The request parameters are specified
   using the `call` property.
-- it validates the HTTP response according to the `validate` property.
+- validates the HTTP response according to the `validate` property.
 
-# Example test file
+# Example
 
 ```yml
-example:
+exampleTest:
   call:
     method: GET
     server: http://localhost:8081
-    path: /icoTagNames
+    path: /tags
     query.onlyPublic: false
   validate:
     status: 200
@@ -46,20 +60,29 @@ example:
             type: boolean
 ```
 
-This test calls `GET http://localhost:8081/icoTagNames?onlyPublic=false`, then validates
-that the response status is `200` and the response body is an array of
-`{ tag: string, isPublic: boolean }`
+This test calls:
+
+```http
+GET http://localhost:8081/icoTagNames?onlyPublic=false
+```
+
+It then validates that:
+
+- the response status is `200`
+- the response body is an array of `{ tag: string, isPublic: boolean }`
 
 # OpenAPI
 
-However we already described our API endpoints with OpenAPI, including the HTTP methods,
-URLs, paths, query variables, request bodies, response statuses, response headers
-and response bodies. So we do not need to repeat them in our tests.
+If you have already described your API endpoints with
+[OpenAPI](https://www.openapis.org/), the following will automatically be re-used
+by the tests (so you don't need to repeat them): HTTP method, URL, path,
+query variables, request body, response status, response headers
+and response body.
 
-We only need to specify request parameters and response validation when they
+You only need to specify request parameters and response validation when they
 differ from the OpenAPI specification. For example: "if this query variable is
-set to this value, validate that the status code is 403". The OpenAPI
-specification will automatically be deeply merged to the tests.
+set to this specific value, validate that the status code is 403". They will
+be deeply merged to the OpenAPI specification.
 
 To re-use the OpenAPI specification, the `operationId` must be prefixed to the
 test's key.
@@ -67,7 +90,7 @@ test's key.
 The above example could then be simplified to:
 
 ```yml
-getIcoTagNames.example:
+getTags.exampleTest:
   call:
     query.onlyPublic: false
   validate: {}
@@ -75,7 +98,7 @@ getIcoTagNames.example:
 
 Also please note that only OpenAPI parameters that are `required` are re-used.
 OpenAPI parameters that are not `required` are only re-used if specified in
-the test.
+the `call` property.
 
 # Available properties
 
@@ -87,20 +110,20 @@ operationId.testName:
     method: string
     server: string
     path: string
-    url.NAME: string
-    query.NAME: string
-    headers.NAME: string or number
-    body: object
+    url.NAME: any
+    query.NAME: any
+    headers.NAME: any
+    body: object|array
   validate:
     status: number
-    headers.NAME: string or number
-    body: object or array
+    headers.NAME: any
+    body: object|array
 # More tests
 ...
 ```
 
 - `operationId`: OpenAPI's `operationId`, i.e. a unique string identifying
-  an endpoint. For example `getIcoTagNames`.
+  an endpoint. For example `getTags`.
 - `testName`: an arbitratry name for the test.
 - `call`: HTTP request parameters
   - `method`: HTTP method
@@ -116,11 +139,13 @@ operationId.testName:
   - `headers.NAME`: response header
   - `body`: response body
 
-# JSON schema validation
+# Response validation
 
-Comparing the `validate.status`, `validate.headers.NAME` and `validate.body`
-against a specific value is simple. However if we need more elaborated
-validation, we can use a [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
+`validate.status`, `validate.headers.NAME` and `validate.body` are checked against
+the HTTP response and can either be:
+
+- any value checked for equality
+- a [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
 
 For example to validate that the response body is an array:
 

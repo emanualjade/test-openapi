@@ -71,6 +71,12 @@ It then validates that:
 - the response status is `200`
 - the response body is an array of `{ tag: string, isPublic: boolean }`
 
+# Reporting
+
+This screenshot shows a typical test run with few test failures:
+
+![Screenshot](docs/screenshot.png)
+
 # OpenAPI
 
 If you have already described your API endpoints with

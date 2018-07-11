@@ -73,9 +73,19 @@ It then validates that:
 
 # Reporting
 
-This screenshot shows a typical test run with few test failures:
+This screenshot shows a typical test run with few test failures.
 
 ![Screenshot](docs/screenshot.png)
+
+The failed test is called `getLists.success` and performs the following HTTP request:
+
+```http
+GET http://127.0.0.1:8081/lists?accessToken=8ac7e235-3ad2-4b9a-8a22
+```
+
+It expects a status code of 200 but receives 500 instead.
+
+Other tests are shown failing at the end. A final summary is also present.
 
 # OpenAPI
 

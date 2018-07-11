@@ -10,14 +10,15 @@ const complete = async function(
   task,
   {
     config,
-    config: {
+    startData,
+    startData: {
       report,
       report: { taskKeys, tasks, index },
     },
   },
   { plugins },
 ) {
-  if (isSilent({ config })) {
+  if (isSilent({ startData })) {
     return
   }
 
@@ -42,10 +43,10 @@ const complete = async function(
   // However we do want to buffer `reporter.complete()`, as reporters like TAP
   // add indexes on each task, i.e. need to be run in output order.
   // `reporter.tick()` does not get task as input.
-  await callReporters({ config, type: 'tick' }, {}, { config, plugins })
+  await callReporters({ startData, type: 'tick' }, {}, { config, startData, plugins })
 
   // Unbuffer tasks, i.e. report them
-  await completeTasks({ count, keys, tasks, config, plugins })
+  await completeTasks({ count, keys, tasks, config, startData, plugins })
 }
 
 const getCount = function({ keys, tasks }) {
@@ -58,36 +59,47 @@ const getCount = function({ keys, tasks }) {
   return count
 }
 
-const completeTasks = async function({ count, keys, tasks, config, plugins }) {
+const completeTasks = async function({ count, keys, tasks, config, startData, plugins }) {
   const keysA = keys.slice(0, count)
-  await completeTask({ keys: keysA, tasks, config, plugins })
+  await completeTask({ keys: keysA, tasks, config, startData, plugins })
 }
 
-const completeTask = async function({ keys: [key, ...keys], tasks, config, plugins }) {
+const completeTask = async function({ keys: [key, ...keys], tasks, config, startData, plugins }) {
   if (key === undefined) {
     return
   }
 
   const task = tasks[key]
-  await callComplete({ task, config, plugins })
+  await callComplete({ task, config, startData, plugins })
 
   // Async iteration through recursion
-  await completeTask({ keys, tasks, config, plugins })
+  await completeTask({ keys, tasks, config, startData, plugins })
 }
 
-const callComplete = async function({ task, task: { error: { nested } = {} }, config, plugins }) {
-  const silent = isSilentTask({ task, config })
+const callComplete = async function({
+  task,
+  task: { error: { nested } = {} },
+  config,
+  startData,
+  plugins,
+}) {
+  const silent = isSilentTask({ task, startData })
 
-  const taskA = filterTaskData({ task, config, plugins })
+  const taskA = filterTaskData({ task, startData, plugins })
 
-  await callReporters({ config, type: 'complete' }, taskA, { config, plugins, silent })
+  await callReporters({ startData, type: 'complete' }, taskA, {
+    config,
+    startData,
+    plugins,
+    silent,
+  })
 
   if (nested === undefined) {
     return
   }
 
   // Recurse over `task.error.nested`
-  await callComplete({ task: { ...nested, isNested: true }, config, plugins })
+  await callComplete({ task: { ...nested, isNested: true }, config, startData, plugins })
 }
 
 module.exports = {

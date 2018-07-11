@@ -104,19 +104,19 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // Types:
 //  - `plugin.load(tasks, { config, pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.start(config, { pluginNames }, { plugins })` `{function}`
+//  - `plugin.start(startData, { config, pluginNames }, { plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, pluginNames, helpers }, { plugins, runTask, nestedPath })`
-//    `{function}`
+//  - `plugin.run(task, { config, startData, pluginNames, helpers }, { plugins, runTask, nestedPath })` `{function}`
 //     - fired for each task
-//  - `plugin.complete(task, { config, pluginNames }, { plugins })` `{function}`
+//  - `plugin.complete(task, { config, startData, pluginNames }, { plugins })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
 //     - only for advanced plugins
-//  - `plugin.end(tasks, { config, pluginNames }, { plugins })` `{function}`
+//  - `plugin.end(tasks, { config, startData, pluginNames }, { plugins })` `{function}`
 //     - fired after all tasks
 // Arguments:
 //   - available depends on the handler type, but can be:
 //      - `config` `{object}`: the configuration object (after being modified by `plugin.start()`)
+//      - `startData` `{object}`: the object returned by each `start` handler
 //      - `task` `{object}`: same object as the one specified in tasks files
 //      - `tasks` `{array}`
 //      - `pluginNames` `{array}`: list of plugins names

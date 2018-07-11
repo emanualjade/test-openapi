@@ -4,9 +4,9 @@ const { runHandlers } = require('../plugins')
 
 // Run each `plugin.end()`
 // They should not throw.
-const endTasks = async function({ tasks, plugins, config }) {
+const endTasks = async function({ tasks, plugins, config, startData }) {
   // `config` and `tasks` cannot be modified
-  await runHandlers('end', plugins, tasks, { config })
+  await runHandlers('end', plugins, tasks, { config, startData })
 }
 
 module.exports = {

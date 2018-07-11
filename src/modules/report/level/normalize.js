@@ -5,16 +5,16 @@
 //    - `added` means only the added props (i.e. not in `task.config.task.*`)
 const LEVELS = require('./levels')
 
-// Normalize `config.report.level`
+// Get `startData.report.level`
 // The reporting level should affect individual tasks reporting, not the summary
-const normalizeLevel = function({ report, report: { reporters, level } }) {
-  const levelA = getLevel({ reporters, level })
+const getLevelData = function({ report: { level }, reporters }) {
+  const levelA = getLevel({ level, reporters })
   const levelB = LEVELS[levelA]
-  return { ...report, level: levelB }
+  return levelB
 }
 
-// Default `config.report.level` is the first defined `reporter.level`, or `log`
-const getLevel = function({ reporters, level }) {
+// Default `startData.report.level` is the first defined `reporter.level`, or `log`
+const getLevel = function({ level, reporters }) {
   if (level !== undefined) {
     return level
   }
@@ -30,5 +30,5 @@ const getLevel = function({ reporters, level }) {
 const DEFAULT_LEVEL = 'info'
 
 module.exports = {
-  normalizeLevel,
+  getLevelData,
 }

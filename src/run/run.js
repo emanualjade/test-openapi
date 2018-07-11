@@ -5,14 +5,14 @@ const { runHandlers, getTaskReturn } = require('../plugins')
 const { substituteHelpers } = require('../helpers')
 
 // Run each `plugin.run()`
-const runTask = async function({ task, config, plugins, nestedPath }) {
-  const taskA = await eRunAll({ task, config, plugins, nestedPath })
+const runTask = async function({ task, config, startData, plugins, nestedPath }) {
+  const taskA = await eRunAll({ task, config, startData, plugins, nestedPath })
 
   const taskB = getTaskReturn({ task: taskA, plugins })
   return taskB
 }
 
-const runAll = function({ task, task: { skipped }, config, plugins, nestedPath }) {
+const runAll = function({ task, task: { skipped }, config, startData, plugins, nestedPath }) {
   // Task marked as skipped, e.g. by `skip|only` plugins
   // Only `run` plugin handlers are skipped, i.e. `start`, `complete` and `end`
   // handlers are still run for those tasks.
@@ -22,14 +22,13 @@ const runAll = function({ task, task: { skipped }, config, plugins, nestedPath }
     return task
   }
 
-  const { context, advancedContext } = getContexts({ task, config, plugins, nestedPath })
+  const { context, advancedContext } = getContexts({ task, config, startData, plugins, nestedPath })
 
   return runHandlers(
     'run',
     plugins,
     task,
     context,
-    undefined,
     undefined,
     advancedContext,
     runPluginHandler,
@@ -50,10 +49,10 @@ const runAllHandler = function(error) {
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
-const getContexts = function({ task: { originalTask }, config, plugins, nestedPath }) {
-  const context = { config }
+const getContexts = function({ task: { originalTask }, config, startData, plugins, nestedPath }) {
+  const context = { config, startData }
 
-  const recursiveRunTaskA = recursiveRunTask.bind(null, { config, plugins, nestedPath })
+  const recursiveRunTaskA = recursiveRunTask.bind(null, { config, startData, plugins, nestedPath })
   const advancedContext = { runTask: recursiveRunTaskA, nestedPath }
 
   // Helper functions get `context.task` with the original task (before helpers evaluation)
@@ -71,14 +70,14 @@ const getContexts = function({ task: { originalTask }, config, plugins, nestedPa
 // Tasks can use `nestedPath` to know if this is a recursive call
 // As opposed to regular `runTask()`, failed task throws.
 const recursiveRunTask = async function(
-  { config, plugins, nestedPath },
+  { config, startData, plugins, nestedPath },
   { task, task: { key }, self, getError },
 ) {
   checkRecursion({ nestedPath, key, self })
 
   const nestedPathA = appendNestedPath({ nestedPath, key, self })
 
-  const taskA = await runTask({ task, config, plugins, nestedPath: nestedPathA })
+  const taskA = await runTask({ task, config, startData, plugins, nestedPath: nestedPathA })
 
   const { error } = taskA
 

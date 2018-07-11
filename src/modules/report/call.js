@@ -5,7 +5,7 @@ const { stdout } = require('process')
 // Call reporters' functions then write return value to output
 const callReporters = async function(
   {
-    config: {
+    startData: {
       report: { output, reporters, options },
     },
     type,

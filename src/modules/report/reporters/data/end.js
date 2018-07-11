@@ -5,17 +5,17 @@ const { getSummary } = require('../../utils')
 const { isSilentTask } = require('../../level')
 
 // JSON reporter
-const end = function({ options: { spinner }, tasks, config }) {
+const end = function({ options: { spinner }, tasks, startData }) {
   spinner.stop()
 
-  const tasksA = getTasks({ tasks, config })
+  const tasksA = getTasks({ tasks, startData })
   const tasksB = JSON.stringify(tasksA, null, 2)
-  return tasksB
+  return `${tasksB}\n`
 }
 
-const getTasks = function({ tasks, config }) {
+const getTasks = function({ tasks, startData }) {
   const summary = getSummary({ tasks })
-  const tasksA = tasks.filter(task => !isSilentTask({ task, config })).map(getTask)
+  const tasksA = tasks.filter(task => !isSilentTask({ task, startData })).map(getTask)
 
   return { summary, tasks: tasksA }
 }

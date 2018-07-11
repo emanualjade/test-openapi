@@ -42,11 +42,11 @@ const performRun = async function({ config, plugins }) {
 
   const configB = addOriginalTasks({ config: configA })
 
-  const configC = await startTasks({ config: configB, plugins })
+  const startData = await startTasks({ config: configB, plugins })
 
-  const tasks = await fireTasks({ config: configC, plugins })
+  const tasks = await fireTasks({ config: configB, startData, plugins })
 
-  await endTasks({ tasks, plugins, config: configC })
+  await endTasks({ tasks, plugins, config: configB, startData })
 
   const tasksA = removeOriginalTasks({ tasks })
 
@@ -64,15 +64,15 @@ const performRunHandler = function(error, { plugins }) {
 const ePerformRun = addErrorHandler(performRun, performRunHandler)
 
 // Fire all tasks in parallel
-const fireTasks = function({ config, config: { tasks }, plugins }) {
-  const tasksA = tasks.map(task => fireTask({ task, config, plugins }))
+const fireTasks = function({ config, config: { tasks }, startData, plugins }) {
+  const tasksA = tasks.map(task => fireTask({ task, config, startData, plugins }))
   return Promise.all(tasksA)
 }
 
-const fireTask = async function({ task, config, plugins }) {
-  const taskA = await runTask({ task, config, plugins })
+const fireTask = async function({ task, config, startData, plugins }) {
+  const taskA = await runTask({ task, config, startData, plugins })
 
-  const taskB = await completeTask({ task: taskA, plugins, config })
+  const taskB = await completeTask({ task: taskA, startData, plugins, config })
 
   return taskB
 }

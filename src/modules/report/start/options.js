@@ -1,26 +1,31 @@
 'use strict'
 
-// Setup reporters' options
-const addReportersOptions = function({ config, report }) {
-  const options = getReportersOptions({ config, report })
-  return { ...report, options }
+// Get `startData.report.options`
+const getReportersOptions = function({ config, report, reporters }) {
+  const optionsA = reporters.map(reporter => getReporterOptions({ config, report, reporter }))
+  return Object.assign({}, ...optionsA)
 }
 
-const getReportersOptions = function({ config, report: { reporters, options = {} } }) {
-  const optionsA = reporters.map(reporter => getReporterOptions({ reporter, config, options }))
-  return Object.assign({}, options, ...optionsA)
+const getReporterOptions = function({
+  reporter,
+  reporter: { name },
+  config,
+  report: { options: { [name]: options = {} } = {} },
+}) {
+  const optionsA = getOptions({ reporter, config, options })
+  const optionsB = { ...options, ...optionsA }
+
+  return { [name]: optionsB }
 }
 
-const getReporterOptions = function({ reporter, reporter: { name }, config, options }) {
+const getOptions = function({ reporter, config, options }) {
   if (reporter.options === undefined) {
     return
   }
 
-  const optionsA = options[name] || {}
-  const optionsB = reporter.options({ config, options: optionsA })
-  return { [name]: { ...optionsA, ...optionsB } }
+  return reporter.options({ config, options })
 }
 
 module.exports = {
-  addReportersOptions,
+  getReportersOptions,
 }

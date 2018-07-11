@@ -6,10 +6,10 @@ const { LINE, COLORS, MARKS } = require('../constants')
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,
 // then failed tasks names + error messages
-const printTasksList = function({ tasks, config }) {
+const printTasksList = function({ tasks, startData }) {
   const tasksList = RESULT_TYPES
     // Filter according to `report.level`
-    .filter(resultType => !isSilentType({ resultType, config }))
+    .filter(resultType => !isSilentType({ resultType, startData }))
     .map(resultType => printTasks({ tasks, resultType }))
     // Do not show newlines if no tasks is to be shown
     .filter(tasksListPart => tasksListPart !== '')

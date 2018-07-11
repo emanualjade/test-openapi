@@ -8,7 +8,7 @@ const { isObject } = require('../../../utils')
 // Use `task.originalTask` but do not keep it
 const filterTaskData = function({
   task: { originalTask, ...task },
-  config: {
+  startData: {
     report: {
       level: { taskData },
     },

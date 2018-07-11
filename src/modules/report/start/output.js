@@ -6,11 +6,6 @@ const { createWriteStream } = require('fs')
 const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
 // Where to output report according to `config.report.output`
-const addOutput = async function({ report }) {
-  const output = await getOutput({ report })
-  return { ...report, output }
-}
-
 const getOutput = async function({ report: { output } }) {
   // When `config.report.output` is `undefined` (default), write to `stdout`
   if (output === undefined) {
@@ -40,5 +35,5 @@ const getFileStreamHandler = function({ message }, { output }) {
 const eGetFileStream = addErrorHandler(getFileStream, getFileStreamHandler)
 
 module.exports = {
-  addOutput,
+  getOutput,
 }

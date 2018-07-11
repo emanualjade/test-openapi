@@ -5,7 +5,7 @@ const { normalizeSpec } = require('./normalize')
 
 // Parse, validate and normalize an OpenAPI specification (including JSON references)
 // then add it to `task.call|validate.*`
-const start = async function({ spec, call: { server } = {} }) {
+const start = async function(startData, { config: { spec, call: { server } = {} } }) {
   if (spec === undefined) {
     return
   }
@@ -13,7 +13,6 @@ const start = async function({ spec, call: { server } = {} }) {
   const specA = await loadOpenApiSpec({ spec })
 
   const specB = normalizeSpec({ spec: specA, server })
-
   return { spec: specB }
 }
 

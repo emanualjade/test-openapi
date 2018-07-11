@@ -3,12 +3,7 @@
 const { loadReporter } = require('./load')
 const { validateReporter } = require('./validate')
 
-// Add reporters' modules
-const addReporters = function({ report }) {
-  const reporters = getReporters({ report })
-  return { ...report, reporters }
-}
-
+// Get `startData.reporters`
 const getReporters = function({ report: { styles = DEFAULT_REPORTERS, options = {} } }) {
   return styles.map(style => getReporter({ style, options }))
 }
@@ -24,5 +19,5 @@ const getReporter = function({ style, options }) {
 }
 
 module.exports = {
-  addReporters,
+  getReporters,
 }

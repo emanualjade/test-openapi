@@ -1,39 +1,41 @@
 'use strict'
 
 const { callReporters } = require('../call')
-const { normalizeLevel, isSilent } = require('../level')
+const { getLevelData, isSilent } = require('../level')
 
-const { addOutput } = require('./output')
-const { addReporters } = require('./reporters')
-const { addReportersOptions } = require('./options')
+const { getReporters } = require('./reporters')
+const { getReportersOptions } = require('./options')
+const { getOutput } = require('./output')
 
 // Starts reporting
-const start = async function(config) {
-  const { report = {} } = config
+const start = async function(allStartData, { config, config: { report = {} } }) {
+  const reporters = getReporters({ report })
 
-  const reportA = addReporters({ report })
+  const level = getLevelData({ report, reporters })
 
-  const reportB = normalizeLevel({ report: reportA })
+  const startData = { reporters, level }
 
-  if (isSilent({ config: { report: reportB } })) {
-    return { report: reportB }
+  if (isSilent({ startData: { report: startData } })) {
+    return { report: startData }
   }
 
-  const reportC = addReportersOptions({ config, report: reportB })
+  const options = getReportersOptions({ config, report, reporters })
 
-  const reportD = await addOutput({ report: reportC })
+  const output = await getOutput({ report })
 
-  await callReporters({ config: { report: reportD }, type: 'start' }, config)
+  const ordering = getOrdering({ config })
 
-  const reportE = addOrdering({ config, report: reportD })
+  const startDataA = { ...startData, options, output, ...ordering }
 
-  return { report: reportE }
+  await callReporters({ startData: { report: startDataA }, type: 'start' }, config)
+
+  return { report: startDataA }
 }
 
 // Used to ensure tasks ordering
-const addOrdering = function({ config: { tasks }, report }) {
+const getOrdering = function({ config: { tasks } }) {
   const taskKeys = tasks.map(({ key }) => key)
-  return { ...report, taskKeys, tasks: {}, index: 0 }
+  return { taskKeys, tasks: {}, index: 0 }
 }
 
 module.exports = {

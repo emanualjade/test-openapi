@@ -75,7 +75,7 @@ It then validates that:
 
 If you have already described your API endpoints with
 [OpenAPI](https://www.openapis.org/), the following will automatically be re-used
-by the tests (so you don't need to repeat them): HTTP method, URL, path,
+in the tests (so you don't need to repeat them): HTTP method, URL, path,
 query variables, request body, response status, response headers
 and response body.
 
@@ -96,9 +96,8 @@ getTags.exampleTest:
   validate: {}
 ```
 
-Also please note that only OpenAPI parameters that are `required` are re-used.
-OpenAPI parameters that are not `required` are only re-used if specified in
-the `call` property.
+OpenAPI parameters that are `required` are always re-used. OpenAPI parameters that
+are not `required` are only re-used if specified in the `call` property.
 
 # Available properties
 
@@ -113,18 +112,18 @@ operationId.testName:
     url.NAME: any
     query.NAME: any
     headers.NAME: any
-    body: object|array
+    body: any
   validate:
     status: number
     headers.NAME: any
-    body: object|array
+    body: any
 # More tests
 ...
 ```
 
 - `operationId`: OpenAPI's `operationId`, i.e. a unique string identifying
   an endpoint. For example `getTags`.
-- `testName`: an arbitratry name for the test.
+- `testName`: an arbitrary name for the test.
 - `call`: HTTP request parameters
   - `method`: HTTP method
   - `server`: server's origin (protocol + host)
@@ -133,7 +132,7 @@ operationId.testName:
     For example, if the path is `/companies/{companyId}` it can be `path.companyId`.
   - `query.NAME`: URL query variable
   - `headers.NAME`: HTTP request header
-  - `body`: request body. Is usually an object or an array.
+  - `body`: request body
 - `validate`: HTTP response
   - `status` (default: `200`): HTTP status code
   - `headers.NAME`: response header
@@ -142,7 +141,7 @@ operationId.testName:
 # Response validation
 
 `validate.status`, `validate.headers.NAME` and `validate.body` are checked against
-the HTTP response and can either be:
+the HTTP response. They can either be:
 
 - any value checked for equality
 - a [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
@@ -192,8 +191,3 @@ Using the value `null` or the JSON schema `type: 'null'` means "not set".
 
 For example "do not generate this request parameter", "this response header should not
 be present" or "the response body should be empty".
-
-# Troubleshooting
-
-- `yarn integrationTest` first populates a test database, which takes about
-  20 seconds. We are working on solutions to improve the performance here.

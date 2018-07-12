@@ -1,6 +1,7 @@
 'use strict'
 
 module.exports = {
-  ...require('./main'),
+  ...require('./validate'),
+  ...require('./check'),
   ...require('./meta'),
 }

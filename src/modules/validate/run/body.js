@@ -1,7 +1,6 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
-const { validateFromSchema } = require('../../../validation')
+const { checkSchema } = require('../../../validation')
 
 const { checkRequired } = require('./required')
 
@@ -17,20 +16,7 @@ const validateBody = function({ validate: { body: schema }, response: { body } }
     return
   }
 
-  validateBodyValue({ schema, body })
-}
-
-const validateBodyValue = function({ schema, body }) {
-  const { error, schema: schemaA, value: valueA, property } = validateFromSchema({
-    schema,
-    value: body,
-    propName: PROPERTY,
-  })
-  if (error === undefined) {
-    return
-  }
-
-  throw new TestOpenApiError(`${NAME} ${error}`, { schema: schemaA, value: valueA, property })
+  checkSchema({ schema, value: body, propName: PROPERTY, message: NAME })
 }
 
 const PROPERTY = 'validate.body'

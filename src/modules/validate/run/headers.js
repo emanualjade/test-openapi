@@ -1,7 +1,7 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
-const { validateFromSchema, removePrefixes } = require('../../../validation')
+const { removePrefixes } = require('../../../utils')
+const { checkSchema } = require('../../../validation')
 
 const { checkRequired } = require('./required')
 
@@ -24,7 +24,8 @@ const validateHeader = function({ name, schema, headers }) {
     return
   }
 
-  validateHeaderValue({ name, schema, header })
+  // Validates response header against JSON schema from specification
+  checkSchema({ schema, value: header, propName: PROPERTY(name), message: NAME(name) })
 }
 
 const getResponseHeader = function({ headers, name }) {
@@ -35,20 +36,6 @@ const getResponseHeader = function({ headers, name }) {
   }
 
   return headers[nameB]
-}
-
-// Validates response header against JSON schema from specification
-const validateHeaderValue = function({ name, schema, header }) {
-  const { error, schema: schemaA, value, property } = validateFromSchema({
-    schema,
-    value: header,
-    propName: PROPERTY(name),
-  })
-  if (error === undefined) {
-    return
-  }
-
-  throw new TestOpenApiError(`${NAME(name)} ${error}`, { schema: schemaA, value, property })
 }
 
 const PROPERTY = name => `validate.headers.${name}`

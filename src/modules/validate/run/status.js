@@ -14,7 +14,7 @@ const validateStatus = function({
   checkSchema({
     schema,
     value: status,
-    propName: 'validate.status',
+    name: 'validate.status',
     message: 'Status code',
     target: 'schema',
     // Otherwise it uses `validate.status.enum`

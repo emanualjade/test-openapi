@@ -6,14 +6,14 @@ const { get } = require('lodash')
 const { validator } = require('./validator')
 
 // Validate a value against a JSON schema
-const validateFromSchema = function({ schema, value, name, propName, target }) {
+const validateFromSchema = function({ schema, value, name, target }) {
   const passed = validator.validate(schema, value)
 
   if (passed) {
     return {}
   }
 
-  const error = getError({ validator, schema, value, name, propName, target })
+  const error = getError({ validator, schema, value, name, target })
   return error
 }
 
@@ -24,21 +24,20 @@ const getError = function({
   schema,
   value,
   name,
-  propName,
   target,
 }) {
-  const message = getErrorMessage({ error, name })
+  const message = getErrorMessage({ error })
   const path = getErrorPath({ error })
   const valueA = getErrorValue({ path, value })
   const schemaPath = getErrorSchemaPath({ error })
   const schemaA = getErrorSchema({ schemaPath, schema })
-  const property = getErrorProperty({ propName, path, schemaPath, target })
+  const property = getErrorProperty({ name, path, schemaPath, target })
 
   return { error: message, path, value: valueA, schemaPath, schema: schemaA, property }
 }
 
-const getErrorMessage = function({ error, name = '' }) {
-  return validator.errorsText([error], { dataVar: name }).replace(/^\./, '')
+const getErrorMessage = function({ error }) {
+  return validator.errorsText([error], { dataVar: '' }).replace(/^\./, '')
 }
 
 const getErrorPath = function({ error: { dataPath } }) {
@@ -67,32 +66,32 @@ const getErrorSchema = function({ schemaPath, schema }) {
 }
 
 // `target` is whether `error.property` shouls target the schema path or the value path
-const getErrorProperty = function({ propName, path, schemaPath, target = 'value' }) {
+const getErrorProperty = function({ name, path, schemaPath, target = 'value' }) {
   if (target === 'value') {
-    return getErrorPropertyValue({ propName, path })
+    return getErrorPropertyValue({ name, path })
   }
 
-  return getErrorPropertySchema({ propName, schemaPath })
+  return getErrorPropertySchema({ name, schemaPath })
 }
 
-const getErrorPropertyValue = function({ propName, path }) {
-  if (propName === undefined) {
+const getErrorPropertyValue = function({ name, path }) {
+  if (name === undefined) {
     return path
   }
 
   if (path === '') {
-    return propName
+    return name
   }
 
-  return `${propName}.${path}`
+  return `${name}.${path}`
 }
 
-const getErrorPropertySchema = function({ propName, schemaPath }) {
-  if (propName === undefined) {
+const getErrorPropertySchema = function({ name, schemaPath }) {
+  if (name === undefined) {
     return schemaPath
   }
 
-  return [propName, ...schemaPath].join('.')
+  return [name, ...schemaPath].join('.')
 }
 
 // Compilation is automatically memoized by `ajv` but not validation

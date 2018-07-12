@@ -10,8 +10,8 @@ const validateJsonSchemas = function({ validate }) {
 const validateJsonSchema = function([prop, value]) {
   checkIsSchema({
     value,
-    propName: `validate.${prop}`,
-    message: `'validate.${prop}' is not a valid JSON schema v4:`,
+    name: `validate.${prop}`,
+    message: `'validate.${prop}' configuration`,
   })
 }
 

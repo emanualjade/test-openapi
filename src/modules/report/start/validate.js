@@ -33,8 +33,8 @@ const validateOptions = function({
   checkSchema({
     schema: config,
     value: options,
-    propName: `report.options.${name}`,
-    message: `'report.options.${name}' is invalid:`,
+    name: `report.options.${name}`,
+    message: `'report.options.${name}'`,
     props: { plugin: `reporter-${style}` },
   })
 }

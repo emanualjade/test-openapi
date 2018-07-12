@@ -28,7 +28,7 @@ const validateHeader = function({ name, schema, headers }) {
   checkSchema({
     schema,
     value: header,
-    propName: PROPERTY(name),
+    name: PROPERTY(name),
     message: NAME(name),
     target: 'schema',
   })

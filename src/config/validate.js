@@ -10,8 +10,7 @@ const validateConfig = function({ config }) {
     schema: CONFIG_SCHEMA,
     value: config,
     name: 'config',
-    propName: 'config',
-    message: 'Configuration is invalid:',
+    message: 'Configuration',
   })
 }
 

@@ -4,7 +4,7 @@ const { verifyTask } = require('../../plugins')
 
 // Validate plugin-specific configuration
 // Must be done after `helpers` plugin
-const run = function(task, context, { plugins }) {
+const run = function(task, { _plugins: plugins }) {
   plugins.forEach(plugin => verifyTask({ task, plugin }))
 }
 

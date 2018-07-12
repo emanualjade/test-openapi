@@ -69,12 +69,7 @@ const getHelperValue = function({
   return value
 }
 
-const evalHelperValue = function({
-  value,
-  helper: { type, arg },
-  info,
-  info: { context, advancedContext },
-}) {
+const evalHelperValue = function({ value, helper: { type, arg }, info, info: { context } }) {
   // Update `info.stack` for recursive helper
   const recursiveSubstitute = substituteHelpers.bind(null, info)
 
@@ -90,12 +85,12 @@ const evalHelperValue = function({
   }
 
   // Can use `{ $$helper: [...] }` to pass several arguments to the helper
-  // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context, advancedContext)`
+  // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context)`
   const args = Array.isArray(arg) ? arg : [arg]
 
   const contextA = { ...context, helpers: recursiveSubstitute }
 
-  return value(...args, contextA, advancedContext)
+  return value(...args, contextA)
 }
 
 const eEvalHelperValue = addErrorHandler(evalHelperValue, helperHandler)

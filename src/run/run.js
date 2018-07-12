@@ -22,14 +22,13 @@ const runAll = function({ task, task: { skipped }, config, startData, plugins, n
     return task
   }
 
-  const { context, advancedContext } = getContexts({ task, config, startData, plugins, nestedPath })
+  const context = getContext({ task, config, startData, plugins, nestedPath })
 
   return runHandlers({
     type: 'run',
     plugins,
     input: task,
     context,
-    advancedContext,
     errorHandler: runPluginHandler,
     stopFunc,
   })
@@ -48,26 +47,25 @@ const runAllHandler = function(error) {
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
-const getContexts = function({ task: { originalTask }, config, startData, plugins, nestedPath }) {
-  const context = { config, startData }
-
+const getContext = function({ task: { originalTask }, config, startData, plugins, nestedPath }) {
   const recursiveRunTaskA = recursiveRunTask.bind(null, { config, startData, plugins, nestedPath })
-  const advancedContext = { runTask: recursiveRunTaskA, nestedPath }
+
+  const context = { config, startData, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
 
   // Helper functions get `context.task` with the original task (before helpers evaluation)
   // not the current task, because it's more predictable for the user.
   const helpersContext = { ...context, task: originalTask }
-  const helpers = substituteHelpers.bind(null, { context: helpersContext, advancedContext })
+  const helpers = substituteHelpers.bind(null, { context: helpersContext })
   // `context.helpers` is overriden during recursion, so it's ok if
   // `context.helpers -> context.helpers` is `undefined`
   const contextA = { ...context, helpers }
 
-  return { context: contextA, advancedContext }
+  return contextA
 }
 
-// Pass simplified `runTask()` for recursive tasks
-// Tasks can use `nestedPath` to know if this is a recursive call
-// As opposed to regular `runTask()`, failed task throws.
+// Pass simplified `_runTask()` for recursive tasks
+// Tasks can use `_nestedPath` to know if this is a recursive call
+// As opposed to regular `_runTask()`, failed task throws.
 const recursiveRunTask = async function(
   { config, startData, plugins, nestedPath },
   { task, task: { key }, self, getError },
@@ -87,11 +85,11 @@ const recursiveRunTask = async function(
   throwRecursiveError({ task: taskA, error, getError })
 }
 
-// Check for infinite recursion in `runTask()`
+// Check for infinite recursion in `_runTask()`
 // This is separate from helpers recursion check:
 //  - helpers check recursions only within a given task
 //  - tasks recursion can happen even without any helpers involved
-//    (when any plugin uses `runTask()`)
+//    (when any plugin uses `_runTask()`)
 const checkRecursion = function({ nestedPath = [], key, self }) {
   if (self || !nestedPath.includes(key)) {
     return
@@ -104,8 +102,8 @@ const checkRecursion = function({ nestedPath = [], key, self }) {
 const RIGHT_ARROW = '\u21aa'
 
 const appendNestedPath = function({ nestedPath = [], key, self }) {
-  // `nestedPath` is unchanged if `self: true`
-  // Used when `runTask()` is called to call current task, e.g. by `repeat` plugin
+  // `_nestedPath` is unchanged if `self: true`
+  // Used when `_runTask()` is called to call current task, e.g. by `repeat` plugin
   if (self) {
     return nestedPath
   }

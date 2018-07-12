@@ -4,7 +4,7 @@ const { isSilent, filterTaskData } = require('./level')
 const { callReporters } = require('./call')
 
 // Ends reporting
-const end = async function(tasks, { startData }, { plugins }) {
+const end = async function(tasks, { startData, _plugins: plugins }) {
   if (isSilent({ startData })) {
     return
   }

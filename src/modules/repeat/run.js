@@ -3,7 +3,7 @@
 // Repeat each task `config|task.repeat` times.
 // It will be reported only as a single task.
 // Run all tasks in parallel.
-const run = async function(task, { config }, { nestedPath, runTask }) {
+const run = async function(task, { config, _nestedPath: nestedPath, _runTask: runTask }) {
   if (nestedPath !== undefined) {
     return
   }

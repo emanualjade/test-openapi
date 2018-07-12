@@ -15,8 +15,8 @@ const complete = async function(
       report,
       report: { taskKeys, tasks, index },
     },
+    _plugins: plugins,
   },
-  { plugins },
 ) {
   if (isSilent({ startData })) {
     return

@@ -13,27 +13,26 @@ const runHandlers = function({
   plugins,
   input,
   context,
-  advancedContext,
   errorHandler,
   stopFunc,
   mergeReturn = defaultMergeReturn,
 }) {
-  const args = getArgs({ plugins, context, advancedContext })
-  const handlers = getHandlers({ plugins, type, errorHandler, args })
+  const contextA = getContext({ context, plugins })
+  const handlers = getHandlers({ plugins, type, errorHandler, context: contextA })
 
   return reduceAsync(handlers, runHandler, input, mergeReturn, stopFunc)
 }
 
-const getArgs = function({ plugins, context, advancedContext }) {
+const getContext = function({ context, plugins }) {
   const pluginNames = plugins.filter(({ isCore }) => !isCore).map(({ name }) => name)
-  return [{ ...context, pluginNames }, { ...advancedContext, plugins }]
+  return { ...context, pluginNames, _plugins: plugins }
 }
 
-const getHandlers = function({ plugins, type, errorHandler, args }) {
+const getHandlers = function({ plugins, type, errorHandler, context }) {
   const handlers = plugins.map(plugin => getPluginHandlers({ plugin, type }))
   const handlersA = [].concat(...handlers)
 
-  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, args, type }))
+  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, context, type }))
   return handlersB
 }
 
@@ -58,16 +57,16 @@ const getPluginHandler = function({ func, plugin: { isCore, name } }) {
   return { func, plugin }
 }
 
-const wrapHandler = function({ handler: { func, plugin }, errorHandler, args, type }) {
-  const handlerA = callHandler.bind(null, { func, args, type })
+const wrapHandler = function({ handler: { func, plugin }, errorHandler, context, type }) {
+  const handlerA = callHandler.bind(null, { func, context, type })
 
   const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, plugin))
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return handlerC
 }
 
-const callHandler = function({ func, args }, input) {
-  return func(input, ...args)
+const callHandler = function({ func, context }, input) {
+  return func(input, context)
 }
 
 // Add `error.plugin` to every thrown error

@@ -102,17 +102,17 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 // `plugin.load|start|run|complete|end` `{function|function[]}`
 // Handlers, i.e. functions fired by each plugin. This is where the logic is.
 // Types:
-//  - `plugin.load(tasks, { config, pluginNames }, { plugins })` `{function}`
+//  - `plugin.load(tasks, { config, pluginNames, _plugins })` `{function}`
 //     - fired before all tasks
 //     - only for advanced plugins
-//  - `plugin.start(startData, { config, pluginNames }, { plugins })` `{function}`
+//  - `plugin.start(startData, { config, pluginNames, _plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, startData, pluginNames, helpers }, { plugins, runTask, nestedPath })` `{function}`
+//  - `plugin.run(task, { config, startData, pluginNames, helpers, _plugins, _runTask, _nestedPath })` `{function}`
 //     - fired for each task
-//  - `plugin.complete(task, { config, startData, pluginNames }, { plugins })` `{function}`
+//  - `plugin.complete(task, { config, startData, pluginNames, _plugins })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
 //     - only for advanced plugins
-//  - `plugin.end(tasks, { config, startData, pluginNames }, { plugins })` `{function}`
+//  - `plugin.end(tasks, { config, startData, pluginNames, _plugins })` `{function}`
 //     - fired after all tasks
 // Arguments:
 //   - available depends on the handler type, but can be:
@@ -121,11 +121,12 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 //      - `task` `{object}`: same object as the one specified in tasks files
 //      - `tasks` `{array}`
 //      - `pluginNames` `{array}`: list of plugins names
-//      - `plugins` `{array}`: list of available plugins
-//      - `runTask({ task, property, self })` `{function}`:
-//         function allowing a task to fire another task
-//      - `nestedPath` `{array}`: set when task was run through recursive `runTask()`
 //      - `helpers(value)` `{function}`: substitute helpers
+//   - the following ones are only for advanced usage:
+//      - `_plugins` `{array}`: list of available plugins
+//      - `_runTask({ task, property, self })` `{function}`:
+//         function allowing a task to fire another task
+//      - `_nestedPath` `{array}`: set when task was run through recursive `_runTask()`
 //   - `load`, `start` and `run` can modify their first argument by returning it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.

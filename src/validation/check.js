@@ -7,7 +7,7 @@ const { validateFromSchema } = require('./validate')
 // Validate against JSON schema and on failure throw error with
 // `error.schema|value|property` set accordingly
 const checkSchema = function({ schema, value, name, propName, message, target, props }) {
-  const { error, schema: schemaA, value: valueA, property, path } = validateFromSchema({
+  const { error, schema: schemaA, value: valueA, property } = validateFromSchema({
     schema,
     value,
     name,
@@ -18,19 +18,13 @@ const checkSchema = function({ schema, value, name, propName, message, target, p
     return
   }
 
-  const messageA = getMessage({ message, error, path })
+  const messageA = getMessage({ message, error })
   throw new TestOpenApiError(messageA, { schema: schemaA, value: valueA, property, ...props })
 }
 
-const getMessage = function({ message, error, path }) {
+const getMessage = function({ message, error }) {
   const errorA = error.replace(/^ /, '')
-
-  if (typeof message !== 'function') {
-    return `${message} ${errorA}`
-  }
-
-  const messageA = message({ path })
-  return `${messageA} ${errorA}`
+  return `${message} ${errorA}`
 }
 
 module.exports = {

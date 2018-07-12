@@ -34,7 +34,7 @@ const validateOptions = function({
     schema: config,
     value: options,
     propName: `report.options.${name}`,
-    message: ({ path }) => `'report.options.${name}.${path}' is invalid:`,
+    message: `'report.options.${name}' is invalid:`,
     props: { plugin: `reporter-${style}` },
   })
 }

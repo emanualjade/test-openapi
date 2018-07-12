@@ -1,22 +1,18 @@
 'use strict'
 
-const { TestOpenApiError } = require('../errors')
-const { validateFromSchema } = require('../validation')
+const { checkSchema } = require('../validation')
 
 const CONFIG_SCHEMA = require('./schema')
 
 // Validate configuration
 const validateConfig = function({ config }) {
-  const { error, path } = validateFromSchema({
+  checkSchema({
     schema: CONFIG_SCHEMA,
     value: config,
     name: 'config',
+    propName: 'config',
+    message: 'Configuration is invalid:',
   })
-  if (error === undefined) {
-    return
-  }
-
-  throw new TestOpenApiError(`Configuration is invalid: ${error}`, { property: path })
 }
 
 module.exports = {

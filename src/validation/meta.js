@@ -4,11 +4,16 @@ const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
 
 const { validateFromSchema } = require('./validate')
+const { checkSchema } = require('./check')
 const { CUSTOM_KEYWORDS } = require('./validator')
 
 // Validate that `value` is a valid JSON schema v4
-const validateIsSchema = function({ value, name }) {
-  return validateFromSchema({ schema: jsonSchemaSchema, value, name })
+const validateIsSchema = function(opts) {
+  return validateFromSchema({ schema: jsonSchemaSchema, ...opts })
+}
+
+const checkIsSchema = function(opts) {
+  return checkSchema({ schema: jsonSchemaSchema, ...opts })
 }
 
 const getJsonSchemaSchema = function() {
@@ -55,4 +60,5 @@ const jsonSchemaSchema = getJsonSchemaSchema()
 
 module.exports = {
   validateIsSchema,
+  checkIsSchema,
 }

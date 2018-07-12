@@ -1,7 +1,6 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
-const { validateIsSchema } = require('../../../validation')
+const { checkIsSchema } = require('../../../validation')
 
 // Make sure `task.validate.*.*` are valid JSON schemas
 const validateJsonSchemas = function({ validate }) {
@@ -9,14 +8,10 @@ const validateJsonSchemas = function({ validate }) {
 }
 
 const validateJsonSchema = function([prop, value]) {
-  const { error } = validateIsSchema({ value })
-  if (error === undefined) {
-    return
-  }
-
-  const property = `validate.${prop}`
-  throw new TestOpenApiError(`'${property}' is not a valid JSON schema v4:${error}`, {
-    property,
+  checkIsSchema({
+    value,
+    propName: `validate.${prop}`,
+    message: `'validate.${prop}' is not a valid JSON schema v4:`,
   })
 }
 

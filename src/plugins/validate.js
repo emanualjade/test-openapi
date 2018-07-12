@@ -1,6 +1,6 @@
 'use strict'
 
-const { validateFromSchema, validateIsSchema } = require('../utils')
+const { validateFromSchema, validateIsSchema } = require('../validation')
 
 const PLUGIN_SCHEMA = require('./plugin_schema.json')
 

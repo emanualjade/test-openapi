@@ -1,7 +1,7 @@
 'use strict'
 
-const { validateFromSchema } = require('../utils')
 const { TestOpenApiError } = require('../errors')
+const { validateFromSchema } = require('../validation')
 
 // Validate plugin-specific configuration against a JSON schema specified in
 // `plugin.config`

@@ -1,7 +1,7 @@
 'use strict'
 
 const { TestOpenApiError } = require('../../../errors')
-const { validateFromSchema } = require('../../../utils')
+const { validateFromSchema } = require('../../../validation')
 
 // Validates response status code against OpenAPI specification
 const validateStatus = function({

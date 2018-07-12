@@ -1,7 +1,7 @@
 'use strict'
 
 const { TestOpenApiError } = require('../../../errors')
-const { validateFromSchema, removePrefixes } = require('../../../utils')
+const { validateFromSchema, removePrefixes } = require('../../../validation')
 
 const { checkRequired } = require('./required')
 

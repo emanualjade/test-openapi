@@ -1,7 +1,7 @@
 'use strict'
 
 const { TestOpenApiError } = require('../../../errors')
-const { validateIsSchema } = require('../../../utils')
+const { validateIsSchema } = require('../../../validation')
 
 // Make sure `task.validate.*.*` are valid JSON schemas
 const validateJsonSchemas = function({ validate }) {

@@ -16,7 +16,7 @@ const validateBody = function({ validate: { body: schema }, response: { body } }
     return
   }
 
-  checkSchema({ schema, value: body, propName: PROPERTY, message: NAME })
+  checkSchema({ schema, value: body, propName: PROPERTY, message: NAME, target: 'schema' })
 }
 
 const PROPERTY = 'validate.body'

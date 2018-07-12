@@ -1,7 +1,6 @@
 'use strict'
 
-const { TestOpenApiError } = require('../../../errors')
-const { validateFromSchema } = require('../../../validation')
+const { validateFromSchema, checkSchema } = require('../../../validation')
 
 const REPORTER_SCHEMA = require('./reporter_schema')
 
@@ -31,14 +30,12 @@ const validateOptions = function({
     return
   }
 
-  const { error } = validateFromSchema({ schema: config, value: options })
-  if (error === undefined) {
-    return
-  }
-
-  throw new TestOpenApiError(`'report.options.${name}' is invalid: ${error}`, {
-    property: `report.options.${name}`,
-    plugin: `reporter-${style}`,
+  checkSchema({
+    schema: config,
+    value: options,
+    propName: `report.options.${name}`,
+    message: ({ path }) => `'report.options.${name}.${path}' is invalid:`,
+    props: { plugin: `reporter-${style}` },
   })
 }
 

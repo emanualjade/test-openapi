@@ -25,7 +25,13 @@ const validateHeader = function({ name, schema, headers }) {
   }
 
   // Validates response header against JSON schema from specification
-  checkSchema({ schema, value: header, propName: PROPERTY(name), message: NAME(name) })
+  checkSchema({
+    schema,
+    value: header,
+    propName: PROPERTY(name),
+    message: NAME(name),
+    target: 'schema',
+  })
 }
 
 const getResponseHeader = function({ headers, name }) {

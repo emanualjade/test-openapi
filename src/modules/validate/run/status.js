@@ -11,7 +11,15 @@ const validateStatus = function({
     return
   }
 
-  checkSchema({ schema, value: status, propName: 'validate.status', message: 'Status code' })
+  checkSchema({
+    schema,
+    value: status,
+    propName: 'validate.status',
+    message: 'Status code',
+    target: 'schema',
+    // Otherwise it uses `validate.status.enum`
+    props: { property: 'validate.status' },
+  })
 }
 
 const DEFAULT_STATUS = { type: 'integer', enum: [200] }

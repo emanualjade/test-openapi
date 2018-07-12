@@ -12,13 +12,22 @@ const validateStatus = function({
     return
   }
 
-  const { error } = validateFromSchema({ schema, value: status })
+  checkSchema({ schema, value: status, propName: 'validate.status', message: 'Status code' })
+}
+
+// Validate against JSON schema and on failure throw error with
+// `error.schema|value|property` set accordingly
+const checkSchema = function({ schema, value, propName, message }) {
+  const { error, schema: schemaA, value: valueA, property } = validateFromSchema({
+    schema,
+    value,
+    propName,
+  })
   if (error === undefined) {
     return
   }
 
-  const property = 'validate.status'
-  throw new TestOpenApiError(`Status code${error}.`, { property, schema, value: status })
+  throw new TestOpenApiError(`${message} ${error}`, { schema: schemaA, value: valueA, property })
 }
 
 const DEFAULT_STATUS = { type: 'integer', enum: [200] }

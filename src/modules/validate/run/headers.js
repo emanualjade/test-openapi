@@ -39,16 +39,16 @@ const getResponseHeader = function({ headers, name }) {
 
 // Validates response header against JSON schema from specification
 const validateHeaderValue = function({ name, schema, header }) {
-  const { error } = validateFromSchema({ schema, value: header })
+  const { error, schema: schemaA, value, property } = validateFromSchema({
+    schema,
+    value: header,
+    propName: PROPERTY(name),
+  })
   if (error === undefined) {
     return
   }
 
-  throw new TestOpenApiError(`${NAME(name)}${error}.`, {
-    property: PROPERTY(name),
-    schema,
-    value: header,
-  })
+  throw new TestOpenApiError(`${NAME(name)} ${error}`, { schema: schemaA, value, property })
 }
 
 const PROPERTY = name => `validate.headers.${name}`

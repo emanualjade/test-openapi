@@ -21,12 +21,16 @@ const validateBody = function({ validate: { body: schema }, response: { body } }
 }
 
 const validateBodyValue = function({ schema, body }) {
-  const { error } = validateFromSchema({ schema, value: body })
+  const { error, schema: schemaA, value: valueA, property } = validateFromSchema({
+    schema,
+    value: body,
+    propName: PROPERTY,
+  })
   if (error === undefined) {
     return
   }
 
-  throw new TestOpenApiError(`${NAME}${error}.`, { property: PROPERTY, schema, value: body })
+  throw new TestOpenApiError(`${NAME} ${error}`, { schema: schemaA, value: valueA, property })
 }
 
 const PROPERTY = 'validate.body'

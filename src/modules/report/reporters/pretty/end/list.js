@@ -1,7 +1,7 @@
 'use strict'
 
 const { getResultType, gray, indent } = require('../../../utils')
-const { isSilentType } = require('../../../level')
+const { isSilentTask, isSilentType } = require('../../../level')
 const { LINE, COLORS, MARKS } = require('../constants')
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,
@@ -10,7 +10,7 @@ const printTasksList = function({ tasks, startData }) {
   const tasksList = RESULT_TYPES
     // Filter according to `report.level`
     .filter(resultType => !isSilentType({ resultType, startData }))
-    .map(resultType => printTasks({ tasks, resultType }))
+    .map(resultType => printTasks({ tasks, resultType, startData }))
     // Do not show newlines if no tasks is to be shown
     .filter(tasksListPart => tasksListPart !== '')
     .join('\n\n')
@@ -26,8 +26,8 @@ const printTasksList = function({ tasks, startData }) {
 // Order matters
 const RESULT_TYPES = ['skip', 'pass', 'fail']
 
-const printTasks = function({ tasks, resultType }) {
-  const padLength = getPadLength({ tasks })
+const printTasks = function({ tasks, resultType, startData }) {
+  const padLength = getPadLength({ tasks, startData })
 
   return tasks
     .filter(task => getResultType(task) === resultType)
@@ -36,8 +36,10 @@ const printTasks = function({ tasks, resultType }) {
 }
 
 // Vertically align all `task.path`
-const getPadLength = function({ tasks }) {
-  const lengths = tasks.map(({ key }) => key.length)
+const getPadLength = function({ tasks, startData }) {
+  const lengths = tasks
+    .filter(task => !isSilentTask({ task, startData }))
+    .map(({ key }) => key.length)
   const maxLength = Math.max(...lengths)
   return maxLength + 2
 }

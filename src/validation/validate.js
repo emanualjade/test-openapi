@@ -38,7 +38,7 @@ const getError = function({
 }
 
 const getErrorMessage = function({ error, name = '' }) {
-  return validator.errorsText([error], { dataVar: name }).replace(/^\.| /, '')
+  return validator.errorsText([error], { dataVar: name }).replace(/^\./, '')
 }
 
 const getErrorPath = function({ error: { dataPath } }) {

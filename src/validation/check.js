@@ -6,10 +6,11 @@ const { validateFromSchema } = require('./validate')
 
 // Validate against JSON schema and on failure throw error with
 // `error.schema|value|property` set accordingly
-const checkSchema = function({ schema, value, propName, message, target, props }) {
+const checkSchema = function({ schema, value, name, propName, message, target, props }) {
   const { error, schema: schemaA, value: valueA, property, path } = validateFromSchema({
     schema,
     value,
+    name,
     propName,
     target,
   })
@@ -22,12 +23,14 @@ const checkSchema = function({ schema, value, propName, message, target, props }
 }
 
 const getMessage = function({ message, error, path }) {
+  const errorA = error.replace(/^ /, '')
+
   if (typeof message !== 'function') {
-    return `${message} ${error}`
+    return `${message} ${errorA}`
   }
 
   const messageA = message({ path })
-  return `${messageA} ${error}`
+  return `${messageA} ${errorA}`
 }
 
 module.exports = {

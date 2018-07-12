@@ -84,13 +84,29 @@ const evalHelperValue = function({ value, helper: { type, arg }, info, info: { c
     return recursiveSubstitute(value)
   }
 
+  const contextA = { ...context, helpers: recursiveSubstitute }
+  const args = getHelperArgs({ value, arg, context: contextA })
+
+  return value(...args)
+}
+
+// Helper function arguments
+const getHelperArgs = function({ value, arg, context }) {
   // Can use `{ $$helper: [...] }` to pass several arguments to the helper
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context)`
   const args = Array.isArray(arg) ? arg : [arg]
 
-  const contextA = { ...context, helpers: recursiveSubstitute }
+  // Pass same `context` as `run` handlers
+  // Only pass it when `helperFunction.context` is `true`
+  // Reason: allowing re-using external/library functions without modifying their
+  // signature or wrapping them
+  if (!value.context) {
+    return args
+  }
 
-  return value(...args, contextA)
+  // Pass as first argument. Reason: easier to parse arguments when arguments are
+  // variadic or when there are optional arguments
+  return [context, ...args]
 }
 
 const eEvalHelperValue = addErrorHandler(evalHelperValue, helperHandler)

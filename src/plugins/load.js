@@ -28,7 +28,7 @@ const normalizePlugins = function({ plugins }) {
 }
 
 // Plugins always included
-const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'report']
+const CORE_PLUGINS = ['each', 'glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'report']
 
 // TODO: use a separate bundled package instead
 const DEFAULT_PLUGINS = ['spec', 'call', 'validate']
@@ -73,6 +73,7 @@ const addIsCore = function({ plugin, plugin: { name } }) {
 }
 
 // `load`, i.e. before all tasks:
+//   - `each`: merge `config.each` to all tasks
 //   - `glob`: merge tasks whose name include globbing matching other task names.
 //   - `only`: select tasks according to `config|task.only`
 //   - `skip`: skip tasks according to `config|task.skip`

@@ -17,7 +17,6 @@ const getParams = function({
   pathDef: { parameters: pathDefParams = [] },
   operation,
   operation: { parameters: params = [] },
-  server,
 }) {
   const paramsA = [...pathDefParams, ...params]
 
@@ -29,7 +28,7 @@ const getParams = function({
 
   const secParams = getSecParams({ spec, operation })
 
-  const constants = getConstants({ spec, method, path, server })
+  const constants = getConstants({ spec, method, path })
 
   const paramsD = mergeAll([contentNegotiations, secParams, paramsC, constants])
 

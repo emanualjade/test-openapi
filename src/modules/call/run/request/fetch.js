@@ -5,7 +5,7 @@ const fetch = require('cross-fetch')
 const { removePrefixes } = require('../../../../utils')
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
-const fireRequest = function({ rawRequest: { method, url, body, ...rest }, timeout }) {
+const fireRequest = function({ rawRequest: { method, url, body, timeout, ...rest } }) {
   const headers = removePrefixes(rest, 'headers')
   return eFireFetch({ url, method, headers, body, timeout })
 }

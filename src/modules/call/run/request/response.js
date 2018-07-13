@@ -3,9 +3,9 @@
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response
-const getRawResponse = async function({ rawResponse, rawResponse: { status }, timeout }) {
+const getRawResponse = async function({ rawResponse, rawResponse: { status }, rawRequest }) {
   const headers = getHeaders({ rawResponse })
-  const body = await eGetBody({ rawResponse, timeout })
+  const body = await eGetBody({ rawResponse, rawRequest })
 
   return { status, ...headers, body }
 }
@@ -23,7 +23,7 @@ const getBody = function({ rawResponse }) {
   return rawResponse.text()
 }
 
-const getBodyHandler = function({ message, type }, { timeout }) {
+const getBodyHandler = function({ message, type }, { rawRequest: { timeout } }) {
   const property = 'call.response.body'
 
   if (type === 'body-timeout') {

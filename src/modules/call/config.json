@@ -1,16 +1,4 @@
 {
-  "general": {
-    "type": "object",
-    "properties": {
-      "server": {
-        "type": "string"
-      },
-      "timeout": {
-        "type": "integer"
-      }
-    },
-    "additionalProperties": false
-  },
   "task": {
     "type": "object",
     "properties": {
@@ -25,7 +13,10 @@
         "type": "string",
         "pattern": "^/"
       },
-      "body": {}
+      "body": {},
+      "timeout": {
+        "type": "integer"
+      }
     },
     "patternProperties": {
       "^url\\..+": {},

@@ -2,13 +2,17 @@
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
-const getServer = function({ rawRequest, config, helpers }) {
-  const server = getServerValue({ rawRequest, config, helpers })
+const getServer = function({ rawRequest, helpers }) {
+  const server = getServerValue({ rawRequest, helpers })
   return server.replace(TRAILING_SLASH_REGEXP, '')
 }
 
-const getServerValue = function({ rawRequest, config: { call = {} }, helpers }) {
-  return rawRequest.server || call.server || getDefaultServer({ helpers })
+const getServerValue = function({ rawRequest: { server }, helpers }) {
+  if (server !== undefined) {
+    return server
+  }
+
+  return getDefaultServer({ helpers })
 }
 
 const getDefaultServer = function({ helpers }) {

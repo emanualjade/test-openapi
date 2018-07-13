@@ -20,25 +20,6 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Plugin to extend the core features',
   },
-  call: {
-    describe: 'HTTP call options',
-  },
-  'call.server': {
-    string: true,
-    alias: 'u',
-    requiresArg: true,
-    describe: 'Server URL',
-  },
-  // Timeout for both:
-  //  - sending and receiving each HTTP request
-  //  - parsing the HTTP response
-  // 0 to disable
-  'call.timeout': {
-    number: true,
-    alias: 't',
-    requiresArg: true,
-    describe: 'Maximum time to wait for each HTTP call',
-  },
   report: {
     describe: 'Reporting options',
   },
@@ -82,11 +63,8 @@ const CONFIG = {
     requiresArg: true,
     describe: 'File path or URL to the OpenAPI specification',
   },
-  // Number of times each `it()` is repeated (helpers are re-evaluated each time)
-  repeat: {
-    number: true,
-    requiresArg: true,
-    describe: 'Number of times each task is repeated',
+  each: {
+    describe: 'Shared options assigned to each task',
   },
 }
 
@@ -98,7 +76,8 @@ TASKS_FILES... are JSON or YAML files containing the tasks to perform.
 Can include globbing patterns.
 Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
 
-const RUN_EXAMPLE = '$0 --spec ./openapi.yml --call.server http://localhost:5001 ./**/*.tasks.yml'
+const RUN_EXAMPLE =
+  '$0 --spec ./openapi.yml --each.call.server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
   defineCli,

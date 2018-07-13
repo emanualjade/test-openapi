@@ -18,7 +18,9 @@ const serialize = function({ call }) {
 
   const callB = normalizeContentType({ call: callA })
 
-  const request = normalizeMethod({ call: callB })
+  const callC = normalizeMethod({ call: callB })
+
+  const request = normalizeTimeout({ call: callC })
 
   const rawRequest = mapValues(request, stringifyParam)
 
@@ -39,6 +41,12 @@ const removeNull = function({ call }) {
   return omitBy(call, value => value === null)
 }
 
+const normalizeTimeout = function({ call: { timeout = DEFAULT_TIMEOUT, ...call } }) {
+  return { ...call, timeout }
+}
+
+const DEFAULT_TIMEOUT = 1e4
+
 const stringifyParam = function(value, key, call) {
   const { location } = keyToLocation({ key })
   return PARAM_STRINGIFIERS[location]({ value, call })
@@ -58,6 +66,11 @@ const stringifyBody = function({ value, call: { 'headers.content-type': contentT
   return stringify(value)
 }
 
+// Keep `timeout` as an integer, and assign default value
+const keepAsIs = function({ value }) {
+  return value
+}
+
 const PARAM_STRINGIFIERS = {
   method: stringifyParamFlat,
   server: stringifyParamFlat,
@@ -66,6 +79,7 @@ const PARAM_STRINGIFIERS = {
   query: stringifyParamFlat,
   headers: stringifyParamFlat,
   body: stringifyBody,
+  timeout: keepAsIs,
 }
 
 module.exports = {

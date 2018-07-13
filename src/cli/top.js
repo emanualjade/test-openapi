@@ -36,13 +36,6 @@ const CONFIG = {
     describe:
       'Verbosity among "debug", "info", "log" (default for most reporting styles), "warn" (default for "pretty" reporting styles), "error" or "silent"',
   },
-  'report.styles': {
-    array: true,
-    string: true,
-    alias: 'r',
-    requiresArg: true,
-    describe: 'Reporting style',
-  },
   only: {
     array: true,
     string: true,

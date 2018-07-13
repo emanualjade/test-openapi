@@ -45,11 +45,16 @@ const getRepositoryName = function({ bugError: { plugin } }) {
     return DEFAULT_REPOSITORY
   }
 
-  return `${REPOSITORY_PREFIX}${plugin}`
+  if (plugin.startsWith('reporter-')) {
+    return `${REPORTER_PREFIX}${plugin.replace('reporter-', '')}`
+  }
+
+  return `${PLUGIN_PREFIX}${plugin}`
 }
 
 const DEFAULT_REPOSITORY = 'test-openapi'
-const REPOSITORY_PREFIX = 'test-openapi-plugin-'
+const REPORTER_PREFIX = 'test-openapi-reporter-'
+const PLUGIN_PREFIX = 'test-openapi-plugin-'
 
 module.exports = {
   handleBugs,

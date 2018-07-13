@@ -1,35 +1,21 @@
 'use strict'
 
 const { callReporters } = require('../call')
-const { getLevelData, isSilent } = require('../level')
 
 const { getReporters } = require('./reporters')
-const { getReportersOptions } = require('./options')
-const { getOutput } = require('./output')
+const { addOptions } = require('./options')
 
 // Starts reporting
-const start = async function(allStartData, { config, config: { report = {} } }) {
-  const reporters = getReporters({ report })
+const start = async function(allStartData, { config }) {
+  const reporters = getReporters({ config })
 
-  const level = getLevelData({ report, reporters })
-
-  const startData = { reporters, level }
-
-  if (isSilent({ startData: { report: startData } })) {
-    return { report: startData }
-  }
-
-  const options = getReportersOptions({ config, report, reporters })
-
-  const output = await getOutput({ report })
+  const reportersA = await addOptions({ reporters, config })
 
   const ordering = getOrdering({ config })
 
-  const startDataA = { ...startData, options, output, ...ordering }
+  await callReporters({ reporters: reportersA, type: 'start' }, config)
 
-  await callReporters({ startData: { report: startDataA }, type: 'start' }, config)
-
-  return { report: startDataA }
+  return { report: { reporters: reportersA, ...ordering } }
 }
 
 // Used to ensure tasks ordering

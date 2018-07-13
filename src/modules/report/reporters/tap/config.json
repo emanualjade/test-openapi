@@ -1,9 +1,5 @@
 {
-  "type": "object",
-  "properties": {
-    "colors": {
-      "type": "boolean"
-    }
-  },
-  "additionalProperties": false
+  "colors": {
+    "type": "boolean"
+  }
 }

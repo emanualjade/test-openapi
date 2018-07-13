@@ -1,0 +1,9 @@
+{
+  "output": {
+    "type": ["boolean", "string"]
+  },
+  "level": {
+    "type": "string",
+    "enum": ["silent", "error", "warn", "log", "info", "debug"]
+  }
+}

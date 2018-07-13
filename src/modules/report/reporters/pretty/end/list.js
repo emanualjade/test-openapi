@@ -6,11 +6,11 @@ const { LINE, COLORS, MARKS } = require('../constants')
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,
 // then failed tasks names + error messages
-const printTasksList = function({ tasks, startData }) {
+const printTasksList = function({ tasks, options }) {
   const tasksList = RESULT_TYPES
-    // Filter according to `report.level`
-    .filter(resultType => !isSilentType({ resultType, startData }))
-    .map(resultType => printTasks({ tasks, resultType, startData }))
+    // Filter according to `config.report.REPORTER.level`
+    .filter(resultType => !isSilentType({ resultType, options }))
+    .map(resultType => printTasks({ tasks, resultType, options }))
     // Do not show newlines if no tasks is to be shown
     .filter(tasksListPart => tasksListPart !== '')
     .join('\n\n')
@@ -26,8 +26,8 @@ const printTasksList = function({ tasks, startData }) {
 // Order matters
 const RESULT_TYPES = ['skip', 'pass', 'fail']
 
-const printTasks = function({ tasks, resultType, startData }) {
-  const padLength = getPadLength({ tasks, startData })
+const printTasks = function({ tasks, resultType, options }) {
+  const padLength = getPadLength({ tasks, options })
 
   return tasks
     .filter(task => getResultType(task) === resultType)
@@ -36,9 +36,9 @@ const printTasks = function({ tasks, resultType, startData }) {
 }
 
 // Vertically align all `task.path`
-const getPadLength = function({ tasks, startData }) {
+const getPadLength = function({ tasks, options }) {
   const lengths = tasks
-    .filter(task => !isSilentTask({ task, startData }))
+    .filter(task => !isSilentTask({ task, options }))
     .map(({ key }) => key.length)
   const maxLength = Math.max(...lengths)
   return maxLength + 2

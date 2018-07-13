@@ -12,4 +12,5 @@ module.exports = {
   ...require('./prefix'),
   ...require('./common_prefix'),
   ...require('./get'),
+  ...require('./result'),
 }

@@ -1,21 +1,51 @@
 'use strict'
 
-const { loadReporter } = require('./load')
-const { validateReporter } = require('./validate')
+const { validateFromSchema } = require('../../../validation')
 
-// Get `startData.reporters`
-const getReporters = function({ report: { styles = DEFAULT_REPORTERS, options = {} } }) {
-  return styles.map(style => getReporter({ style, options }))
+const { loadReporter } = require('./load')
+const REPORTER_SCHEMA = require('./reporter_schema')
+
+// Get `startData.report.reporters`
+const getReporters = function({ config }) {
+  const names = getNames({ config })
+
+  const reporters = names.map(getReporter)
+  return reporters
+}
+
+// Reporters are specified by using their name in `config.report.REPORTER`
+const getNames = function({ config: { report = {} } }) {
+  const names = Object.keys(report)
+
+  // When `config.report` is `undefined` or an empty object
+  if (names.length === 0) {
+    return DEFAULT_REPORTERS
+  }
+
+  return names
 }
 
 const DEFAULT_REPORTERS = ['pretty']
 
-const getReporter = function({ style, options }) {
-  const reporter = loadReporter({ style })
+const getReporter = function(name) {
+  const reporter = loadReporter({ name })
 
-  validateReporter({ options, reporter, style })
+  validateModule({ reporter })
 
   return reporter
+}
+
+// Validate reporter is valid module
+const validateModule = function({ reporter, reporter: { name } }) {
+  const { error } = validateFromSchema({ schema: REPORTER_SCHEMA, value: reporter })
+  if (error === undefined) {
+    return
+  }
+
+  // Throw a `bug` error
+  const errorA = new Error(`Reporter '${name}' is invalid: ${error}`)
+  errorA.plugin = `reporter-${name}`
+  throw errorA
 }
 
 module.exports = {

@@ -3,36 +3,32 @@
 const { stdout } = require('process')
 const { promisify } = require('util')
 
+const { result } = require('../../utils')
+
 // Call reporters' functions then write return value to output
-const callReporters = async function(
+const callReporters = async function({ reporters, type }, ...args) {
+  const promises = reporters.map(reporter => callReporter({ reporter, type }, ...args))
+  await Promise.all(promises)
+}
+
+const callReporter = async function(
   {
-    startData: {
-      report: { output, reporters, options },
+    reporter,
+    reporter: {
+      options,
+      options: { output },
     },
     type,
   },
   ...args
 ) {
-  const promises = reporters.map(reporter =>
-    callReporter({ reporter, output, options, type, args }),
-  )
-  await Promise.all(promises)
-}
-
-const callReporter = async function({
-  reporter,
-  reporter: { name },
-  output,
-  options,
-  type,
-  args: [arg, ...args],
-}) {
   if (reporter[type] === undefined) {
     return
   }
 
-  const optionsA = options[name] || {}
-  const message = await reporter[type]({ ...arg, options: optionsA }, ...args)
+  const [arg, ...argsA] = args.map(arg => result(arg, { options }))
+
+  const message = await reporter[type]({ ...arg, options }, ...argsA)
 
   if (message !== undefined) {
     output.write(message)

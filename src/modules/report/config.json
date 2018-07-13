@@ -1,24 +1,5 @@
 {
   "general": {
-    "type": "object",
-    "properties": {
-      "output": {
-        "type": ["boolean", "string"]
-      },
-      "level": {
-        "type": "string",
-        "enum": ["silent", "error", "warn", "log", "info", "debug"]
-      },
-      "styles": {
-        "type": "array",
-        "items": {
-          "type": "string"
-        }
-      },
-      "options": {
-        "type": "object"
-      }
-    },
-    "additionalProperties": false
+    "type": "object"
   }
 }

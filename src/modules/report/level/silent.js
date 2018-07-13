@@ -2,31 +2,27 @@
 
 const { getResultType } = require('../utils')
 
-// When using `config.report.level: silent`, whole run is silent
+// When using `config.report.REPORTER.level: silent`, whole run is silent
 const isSilent = function({
-  startData: {
-    report: {
-      level: { types },
-    },
+  options: {
+    level: { types },
   },
 }) {
   return types.length === 0
 }
 
-// Some `config.report.level` will only show errors, i.e. see if task should be silent
-const isSilentTask = function({ task, startData }) {
+// Some `config.report.REPORTER.level` will only show errors, i.e. see if task should be silent
+const isSilentTask = function({ task, options }) {
   const resultType = getResultType(task)
-  return isSilentType({ resultType, startData })
+  return isSilentType({ resultType, options })
 }
 
 // When reporters only show summary (e.g. `notify`), we silent summary according
-// to `config.report.level`
+// to `config.report.REPORTER.level`
 const isSilentType = function({
   resultType,
-  startData: {
-    report: {
-      level: { types },
-    },
+  options: {
+    level: { types },
   },
 }) {
   return !types.includes(resultType)

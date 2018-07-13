@@ -1,17 +1,26 @@
 'use strict'
 
-const { isSilent, filterTaskData } = require('./level')
+const { filterTaskData } = require('./level')
 const { callReporters } = require('./call')
 
 // Ends reporting
-const end = async function(tasks, { startData, _plugins: plugins }) {
-  if (isSilent({ startData })) {
-    return
-  }
+const end = async function(
+  tasks,
+  {
+    startData: {
+      report: { reporters },
+    },
+    _plugins: plugins,
+  },
+) {
+  const arg = getArg.bind(null, { tasks, plugins })
 
-  const tasksA = tasks.map(task => filterTaskData({ task, startData, plugins }))
+  await callReporters({ reporters, type: 'end' }, arg)
+}
 
-  await callReporters({ startData, type: 'end' }, { tasks: tasksA, startData })
+const getArg = function({ tasks, plugins }, { options }) {
+  const tasksA = tasks.map(task => filterTaskData({ task, options, plugins }))
+  return { tasks: tasksA }
 }
 
 module.exports = {

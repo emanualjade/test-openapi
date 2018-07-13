@@ -4,14 +4,12 @@ const { omit } = require('lodash')
 
 const { isObject } = require('../../../utils')
 
-// Apply `config.report.level` to remove some `task.PLUGIN.*`
+// Apply `config.report.REPORTER.level` to remove some `task.PLUGIN.*`
 // Use `task.originalTask` but do not keep it
 const filterTaskData = function({
   task: { originalTask, ...task },
-  startData: {
-    report: {
-      level: { taskData },
-    },
+  options: {
+    level: { taskData },
   },
   plugins,
 }) {

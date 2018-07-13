@@ -7,15 +7,15 @@ const { printTasksList } = require('./list')
 const { printSummary } = require('./summary')
 
 // Clears spinner and print summarized tasks list and final counters message
-const end = function({ options: { spinner }, tasks, startData }) {
+const end = function({ options, options: { spinner }, tasks }) {
   spinner.stop()
 
-  const endMessage = getEndMessage({ tasks, startData })
+  const endMessage = getEndMessage({ tasks, options })
   return endMessage
 }
 
-const getEndMessage = function({ tasks, startData }) {
-  const tasksList = printTasksList({ tasks, startData })
+const getEndMessage = function({ tasks, options }) {
+  const tasksList = printTasksList({ tasks, options })
   const summaryString = printSummary({ tasks })
 
   return `${LINE}

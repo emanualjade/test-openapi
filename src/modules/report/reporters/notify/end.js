@@ -5,9 +5,9 @@ const notifier = require('node-notifier')
 const { getSummary } = require('../../utils')
 const { isSilentType } = require('../../level')
 
-// Show notification at end of run if `config.report.notify: true`
-const end = function({ tasks, startData }) {
-  const opts = getOpts({ tasks, startData })
+// Show notification at end of run
+const end = function({ tasks, options }) {
+  const opts = getOpts({ tasks, options })
 
   if (opts === undefined) {
     return
@@ -16,18 +16,18 @@ const end = function({ tasks, startData }) {
   notifier.notify(opts)
 }
 
-const getOpts = function({ tasks, startData }) {
+const getOpts = function({ tasks, options }) {
   const { ok, total, pass, fail, skip } = getSummary({ tasks })
 
   const { resultType, ...opts } = OPTS[ok]
 
-  if (isSilentType({ resultType, startData })) {
+  if (isSilentType({ resultType, options })) {
     return
   }
 
   const message = opts.message({ total, pass, fail })
 
-  const messageA = addSkipMessage({ message, skip, startData })
+  const messageA = addSkipMessage({ message, skip, options })
 
   return { ...opts, message: messageA }
 }
@@ -40,8 +40,8 @@ const getFailMessage = function({ total, fail }) {
   return `${fail} of ${total} tasks failed.`
 }
 
-const addSkipMessage = function({ message, skip, startData }) {
-  if (skip === 0 || isSilentType({ resultType: 'skip', startData })) {
+const addSkipMessage = function({ message, skip, options }) {
+  if (skip === 0 || isSilentType({ resultType: 'skip', options })) {
     return message
   }
 

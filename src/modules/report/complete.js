@@ -1,7 +1,7 @@
 'use strict'
 
 const { callReporters } = require('./call')
-const { isSilent, isSilentTask, filterTaskData } = require('./level')
+const { isSilentTask, filterTaskData } = require('./level')
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
@@ -13,17 +13,13 @@ const complete = async function(
     startData,
     startData: {
       report,
-      report: { taskKeys, tasks, index },
+      report: { reporters, taskKeys, tasks, index },
     },
     _plugins: plugins,
   },
 ) {
-  if (isSilent({ startData })) {
-    return
-  }
-
   // Save current task's result (i.e. reporting input)
-  // `config.report.inputs|index` are stateful and directly mutated because
+  // `startData.report.tasks|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks
   tasks[task.key] = task
 
@@ -43,10 +39,10 @@ const complete = async function(
   // However we do want to buffer `reporter.complete()`, as reporters like TAP
   // add indexes on each task, i.e. need to be run in output order.
   // `reporter.tick()` does not get task as input.
-  await callReporters({ startData, type: 'tick' }, {}, { config, startData, plugins })
+  await callReporters({ reporters, type: 'tick' }, {}, { config, startData, plugins })
 
   // Unbuffer tasks, i.e. report them
-  await completeTasks({ count, keys, tasks, config, startData, plugins })
+  await completeTasks({ count, keys, tasks, reporters, config, startData, plugins })
 }
 
 const getCount = function({ keys, tasks }) {
@@ -59,47 +55,67 @@ const getCount = function({ keys, tasks }) {
   return count
 }
 
-const completeTasks = async function({ count, keys, tasks, config, startData, plugins }) {
+const completeTasks = async function({
+  count,
+  keys,
+  tasks,
+  reporters,
+  config,
+  startData,
+  plugins,
+}) {
   const keysA = keys.slice(0, count)
-  await completeTask({ keys: keysA, tasks, config, startData, plugins })
+  await completeTask({ keys: keysA, tasks, reporters, config, startData, plugins })
 }
 
-const completeTask = async function({ keys: [key, ...keys], tasks, config, startData, plugins }) {
+const completeTask = async function({
+  keys: [key, ...keys],
+  tasks,
+  reporters,
+  config,
+  startData,
+  plugins,
+}) {
   if (key === undefined) {
     return
   }
 
   const task = tasks[key]
-  await callComplete({ task, config, startData, plugins })
+  await callComplete({ task, reporters, config, startData, plugins })
 
   // Async iteration through recursion
-  await completeTask({ keys, tasks, config, startData, plugins })
+  await completeTask({ keys, tasks, reporters, config, startData, plugins })
 }
 
 const callComplete = async function({
   task,
   task: { error: { nested } = {} },
+  reporters,
   config,
   startData,
   plugins,
 }) {
-  const silent = isSilentTask({ task, startData })
+  const arg = getArg.bind(null, { task, plugins })
+  const context = getContext.bind(null, { task, config, startData, plugins })
 
-  const taskA = filterTaskData({ task, startData, plugins })
-
-  await callReporters({ startData, type: 'complete' }, taskA, {
-    config,
-    startData,
-    plugins,
-    silent,
-  })
+  await callReporters({ reporters, type: 'complete' }, arg, context)
 
   if (nested === undefined) {
     return
   }
 
   // Recurse over `task.error.nested`
-  await callComplete({ task: { ...nested, isNested: true }, config, startData, plugins })
+  await callComplete({ task: { ...nested, isNested: true }, reporters, config, startData, plugins })
+}
+
+const getArg = function({ task, plugins }, { options }) {
+  return filterTaskData({ task, options, plugins })
+}
+
+const getContext = function({ task, config, startData, plugins }, { options }) {
+  const silent = isSilentTask({ task, options })
+
+  return { config, startData, plugins, silent }
 }
 
 module.exports = {

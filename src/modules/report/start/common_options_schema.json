@@ -1,6 +1,6 @@
 {
   "output": {
-    "type": ["boolean", "string"]
+    "type": "string"
   },
   "level": {
     "type": "string",

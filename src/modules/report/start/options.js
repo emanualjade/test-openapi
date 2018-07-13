@@ -1,5 +1,7 @@
 'use strict'
 
+const { pick } = require('lodash')
+
 const { checkSchema } = require('../../../validation')
 const { isSilent, normalizeLevel } = require('../level')
 
@@ -35,14 +37,17 @@ const addReporterOptions = async function({ reporter, config }) {
 // Retrieve `config.report.REPORTER.*`
 const getOptions = function({
   reporter: { name },
-  config: { report: { [name]: options = {} } = {} },
+  config: { report = {}, report: { [name]: options = {} } = {} },
 }) {
+  // Can use `config.report.level|output` to set those for any reporter
+  const globalOptions = pick(report, Object.keys(COMMON_OPTIONS_SCHEMA))
+
   // Can use `true`, to make it CLI options-friendly
   if (options === true) {
-    return {}
+    return globalOptions
   }
 
-  return options
+  return { ...globalOptions, ...options }
 }
 
 // Validate `config.report.REPORTER.*` against `reporter.config`

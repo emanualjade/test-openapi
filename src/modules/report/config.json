@@ -1,5 +1,14 @@
 {
   "general": {
-    "type": "object"
+    "type": "object",
+    "properties": {
+      "output": {
+        "type": "string"
+      },
+      "level": {
+        "type": "string",
+        "enum": ["silent", "error", "warn", "log", "info", "debug"]
+      }
+    }
   }
 }

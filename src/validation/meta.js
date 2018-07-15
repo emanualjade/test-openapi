@@ -61,4 +61,5 @@ const jsonSchemaSchema = getJsonSchemaSchema()
 module.exports = {
   validateIsSchema,
   checkIsSchema,
+  jsonSchemaSchema,
 }

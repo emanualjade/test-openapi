@@ -2,9 +2,8 @@
 
 const { uniq, difference } = require('lodash')
 
-const { addErrorHandler, TestOpenApiError } = require('../errors')
-
-const { validatePlugin, throwPluginError } = require('./validate')
+const { getModule } = require('./module')
+const { validateJsonSchemas } = require('./validate')
 const { verifyConfig } = require('./verify')
 
 // Retrieve `config.plugins` then `require()` all the plugins
@@ -34,37 +33,15 @@ const CORE_PLUGINS = ['each', 'glob', 'only', 'skip', 'repeat', 'helpers', 'veri
 const DEFAULT_PLUGINS = ['spec', 'call', 'validate']
 
 const loadPlugin = function({ name, config }) {
-  const plugin = eRequirePlugin(name)
+  const plugin = getModule({ name, type: 'plugin' })
 
-  validatePlugin({ plugin })
+  validateJsonSchemas({ plugin })
 
   verifyConfig({ plugin, config })
 
   const pluginA = addIsCore({ plugin })
   return pluginA
 }
-
-// TODO: separate plugins in their own node modules instead
-const requirePlugin = function(name) {
-  // eslint-disable-next-line import/no-dynamic-require
-  const plugin = require(`../modules/${name}`)
-  return { ...plugin, name }
-}
-
-const requirePluginHandler = function({ code, message }, name) {
-  const nameA = `'test-openapi-plugin-${name}'`
-
-  if (code === 'MODULE_NOT_FOUND') {
-    throw new TestOpenApiError(
-      `The plugin ${nameA} is used in the configuration but is not installed`,
-    )
-  }
-
-  const messageA = `The plugin ${nameA} could not be loaded: ${message}`
-  throwPluginError({ message: messageA, name })
-}
-
-const eRequirePlugin = addErrorHandler(requirePlugin, requirePluginHandler)
 
 // Used e.g. during reporting
 const addIsCore = function({ plugin, plugin: { name } }) {

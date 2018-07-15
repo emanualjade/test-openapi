@@ -2,17 +2,15 @@
 
 const { difference } = require('lodash')
 
-const { validateFromSchema } = require('../../../validation')
+const { getModule } = require('../../../plugins')
 
-const { loadReporter } = require('./load')
-const REPORTER_SCHEMA = require('./reporter_schema')
 const COMMON_OPTIONS_SCHEMA = require('./common_options_schema')
 
 // Get `startData.report.reporters`
 const getReporters = function({ config }) {
   const names = getNames({ config })
 
-  const reporters = names.map(getReporter)
+  const reporters = names.map(name => getModule({ name, type: 'reporter' }))
   return reporters
 }
 
@@ -30,27 +28,6 @@ const getNames = function({ config: { report = {} } }) {
 }
 
 const DEFAULT_REPORTERS = ['pretty']
-
-const getReporter = function(name) {
-  const reporter = loadReporter({ name })
-
-  validateModule({ reporter })
-
-  return reporter
-}
-
-// Validate reporter is valid module
-const validateModule = function({ reporter, reporter: { name } }) {
-  const { error } = validateFromSchema({ schema: REPORTER_SCHEMA, value: reporter })
-  if (error === undefined) {
-    return
-  }
-
-  // Throw a `bug` error
-  const errorA = new Error(`Reporter '${name}' is invalid: ${error}`)
-  errorA.plugin = `reporter-${name}`
-  throw errorA
-}
 
 module.exports = {
   getReporters,

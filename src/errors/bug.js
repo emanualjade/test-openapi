@@ -27,7 +27,7 @@ const isBugError = function({ name }) {
   return name !== 'TestOpenApiError'
 }
 
-const getBugMessage = function({ bugError, bugError: { stack } }) {
+const getBugMessage = function({ bugError, bugError: { message, stack = message } }) {
   const repositoryName = getRepositoryName({ bugError })
 
   return `A bug occurred.

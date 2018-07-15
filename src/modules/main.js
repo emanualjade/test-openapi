@@ -53,14 +53,18 @@ const loadModuleHandler = function(
 const eLoadModule = addErrorHandler(loadModule, loadModuleHandler)
 
 // Validate export value
-const validateModule = function({ module, module: { name }, info: { schema, title, pluginName } }) {
+const validateModule = function({
+  module,
+  module: { name },
+  info: { schema, title, pluginPrefix },
+}) {
   const { error } = validateFromSchema({ schema, value: module })
   if (error === undefined) {
     return
   }
 
   const errorA = new Error(`The ${title} '${name}' is invalid: ${error}`)
-  errorA.plugin = pluginName({ name })
+  errorA.plugin = `${pluginPrefix}${name}`
   throw errorA
 }
 
@@ -68,7 +72,7 @@ const INFO = {
   plugin: {
     title: 'plugin',
     modulePrefix: 'test-openapi-plugin-',
-    pluginName: ({ name }) => name,
+    pluginPrefix: '',
     corePath: '../core/',
     props: () => ({}),
     schema: PLUGIN_SCHEMA,
@@ -76,7 +80,7 @@ const INFO = {
   reporter: {
     title: 'reporter',
     modulePrefix: 'test-openapi-reporter-',
-    pluginName: ({ name }) => `reporter-${name}`,
+    pluginPrefix: 'reporter-',
     corePath: '../core/report/reporters/',
     props: ({ name }) => ({ property: `report.${name}` }),
     schema: REPORTER_SCHEMA,

@@ -2,7 +2,7 @@
 
 const { difference } = require('lodash')
 
-const { getModule } = require('../../../plugins')
+const { getModule } = require('../../../modules')
 
 const COMMON_OPTIONS_SCHEMA = require('./common_options_schema')
 

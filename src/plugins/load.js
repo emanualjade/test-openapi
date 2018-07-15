@@ -2,7 +2,8 @@
 
 const { uniq, difference } = require('lodash')
 
-const { getModule } = require('./module')
+const { getModule } = require('../modules')
+
 const { validateJsonSchemas } = require('./validate')
 const { verifyConfig } = require('./verify')
 

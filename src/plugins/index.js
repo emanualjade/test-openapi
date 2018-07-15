@@ -5,5 +5,4 @@ module.exports = {
   ...require('./handlers'),
   ...require('./return'),
   ...require('./verify'),
-  ...require('./module'),
 }

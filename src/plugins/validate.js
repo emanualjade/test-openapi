@@ -15,15 +15,12 @@ const validateJsonSchema = function({ schema, name, propName }) {
     return
   }
 
-  const message = `Plugin '${name}' is invalid: 'config.${propName}' is not a valid JSON schema: ${error}`
-  throwPluginError({ name, message })
-}
-
-// Throw a `bug` error
-const throwPluginError = function({ name, message }) {
-  const error = new Error(message)
-  error.plugin = name
-  throw error
+  // Throw a `bug` error
+  const errorA = new Error(
+    `Plugin '${name}' is invalid: 'config.${propName}' is not a valid JSON schema: ${error}`,
+  )
+  errorA.plugin = name
+  throw errorA
 }
 
 module.exports = {

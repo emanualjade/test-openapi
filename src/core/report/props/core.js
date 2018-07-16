@@ -15,9 +15,10 @@ const getCoreReportProps = function({
 }) {
   const values = getValues({ expected, value })
   const schemaA = getJsonSchema({ schema })
+  const propertyA = getProperty({ property })
   const moduleA = getModule({ module })
 
-  return { message, ...values, property, 'JSON schema': schemaA, ...moduleA }
+  return { message, ...values, property: propertyA, 'JSON schema': schemaA, ...moduleA }
 }
 
 const getValues = function({ expected, value }) {
@@ -36,6 +37,14 @@ const getJsonSchema = function({ schema }) {
   }
 
   return schema
+}
+
+const getProperty = function({ property }) {
+  if (property === undefined) {
+    return
+  }
+
+  return property.replace(/^task\./, '')
 }
 
 // From `module: plugin|reporter-NAME` to `Plugin|Reporter: NAME`

@@ -1,25 +1,40 @@
 'use strict'
 
-const { promiseThen, promiseAll, promiseAllThen } = require('../utils')
+const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 
+// Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // no helpers is found or when helpers are synchronous.
-const crawlNode = function(value, path, info, evalNode) {
+const crawl = function(value, evalNode, { path, ...opts } = {}) {
+  const pathA = getPath({ path })
+
+  return crawlNode(value, evalNode, pathA, opts)
+}
+
+const getPath = function({ path }) {
+  if (path === undefined) {
+    return []
+  }
+
+  return path.split('.')
+}
+
+const crawlNode = function(value, evalNode, path, opts) {
   // Children must be evaluated before parents
-  const valueA = crawlChildren(value, path, info, evalNode)
-  return promiseThen(valueA, valueB => evalNode(valueB, { ...info, path }))
+  const valueA = crawlChildren(value, path, opts, evalNode)
+  return promiseThen(valueA, valueB => evalNode(valueB, path, opts))
 }
 
 // Siblings evaluation is done in parallel for best performance.
-const crawlChildren = function(value, path, info, evalNode) {
+const crawlChildren = function(value, path, opts, evalNode) {
   if (Array.isArray(value)) {
-    const children = value.map((child, index) => crawlNode(child, [...path, index], info, evalNode))
+    const children = value.map((child, index) => crawlNode(child, evalNode, [...path, index], opts))
     return promiseAll(children)
   }
 
   if (typeof value === 'object' && value !== null) {
     const children = Object.entries(value).map(([key, child]) =>
-      crawlProperty({ key, child, path, info, evalNode }),
+      crawlProperty({ key, child, path, opts, evalNode }),
     )
     return promiseAllThen(children, mergeProperties)
   }
@@ -27,13 +42,13 @@ const crawlChildren = function(value, path, info, evalNode) {
   return value
 }
 
-const crawlProperty = function({ key, child, path, info, evalNode }) {
-  const maybePromise = crawlNode(child, [...path, key], info, evalNode)
+const crawlProperty = function({ key, child, path, opts, evalNode }) {
+  const maybePromise = crawlNode(child, evalNode, [...path, key], opts)
   return promiseThen(maybePromise, childA => getProperty({ key, child: childA }))
 }
 
 const getProperty = function({ key, child }) {
-  // Helpers that do not exist or that return `undefined` are omitted
+  // Values that are return `undefined` are omitted
   // (as opposed to being set to `undefined`) to keep task JSON-serializable
   // and avoid properties that are defined but set to `undefined`
   if (child === undefined) {
@@ -48,5 +63,5 @@ const mergeProperties = function(children) {
 }
 
 module.exports = {
-  crawlNode,
+  crawl,
 }

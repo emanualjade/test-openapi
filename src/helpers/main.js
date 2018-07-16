@@ -3,8 +3,8 @@
 const { get } = require('lodash')
 
 const { addErrorHandler } = require('../errors')
+const { crawl } = require('../utils')
 
-const { crawlNode } = require('./crawl')
 const { parseHelper, parseEscape } = require('./parse')
 const { checkRecursion } = require('./recursion')
 const { helperHandler } = require('./error')
@@ -12,14 +12,14 @@ const coreHelpers = require('./core')
 
 // Crawl a value recursively to find helpers.
 // When an helper is found, it is replaced by its evaluated value.
-const substituteHelpers = function({ path, ...info }, value) {
-  const pathA = path.split('.')
-
-  return crawlNode(value, pathA, info, evalNode)
+const substituteHelpers = function(info, value) {
+  return crawl(value, evalNode, info)
 }
 
 // Evaluate an object or part of an object for helpers
-const evalNode = function(value, info) {
+const evalNode = function(value, path, info) {
+  const infoA = { ...info, path }
+
   const helper = parseHelper(value)
   // There is no helper
   if (helper === undefined) {
@@ -33,9 +33,9 @@ const evalNode = function(value, info) {
   }
 
   // Check for infinite recursions
-  const infoA = checkRecursion({ helper, info })
+  const infoB = checkRecursion({ helper, info: infoA })
 
-  const valueA = evalHelper({ helper, info: infoA })
+  const valueA = evalHelper({ helper, info: infoB })
   return valueA
 }
 

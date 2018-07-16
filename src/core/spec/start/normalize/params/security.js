@@ -48,10 +48,8 @@ const getSecParamHandler = function({ securityDef: { type }, secName }) {
     return handler
   }
 
-  const property = `securityDefinitions.${secName}`
   throw new TestOpenApiError(
-    `In '${property}', security definition has type '${type}' but this has not been implemented yet`,
-    { property },
+    `In 'securityDefinitions.${secName}', security definition has type '${type}' but this has not been implemented yet`,
   )
 }
 

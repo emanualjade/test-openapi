@@ -34,7 +34,7 @@ const MODULE_OPTS = {
   title: 'reporter',
   modulePrefix: 'test-openapi-reporter-',
   corePath: '../core/report/reporters/',
-  props: ({ name }) => ({ property: `report.${name}` }),
+  props: ({ name }) => ({ property: `config.report.${name}` }),
   schema: REPORTER_SCHEMA,
 }
 

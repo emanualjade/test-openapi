@@ -12,12 +12,14 @@ const coreHelpers = require('./core')
 
 // Crawl a value recursively to find helpers.
 // When an helper is found, it is replaced by its evaluated value.
-const substituteHelpers = function(info, value) {
-  return crawlNode(value, [], info, evalNode)
+const substituteHelpers = function({ path, ...info }, value) {
+  const pathA = path.split('.')
+
+  return crawlNode(value, pathA, info, evalNode)
 }
 
 // Evaluate an object or part of an object for helpers
-const evalNode = function(value, path, info) {
+const evalNode = function(value, info) {
   const helper = parseHelper(value)
   // There is no helper
   if (helper === undefined) {
@@ -33,11 +35,11 @@ const evalNode = function(value, path, info) {
   // Check for infinite recursions
   const infoA = checkRecursion({ helper, info })
 
-  const valueA = evalHelper({ helper, path, info: infoA })
+  const valueA = evalHelper({ helper, info: infoA })
   return valueA
 }
 
-const evalHelper = function({ helper, path, info }) {
+const evalHelper = function({ helper, info }) {
   const value = getHelperValue({ helper, info })
 
   // Unkwnown helpers or helpers with `undefined` values return `undefined`,
@@ -47,7 +49,7 @@ const evalHelper = function({ helper, path, info }) {
     return
   }
 
-  return eEvalHelperValue({ value, helper, path, info })
+  return eEvalHelperValue({ value, helper, info })
 }
 
 const getHelperValue = function({

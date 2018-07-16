@@ -57,7 +57,7 @@ const validateOptions = function({ reporter, reporter: { name }, options }) {
   checkSchema({
     schema,
     value: options,
-    name: `report.${name}`,
+    name: `config.report.${name}`,
     message: `'report.${name}'`,
     props: { module: `reporter-${name}` },
   })

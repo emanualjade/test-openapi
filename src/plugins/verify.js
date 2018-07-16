@@ -34,7 +34,7 @@ const verifyTask = function({
   checkSchema({
     schema,
     value,
-    name,
+    name: `task.${name}`,
     message: `Task configuration`,
     props: { module: `plugin-${name}` },
   })

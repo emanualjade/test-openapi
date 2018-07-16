@@ -22,7 +22,7 @@ const randomHelper = function(schema) {
 // Validate random parameters are valid JSON schema v4
 // We cannot use later versions because json-schema-faker does not support them
 const validateJsonSchema = function({ schema }) {
-  const { error } = validateIsSchema({ value: schema, name: '$$random' })
+  const { error } = validateIsSchema({ value: schema })
   if (error === undefined) {
     return
   }

@@ -14,11 +14,11 @@ const validateStatus = function({
   checkSchema({
     schema,
     value: status,
-    name: 'validate.status',
+    name: 'task.validate.status',
     message: 'Status code',
     target: 'schema',
-    // Otherwise it uses `validate.status.enum`
-    props: { property: 'validate.status' },
+    // Otherwise it uses `task.validate.status.enum`
+    props: { property: 'task.validate.status' },
   })
 }
 

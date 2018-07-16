@@ -14,7 +14,7 @@ const addUrlParams = function({ url, rawRequest }) {
 const URL_PARAM_REGEXP = /\{([^}]+)\}/g
 
 const getUrlParam = function({ name, rawRequest }) {
-  const property = `call.url.${name}`
+  const property = `task.call.url.${name}`
   const value = rawRequest[`url.${name}`]
 
   if (value === undefined) {

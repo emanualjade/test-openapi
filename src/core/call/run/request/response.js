@@ -24,7 +24,7 @@ const getBody = function({ rawResponse }) {
 }
 
 const getBodyHandler = function({ message, type }, { rawRequest: { timeout } }) {
-  const property = 'call.response.body'
+  const property = 'task.call.response.body'
 
   if (type === 'body-timeout') {
     throw new TestOpenApiError(`Parsing the response body took more than ${timeout} milliseconds`, {

@@ -27,8 +27,9 @@ const fetchSpecHandler = function({ message }) {
 // Validate OpenAPI specification syntax
 const invalidSpecHandler = function({ details, details: [{ path }] }) {
   const message = details.map(getErrorMessage).join(`\n${INDENT}`)
-  const property = path.join('.')
-  throw new TestOpenApiError(`OpenAPI specification is invalid:\n${INDENT}${message}`, { property })
+  throw new TestOpenApiError(
+    `OpenAPI specification is invalid at ${path.join('.')}:\n${INDENT}${message}`,
+  )
 }
 
 const INDENT_LENGTH = 4

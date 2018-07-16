@@ -44,7 +44,7 @@ const getResponseHeader = function({ headers, name }) {
   return headers[nameB]
 }
 
-const PROPERTY = name => `validate.headers.${name}`
+const PROPERTY = name => `task.validate.headers.${name}`
 const NAME = name => `Response header '${name}'`
 
 module.exports = {

@@ -19,7 +19,7 @@ const validateMethod = function({ method }) {
   }
 
   throw new TestOpenApiError(`HTTP method '${method}' does not exist`, {
-    property: 'call.method',
+    property: 'task.call.method',
     value: method,
   })
 }

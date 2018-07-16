@@ -1,14 +1,14 @@
 'use strict'
 
 // Exceptions thrown by a helper
-const helperHandler = function(error, { value, helper, path }) {
+const helperHandler = function(error, { value, helper, info }) {
   const { message } = error
 
   if (!message.includes(HELPER_ERROR_MESSAGE)) {
     error.message = `${HELPER_ERROR_MESSAGE}${message}`
   }
 
-  setHelperErrorProps({ error, value, helper, path })
+  setHelperErrorProps({ error, value, helper, info })
 
   throw error
 }
@@ -20,15 +20,15 @@ const HELPER_ERROR_MESSAGE = 'Error when evaluating helper: '
 //  - `property`: `path.to.$$FUNC`
 //  - `value`: `helperArg` (if function) or `value`: `helperValue` (if `value`)
 // In case of recursive helper, the top-level node should prevail.
-const setHelperErrorProps = function({ error, value, helper, path }) {
-  const errorProps = getHelperErrorProps({ value, helper, path })
+const setHelperErrorProps = function({ error, value, helper, info }) {
+  const errorProps = getHelperErrorProps({ value, helper, info })
   Object.assign(error, errorProps)
 
   // `error.expected` does not make any more sense since we remove `error.value`
   delete error.expected
 }
 
-const getHelperErrorProps = function({ value, helper: { type, name, arg }, path }) {
+const getHelperErrorProps = function({ value, helper: { type, name, arg }, info: { path } }) {
   const property = [...path, name].join('.')
 
   if (type === 'function') {

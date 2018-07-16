@@ -25,7 +25,7 @@ const validateBody = function({ validate: { body: schema }, response: { body } }
   })
 }
 
-const PROPERTY = 'validate.body'
+const PROPERTY = 'task.validate.body'
 const NAME = 'Response body'
 
 module.exports = {

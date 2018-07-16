@@ -11,6 +11,7 @@ const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
 //  - `bug` `{boolean}`: true if it was a bug
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in `task` or `config`
+//    Always starts with either `task` or `config`
 //  - `value` `{value}`: errored value
 //  - `expected` `{value}`: expected value
 //  - `schema` `{object}`: JSON schema v4 matched against `value`

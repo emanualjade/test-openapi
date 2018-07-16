@@ -17,7 +17,7 @@ const normalizeHandler = function({ name, condition, parse, stringify }) {
 
 const bodyHandler = function(name, { message }) {
   throw new TestOpenApiError(`Could not read response body as ${name}: ${message}`, {
-    property: 'call.response.body',
+    property: 'task.call.response.body',
   })
 }
 

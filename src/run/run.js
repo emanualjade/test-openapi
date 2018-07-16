@@ -55,7 +55,7 @@ const getContext = function({ task: { originalTask }, config, startData, plugins
   // Helper functions get `context.task` with the original task (before helpers evaluation)
   // not the current task, because it's more predictable for the user.
   const helpersContext = { ...context, task: originalTask }
-  const helpers = substituteHelpers.bind(null, { context: helpersContext })
+  const helpers = substituteHelpers.bind(null, { context: helpersContext, path: 'task' })
   // `context.helpers` is overriden during recursion, so it's ok if
   // `context.helpers -> context.helpers` is `undefined`
   const contextA = { ...context, helpers }

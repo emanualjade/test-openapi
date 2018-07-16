@@ -7,7 +7,7 @@ const { isObject, promiseThen, promiseAll, promiseAllThen } = require('../utils'
 const crawlNode = function(value, path, info, evalNode) {
   // Children must be evaluated before parents
   const valueA = crawlChildren(value, path, info, evalNode)
-  return promiseThen(valueA, valueB => evalNode(valueB, path, info))
+  return promiseThen(valueA, valueB => evalNode(valueB, { ...info, path }))
 }
 
 // Siblings evaluation is done in parallel for best performance.

@@ -16,7 +16,7 @@ const handleBugs = function({ error }) {
 
   const message = getBugMessage({ bugError })
 
-  return new TestOpenApiError(message, { bug: true })
+  return new TestOpenApiError(message, { ...bugError, bug: true })
 }
 
 const findBugError = function({ error, error: { errors = [error] } }) {
@@ -40,21 +40,16 @@ test-openapi: ${libraryVersion}
 ${stack}`
 }
 
-const getRepositoryName = function({ bugError: { plugin } }) {
-  if (plugin === undefined) {
+const getRepositoryName = function({ bugError: { module } }) {
+  if (module === undefined) {
     return DEFAULT_REPOSITORY
   }
 
-  if (plugin.startsWith('reporter-')) {
-    return `${REPORTER_PREFIX}${plugin.replace('reporter-', '')}`
-  }
-
-  return `${PLUGIN_PREFIX}${plugin}`
+  return `${MODULE_REPOSITORY}${module}`
 }
 
 const DEFAULT_REPOSITORY = 'test-openapi'
-const REPORTER_PREFIX = 'test-openapi-reporter-'
-const PLUGIN_PREFIX = 'test-openapi-plugin-'
+const MODULE_REPOSITORY = 'test-openapi-'
 
 module.exports = {
   handleBugs,

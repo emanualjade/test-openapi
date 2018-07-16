@@ -11,12 +11,13 @@ const addCoreReportProps = function({ reportProps, task }) {
 
 // Core `reportProps` always present on error
 const getCoreReportProps = function({
-  error: { expected, value, message, property, schema, plugin } = {},
+  error: { expected, value, message, property, schema, module } = {},
 }) {
   const values = getValues({ expected, value })
   const schemaA = getJsonSchema({ schema })
+  const moduleA = getModule({ module })
 
-  return { message, ...values, property, 'JSON schema': schemaA, plugin }
+  return { message, ...values, property, 'JSON schema': schemaA, ...moduleA }
 }
 
 const getValues = function({ expected, value }) {
@@ -35,6 +36,18 @@ const getJsonSchema = function({ schema }) {
   }
 
   return schema
+}
+
+// From `module: plugin|reporter-NAME` to `Plugin|Reporter: NAME`
+const getModule = function({ module }) {
+  if (module === undefined) {
+    return
+  }
+
+  const [type, ...name] = module.split('-')
+  const nameA = name.join('-')
+
+  return { [type]: nameA }
 }
 
 module.exports = {

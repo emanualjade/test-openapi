@@ -47,7 +47,6 @@ const loadPlugin = function({ name, config }) {
 const MODULE_OPTS = {
   title: 'plugin',
   modulePrefix: 'test-openapi-plugin-',
-  pluginPrefix: '',
   corePath: '../core/',
   schema: PLUGIN_SCHEMA,
 }

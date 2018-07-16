@@ -59,7 +59,7 @@ const validateOptions = function({ reporter, reporter: { name }, options }) {
     value: options,
     name: `report.${name}`,
     message: `'report.${name}'`,
-    props: { plugin: `reporter-${name}` },
+    props: { module: `reporter-${name}` },
   })
 }
 

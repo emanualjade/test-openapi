@@ -68,6 +68,7 @@ const normalizeReportPropKey = function(value, name) {
 const TAP_NAMES = {
   message: 'message',
   plugin: 'operator',
+  reporter: 'operator',
   value: 'value',
   'expected value': 'expected',
   'actual value': 'actual',

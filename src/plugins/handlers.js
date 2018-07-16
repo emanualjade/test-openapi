@@ -63,11 +63,11 @@ const callHandler = function({ func, context }, input) {
   return func(input, context)
 }
 
-// Add `error.plugin` to every thrown error
+// Add `error.module` to every thrown error
 const pluginErrorHandler = function(name, error) {
-  // Recursive handlers already have `error.plugin` defined
-  if (error.plugin === undefined) {
-    error.plugin = name
+  // Recursive handlers already have `error.module` defined
+  if (error.module === undefined) {
+    error.module = `plugin-${name}`
   }
 
   throw error

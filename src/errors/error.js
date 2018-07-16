@@ -6,7 +6,8 @@ const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
 // Properties (all might not be present):
 //  - `config` `{object}`: initial configuration object
 //  - `plugins` `{string[]}`: list of loaded plugins
-//  - `plugin` `{string}`: plugin that triggered the first error.
+//  - `module` `{string}`: module that triggered the first error,
+//     e.g. `plugin-PLUGIN` or `reporter-REPORTER`
 //  - `bug` `{boolean}`: true if it was a bug
 //  - `task` `{object}`: current task
 //  - `property` `{string}`: path to the property in `task` or `config`
@@ -50,7 +51,7 @@ const USER_VALID_PROPERTIES = ['property', 'value', 'expected', 'schema']
 const CORE_VALID_PROPERTIES = [
   'config',
   'plugins',
-  'plugin',
+  'module',
   'bug',
   'task',
   'tasks',

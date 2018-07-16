@@ -33,7 +33,6 @@ const DEFAULT_REPORTERS = ['pretty']
 const MODULE_OPTS = {
   title: 'reporter',
   modulePrefix: 'test-openapi-reporter-',
-  pluginPrefix: 'reporter-',
   corePath: '../core/report/reporters/',
   props: ({ name }) => ({ property: `report.${name}` }),
   schema: REPORTER_SCHEMA,

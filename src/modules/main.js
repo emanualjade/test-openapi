@@ -66,9 +66,9 @@ const getProps = function({ props, name }) {
 }
 
 // Throw a `bug` error
-const throwBugError = function(message, { name, info: { title, pluginPrefix } }) {
+const throwBugError = function(message, { name, info: { title } }) {
   const errorA = new Error(`The ${title} '${name}' ${message}`)
-  errorA.plugin = `${pluginPrefix}${name}`
+  errorA.module = `${title}-${name}`
   throw errorA
 }
 

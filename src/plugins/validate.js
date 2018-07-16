@@ -19,7 +19,7 @@ const validateJsonSchema = function({ schema, name, propName }) {
   const errorA = new Error(
     `Plugin '${name}' is invalid: 'config.${propName}' is not a valid JSON schema: ${error}`,
   )
-  errorA.plugin = name
+  errorA.module = `plugin-${name}`
   throw errorA
 }
 

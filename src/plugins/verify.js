@@ -17,7 +17,7 @@ const verifyConfig = function({
     value,
     name: `config.${name}`,
     message: `Configuration`,
-    props: { plugin: name },
+    props: { module: `plugin-${name}` },
   })
 }
 
@@ -36,7 +36,7 @@ const verifyTask = function({
     value,
     name,
     message: `Task configuration`,
-    props: { plugin: name },
+    props: { module: `plugin-${name}` },
   })
 }
 

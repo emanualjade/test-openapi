@@ -3,17 +3,12 @@
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 const { validateFromSchema } = require('../validation')
 
-const PLUGIN_SCHEMA = require('./plugin_schema')
-const REPORTER_SCHEMA = require('./reporter_schema')
-
 // A module is either a plugin or a reporter
-const getModule = function({ name, type }) {
+const getModule = function(name, info) {
   // Can pass the module object directly
   if (typeof name !== 'string') {
     return name
   }
-
-  const info = INFO[type]
 
   const module = eLoadModule({ name, info })
 
@@ -75,24 +70,6 @@ const throwBugError = function(message, { name, info: { title, pluginPrefix } })
   const errorA = new Error(`The ${title} '${name}' ${message}`)
   errorA.plugin = `${pluginPrefix}${name}`
   throw errorA
-}
-
-const INFO = {
-  plugin: {
-    title: 'plugin',
-    modulePrefix: 'test-openapi-plugin-',
-    pluginPrefix: '',
-    corePath: '../core/',
-    schema: PLUGIN_SCHEMA,
-  },
-  reporter: {
-    title: 'reporter',
-    modulePrefix: 'test-openapi-reporter-',
-    pluginPrefix: 'reporter-',
-    corePath: '../core/report/reporters/',
-    props: ({ name }) => ({ property: `report.${name}` }),
-    schema: REPORTER_SCHEMA,
-  },
 }
 
 module.exports = {

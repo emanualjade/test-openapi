@@ -4,6 +4,7 @@ const { uniq, difference } = require('lodash')
 
 const { getModule } = require('../modules')
 
+const PLUGIN_SCHEMA = require('./plugin_schema')
 const { validateJsonSchemas } = require('./validate')
 const { verifyConfig } = require('./verify')
 
@@ -34,7 +35,7 @@ const CORE_PLUGINS = ['each', 'glob', 'only', 'skip', 'repeat', 'helpers', 'veri
 const DEFAULT_PLUGINS = ['spec', 'call', 'validate']
 
 const loadPlugin = function({ name, config }) {
-  const plugin = getModule({ name, type: 'plugin' })
+  const plugin = getModule(name, MODULE_OPTS)
 
   validateJsonSchemas({ plugin })
 
@@ -42,6 +43,14 @@ const loadPlugin = function({ name, config }) {
 
   const pluginA = addIsCore({ plugin })
   return pluginA
+}
+
+const MODULE_OPTS = {
+  title: 'plugin',
+  modulePrefix: 'test-openapi-plugin-',
+  pluginPrefix: '',
+  corePath: '../core/',
+  schema: PLUGIN_SCHEMA,
 }
 
 // Used e.g. during reporting

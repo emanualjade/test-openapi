@@ -5,12 +5,13 @@ const { difference } = require('lodash')
 const { getModule } = require('../../../modules')
 
 const COMMON_OPTIONS_SCHEMA = require('./common_options_schema')
+const REPORTER_SCHEMA = require('./reporter_schema')
 
 // Get `startData.report.reporters`
 const getReporters = function({ config }) {
   const names = getNames({ config })
 
-  const reporters = names.map(name => getModule({ name, type: 'reporter' }))
+  const reporters = names.map(name => getModule(name, MODULE_OPTS))
   return reporters
 }
 
@@ -28,6 +29,15 @@ const getNames = function({ config: { report = {} } }) {
 }
 
 const DEFAULT_REPORTERS = ['pretty']
+
+const MODULE_OPTS = {
+  title: 'reporter',
+  modulePrefix: 'test-openapi-reporter-',
+  pluginPrefix: 'reporter-',
+  corePath: '../core/report/reporters/',
+  props: ({ name }) => ({ property: `report.${name}` }),
+  schema: REPORTER_SCHEMA,
+}
 
 module.exports = {
   getReporters,

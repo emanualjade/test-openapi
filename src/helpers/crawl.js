@@ -1,6 +1,6 @@
 'use strict'
 
-const { isObject, promiseThen, promiseAll, promiseAllThen } = require('../utils')
+const { promiseThen, promiseAll, promiseAllThen } = require('../utils')
 
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // no helpers is found or when helpers are synchronous.
@@ -17,7 +17,7 @@ const crawlChildren = function(value, path, info, evalNode) {
     return promiseAll(children)
   }
 
-  if (isObject(value)) {
+  if (typeof value === 'object' && value !== null) {
     const children = Object.entries(value).map(([key, child]) =>
       crawlProperty({ key, child, path, info, evalNode }),
     )

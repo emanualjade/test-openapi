@@ -1,8 +1,9 @@
 'use strict'
 
-const { merge } = require('lodash')
 const isGlob = require('is-glob')
 const { isMatch } = require('micromatch')
+
+const { merge } = require('../../utils')
 
 // Merge tasks whose name include globbing matching other task names.
 // I.e. special task name to allow for shared properties

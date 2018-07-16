@@ -1,7 +1,8 @@
 'use strict'
 
-const { mergeAll } = require('lodash/fp')
 const { mapValues } = require('lodash')
+
+const { merge } = require('../../../utils')
 
 const { getSpecOperation } = require('./operation')
 const { removeOptionals } = require('./optional')
@@ -30,7 +31,7 @@ const addSpecToCall = function({ spec, key, call, helpers }) {
   const paramsC = mapValues(paramsB, schema => generateRandom({ schema, helpers }))
 
   // Specification params have less priority than `task.call.*`
-  const callB = mergeAll([paramsC, callA])
+  const callB = merge(paramsC, callA)
 
   return callB
 }

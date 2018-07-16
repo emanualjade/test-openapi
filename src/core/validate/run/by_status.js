@@ -1,6 +1,6 @@
 'use strict'
 
-const { mergeAll } = require('lodash/fp')
+const { merge } = require('../../../utils')
 
 // `validate.byStatus.*` is like `validate.*` but as map according to status code.
 // Used e.g. with OpenAPI specification which allow different responses per status.
@@ -15,7 +15,7 @@ const addByStatus = function({ validate: { byStatus, ...validate }, response: { 
   }
 
   // `byStatus` has lower priority because it comes from another plugin (e.g. `spec`)
-  return mergeAll([byStatusA, validate])
+  return merge(byStatusA, validate)
 }
 
 module.exports = {

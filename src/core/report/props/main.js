@@ -1,9 +1,8 @@
 'use strict'
 
 const { omit, omitBy } = require('lodash')
-const { mergeAll } = require('lodash/fp')
 
-const { isObject } = require('../../../utils')
+const { isObject, merge } = require('../../../utils')
 
 const { addCoreReportProps } = require('./core')
 
@@ -18,7 +17,7 @@ const getReportProps = function({ task, config, startData, plugins }) {
   const reportPropsB = reportPropsA.map(removeEmptyProps)
 
   // Merge all `plugin.report()` results
-  const reportPropsC = mergeAll(reportPropsB)
+  const reportPropsC = merge(...reportPropsB)
 
   return { title, reportProps: reportPropsC }
 }

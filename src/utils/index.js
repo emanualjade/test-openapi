@@ -13,4 +13,5 @@ module.exports = {
   ...require('./common_prefix'),
   ...require('./get'),
   ...require('./result'),
+  ...require('./merge'),
 }

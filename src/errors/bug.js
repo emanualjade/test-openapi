@@ -16,7 +16,8 @@ const handleBugs = function({ error }) {
 
   const message = getBugMessage({ bugError })
 
-  return new TestOpenApiError(message, { ...bugError, bug: true })
+  const { module } = bugError
+  return new TestOpenApiError(message, { module, bug: true })
 }
 
 const findBugError = function({ error, error: { errors = [error] } }) {

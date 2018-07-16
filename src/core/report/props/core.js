@@ -15,9 +15,8 @@ const getCoreReportProps = function({
 }) {
   const values = getValues({ expected, value })
   const schemaA = getJsonSchema({ schema })
-  const pluginA = getPlugin({ plugin })
 
-  return { message, ...values, property, 'JSON schema': schemaA, plugin: pluginA }
+  return { message, ...values, property, 'JSON schema': schemaA, plugin }
 }
 
 const getValues = function({ expected, value }) {
@@ -36,15 +35,6 @@ const getJsonSchema = function({ schema }) {
   }
 
   return schema
-}
-
-// Only report `error.plugin` for external plugins
-const getPlugin = function({ plugin }) {
-  if (plugin === 'core') {
-    return
-  }
-
-  return plugin
 }
 
 module.exports = {

@@ -41,8 +41,7 @@ const loadPlugin = function({ name, config }) {
 
   verifyConfig({ plugin, config })
 
-  const pluginA = addIsCore({ plugin })
-  return pluginA
+  return plugin
 }
 
 const MODULE_OPTS = {
@@ -51,12 +50,6 @@ const MODULE_OPTS = {
   pluginPrefix: '',
   corePath: '../core/',
   schema: PLUGIN_SCHEMA,
-}
-
-// Used e.g. during reporting
-const addIsCore = function({ plugin, plugin: { name } }) {
-  const isCore = CORE_PLUGINS.includes(name)
-  return { ...plugin, isCore }
 }
 
 // `load`, i.e. before all tasks:

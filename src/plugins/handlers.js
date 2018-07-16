@@ -24,7 +24,7 @@ const runHandlers = function({
 }
 
 const getContext = function({ context, plugins }) {
-  const pluginNames = plugins.filter(({ isCore }) => !isCore).map(({ name }) => name)
+  const pluginNames = plugins.map(({ name }) => name)
   return { ...context, pluginNames, _plugins: plugins }
 }
 
@@ -36,7 +36,7 @@ const getHandlers = function({ plugins, type, errorHandler, context }) {
   return handlersB
 }
 
-const getPluginHandlers = function({ plugin, type }) {
+const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
   const handlers = plugin[type]
   if (handlers === undefined) {
     return []
@@ -47,20 +47,14 @@ const getPluginHandlers = function({ plugin, type }) {
   // error is thrown at the middle of the handler
   const handlersA = Array.isArray(handlers) ? handlers : [handlers]
 
-  const handlersB = handlersA.map(func => getPluginHandler({ func, plugin }))
+  const handlersB = handlersA.map(func => ({ func, name }))
   return handlersB
 }
 
-const getPluginHandler = function({ func, plugin: { isCore, name } }) {
-  // `error.plugin` is `core` for core plugins
-  const plugin = isCore ? 'core' : name
-  return { func, plugin }
-}
-
-const wrapHandler = function({ handler: { func, plugin }, errorHandler, context, type }) {
+const wrapHandler = function({ handler: { func, name }, errorHandler, context, type }) {
   const handlerA = callHandler.bind(null, { func, context, type })
 
-  const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, plugin))
+  const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, name))
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return handlerC
 }
@@ -70,10 +64,10 @@ const callHandler = function({ func, context }, input) {
 }
 
 // Add `error.plugin` to every thrown error
-const pluginErrorHandler = function(plugin, error) {
+const pluginErrorHandler = function(name, error) {
   // Recursive handlers already have `error.plugin` defined
   if (error.plugin === undefined) {
-    error.plugin = plugin
+    error.plugin = name
   }
 
   throw error

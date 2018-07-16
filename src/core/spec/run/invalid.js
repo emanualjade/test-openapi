@@ -1,42 +1,35 @@
 'use strict'
 
-const { omit } = require('lodash')
+const { get, set } = require('lodash/fp')
 
-// Using `task.call.*: 'invalid value'` inverse OpenAPI specification parameters
-const handleInvalid = function({ params, call = {} }) {
-  const keys = Object.keys(call).filter(key => isInvalid({ call, key }))
-
-  // Otherwise `task.call` has priority over OpenAPI parameters
-  const callA = omit(call, keys)
-
-  const paramsA = getInvalidParams({ params, keys })
-
-  return { call: callA, params: paramsA }
+// Inverse OpenAPI params where `call.*: invalid` was used
+const setInvalidParams = function({ params, specialValues: { invalid } }) {
+  return invalid.reduce(reduceInvalidParam, params)
 }
 
-const isInvalid = function({ call, key }) {
-  return call[key] === INVALID_TOKEN
+const reduceInvalidParam = function(params, path) {
+  // Retrieve current OpenAPI definition
+  const param = get(path, params)
+
+  // Then inverse it
+  const paramA = getInvalidParam({ param })
+
+  // And set it back
+  return set(path, paramA, params)
 }
 
-// We do not provide a way to escape, i.e. when users actually want to use
-// a parameter with this string value, because it is unlikely
-const INVALID_TOKEN = 'invalid value'
-
-const getInvalidParams = function({ params, keys }) {
-  const invalidParams = keys.map(key => getInvalidParam({ params, key }))
-  const paramsA = Object.assign({}, params, ...invalidParams)
-  return paramsA
-}
-
-const getInvalidParam = function({ params, key }) {
-  const param = params[key]
+const getInvalidParam = function({ param }) {
+  // If cannot find OpenAPI definition, set as an `anything` schema
+  if (param === undefined) {
+    return {}
+  }
 
   const type = addNullType({ param })
 
   // TODO: json-schema-faker support for the `not` keyword is lacking
   // E.g. `type` array is not supported, so `invalid value` actually does not work
   // at the moment.
-  return { [key]: { not: { ...param, type } } }
+  return { not: { ...param, type } }
 }
 
 // When using 'invalid value', we want to make sure the value is generated, i.e. it
@@ -62,5 +55,5 @@ const addNullType = function({ param: { type = [] } = {} }) {
 }
 
 module.exports = {
-  handleInvalid,
+  setInvalidParams,
 }

@@ -8,11 +8,7 @@ const validateJsonSchemas = function({ validate }) {
 }
 
 const validateJsonSchema = function([prop, value]) {
-  checkIsSchema({
-    value,
-    name: `task.validate.${prop}`,
-    message: `'validate.${prop}' configuration`,
-  })
+  checkIsSchema({ value, name: `task.validate.${prop}` })
 }
 
 module.exports = {

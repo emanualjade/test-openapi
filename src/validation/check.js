@@ -6,7 +6,7 @@ const { validateFromSchema } = require('./validate')
 
 // Validate against JSON schema and on failure throw error with
 // `error.schema|value|property` set accordingly
-const checkSchema = function({ schema, value, name, message, target, props }) {
+const checkSchema = function({ schema, value, name, message = name, target, props }) {
   const { error, schema: schemaA, value: valueA, property } = validateFromSchema({
     schema,
     value,

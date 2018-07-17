@@ -16,7 +16,6 @@ const verifyConfig = function({
     schema,
     value,
     name: `config.${name}`,
-    message: `Configuration`,
     props: { module: `plugin-${name}` },
   })
 }
@@ -35,7 +34,6 @@ const verifyTask = function({
     schema,
     value,
     name: `task.${name}`,
-    message: `Task configuration`,
     props: { module: `plugin-${name}` },
   })
 }

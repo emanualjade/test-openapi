@@ -2,7 +2,7 @@
 
 const { addErrorHandler, topLevelHandler, handleFinalFailure } = require('../errors')
 const { loadConfig } = require('../config')
-const { getTasks, addOriginalTasks, removeOriginalTasks } = require('../tasks')
+const { getTasks, removeOriginalTasks } = require('../tasks')
 const { loadPlugins } = require('../plugins')
 
 const { loadTasks } = require('./load')
@@ -40,13 +40,11 @@ const eRun = addErrorHandler(run, topLevelHandler)
 const performRun = async function({ config, plugins }) {
   const configA = await loadTasks({ config, plugins })
 
-  const configB = addOriginalTasks({ config: configA })
+  const startData = await startTasks({ config: configA, plugins })
 
-  const startData = await startTasks({ config: configB, plugins })
+  const tasks = await fireTasks({ config: configA, startData, plugins })
 
-  const tasks = await fireTasks({ config: configB, startData, plugins })
-
-  await endTasks({ tasks, plugins, config: configB, startData })
+  await endTasks({ tasks, plugins, config: configA, startData })
 
   const tasksA = removeOriginalTasks({ tasks })
 

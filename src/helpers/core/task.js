@@ -5,10 +5,10 @@ const { TestOpenApiError } = require('../../errors')
 
 // `{ $$task: 'TASK PATH [OPT,...]' }` helper
 // Runs TASK and replace helper with `task[PATH]`
-const taskHelper = async function({ config: { tasks }, _runTask: runTask }, taskArg) {
+const taskHelper = async function({ config, _runTask: runTask }, taskArg) {
   const { taskKey, path, options } = parseTaskArg({ taskArg })
 
-  const task = findTask({ taskKey, tasks })
+  const task = findTask({ taskKey, config })
 
   const getError = getTaskError.bind(null, { task })
   const taskA = await runTask({ task, getError })
@@ -33,8 +33,8 @@ const parseTaskArg = function({ taskArg }) {
 }
 
 // Find the task definition
-const findTask = function({ taskKey, tasks }) {
-  const task = tasks.find(({ key }) => key === taskKey)
+const findTask = function({ taskKey, config: { _allTasks: allTasks } }) {
+  const task = allTasks.find(({ key }) => key === taskKey)
 
   if (task === undefined) {
     throw new TestOpenApiError(`task '${taskKey}' does not exist`)

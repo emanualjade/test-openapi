@@ -1,21 +1,27 @@
 'use strict'
 
 const { runHandlers } = require('../plugins')
+const { addOriginalTasks } = require('../tasks')
 
 // Run each `plugin.load()`
 // Goal is to modify `tasks`.
-// Remember that this will be used by recursive `_runTask()` as well.
-// For example, plugins should flag tasks as `skipped` but not filter them out
-// even if could still be used in recursive tasks.
 const loadTasks = async function({ config, config: { tasks }, plugins }) {
-  const tasksA = await runHandlers({
+  const allTasks = await runHandlers({
     type: 'load',
     plugins,
     input: tasks,
     context: { config },
     mergeReturn,
   })
-  return { ...config, tasks: tasksA }
+
+  const allTasksA = addOriginalTasks({ tasks: allTasks })
+
+  // While `skipped` tasks are still returned and reported, `excluded` tasks
+  // are not.
+  // They still need to be available in `allTasks` for recursive `_runTask()`
+  const tasksA = allTasksA.filter(({ excluded }) => !excluded)
+
+  return { ...config, _allTasks: allTasksA, tasks: tasksA }
 }
 
 const mergeReturn = function(input, newInput) {

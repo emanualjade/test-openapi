@@ -1,6 +1,6 @@
 'use strict'
 
-const { merge } = require('../../utils')
+const { merge } = require('../../helpers')
 
 // Merge `config.each` to all tasks
 // It is like the `glob` plugin with a task named `*` except it is set on `config`

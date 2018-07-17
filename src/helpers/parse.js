@@ -31,12 +31,18 @@ const parseHelper = function(value) {
   return { type: 'function', name, arg }
 }
 
+// Check whether value is an helper
+const isHelper = function(value) {
+  const helper = parseHelper(value)
+  return helper !== undefined && !isEscape({ helper })
+}
+
 // To escape an object that could be taken for an helper (but is not), one can
 // add an extra `$`, i.e. `{ $$$name: arg }` becomes `{ $$name: arg }`
 // and `$$$name` becomes `$$name`
 // This works with multiple `$` as well
-const parseEscape = function({ helper: { type, name, arg } }) {
-  if (!name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)) {
+const parseEscape = function({ helper, helper: { type, name, arg } }) {
+  if (!isEscape({ helper })) {
     return
   }
 
@@ -49,11 +55,16 @@ const parseEscape = function({ helper: { type, name, arg } }) {
   return nameA
 }
 
+const isEscape = function({ helper: { name } }) {
+  return name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)
+}
+
 const HELPERS_PREFIX = '$$'
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
 const HELPERS_ESCAPE = '$'
 
 module.exports = {
   parseHelper,
+  isHelper,
   parseEscape,
 }

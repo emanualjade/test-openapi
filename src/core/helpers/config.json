@@ -2,7 +2,7 @@
   "general": {
     "type": "object",
     "patternProperties": {
-      "^\\$\\$[^\\$]": {}
+      "^\\$\\$[^\\$\\.][^\\.]*$": {}
     },
     "additionalProperties": false
   }

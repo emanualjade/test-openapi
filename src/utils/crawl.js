@@ -5,18 +5,8 @@ const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 // Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // no helpers is found or when helpers are synchronous.
-const crawl = function(value, evalNode, { path, ...opts } = {}) {
-  const pathA = getPath({ path })
-
-  return crawlNode(value, evalNode, pathA, opts)
-}
-
-const getPath = function({ path }) {
-  if (path === undefined) {
-    return []
-  }
-
-  return path.split('.')
+const crawl = function(value, evalNode, { path = [], ...opts } = {}) {
+  return crawlNode(value, evalNode, path, opts)
 }
 
 const crawlNode = function(value, evalNode, path, opts) {

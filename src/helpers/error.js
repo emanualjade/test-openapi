@@ -13,6 +13,8 @@ const helperHandler = function(error, { value, helper, info }) {
   throw error
 }
 
+// We don't show helper's name in error message because it would require replacing
+// it for each recursion level in case of recursive helpers
 const HELPER_ERROR_MESSAGE = 'Error when evaluating helper: '
 
 // Attach error properties to every error thrown during helpers substitution:

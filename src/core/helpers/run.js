@@ -17,7 +17,7 @@ const run = function({ key, ...task }, { helpers }) {
   // Also prevents resolving helpers twice (in `task` and in `originalTask`)
   const taskA = omit(task, 'originalTask')
 
-  const taskB = helpers(taskA)
+  const taskB = helpers(taskA, ['task'])
 
   // Update `originalTask` so that helpers are shown evaluated in both return value
   // and reporting

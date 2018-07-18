@@ -40,7 +40,7 @@ const evalNode = function(value, path, info) {
 }
 
 const evalHelper = function({ helper, info }) {
-  const { value, propPath } = getHelperValue({ helper, info })
+  const { value, propPath, topName } = getHelperValue({ helper, info })
 
   // Unkwnown helpers or helpers with `undefined` values return `undefined`,
   // instead of throwing an error. This allows users to use dynamic helpers, where
@@ -49,9 +49,10 @@ const evalHelper = function({ helper, info }) {
     return
   }
 
-  const valueA = eSubstituteValue({ value, info, helper })
-
-  return promiseThen(valueA, valueB => getHelperProp({ value: valueB, helper, info, propPath }))
+  // `$$name` can be a promise if it is an async `get` function, e.g. with `task.alias`
+  return promiseThen(value, valueA =>
+    getHelperProp({ value: valueA, helper, info, propPath, topName }),
+  )
 }
 
 // Retrieve helper's top-level value
@@ -75,32 +76,39 @@ const getHelperValue = function({
   const [topName, ...propPath] = name.split('.')
 
   const value = helpersA[topName]
-  return { value, propPath }
+  return { value, propPath, topName }
 }
 
-// `$$name` can be a promise if it is an async `get` function, e.g. with `task.alias`
+// Retrive helper's non-top-level value (i.e. property path)
+const getHelperProp = function({ value, helper, info, propPath, topName }) {
+  // We pass `topName` to ensure `error.property` uses only top-level property
+  // if an error is thrown
+  const valueA = eSubstituteValue({ value, info, helper, name: topName })
+
+  return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, info, helper, propPath }))
+}
+
+// An helper `$$name` can contain other helpers, which are then processed
+// recursively.
+// This can be used e.g. to create aliases.
+// This is done only on `$$name` but not `{ $$name: arg }` return value because:
+//  - in functions, it is most likely not the desired intention of the user
+//  - it would require complex escaping (if user does not desire recursion)
+//  - recursion can be achieved by using `context.helpers()`
 const substituteValue = function({ value, info }) {
-  // An helper `$$name` can contain other helpers, which are then processed
-  // recursively.
-  // This can be used e.g. to create aliases.
-  // This is done only on `$$name` but not `{ $$name: arg }` return value because:
-  //  - in functions, it is most likely not the desired intention of the user
-  //  - it would require complex escaping (if user does not desire recursion)
-  //  - recursion can be achieved by using `context.helpers()`
-  return promiseThen(value, valueA => substituteHelpers(info, valueA))
+  return substituteHelpers(info, value)
 }
 
 const eSubstituteValue = addErrorHandler(substituteValue, helperHandler)
 
-// Retrive helper's non-top-level value (i.e. property path)
-const getHelperProp = function({ value, helper, info, propPath }) {
-  const valueC = getProp({ value, propPath })
+const evalHelperProp = function({ value, info, helper, helper: { name }, propPath }) {
+  const valueA = getProp({ value, propPath })
 
-  if (valueC === undefined) {
+  if (valueA === undefined) {
     return
   }
 
-  return eEvalHelperFunction({ value: valueC, helper, info })
+  return eEvalHelperFunction({ value: valueA, helper, info, name })
 }
 
 const getProp = function({ value, propPath }) {

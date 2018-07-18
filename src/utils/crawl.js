@@ -6,25 +6,25 @@ const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // no helpers is found or when helpers are synchronous.
 const crawl = function(value, evalNode, { path = [], ...opts } = {}) {
-  return crawlNode(value, evalNode, path, opts)
+  return crawlNode(value, path, { ...opts, evalNode })
 }
 
-const crawlNode = function(value, evalNode, path, opts) {
+const crawlNode = function(value, path, opts) {
   // Children must be evaluated before parents
-  const valueA = crawlChildren(value, path, opts, evalNode)
-  return promiseThen(valueA, valueB => evalNode(valueB, path, opts))
+  const valueA = crawlChildren(value, path, opts)
+  return promiseThen(valueA, valueB => opts.evalNode(valueB, path, opts))
 }
 
 // Siblings evaluation is done in parallel for best performance.
-const crawlChildren = function(value, path, opts, evalNode) {
+const crawlChildren = function(value, path, opts) {
   if (Array.isArray(value)) {
-    const children = value.map((child, index) => crawlNode(child, evalNode, [...path, index], opts))
+    const children = value.map((child, index) => crawlNode(child, [...path, index], opts))
     return promiseAll(children)
   }
 
   if (typeof value === 'object' && value !== null) {
     const children = Object.entries(value).map(([key, child]) =>
-      crawlProperty({ key, child, path, opts, evalNode }),
+      crawlProperty({ key, child, path, opts }),
     )
     return promiseAllThen(children, mergeProperties)
   }
@@ -32,8 +32,8 @@ const crawlChildren = function(value, path, opts, evalNode) {
   return value
 }
 
-const crawlProperty = function({ key, child, path, opts, evalNode }) {
-  const maybePromise = crawlNode(child, evalNode, [...path, key], opts)
+const crawlProperty = function({ key, child, path, opts }) {
+  const maybePromise = crawlNode(child, [...path, key], opts)
   return promiseThen(maybePromise, childA => getProperty({ key, child: childA }))
 }
 

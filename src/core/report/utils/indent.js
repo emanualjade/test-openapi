@@ -18,12 +18,13 @@ const shouldIndent = function(string) {
 }
 
 // Indent a string
-const indent = function(string) {
-  return INDENT + string.replace(/\n/g, `\n${INDENT}`)
+const indent = function(string, extraIndent = 0) {
+  const size = INDENT_SIZE + extraIndent
+  const indentString = ' '.repeat(size)
+  return indentString + string.replace(/\n/g, `\n${indentString}`)
 }
 
 const INDENT_SIZE = 2
-const INDENT = ' '.repeat(INDENT_SIZE)
 
 module.exports = {
   indentValue,

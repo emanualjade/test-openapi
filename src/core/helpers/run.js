@@ -21,7 +21,7 @@ const run = function(task, context) {
 }
 
 // Make sure those properties are not checked for helpers
-const NO_EVAL_PROPS = ['originalTask', 'key', 'helpers']
+const NO_EVAL_PROPS = ['originalTask', 'key', 'helpers', 'alias']
 
 // Update `originalTask` so that helpers are shown evaluated in both return value
 // and reporting

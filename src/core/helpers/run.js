@@ -1,6 +1,6 @@
 'use strict'
 
-const { omit } = require('lodash')
+const { pick, omit } = require('lodash')
 
 const { promiseThen } = require('../../utils')
 
@@ -12,23 +12,25 @@ const { promiseThen } = require('../../utils')
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$$random`
 //    or `$$task` helpers
 const run = function(task, context) {
-  // Make sure `task.key|helpers` are not checked for helpers
-  const { key, helpers, ...taskA } = task
+  const noEvalProps = pick(task, NO_EVAL_PROPS)
+  const taskA = omit(task, NO_EVAL_PROPS)
 
-  // No nested `originalTask` in final return value
-  // Also prevents resolving helpers twice (in `task` and in `originalTask`)
-  const taskB = omit(taskA, 'originalTask')
+  const taskB = context.helpers(taskA, ['task'])
 
-  const taskC = context.helpers(taskB, ['task'])
-
-  return promiseThen(taskC, taskD => returnTask({ task: taskD, key, helpers }))
+  return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }
+
+// Make sure those properties are not checked for helpers
+const NO_EVAL_PROPS = ['originalTask', 'key', 'helpers']
 
 // Update `originalTask` so that helpers are shown evaluated in both return value
 // and reporting
-const returnTask = function({ task, key, helpers }) {
-  const taskA = { ...task, key, helpers }
-  return { ...taskA, originalTask: taskA }
+const returnTask = function({ task, noEvalProps }) {
+  const taskA = { ...task, ...noEvalProps }
+
+  // No nested `originalTask` in final return value
+  const taskB = omit(taskA, 'originalTask')
+  return { ...taskB, originalTask: taskB }
 }
 
 module.exports = {

@@ -13,7 +13,7 @@ const coreHelpers = require('./core')
 // Crawl a value recursively to find helpers.
 // When an helper is found, it is replaced by its evaluated value.
 const substituteHelpers = function(info, value, path) {
-  return crawl(value, evalNode, { path, ...info })
+  return crawl(value, evalNode, { path, info })
 }
 
 // Evaluate an object or part of an object for helpers

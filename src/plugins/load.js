@@ -29,7 +29,17 @@ const normalizePlugins = function({ plugins }) {
 }
 
 // Plugins always included
-const CORE_PLUGINS = ['each', 'glob', 'only', 'skip', 'repeat', 'helpers', 'verify', 'report']
+const CORE_PLUGINS = [
+  'each',
+  'glob',
+  'only',
+  'skip',
+  'repeat',
+  'alias',
+  'helpers',
+  'verify',
+  'report',
+]
 
 // TODO: use a separate bundled package instead
 const DEFAULT_PLUGINS = ['spec', 'call', 'validate']

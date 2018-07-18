@@ -2,7 +2,7 @@
   "task": {
     "type": "object",
     "patternProperties": {
-      "^\\$\\$[^\\$\\.][^\\.]*$": {
+      "^\\$\\$[\\w-]+$": {
         "type": "string"
       }
     },

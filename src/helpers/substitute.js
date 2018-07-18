@@ -60,7 +60,8 @@ const getHelperValue = function({
   helper: { name },
   info: {
     context: {
-      config: { helpers },
+      task: { helpers: taskHelpers },
+      config: { helpers: configHelpers },
     },
   },
 }) {
@@ -68,7 +69,7 @@ const getHelperValue = function({
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const helpersA = { ...coreHelpers, ...helpers }
+  const helpersA = { ...coreHelpers, ...configHelpers, ...taskHelpers }
 
   // `$$name` and `{ $$name: arg }` can both use dot notations
   // The top-level value is first evaluated (including recursively parsing its

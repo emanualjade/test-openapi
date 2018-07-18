@@ -5,5 +5,12 @@
       "^\\$\\$[^\\$\\.][^\\.]*$": {}
     },
     "additionalProperties": false
+  },
+  "task": {
+    "type": "object",
+    "patternProperties": {
+      "^\\$\\$[^\\$\\.][^\\.]*$": {}
+    },
+    "additionalProperties": false
   }
 }

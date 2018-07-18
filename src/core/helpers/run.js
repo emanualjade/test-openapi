@@ -11,17 +11,24 @@ const { promiseThen } = require('../../utils')
 //  - `task|only` plugins: to avoid unnecessary long helpers evaluation on skipped task
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$$random`
 //    or `$$task` helpers
-// Make sure `task.key` is not checked for helpers
-const run = function({ key, ...task }, { helpers }) {
+const run = function(task, context) {
+  // Make sure `task.key|helpers` are not checked for helpers
+  const { key, helpers, ...taskA } = task
+
   // No nested `originalTask` in final return value
   // Also prevents resolving helpers twice (in `task` and in `originalTask`)
-  const taskA = omit(task, 'originalTask')
+  const taskB = omit(taskA, 'originalTask')
 
-  const taskB = helpers(taskA, ['task'])
+  const taskC = context.helpers(taskB, ['task'])
 
-  // Update `originalTask` so that helpers are shown evaluated in both return value
-  // and reporting
-  return promiseThen(taskB, taskC => ({ ...taskC, originalTask: taskC, key }))
+  return promiseThen(taskC, taskD => returnTask({ task: taskD, key, helpers }))
+}
+
+// Update `originalTask` so that helpers are shown evaluated in both return value
+// and reporting
+const returnTask = function({ task, key, helpers }) {
+  const taskA = { ...task, key, helpers }
+  return { ...taskA, originalTask: taskA }
 }
 
 module.exports = {

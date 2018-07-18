@@ -43,7 +43,7 @@
     "micromatch": "^3.1.10",
     "node-notifier": "^5.2.1",
     "openapi-schema-to-json-schema": "^2.1.0",
-    "ora": "^2.1.0",
+    "ora": "^3.0.0",
     "slice-ansi": "^1.0.0",
     "string-width": "^2.1.1",
     "strip-ansi": "^4.0.0",

@@ -74,16 +74,40 @@ const getHelperValue = function({
   // either good or bad).
   const helpersA = { ...coreHelpers, ...configHelpers, ...startDataHelpers, ...taskHelpers }
 
-  // `$$name` and `{ $$name: arg }` can both use dot notations
-  // The top-level value is first evaluated (including recursively parsing its
-  // helpers) then the rest of the property path is applied.
-  const [topName, ...propPath] = name.split('.')
+  const { topName, propPath } = parseName({ name })
 
   const value = helpersA[topName]
 
   const valueA = evalFunction({ value, helper, info })
 
   return { value: valueA, propPath, topName }
+}
+
+// `$$name` and `{ $$name: arg }` can both use dot notations
+// The top-level value is first evaluated (including recursively parsing its
+// helpers) then the rest of the property path is applied.
+const parseName = function({ name }) {
+  // Dot notation can also use brackets
+  const index = name.search(/[.[]/)
+  if (index === -1) {
+    return { topName: name }
+  }
+
+  const topName = name.slice(0, index)
+
+  const delimIndex = getDelimIndex({ name, index })
+  const propPath = name.slice(delimIndex)
+
+  return { topName, propPath }
+}
+
+// Brackets are kept but not dots (because of how `_.get()` works)
+const getDelimIndex = function({ name, index }) {
+  if (name[index] === '[') {
+    return index
+  }
+
+  return index + 1
 }
 
 // If `$$name` (but not `{ $$name: arg }`) is a function, it is evaluated right
@@ -134,7 +158,7 @@ const evalHelperProp = function({ value, info, helper, helper: { name }, propPat
 }
 
 const getProp = function({ value, propPath }) {
-  if (propPath.length === 0) {
+  if (propPath === undefined) {
     return value
   }
 

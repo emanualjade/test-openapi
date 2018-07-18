@@ -57,11 +57,14 @@ const evalHelper = function({ helper, info }) {
 
 // Retrieve helper's top-level value
 const getHelperValue = function({
+  helper,
   helper: { name },
+  info,
   info: {
     context: {
-      task: { helpers: taskHelpers },
       config: { helpers: configHelpers },
+      startData: { helpers: startDataHelpers },
+      task: { helpers: taskHelpers },
     },
   },
 }) {
@@ -69,7 +72,7 @@ const getHelperValue = function({
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const helpersA = { ...coreHelpers, ...configHelpers, ...taskHelpers }
+  const helpersA = { ...coreHelpers, ...configHelpers, ...startDataHelpers, ...taskHelpers }
 
   // `$$name` and `{ $$name: arg }` can both use dot notations
   // The top-level value is first evaluated (including recursively parsing its
@@ -77,7 +80,25 @@ const getHelperValue = function({
   const [topName, ...propPath] = name.split('.')
 
   const value = helpersA[topName]
-  return { value, propPath, topName }
+
+  const valueA = evalFunction({ value, helper, info })
+
+  return { value: valueA, propPath, topName }
+}
+
+// If `$$name` (but not `{ $$name: arg }`) is a function, it is evaluated right
+// away with `context` as sole argument.
+// It can be an async function.
+// Used by `task.alias`.
+const evalFunction = function({ value, helper: { type }, info }) {
+  // Only if `function.context: true` to avoid firing library functions that are
+  // also used as objects, e.g. Lodash
+  if (type === 'function' || typeof value !== 'function' || !value.context) {
+    return value
+  }
+
+  const context = getHelperContext({ info })
+  return value(context)
 }
 
 // Retrive helper's non-top-level value (i.e. property path)

@@ -12,7 +12,7 @@ const crawl = function(value, evalNode, { path = [], ...opts } = {}) {
 const crawlNode = function(value, path, opts) {
   // Children must be evaluated before parents
   const valueA = crawlChildren(value, path, opts)
-  return promiseThen(valueA, valueB => opts.evalNode(valueB, path, opts))
+  return promiseThen(valueA, valueB => evalNodeValue({ value: valueB, path, opts }))
 }
 
 // Siblings evaluation is done in parallel for best performance.
@@ -33,23 +33,43 @@ const crawlChildren = function(value, path, opts) {
 }
 
 const crawlProperty = function({ key, child, path, opts }) {
-  const maybePromise = crawlNode(child, [...path, key], opts)
-  return promiseThen(maybePromise, childA => getProperty({ key, child: childA }))
+  const keyMaybePromise = evalNodeKey({ key, path, opts })
+  const valueMaybePromise = crawlNode(child, [...path, key], opts)
+  const promises = [keyMaybePromise, valueMaybePromise]
+  return promiseAllThen(promises, ([key, value]) => getProperty({ key, value }))
 }
 
-const getProperty = function({ key, child }) {
+const getProperty = function({ key, value }) {
   // Values that are return `undefined` are omitted
   // (as opposed to being set to `undefined`) to keep task JSON-serializable
   // and avoid properties that are defined but set to `undefined`
-  if (child === undefined) {
+  if (value === undefined) {
     return
   }
 
-  return { [key]: child }
+  return { [key]: value }
 }
 
 const mergeProperties = function(children) {
   return Object.assign({}, ...children)
+}
+
+// Allow modifying any type values with `evalNode`
+const evalNodeValue = function({ value, path, opts, opts: { evalNode } }) {
+  if (evalNode === undefined) {
+    return value
+  }
+
+  return evalNode(value, path, opts)
+}
+
+// Allow modifying property keys with `opts.evalKey`
+const evalNodeKey = function({ key, path, opts, opts: { evalKey } }) {
+  if (evalKey === undefined) {
+    return key
+  }
+
+  return evalKey(key, path, opts)
 }
 
 module.exports = {

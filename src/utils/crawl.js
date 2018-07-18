@@ -43,11 +43,12 @@ const getProperty = function({ key, value }) {
   // Values that are return `undefined` are omitted
   // (as opposed to being set to `undefined`) to keep task JSON-serializable
   // and avoid properties that are defined but set to `undefined`
-  if (value === undefined) {
+  // Same thing for keys
+  if (key === undefined || value === undefined) {
     return
   }
 
-  return { [key]: value }
+  return { [String(key)]: value }
 }
 
 const mergeProperties = function(children) {

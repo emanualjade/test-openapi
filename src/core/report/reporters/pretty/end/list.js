@@ -71,7 +71,7 @@ const printTaskFail = function({
     error: { message },
   },
 }) {
-  return `${name}\n   ${gray(message)}`
+  return `${name}\n${gray(indent(message, 1))}`
 }
 
 const TASK_PRINTERS = {

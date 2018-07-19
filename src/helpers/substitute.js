@@ -3,7 +3,7 @@
 const { get } = require('lodash')
 
 const { addErrorHandler } = require('../errors')
-const { crawl, promiseThen } = require('../utils')
+const { crawl, promiseThen, promiseAllThen } = require('../utils')
 
 const { parseHelper, parseEscape } = require('./parse')
 const { checkRecursion } = require('./recursion')
@@ -26,6 +26,40 @@ const evalNode = function(value, path, info) {
     return value
   }
 
+  if (helper.type === 'concat') {
+    return evalConcat({ helper, info: infoA })
+  }
+
+  return evalHelperNode({ helper, info: infoA })
+}
+
+// Evaluate `$$name` when it's inside a string.
+// Its result will be transtyped to string and concatenated.
+const evalConcat = function({ helper: { tokens }, info }) {
+  const maybePromises = tokens.map(token => evalConcatToken({ token, info }))
+  // There can be several `$$name` inside a string, in which case they are
+  // evaluated in parallel
+  return promiseAllThen(maybePromises, concatTokens)
+}
+
+const evalConcatToken = function({ token, token: { type, name }, info }) {
+  // Parts between `$$name` have `type: 'raw'`
+  if (type === 'raw') {
+    return name
+  }
+
+  return evalHelperNode({ helper: token, info })
+}
+
+// `tokens` are joined.
+// They will be implicitely transtyped to `String`. We do not use
+// `JSON.stringify()` because we want to be format-agnostic.
+// `undefined` values will be omitted.
+const concatTokens = function(tokens) {
+  return tokens.join('')
+}
+
+const evalHelperNode = function({ helper, info }) {
   const unescapedValue = parseEscape({ helper })
   // There was something that looked like a helper but was an escaped value
   if (unescapedValue !== undefined) {
@@ -33,9 +67,9 @@ const evalNode = function(value, path, info) {
   }
 
   // Check for infinite recursions
-  const infoB = checkRecursion({ helper, info: infoA })
+  const infoA = checkRecursion({ helper, info })
 
-  const valueA = evalHelper({ helper, info: infoB })
+  const valueA = evalHelper({ helper, info: infoA })
   return valueA
 }
 

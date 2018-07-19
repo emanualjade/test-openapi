@@ -1,15 +1,15 @@
 'use strict'
 
-const { isObject } = require('../utils')
+const { isObject, searchRegExp } = require('../utils')
 
 // Parse `{ $$name: arg }` into `{ name: '$$name', arg }`
 // and `$$name` into `{ name: '$$name' }`
 const parseHelper = function(value) {
-  // `$$name`
-  if (typeof value === 'string' && value.startsWith(HELPERS_PREFIX)) {
-    return { type: 'value', name: value }
+  if (typeof value === 'string') {
+    return parseHelperString(value)
   }
 
+  // Not an helper
   if (!isObject(value)) {
     return
   }
@@ -29,6 +29,30 @@ const parseHelper = function(value) {
   // `{ $$name: arg }`
   const arg = value[name]
   return { type: 'function', name, arg }
+}
+
+const parseHelperString = function(value) {
+  const tokens = searchRegExp(HELPERS_REGEXP, value)
+
+  // No matches
+  if (tokens === undefined) {
+    return
+  }
+
+  // Single `$$name` without concatenation.
+  // As opposed to concatenated string, `$$name` is not transtyped to string.
+  if (tokens.length === 1) {
+    return { type: 'value', name: value }
+  }
+
+  // `$$name` inside another string, i.e. concatenated
+  const tokensA = tokens.map(parseToken)
+  return { type: 'concat', tokens: tokensA }
+}
+
+const parseToken = function(name) {
+  const type = HELPERS_REGEXP.test(name) ? 'value' : 'raw'
+  return { type, name }
 }
 
 // Check whether value is an helper
@@ -59,8 +83,11 @@ const isEscape = function({ helper: { name } }) {
   return name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)
 }
 
-const HELPERS_PREFIX = '$$'
+// Matches `$$name` where `name` can only include `A-Za-z0-9_-` and also
+// dot/bracket notations `.[]`
+const HELPERS_REGEXP = /\$\$[\w-.[\]]+/g
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
+const HELPERS_PREFIX = '$$'
 const HELPERS_ESCAPE = '$'
 
 module.exports = {

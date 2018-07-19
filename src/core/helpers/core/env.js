@@ -2,7 +2,7 @@
 
 const { env } = require('process')
 
-const { parseFlat } = require('../../utils')
+const { parseFlat } = require('../../../utils')
 
 // `$$env.envVarName` helper
 // Replaced by `process.env.envVarName`

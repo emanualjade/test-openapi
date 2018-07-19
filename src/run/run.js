@@ -2,8 +2,7 @@
 
 const { addErrorHandler, TestOpenApiError, convertPlainObject, isBugError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
-const { substituteHelpers } = require('../helpers')
-const coreHelpers = require('../helpers/core')
+const { getHelpersFunc } = require('../core/helpers/context')
 
 // Run each `plugin.run()`
 const runTask = async function({ task, config, startData, plugins, nestedPath }) {
@@ -48,31 +47,17 @@ const runAllHandler = function(error) {
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
-const getContext = function({ task: { originalTask }, config, startData, plugins, nestedPath }) {
+const getContext = function({ task, config, startData, plugins, nestedPath }) {
   const recursiveRunTaskA = recursiveRunTask.bind(null, { config, startData, plugins, nestedPath })
 
   const context = { config, startData, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
 
-  // Helper functions get `context.task` with the original task (before helpers evaluation)
-  // not the current task, because it's more predictable for the user.
-  const helpersContext = { ...context, task: originalTask }
-  const helpersOpts = { context: helpersContext }
-  const helpersData = getHelpersData({ config, startData, originalTask })
-  const helpers = (value, data, { path } = {}) =>
-    substituteHelpers(value, { ...helpersData, ...data }, { ...helpersOpts, path })
+  const helpers = getHelpersFunc({ task, context })
   // `context.helpers` is overriden during recursion, so it's ok if
   // `context.helpers -> context.helpers` is `undefined`
   const contextA = { ...context, helpers }
 
   return contextA
-}
-
-const getHelpersData = function({ config, startData, originalTask }) {
-  // User-defined helpers have loading priority over core helpers.
-  // Like this, adding core helpers is non-breaking.
-  // Also this allows overriding / monkey-patching core helpers (which can be
-  // either good or bad).
-  return { ...coreHelpers, ...config.helpers, ...startData.helpers, ...originalTask.helpers }
 }
 
 // Pass simplified `_runTask()` for recursive tasks

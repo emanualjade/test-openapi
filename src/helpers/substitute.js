@@ -25,8 +25,9 @@ const substituteHelpers = function(value, data = {}, opts = {}) {
 // Recursive calls, either:
 //  - done automatically when evaluating `$$name`
 //  - on recursive helpers using `context.helpers()`
+// They re-use the top call's arguments, but can override them
 const recursiveSubstitute = function(data, opts, value, dataOverride, { path = [] } = {}) {
-  // Reset `opts.path` to recursive calls
+  // Reset `opts.path` for recursive calls
   return substituteHelpers(value, { ...data, ...dataOverride }, { ...opts, path })
 }
 

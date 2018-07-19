@@ -6,13 +6,13 @@ const { TestOpenApiError } = require('../errors')
 
 // Since helpers can return other helpers which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ helper, info, info: { stack = [] } }) {
+const checkRecursion = function({ helper, opts, opts: { stack = [] } }) {
   const hasRecursion = stack.some(helperA => isEqual(helper, helperA))
 
   const stackA = [...stack, helper]
 
   if (!hasRecursion) {
-    return { ...info, stack: stackA }
+    return { ...opts, stack: stackA }
   }
 
   const recursion = printRecursion({ stack: stackA })

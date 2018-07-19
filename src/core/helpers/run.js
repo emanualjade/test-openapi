@@ -15,7 +15,7 @@ const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
 
-  const taskB = context.helpers(taskA, ['task'])
+  const taskB = context.helpers(taskA, {}, { path: ['task'] })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }

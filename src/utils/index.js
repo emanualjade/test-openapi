@@ -15,4 +15,5 @@ module.exports = {
   ...require('./result'),
   ...require('./merge'),
   ...require('./crawl'),
+  ...require('./search'),
 }

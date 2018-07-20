@@ -1,24 +1,21 @@
 'use strict'
 
 // Exceptions thrown by a helper
-const helperHandler = function(error, { value, helper, opts, name }) {
-  const { message } = error
+const helperHandler = function(error, { value, path }) {
+  appendMessage({ error, value })
 
-  appendMessage({ error, message, name })
-
-  setHelperErrorProps({ error, value, helper, opts, name })
+  setHelperErrorProps({ error, value, path })
 
   throw error
 }
 
-const appendMessage = function({ error, message, name }) {
-  const messageA = removePreviousMessage({ message })
-
-  error.message = `${HELPER_ERROR_MESSAGE} '${name}': ${messageA}`
+const appendMessage = function({ error, value }) {
+  const message = getMessage({ error })
+  error.message = `${HELPER_ERROR_MESSAGE} '${value}': ${message}`
 }
 
 // Avoid adding it several times on recursion
-const removePreviousMessage = function({ message }) {
+const getMessage = function({ error: { message } }) {
   if (!message.startsWith(HELPER_ERROR_MESSAGE)) {
     return message
   }
@@ -30,23 +27,14 @@ const HELPER_ERROR_MESSAGE = 'Error when evaluating helper'
 
 // Attach error properties to every error thrown during helpers substitution:
 // helper-thrown error, recursion error:
-//  - `property`: `path.to.$$FUNC`
-//  - `value`: `helperArg` (if function) or `value`: `helperValue` (if `value`)
+//  - `property`: path to helper
+//  - `value`: `{$$FUNC: arg}` or `$$NAME`
 // In case of recursive helper, the top-level node should prevail.
-const setHelperErrorProps = function({ error, value, helper, opts, name }) {
-  const errorProps = getHelperErrorProps({ value, helper, opts, name })
-  Object.assign(error, errorProps)
-}
-
-const getHelperErrorProps = function({ value, helper: { type, arg }, opts: { path }, name }) {
-  const property = [...path, name].join('.')
-
-  if (type === 'function') {
-    return { property, value: arg, expected: undefined }
-  }
-
+const setHelperErrorProps = function({ error, value, path }) {
+  const property = path.join('.')
+  Object.assign(error, { property, value })
   // `error.expected` does not make any more sense since we remove `error.value`
-  return { property, value, expected: undefined }
+  delete error.expected
 }
 
 module.exports = {

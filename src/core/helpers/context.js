@@ -1,5 +1,6 @@
 'use strict'
 
+const { addErrorHandler } = require('../../errors')
 const { substituteHelpers } = require('../../helpers')
 
 const coreHelpers = require('./core')
@@ -25,13 +26,30 @@ const getHelpersFunc = function({
   // not the current task, because it's more predictable for the user.
   const contextA = { ...context, task: originalTask }
 
-  const helpers = contextHelpers.bind(null, data, { context: contextA })
+  const helpers = eContextHelpers.bind(null, data, { context: contextA })
   return helpers
 }
 
-const contextHelpers = function(data, opts, value, dataOverride, { path } = {}) {
-  return substituteHelpers(value, { ...data, ...dataOverride }, { ...opts, path })
+const contextHelpers = function(data, opts, value, dataOverride) {
+  return substituteHelpers(value, { ...data, ...dataOverride }, opts)
 }
+
+// Allow prepending a `path` to thrown `error.property`
+const contextHelpersHandler = function(error, data, opts, value, dataOverride, { path } = {}) {
+  const errorA = prependPath({ error, path })
+  throw errorA
+}
+
+const prependPath = function({ error, error: { property }, path }) {
+  if (path === undefined || property === undefined) {
+    return error
+  }
+
+  error.property = `${path}.${property}`
+  return error
+}
+
+const eContextHelpers = addErrorHandler(contextHelpers, contextHelpersHandler)
 
 module.exports = {
   getHelpersFunc,

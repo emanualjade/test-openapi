@@ -79,7 +79,11 @@ const parseEscape = function({ helper, helper: { type, name, arg } }) {
   return nameA
 }
 
-const isEscape = function({ helper: { name } }) {
+const isEscape = function({ helper: { type, name, tokens } }) {
+  if (type === 'concat') {
+    return tokens.some(helper => isEscape({ helper }))
+  }
+
   return name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)
 }
 

@@ -25,35 +25,31 @@ const substituteHelpers = function(value, data = {}, opts = {}) {
 // Recursive calls, either:
 //  - done automatically when evaluating `$$name`
 //  - on recursive helpers using `context.helpers()`
-// They re-use the top call's arguments, but can override them
-const recursiveSubstitute = function(data, opts, value, dataOverride, { path = [] } = {}) {
-  // Reset `opts.path` for recursive calls
-  return substituteHelpers(value, { ...data, ...dataOverride }, { ...opts, path })
+// They re-use the top call's arguments, but can override `data`
+const recursiveSubstitute = function(data, opts, value, dataOverride) {
+  return substituteHelpers(value, { ...data, ...dataOverride }, opts)
 }
 
 // Evaluate an object or part of an object for helpers
 const evalNode = function(value, path, opts) {
-  const optsA = appendPath({ opts, path })
-
   const helper = parseHelper(value)
   // There is no helper
   if (helper === undefined) {
     return value
   }
 
-  if (helper.type === 'concat') {
-    return evalConcat({ helper, opts: optsA })
+  return eEvalHelperValue({ helper, opts, value, path })
+}
+
+const evalHelperValue = function({ helper, helper: { type }, opts }) {
+  if (type === 'concat') {
+    return evalConcat({ helper, opts })
   }
 
-  return evalHelperNode({ helper, opts: optsA })
+  return evalHelperNode({ helper, opts })
 }
 
-// `path` is the attribute's path within `value`
-// Can use `opts.path` to prepend to it
-// Set to `error.property`
-const appendPath = function({ opts, opts: { path: optsPath = [] }, path }) {
-  return { ...opts, path: [...optsPath, ...path] }
-}
+const eEvalHelperValue = addErrorHandler(evalHelperValue, helperHandler)
 
 // Evaluate `$$name` when it's inside a string.
 // Its result will be transtyped to string and concatenated.
@@ -91,12 +87,7 @@ const evalHelperNode = function({ helper, opts }) {
   // Check for infinite recursions
   const optsA = checkRecursion({ helper, opts })
 
-  const valueA = evalHelper({ helper, opts: optsA })
-  return valueA
-}
-
-const evalHelper = function({ helper, opts }) {
-  const { value, propPath, topName } = getHelperValue({ helper, opts })
+  const { value, propPath } = getHelperValue({ helper, opts: optsA })
 
   // Unkwnown helpers or helpers with `undefined` values return `undefined`,
   // instead of throwing an error. This allows users to use dynamic helpers, where
@@ -107,7 +98,7 @@ const evalHelper = function({ helper, opts }) {
 
   // `$$name` can be a promise if it is an async `get` function, e.g. with `task.alias`
   return promiseThen(value, valueA =>
-    getHelperProp({ value: valueA, helper, opts, propPath, topName }),
+    getHelperProp({ value: valueA, helper, opts: optsA, propPath }),
   )
 }
 
@@ -119,7 +110,7 @@ const getHelperValue = function({ helper, helper: { name }, opts, opts: { data }
 
   const valueA = evalFunction({ value, helper, opts })
 
-  return { value: valueA, propPath, topName }
+  return { value: valueA, propPath }
 }
 
 // `$$name` and `{ $$name: arg }` can both use dot notations
@@ -163,36 +154,32 @@ const evalFunction = function({ value, helper: { type }, opts: { context } }) {
   return value(context)
 }
 
-// Retrive helper's non-top-level value (i.e. property path)
-const getHelperProp = function({ value, helper, opts, propPath, topName }) {
-  // We pass `topName` to ensure `error.property` uses only top-level property
-  // if an error is thrown
-  const valueA = eSubstituteValue({ value, opts, helper, name: topName })
+// Retrieve helper's non-top-level value (i.e. property path)
+const getHelperProp = function({ value, helper, opts, opts: { recursive }, propPath }) {
+  // An helper `$$name` can contain other helpers, which are then processed
+  // recursively.
+  // This can be used e.g. to create aliases.
+  // This is done only on `$$name` but not `{ $$name: arg }` return value because:
+  //  - in functions, it is most likely not the desired intention of the user
+  //  - it would require complex escaping (if user does not desire recursion)
+  //  - recursion can be achieved by using `context.helpers()`
+  const valueA = recursive(value)
 
-  return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, opts, helper, propPath }))
+  return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, helper, opts, propPath }))
 }
 
-// An helper `$$name` can contain other helpers, which are then processed
-// recursively.
-// This can be used e.g. to create aliases.
-// This is done only on `$$name` but not `{ $$name: arg }` return value because:
-//  - in functions, it is most likely not the desired intention of the user
-//  - it would require complex escaping (if user does not desire recursion)
-//  - recursion can be achieved by using `context.helpers()`
-const substituteValue = function({ value, opts: { recursive } }) {
-  return recursive(value)
-}
-
-const eSubstituteValue = addErrorHandler(substituteValue, helperHandler)
-
-const evalHelperProp = function({ value, opts, helper, helper: { name }, propPath }) {
+const evalHelperProp = function({ value, helper: { type, arg }, opts, propPath }) {
   const valueA = getProp({ value, propPath })
 
-  if (valueA === undefined) {
-    return
+  // Including `undefined`
+  if (type !== 'function') {
+    return valueA
   }
 
-  return eEvalHelperFunction({ value: valueA, helper, opts, name })
+  // Fire helper when it's a function `{ $$name: arg }`
+  const args = getHelperArgs({ value: valueA, arg, opts })
+
+  return valueA(...args)
 }
 
 const getProp = function({ value, propPath }) {
@@ -201,17 +188,6 @@ const getProp = function({ value, propPath }) {
   }
 
   return get(value, propPath)
-}
-
-// Fire helper when it's a function `{ $$name: arg }`
-const evalHelperFunction = function({ value, helper: { type, arg }, opts }) {
-  if (type !== 'function') {
-    return value
-  }
-
-  const args = getHelperArgs({ value, arg, opts })
-
-  return value(...args)
 }
 
 // Helper function arguments
@@ -232,8 +208,6 @@ const getHelperArgs = function({ value, arg, opts: { context } }) {
   // variadic or when there are optional arguments
   return [context, ...args]
 }
-
-const eEvalHelperFunction = addErrorHandler(evalHelperFunction, helperHandler)
 
 module.exports = {
   substituteHelpers,

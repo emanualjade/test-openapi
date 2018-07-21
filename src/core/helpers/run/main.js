@@ -5,7 +5,7 @@ const { pick, omit } = require('lodash')
 const { promiseThen } = require('../../../utils')
 const { addErrorHandler } = require('../../../errors')
 const { substituteHelpers } = require('../../../template')
-const coreData = require('../../../helpers_vars')
+const coreVars = require('../../../template_vars')
 
 const { getPluginsHelpers } = require('./plugin')
 const { helpersHandler } = require('./error')
@@ -44,7 +44,7 @@ const getVars = function({ task, context, context: { config } }) {
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const vars = { ...coreData, ...pluginsHelpers, ...config.helpers }
+  const vars = { ...coreVars, ...pluginsHelpers, ...config.helpers }
 
   return { vars, pluginsHelpersMap }
 }

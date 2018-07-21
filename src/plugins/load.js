@@ -132,6 +132,11 @@ const MODULE_OPTS = {
 // Values will be automatically formatted, and do not have to be strings.
 // Can also return a `title`, shown as a sub-title during reporting.
 
+// `plugin.helpers` or `plugin.helpers(task, context)` `{object|function}`
+// Add plugin-specific helpers.
+// Helpers have same syntax and semantics as `config.helpers`
+// If a function, gets same arguments as `run` handler and must return helpers.
+
 module.exports = {
   loadPlugins,
 }

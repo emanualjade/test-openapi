@@ -35,35 +35,31 @@ const evalNode = function(value, path, opts) {
     return value
   }
 
-  return eEvalHelperValue({ helper, opts, value, path })
-}
+  const { type } = helper
 
-const evalHelperValue = function({ helper, helper: { type }, opts }) {
   if (type === 'concat') {
-    return evalConcat({ helper, opts })
+    return evalConcat({ helper, opts, path })
   }
 
-  return evalHelperNode({ helper, opts })
+  return eEvalHelperNode({ helper, opts, value, path })
 }
-
-const eEvalHelperValue = addErrorHandler(evalHelperValue, helperHandler)
 
 // Evaluate `$$name` when it's inside a string.
 // Its result will be transtyped to string and concatenated.
-const evalConcat = function({ helper: { tokens }, opts }) {
-  const maybePromises = tokens.map(token => evalConcatToken({ token, opts }))
+const evalConcat = function({ helper: { tokens }, opts, path }) {
+  const maybePromises = tokens.map(token => evalConcatToken({ token, opts, path }))
   // There can be several `$$name` inside a string, in which case they are
   // evaluated in parallel
   return promiseAllThen(maybePromises, concatTokens)
 }
 
-const evalConcatToken = function({ token, token: { type, name }, opts }) {
+const evalConcatToken = function({ token, token: { type, name }, opts, path }) {
   // Parts between `$$name` have `type: 'raw'`
   if (type === 'raw') {
     return name
   }
 
-  return evalHelperNode({ helper: token, opts })
+  return eEvalHelperNode({ helper: token, opts, value: name, path })
 }
 
 // `tokens` are joined.
@@ -98,6 +94,8 @@ const evalHelperNode = function({ helper, opts }) {
     getHelperProp({ value: valueA, helper, opts: optsA, propPath }),
   )
 }
+
+const eEvalHelperNode = addErrorHandler(evalHelperNode, helperHandler)
 
 // Retrieve helper's top-level value
 const getHelperValue = function({ helper, helper: { name }, opts: { data } }) {

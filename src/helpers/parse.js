@@ -32,7 +32,7 @@ const parseHelper = function(value) {
 }
 
 const parseHelperString = function(value) {
-  const tokens = searchRegExp(HELPERS_REGEXP, value)
+  const tokens = searchRegExp(HELPERS_REGEXP_GLOBAL, value)
 
   // No matches
   if (tokens === undefined) {
@@ -84,12 +84,22 @@ const isEscape = function({ helper: { type, name, tokens } }) {
     return tokens.some(helper => isEscape({ helper }))
   }
 
+  return isEscapeName({ name })
+}
+
+// Check if name is a valid helper's `$$name`
+const isHelperName = function({ name }) {
+  return HELPERS_REGEXP.test(name) && !isEscapeName({ name })
+}
+
+const isEscapeName = function({ name }) {
   return name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)
 }
 
 // Matches `$$name` where `name` can only include `A-Za-z0-9_-` and also
 // dot/bracket notations `.[]`
-const HELPERS_REGEXP = /\$\$[\w-.[\]]+/g
+const HELPERS_REGEXP = /^\$\$[\w-.[\]]+$/
+const HELPERS_REGEXP_GLOBAL = new RegExp(HELPERS_REGEXP.source, 'g')
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
 const HELPERS_PREFIX = '$$'
 const HELPERS_ESCAPE = '$'
@@ -98,4 +108,5 @@ module.exports = {
   parseHelper,
   isHelper,
   parseEscape,
+  isHelperName,
 }

@@ -2,8 +2,10 @@
 
 const { isObject, searchRegExp } = require('../utils')
 
-// Parse `{ $$name: arg }` into `{ name: '$$name', arg }`
-// and `$$name` into `{ name: '$$name' }`
+// Parse:
+//  - `$$name` into `{ type: 'value', name: '$$name' }`
+//  - `{ $$name: arg }` into `{ type: 'function', name: '$$name', arg }`
+//  - `$$name $$nameB` into `{ type: 'concat', tokens }`
 const parseHelper = function(value) {
   if (typeof value === 'string') {
     return parseHelperString(value)

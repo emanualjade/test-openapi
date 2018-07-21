@@ -9,22 +9,17 @@ const { parseHelper, parseEscape } = require('./parse')
 const { checkRecursion } = require('./recursion')
 const { helperHandler } = require('./error')
 
-// Crawl a value recursively to find helpers.
-// When an helper is found, it is replaced by its evaluated value.
+// Evaluate helpers values
 const substituteHelpers = function(value, data = {}, opts = {}) {
   const recursive = recursiveSubstitute.bind(null, data, opts)
-
   const optsA = { ...opts, data, recursive }
 
   return crawl(value, evalNode, { info: optsA })
 }
 
-// Recursive calls, either:
-//  - done automatically when evaluating `$$name`
-//  - on recursive helpers using `context.helpers()`
-// They re-use the top call's arguments, but can override `data`
-const recursiveSubstitute = function(data, opts, value, dataOverride) {
-  return substituteHelpers(value, { ...data, ...dataOverride }, opts)
+// Recursive calls, done automatically when evaluating `$$name`
+const recursiveSubstitute = function(data, opts, value) {
+  return substituteHelpers(value, data, opts)
 }
 
 // Evaluate an object or part of an object for helpers
@@ -89,7 +84,7 @@ const evalHelperNode = function({ helper, opts }) {
     return
   }
 
-  // `$$name` can be a promise if it is an async `get` function, e.g. with `task.alias`
+  // `$$name` can be an async function, fired right away
   return promiseThen(value, valueA =>
     getHelperProp({ value: valueA, helper, opts: optsA, propPath }),
   )
@@ -108,7 +103,7 @@ const getHelperValue = function({ helper, helper: { name }, opts: { data } }) {
   return { value: valueA, propPath }
 }
 
-// `$$name` and `{ $$name: arg }` can both use dot notations
+// `$$name` and `{ $$name: arg }` can both use dot notations.
 // The top-level value is first evaluated (including recursively parsing its
 // helpers) then the rest of the property path is applied.
 const parseName = function({ name }) {
@@ -138,7 +133,6 @@ const getDelimIndex = function({ name, index }) {
 // If `$$name` (but not `{ $$name: arg }`) is a function, it is evaluated right
 // away with no arguments
 // It can be an async function.
-// Used by `task.alias`.
 const evalFunction = function({ value, helper, propPath }) {
   if (!shouldFireFunction({ value, helper, propPath })) {
     return value

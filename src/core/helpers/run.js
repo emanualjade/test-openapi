@@ -15,6 +15,12 @@ const coreHelpers = require('./core')
 //  - `task|only` plugins: to avoid unnecessary long helpers evaluation on skipped task
 //  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$$random`
 //    or `$$task` helpers
+// We do not provide an utility (e.g. `context.helpers()`) for other plugins to
+// use helpers because:
+//  - some helpers are task-specific, others not, i.e. we would need to provide
+//    different helpers at different stages, creating many issues
+//  - helpers are a user-facing feature. Plugin writers can `require()` those
+//    helpers directly and use their functions if needed.
 const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)

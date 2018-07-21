@@ -1,17 +1,17 @@
 'use strict'
 
 // Exceptions thrown by a helper
-const helperHandler = function(error, { value, path }) {
-  appendMessage({ error, value })
+const helperHandler = function(error, { helper, value, path }) {
+  appendMessage({ error, helper })
 
   setHelperErrorProps({ error, value, path })
 
   throw error
 }
 
-const appendMessage = function({ error, value }) {
+const appendMessage = function({ error, helper: { name } }) {
   const message = getMessage({ error })
-  error.message = `${HELPER_ERROR_MESSAGE} '${value}': ${message}`
+  error.message = `${HELPER_ERROR_MESSAGE} '${name}': ${message}`
 }
 
 // Avoid adding it several times on recursion

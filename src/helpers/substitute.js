@@ -14,10 +14,7 @@ const { helperHandler } = require('./error')
 const substituteHelpers = function(value, data = {}, opts = {}) {
   const recursive = recursiveSubstitute.bind(null, data, opts)
 
-  // Context passed as argument to helper functions
-  const context = { ...opts.context, helpers: recursive }
-
-  const optsA = { ...opts, context, data, recursive }
+  const optsA = { ...opts, data, recursive }
 
   return crawl(value, evalNode, { info: optsA })
 }
@@ -103,12 +100,12 @@ const evalHelperNode = function({ helper, opts }) {
 }
 
 // Retrieve helper's top-level value
-const getHelperValue = function({ helper, helper: { name }, opts, opts: { data } }) {
+const getHelperValue = function({ helper, helper: { name }, opts: { data } }) {
   const { topName, propPath } = parseName({ name })
 
   const value = data[topName]
 
-  const valueA = evalFunction({ value, helper, opts })
+  const valueA = evalFunction({ value, helper })
 
   return { value: valueA, propPath }
 }
@@ -141,21 +138,21 @@ const getDelimIndex = function({ name, index }) {
 }
 
 // If `$$name` (but not `{ $$name: arg }`) is a function, it is evaluated right
-// away with `context` as sole argument.
+// away with no arguments
 // It can be an async function.
 // Used by `task.alias`.
-const evalFunction = function({ value, helper: { type }, opts: { context } }) {
-  // Only if `function.context: true` to avoid firing library functions that are
+const evalFunction = function({ value, helper: { type } }) {
+  // Only if `function.fired: true` to avoid firing library functions that are
   // also used as objects, e.g. Lodash
   if (type === 'function' || typeof value !== 'function' || !value.fired) {
     return value
   }
 
-  return value(context)
+  return value()
 }
 
 // Retrieve helper's non-top-level value (i.e. property path)
-const getHelperProp = function({ value, helper, opts, opts: { recursive }, propPath }) {
+const getHelperProp = function({ value, helper, opts: { recursive }, propPath }) {
   // An helper `$$name` can contain other helpers, which are then processed
   // recursively.
   // This can be used e.g. to create aliases.
@@ -165,10 +162,10 @@ const getHelperProp = function({ value, helper, opts, opts: { recursive }, propP
   //  - recursion can be achieved by using `context.helpers()`
   const valueA = recursive(value)
 
-  return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, helper, opts, propPath }))
+  return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, helper, propPath }))
 }
 
-const evalHelperProp = function({ value, helper: { type, arg }, opts, propPath }) {
+const evalHelperProp = function({ value, helper: { type, arg }, propPath }) {
   const valueA = getProp({ value, propPath })
 
   // Including `undefined`
@@ -176,9 +173,10 @@ const evalHelperProp = function({ value, helper: { type, arg }, opts, propPath }
     return valueA
   }
 
+  // Can use `{ $$helper: [...] }` to pass several arguments to the helper
+  // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2)`
+  const args = Array.isArray(arg) ? arg : [arg]
   // Fire helper when it's a function `{ $$name: arg }`
-  const args = getHelperArgs({ value: valueA, arg, opts })
-
   return valueA(...args)
 }
 
@@ -188,25 +186,6 @@ const getProp = function({ value, propPath }) {
   }
 
   return get(value, propPath)
-}
-
-// Helper function arguments
-const getHelperArgs = function({ value, arg, opts: { context } }) {
-  // Can use `{ $$helper: [...] }` to pass several arguments to the helper
-  // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2, context)`
-  const args = Array.isArray(arg) ? arg : [arg]
-
-  // Pass same `context` as `run` handlers
-  // Only pass it when `helperFunction.context` is `true`
-  // Reason: allowing re-using external/library functions without modifying their
-  // signature or wrapping them
-  if (!value.context) {
-    return args
-  }
-
-  // Pass as first argument. Reason: easier to parse arguments when arguments are
-  // variadic or when there are optional arguments
-  return [context, ...args]
 }
 
 module.exports = {

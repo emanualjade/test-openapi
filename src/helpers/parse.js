@@ -6,17 +6,17 @@ const { isObject, searchRegExp } = require('../utils')
 //  - `$$name` into `{ type: 'value', name: '$$name' }`
 //  - `{ $$name: arg }` into `{ type: 'function', name: '$$name', arg }`
 //  - `$$name $$nameB` into `{ type: 'concat', tokens }`
-const parseHelper = function(value) {
-  if (typeof value === 'string') {
-    return parseHelperString(value)
+const parseHelper = function(data) {
+  if (typeof data === 'string') {
+    return parseHelperString(data)
   }
 
   // Not an helper
-  if (!isObject(value)) {
+  if (!isObject(data)) {
     return
   }
 
-  const keys = Object.keys(value)
+  const keys = Object.keys(data)
   // Helpers are objects with a single property starting with `$$`
   // This allows objects with several properties not to need escaping
   if (keys.length !== 1) {
@@ -29,12 +29,12 @@ const parseHelper = function(value) {
   }
 
   // `{ $$name: arg }`
-  const arg = value[name]
+  const arg = data[name]
   return { type: 'function', name, arg }
 }
 
-const parseHelperString = function(value) {
-  const tokens = searchRegExp(HELPERS_REGEXP_GLOBAL, value)
+const parseHelperString = function(data) {
+  const tokens = searchRegExp(HELPERS_REGEXP_GLOBAL, data)
 
   // No matches
   if (tokens === undefined) {
@@ -44,7 +44,7 @@ const parseHelperString = function(value) {
   // Single `$$name` without concatenation.
   // As opposed to concatenated string, `$$name` is not transtyped to string.
   if (tokens.length === 1) {
-    return { type: 'value', name: value }
+    return { type: 'value', name: data }
   }
 
   // `$$name` inside another string, i.e. concatenated
@@ -57,9 +57,9 @@ const parseToken = function(name) {
   return { type, name }
 }
 
-// Check whether value is an helper
-const isHelper = function(value) {
-  const helper = parseHelper(value)
+// Check whether `data` is an helper
+const isHelper = function(data) {
+  const helper = parseHelper(data)
   return helper !== undefined && !isEscape({ helper })
 }
 

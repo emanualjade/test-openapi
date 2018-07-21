@@ -27,24 +27,24 @@ const { helperHandler } = require('./error')
 //     - no comments, string escaping, text blocks
 
 // Evaluate helpers values
-const substituteHelpers = function(value, vars = {}, opts = {}) {
+const substituteHelpers = function(data, vars = {}, opts = {}) {
   const recursive = recursiveSubstitute.bind(null, vars, opts)
   const optsA = { ...opts, vars, recursive }
 
-  return crawl(value, evalNode, { info: optsA })
+  return crawl(data, evalNode, { info: optsA })
 }
 
 // Recursive calls, done automatically when evaluating `$$name`
-const recursiveSubstitute = function(vars, opts, value) {
-  return substituteHelpers(value, vars, opts)
+const recursiveSubstitute = function(vars, opts, data) {
+  return substituteHelpers(data, vars, opts)
 }
 
 // Evaluate an object or part of an object for helpers
-const evalNode = function(value, path, opts) {
-  const helper = parseHelper(value)
+const evalNode = function(data, path, opts) {
+  const helper = parseHelper(data)
   // There is no helper
   if (helper === undefined) {
-    return value
+    return data
   }
 
   const { type } = helper
@@ -53,7 +53,7 @@ const evalNode = function(value, path, opts) {
     return evalConcat({ helper, opts, path })
   }
 
-  return eEvalHelperNode({ helper, opts, value, path })
+  return eEvalHelperNode({ helper, opts, data, path })
 }
 
 // Evaluate `$$name` when it's inside a string.
@@ -71,7 +71,7 @@ const evalConcatToken = function({ token, token: { type, name }, opts, path }) {
     return name
   }
 
-  return eEvalHelperNode({ helper: token, opts, value: name, path })
+  return eEvalHelperNode({ helper: token, opts, data: name, path })
 }
 
 // `tokens` are joined.
@@ -83,41 +83,39 @@ const concatTokens = function(tokens) {
 }
 
 const evalHelperNode = function({ helper, opts }) {
-  const unescapedValue = parseEscape({ helper })
-  // There was something that looked like a helper but was an escaped value
-  if (unescapedValue !== undefined) {
-    return unescapedValue
+  const unescapedData = parseEscape({ helper })
+  // There was something that looked like a helper but was an escaped data
+  if (unescapedData !== undefined) {
+    return unescapedData
   }
 
   // Check for infinite recursions
   const optsA = checkRecursion({ helper, opts })
 
-  const { value, propPath } = getHelperValue({ helper, opts: optsA })
+  const { data, propPath } = getHelperData({ helper, opts: optsA })
 
   // Unkwnown helpers or helpers with `undefined` values return `undefined`,
   // instead of throwing an error. This allows users to use dynamic helpers, where
   // some properties might be defined or not.
-  if (value === undefined) {
+  if (data === undefined) {
     return
   }
 
   // `$$name` can be an async function, fired right away
-  return promiseThen(value, valueA =>
-    getHelperProp({ value: valueA, helper, opts: optsA, propPath }),
-  )
+  return promiseThen(data, dataA => getHelperProp({ data: dataA, helper, opts: optsA, propPath }))
 }
 
 const eEvalHelperNode = addErrorHandler(evalHelperNode, helperHandler)
 
 // Retrieve helper's top-level value
-const getHelperValue = function({ helper, helper: { name }, opts: { vars } }) {
+const getHelperData = function({ helper, helper: { name }, opts: { vars } }) {
   const { topName, propPath } = parseName({ name })
 
-  const value = vars[topName]
+  const data = vars[topName]
 
-  const valueA = evalFunction({ value, helper, propPath })
+  const dataA = evalFunction({ data, helper, propPath })
 
-  return { value: valueA, propPath }
+  return { data: dataA, propPath }
 }
 
 // `$$name` and `{ $$name: arg }` can both use dot notations.
@@ -150,20 +148,20 @@ const getDelimIndex = function({ name, index }) {
 // If `$$name` (but not `{ $$name: arg }`) is a function, it is evaluated right
 // away with no arguments
 // It can be an async function.
-const evalFunction = function({ value, helper, propPath }) {
-  if (!shouldFireFunction({ value, helper, propPath })) {
-    return value
+const evalFunction = function({ data, helper, propPath }) {
+  if (!shouldFireFunction({ data, helper, propPath })) {
+    return data
   }
 
-  return value()
+  return data()
 }
 
-const shouldFireFunction = function({ value, helper: { type }, propPath }) {
+const shouldFireFunction = function({ data, helper: { type }, propPath }) {
   return (
-    typeof value === 'function' &&
+    typeof data === 'function' &&
     // Do not fire when the function is also used as an object.
     // This is for example how Lodash main object works.
-    Object.keys(value).length === 0 &&
+    Object.keys(data).length === 0 &&
     // `{ $$func: arg }` should be fired with the argument, not right away.
     // But when using `{ $$func.then.another.func: arg }`, the first `func`
     // should be fired right away, but not the last one.
@@ -172,7 +170,7 @@ const shouldFireFunction = function({ value, helper: { type }, propPath }) {
 }
 
 // Retrieve helper's non-top-level value (i.e. property path)
-const getHelperProp = function({ value, helper, opts: { recursive }, propPath }) {
+const getHelperProp = function({ data, helper, opts: { recursive }, propPath }) {
   // An helper `$$name` can contain other helpers, which are then processed
   // recursively.
   // This can be used e.g. to create aliases.
@@ -180,17 +178,17 @@ const getHelperProp = function({ value, helper, opts: { recursive }, propPath })
   //  - in functions, it is most likely not the desired intention of the user
   //  - it would require complex escaping (if user does not desire recursion)
   //    E.g. `{ $$identity: { $$identity: $$$$name } }` -> `{ $$identity: $$$name }` -> `$$name`
-  const valueA = recursive(value)
+  const dataA = recursive(data)
 
-  return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, helper, propPath }))
+  return promiseThen(dataA, dataB => evalHelperProp({ data: dataB, helper, propPath }))
 }
 
-const evalHelperProp = function({ value, helper: { type, arg }, propPath }) {
-  const valueA = getProp({ value, propPath })
+const evalHelperProp = function({ data, helper: { type, arg }, propPath }) {
+  const dataA = getProp({ data, propPath })
 
   // Including `undefined`
   if (type !== 'function') {
-    return valueA
+    return dataA
   }
 
   // Can use `{ $$helper: [...] }` to pass several arguments to the helper
@@ -199,15 +197,15 @@ const evalHelperProp = function({ value, helper: { type, arg }, propPath }) {
   // Fire helper when it's a function `{ $$name: arg }`
   // To pass more arguments, e.g. helpers options, helpers `vars` functions must be bound.
   // E.g. a library providing helpers could provide a factory function.
-  return valueA(...args)
+  return dataA(...args)
 }
 
-const getProp = function({ value, propPath }) {
+const getProp = function({ data, propPath }) {
   if (propPath === undefined) {
-    return value
+    return data
   }
 
-  return get(value, propPath)
+  return get(data, propPath)
 }
 
 module.exports = {

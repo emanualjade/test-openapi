@@ -4,13 +4,15 @@ const { addErrorHandler } = require('../../../errors')
 const { isHelperName } = require('../../../helpers')
 
 // Retrieve all `plugin.helpers`
-const getPluginsHelpers = function({ plugins, task, context }) {
-  const pluginHelpers = plugins.map(plugin => getPluginHelpers({ plugin, task, context }))
-  const pluginHelpersA = Object.assign({}, ...pluginHelpers)
-  return pluginHelpersA
+const getPluginsHelpers = function({ task, context, context: { _plugins: plugins } }) {
+  const pluginsHelpersMap = plugins.map(plugin => getPluginHelpers({ plugin, task, context }))
+  const pluginsHelpersMapA = Object.assign({}, ...pluginsHelpersMap)
+
+  const pluginsHelpers = Object.assign({}, ...Object.values(pluginsHelpersMapA))
+  return { pluginsHelpers, pluginsHelpersMap: pluginsHelpersMapA }
 }
 
-const getPluginHelpers = function({ plugin, plugin: { helpers }, task, context }) {
+const getPluginHelpers = function({ plugin, plugin: { name, helpers }, task, context }) {
   if (helpers === undefined) {
     return
   }
@@ -19,7 +21,7 @@ const getPluginHelpers = function({ plugin, plugin: { helpers }, task, context }
 
   validateHelperNames({ helpers: helpersA, plugin })
 
-  return helpersA
+  return { [name]: helpersA }
 }
 
 const getHelpers = function({ plugin: { helpers }, task, context }) {

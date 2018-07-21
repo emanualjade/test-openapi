@@ -27,9 +27,9 @@ const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
 
-  const data = getData({ task, context })
+  const { data, pluginsHelpersMap } = getData({ task, context })
 
-  const taskB = eSubstituteHelpers(taskA, data, { path: 'task' })
+  const taskB = eSubstituteHelpers(taskA, data, { path: 'task', pluginsHelpersMap })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }
@@ -37,15 +37,16 @@ const run = function(task, context) {
 // Make sure those properties are not checked for helpers
 const NO_EVAL_PROPS = ['originalTask', 'key', 'helpers', 'alias']
 
-const getData = function({ task, context, context: { config, _plugins: plugins } }) {
-  const pluginsHelpers = getPluginsHelpers({ plugins, task, context })
+const getData = function({ task, context, context: { config } }) {
+  const { pluginsHelpers, pluginsHelpersMap } = getPluginsHelpers({ task, context })
 
   // Plugin/user-defined helpers have loading priority over core helpers.
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
   const data = { ...coreData, ...pluginsHelpers, ...config.helpers }
-  return data
+
+  return { data, pluginsHelpersMap }
 }
 
 const eSubstituteHelpers = addErrorHandler(substituteHelpers, helpersHandler)

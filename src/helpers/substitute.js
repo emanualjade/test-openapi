@@ -188,6 +188,8 @@ const evalHelperProp = function({ value, helper: { type, arg }, propPath }) {
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2)`
   const args = Array.isArray(arg) ? arg : [arg]
   // Fire helper when it's a function `{ $$name: arg }`
+  // To pass more arguments, e.g. helpers options, helpers `data` functions must be bound.
+  // E.g. a library providing helpers could provide a factory function.
   return valueA(...args)
 }
 

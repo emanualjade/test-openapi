@@ -99,7 +99,7 @@ const isEscapeName = function({ name }) {
 // Matches `$$name` where `name` can only include `A-Za-z0-9_-` and also
 // dot/bracket notations `.[]`
 const HELPERS_REGEXP = /^\$\$[\w-.[\]]+$/
-const HELPERS_REGEXP_GLOBAL = new RegExp(HELPERS_REGEXP.source, 'g')
+const HELPERS_REGEXP_GLOBAL = /\$\$[\w-.[\]]+/g
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
 const HELPERS_PREFIX = '$$'
 const HELPERS_ESCAPE = '$'

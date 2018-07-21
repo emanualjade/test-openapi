@@ -2,9 +2,9 @@
 
 const jsonSchemaFaker = require('json-schema-faker')
 
-const { TestOpenApiError } = require('../../../../errors')
-const { stringifyFlat } = require('../../../../utils')
-const { validateIsSchema } = require('../../../../validation')
+const { TestOpenApiError } = require('../../errors')
+const { stringifyFlat } = require('../../utils')
+const { validateIsSchema } = require('../../validation')
 
 const { addCustomFormats } = require('./format')
 

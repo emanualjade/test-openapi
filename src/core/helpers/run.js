@@ -5,8 +5,7 @@ const { pick, omit } = require('lodash')
 const { promiseThen } = require('../../utils')
 const { addErrorHandler } = require('../../errors')
 const { substituteHelpers } = require('../../helpers')
-
-const coreHelpers = require('./core')
+const coreData = require('../../helpers_data')
 
 // Substitute helpers `{ $$name: arg }` and `$$name` for dynamic values.
 // Including in deep properties.
@@ -42,7 +41,7 @@ const getData = function({ task, context, context: { config, _plugins: plugins }
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const data = { ...coreHelpers, ...pluginsHelpers, ...config.helpers }
+  const data = { ...coreData, ...pluginsHelpers, ...config.helpers }
   return data
 }
 

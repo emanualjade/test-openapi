@@ -3,7 +3,7 @@
 const isGlob = require('is-glob')
 const { isMatch } = require('micromatch')
 
-const { merge } = require('../../helpers')
+const { merge } = require('../../template')
 
 // Merge tasks whose name include globbing matching other task names.
 // I.e. special task name to allow for shared properties

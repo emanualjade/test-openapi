@@ -4,7 +4,7 @@ const { pick, omit } = require('lodash')
 
 const { promiseThen } = require('../../../utils')
 const { addErrorHandler } = require('../../../errors')
-const { substituteHelpers } = require('../../../helpers')
+const { substituteHelpers } = require('../../../template')
 const coreData = require('../../../helpers_vars')
 
 const { getPluginsHelpers } = require('./plugin')

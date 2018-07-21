@@ -1,6 +1,6 @@
 'use strict'
 
-const { parseHelper } = require('../../../helpers')
+const { parseHelper } = require('../../../template')
 
 const helpersHandler = function(error, task, vars, { path, pluginsHelpersMap }) {
   const errorA = prependPath({ error, path })

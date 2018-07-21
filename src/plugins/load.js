@@ -36,7 +36,7 @@ const CORE_PLUGINS = [
   'skip',
   'repeat',
   'alias',
-  'helpers',
+  'template',
   'verify',
   'report',
 ]
@@ -71,7 +71,7 @@ const MODULE_OPTS = {
 //   - `report`: start reporting
 // `task`, i.e. for each task:
 //   - `repeat`: repeat each task `config.repeat` times
-//   - `helpers`: substitute helpers values
+//   - `template`: substitute template values
 //   - `spec`: add OpenAPI specification to `task.call|validate.*`
 //   - `call`: fire HTTP call
 //   - `validate`: validate response against `task.validate.*` JSON schemas

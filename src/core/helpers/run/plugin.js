@@ -1,6 +1,7 @@
 'use strict'
 
 const { addErrorHandler } = require('../../../errors')
+const { isHelperName } = require('../../../helpers')
 
 // Retrieve all `plugin.helpers`
 const getPluginsHelpers = function({ plugins, task, context }) {
@@ -15,6 +16,9 @@ const getPluginHelpers = function({ plugin, plugin: { helpers }, task, context }
   }
 
   const helpersA = eGetHelpers({ plugin, task, context })
+
+  validateHelperNames({ helpers: helpersA, plugin })
+
   return helpersA
 }
 
@@ -39,6 +43,22 @@ const getHelpersHandler = function(error, { plugin: { name } }) {
 }
 
 const eGetHelpers = addErrorHandler(getHelpers, getHelpersHandler)
+
+// Validate `plugin.helpers` return value
+const validateHelperNames = function({ helpers, plugin }) {
+  Object.keys(helpers).forEach(name => validateHelperName({ name, plugin }))
+}
+
+const validateHelperName = function({ name, plugin }) {
+  if (isHelperName({ name })) {
+    return
+  }
+
+  // Throw a bug error
+  const error = new Error(`'plugin.helpers' returned an helper with an invalid name: ${name}`)
+  error.module = `plugin-${plugin.name}`
+  throw error
+}
 
 module.exports = {
   getPluginsHelpers,

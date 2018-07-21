@@ -1,25 +1,43 @@
 'use strict'
 
+const { mapValues } = require('lodash')
+
 const { get } = require('../../utils')
 const { TestOpenApiError } = require('../../errors')
 
-// Bind `evalTask()` without losing `function.context`
-const getEvalTask = function({ key, value }) {
-  const evalTaskA = evalTask.bind(null, { key, value })
-  evalTaskA.context = true
-  return evalTaskA
+// `task.alias.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
+// run the task that defined the alias, and retrieve a specific property at `PATH`
+// It does so by adding those helpers to `startData.helpers`.
+const getHelpers = function(task, { config: { _allTasks: allTasks }, _runTask: runTask }) {
+  const aliasHelpers = allTasks.map(taskA => getTaskHelpers({ task: taskA, allTasks, runTask }))
+  const aliasHelpersA = Object.assign({}, ...aliasHelpers)
+  return aliasHelpersA
+}
+
+const getTaskHelpers = function({ task: { key, alias }, allTasks, runTask }) {
+  if (alias === undefined) {
+    return
+  }
+
+  const taskHelpers = mapValues(alias, value => {
+    const evalTaskA = evalTask.bind(null, { key, value, allTasks, runTask })
+    // TODO: remove
+    evalTaskA.fired = true
+    return evalTaskA
+  })
+  return taskHelpers
 }
 
 // Runs a task and returns `task[PATH]`
-const evalTask = async function({ key, value }, { config, _runTask: runTask }) {
-  const taskA = await runAliasTask({ key, config, runTask })
+const evalTask = async function({ key, value, allTasks, runTask }) {
+  const taskA = await runAliasTask({ key, allTasks, runTask })
 
   const taskProp = getTaskProp({ task: taskA, value })
   return taskProp
 }
 
 // Runs the task
-const runAliasTask = async function({ key, config: { _allTasks: allTasks }, runTask }) {
+const runAliasTask = async function({ key, allTasks, runTask }) {
   const task = allTasks.find(task => task.key === key)
 
   const getError = getTaskError.bind(null, { task })
@@ -57,5 +75,5 @@ const parseValue = function({ value }) {
 }
 
 module.exports = {
-  getEvalTask,
+  helpers: getHelpers,
 }

@@ -52,7 +52,7 @@ const getContext = function({ task, config, startData, plugins, nestedPath }) {
 
   const context = { config, startData, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
 
-  const helpers = getHelpersFunc({ task, context })
+  const helpers = getHelpersFunc({ task, context, plugins })
   // `context.helpers` is overriden during recursion, so it's ok if
   // `context.helpers -> context.helpers` is `undefined`
   const contextA = { ...context, helpers }

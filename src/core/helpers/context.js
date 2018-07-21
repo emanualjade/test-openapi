@@ -7,20 +7,19 @@ const coreHelpers = require('./core')
 
 // Returns `context.helpers()` function available for any `run` handler
 const getHelpersFunc = function({
+  task,
   task: { originalTask },
   context,
-  context: { config, startData },
+  context: { config },
+  plugins,
 }) {
+  const pluginsHelpers = getPluginsHelpers({ plugins, task, context })
+
   // User-defined helpers have loading priority over core helpers.
   // Like this, adding core helpers is non-breaking.
   // Also this allows overriding / monkey-patching core helpers (which can be
   // either good or bad).
-  const data = {
-    ...coreHelpers,
-    ...config.helpers,
-    ...startData.helpers,
-    ...originalTask.helpers,
-  }
+  const data = { ...coreHelpers, ...pluginsHelpers, ...config.helpers }
 
   // Helper functions get `context.task` with the original task (before helpers evaluation)
   // not the current task, because it's more predictable for the user.
@@ -28,6 +27,26 @@ const getHelpersFunc = function({
 
   const helpers = eContextHelpers.bind(null, data, { context: contextA })
   return helpers
+}
+
+// Retrieve all `plugin.helpers`
+const getPluginsHelpers = function({ plugins, task, context }) {
+  const pluginHelpers = plugins.map(plugin => getPluginHelper({ plugin, task, context }))
+  const pluginHelpersA = Object.assign({}, ...pluginHelpers)
+  return pluginHelpersA
+}
+
+const getPluginHelper = function({ plugin: { helpers }, task, context }) {
+  if (helpers === undefined) {
+    return
+  }
+
+  if (typeof helpers !== 'function') {
+    return helpers
+  }
+
+  const helpersA = helpers(task, context)
+  return helpersA
 }
 
 const contextHelpers = function(data, opts, value, dataOverride) {

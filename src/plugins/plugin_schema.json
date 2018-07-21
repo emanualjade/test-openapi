@@ -17,7 +17,8 @@
     "task": {},
     "complete": {},
     "end": {},
-    "report": {}
+    "report": {},
+    "helpers": {}
   },
   "required": ["name"]
 }

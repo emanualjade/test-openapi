@@ -147,7 +147,7 @@ const getDelimIndex = function({ name, index }) {
 const evalFunction = function({ value, helper: { type }, opts: { context } }) {
   // Only if `function.context: true` to avoid firing library functions that are
   // also used as objects, e.g. Lodash
-  if (type === 'function' || typeof value !== 'function' || !value.context) {
+  if (type === 'function' || typeof value !== 'function' || !value.fired) {
     return value
   }
 

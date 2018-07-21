@@ -32,6 +32,10 @@ const loadModuleHandler = function({ code, message }, { name, info }) {
   throwBugError(`could not be loaded: ${message}`, { name, info })
 }
 
+// Error when loading a plugin that is not installed.
+// This will also be triggered when loading a plugin that tries to `require()`
+// a non-existing file. Unfortunately we cannot distinguish without parsing
+// `error.message` which is brittle.
 const checkModuleNotFound = function({ code, name, info: { title, modulePrefix, props } }) {
   if (code !== 'MODULE_NOT_FOUND') {
     return

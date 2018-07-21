@@ -1,6 +1,6 @@
 'use strict'
 
-const { $$env } = require('../../../../helpers_data')
+const { $$env } = require('../../../../helpers_vars')
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced

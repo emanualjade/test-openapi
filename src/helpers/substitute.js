@@ -27,16 +27,16 @@ const { helperHandler } = require('./error')
 //     - no comments, string escaping, text blocks
 
 // Evaluate helpers values
-const substituteHelpers = function(value, data = {}, opts = {}) {
-  const recursive = recursiveSubstitute.bind(null, data, opts)
-  const optsA = { ...opts, data, recursive }
+const substituteHelpers = function(value, vars = {}, opts = {}) {
+  const recursive = recursiveSubstitute.bind(null, vars, opts)
+  const optsA = { ...opts, vars, recursive }
 
   return crawl(value, evalNode, { info: optsA })
 }
 
 // Recursive calls, done automatically when evaluating `$$name`
-const recursiveSubstitute = function(data, opts, value) {
-  return substituteHelpers(value, data, opts)
+const recursiveSubstitute = function(vars, opts, value) {
+  return substituteHelpers(value, vars, opts)
 }
 
 // Evaluate an object or part of an object for helpers
@@ -110,10 +110,10 @@ const evalHelperNode = function({ helper, opts }) {
 const eEvalHelperNode = addErrorHandler(evalHelperNode, helperHandler)
 
 // Retrieve helper's top-level value
-const getHelperValue = function({ helper, helper: { name }, opts: { data } }) {
+const getHelperValue = function({ helper, helper: { name }, opts: { vars } }) {
   const { topName, propPath } = parseName({ name })
 
-  const value = data[topName]
+  const value = vars[topName]
 
   const valueA = evalFunction({ value, helper, propPath })
 
@@ -197,7 +197,7 @@ const evalHelperProp = function({ value, helper: { type, arg }, propPath }) {
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2)`
   const args = Array.isArray(arg) ? arg : [arg]
   // Fire helper when it's a function `{ $$name: arg }`
-  // To pass more arguments, e.g. helpers options, helpers `data` functions must be bound.
+  // To pass more arguments, e.g. helpers options, helpers `vars` functions must be bound.
   // E.g. a library providing helpers could provide a factory function.
   return valueA(...args)
 }

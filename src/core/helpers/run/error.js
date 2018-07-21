@@ -2,7 +2,7 @@
 
 const { parseHelper } = require('../../../helpers')
 
-const helpersHandler = function(error, task, data, { path, pluginsHelpersMap }) {
+const helpersHandler = function(error, task, vars, { path, pluginsHelpersMap }) {
   const errorA = prependPath({ error, path })
   const errorB = addPlugin({ error: errorA, pluginsHelpersMap })
   throw errorB

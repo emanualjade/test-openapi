@@ -97,7 +97,7 @@ const MODULE_OPTS = {
 //     - only for advanced plugins
 //  - `plugin.start(startData, { config, pluginNames, _plugins })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, startData, pluginNames, helpers, _plugins, _runTask, _nestedPath })` `{function}`
+//  - `plugin.run(task, { config, startData, pluginNames, _plugins, _runTask, _nestedPath })` `{function}`
 //     - fired for each task
 //  - `plugin.complete(task, { config, startData, pluginNames, _plugins })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
@@ -111,7 +111,6 @@ const MODULE_OPTS = {
 //      - `task` `{object}`: same object as the one specified in tasks files
 //      - `tasks` `{array}`
 //      - `pluginNames` `{array}`: list of plugins names
-//      - `helpers(value)` `{function}`: substitute helpers
 //   - the following ones are only for advanced usage:
 //      - `_plugins` `{array}`: list of available plugins
 //      - `_runTask({ task, property, self })` `{function}`:

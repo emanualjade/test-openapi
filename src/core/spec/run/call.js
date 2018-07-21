@@ -3,6 +3,7 @@
 const { mapValues } = require('lodash')
 
 const { merge } = require('../../../utils')
+const { $$random } = require('../../helpers/core')
 
 const { getSpecOperation } = require('./operation')
 const { getSpecialValues } = require('./special')
@@ -10,7 +11,7 @@ const { removeOptionals } = require('./optional')
 const { setInvalidParams } = require('./invalid')
 
 // Add OpenAPI specification parameters to `task.call.*`
-const addSpecToCall = function({ spec, key, call, helpers }) {
+const addSpecToCall = function({ spec, key, call }) {
   const specOperation = getSpecOperation({ key, spec })
 
   // Task does not start with an `operationId`
@@ -31,16 +32,12 @@ const addSpecToCall = function({ spec, key, call, helpers }) {
 
   const paramsB = setInvalidParams({ params: paramsA, specialValues })
 
-  const paramsC = mapValues(paramsB, schema => generateRandom({ schema, helpers }))
+  const paramsC = mapValues(paramsB, schema => $$random(schema))
 
   // Specification params have less priority than `task.call.*`
   const callB = merge(paramsC, callA)
 
   return callB
-}
-
-const generateRandom = function({ schema, helpers }) {
-  return helpers({ $$random: schema })
 }
 
 module.exports = {

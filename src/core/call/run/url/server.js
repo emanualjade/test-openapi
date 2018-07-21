@@ -1,37 +1,39 @@
 'use strict'
 
+const { $$env } = require('../../../helpers/core')
+
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
-const getServer = function({ rawRequest, helpers }) {
-  const server = getServerValue({ rawRequest, helpers })
+const getServer = function({ rawRequest }) {
+  const server = getServerValue({ rawRequest })
   return server.replace(TRAILING_SLASH_REGEXP, '')
 }
 
-const getServerValue = function({ rawRequest: { server }, helpers }) {
+const getServerValue = function({ rawRequest: { server } }) {
   if (server !== undefined) {
     return server
   }
 
-  return getDefaultServer({ helpers })
+  return getDefaultServer()
 }
 
-const getDefaultServer = function({ helpers }) {
-  const hostname = getHostname({ helpers })
-  const port = getPort({ helpers })
+const getDefaultServer = function() {
+  const hostname = getHostname()
+  const port = getPort()
   const server = `http://${hostname}${port}`
   return server
 }
 
 // Defaults to environment variable HOST or to `localhost`
-const getHostname = function({ helpers }) {
-  return helpers('$$env.HOST') || DEFAULT_HOSTNAME
+const getHostname = function() {
+  return $$env.HOST || DEFAULT_HOSTNAME
 }
 
 const DEFAULT_HOSTNAME = 'localhost'
 
 // Defaults to environment variable PORT or the protocol's default port
-const getPort = function({ helpers }) {
-  const port = helpers('$$env.PORT')
+const getPort = function() {
+  const port = $$env.PORT
 
   if (port) {
     return `:${port}`

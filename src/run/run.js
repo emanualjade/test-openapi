@@ -2,7 +2,6 @@
 
 const { addErrorHandler, TestOpenApiError, convertPlainObject, isBugError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
-const { getHelpersFunc } = require('../core/helpers/context')
 
 // Run each `plugin.run()`
 const runTask = async function({ task, config, startData, plugins, nestedPath }) {
@@ -22,7 +21,7 @@ const runAll = function({ task, task: { skipped }, config, startData, plugins, n
     return task
   }
 
-  const context = getContext({ task, config, startData, plugins, nestedPath })
+  const context = getContext({ config, startData, plugins, nestedPath })
 
   return runHandlers({
     type: 'run',
@@ -47,17 +46,11 @@ const runAllHandler = function(error) {
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
-const getContext = function({ task, config, startData, plugins, nestedPath }) {
+const getContext = function({ config, startData, plugins, nestedPath }) {
   const recursiveRunTaskA = recursiveRunTask.bind(null, { config, startData, plugins, nestedPath })
 
   const context = { config, startData, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
-
-  const helpers = getHelpersFunc({ task, context, plugins })
-  // `context.helpers` is overriden during recursion, so it's ok if
-  // `context.helpers -> context.helpers` is `undefined`
-  const contextA = { ...context, helpers }
-
-  return contextA
+  return context
 }
 
 // Pass simplified `_runTask()` for recursive tasks

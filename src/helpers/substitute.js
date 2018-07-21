@@ -105,7 +105,7 @@ const getHelperValue = function({ helper, helper: { name }, opts: { data } }) {
 
   const value = data[topName]
 
-  const valueA = evalFunction({ value, helper })
+  const valueA = evalFunction({ value, helper, propPath })
 
   return { value: valueA, propPath }
 }
@@ -141,14 +141,25 @@ const getDelimIndex = function({ name, index }) {
 // away with no arguments
 // It can be an async function.
 // Used by `task.alias`.
-const evalFunction = function({ value, helper: { type } }) {
-  // Only if `function.fired: true` to avoid firing library functions that are
-  // also used as objects, e.g. Lodash
-  if (type === 'function' || typeof value !== 'function' || !value.fired) {
+const evalFunction = function({ value, helper, propPath }) {
+  if (!shouldFireFunction({ value, helper, propPath })) {
     return value
   }
 
   return value()
+}
+
+const shouldFireFunction = function({ value, helper: { type }, propPath }) {
+  return (
+    typeof value === 'function' &&
+    // Do not fire when the function is also used as an object.
+    // This is for example how Lodash main object works.
+    Object.keys(value).length === 0 &&
+    // `{ $$func: arg }` should be fired with the argument, not right away.
+    // But when using `{ $$func.then.another.func: arg }`, the first `func`
+    // should be fired right away, but not the last one.
+    !(type === 'function' && propPath === undefined)
+  )
 }
 
 // Retrieve helper's non-top-level value (i.e. property path)
@@ -159,7 +170,7 @@ const getHelperProp = function({ value, helper, opts: { recursive }, propPath })
   // This is done only on `$$name` but not `{ $$name: arg }` return value because:
   //  - in functions, it is most likely not the desired intention of the user
   //  - it would require complex escaping (if user does not desire recursion)
-  //  - recursion can be achieved by using `context.helpers()`
+  //    E.g. `{ $$identity: { $$identity: $$$$name } }` -> `{ $$identity: $$$name }` -> `$$name`
   const valueA = recursive(value)
 
   return promiseThen(valueA, valueB => evalHelperProp({ value: valueB, helper, propPath }))

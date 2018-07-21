@@ -19,12 +19,9 @@ const getTaskHelpers = function({ task: { key, alias }, allTasks, runTask }) {
     return
   }
 
-  const taskHelpers = mapValues(alias, value => {
-    const evalTaskA = evalTask.bind(null, { key, value, allTasks, runTask })
-    // TODO: remove
-    evalTaskA.fired = true
-    return evalTaskA
-  })
+  const taskHelpers = mapValues(alias, value =>
+    evalTask.bind(null, { key, value, allTasks, runTask }),
+  )
   return taskHelpers
 }
 

@@ -9,6 +9,23 @@ const { parseHelper, parseEscape } = require('./parse')
 const { checkRecursion } = require('./recursion')
 const { helperHandler } = require('./error')
 
+// This is a data templating system.
+// As opposed to most other templating system, it works over (parsed) data
+// instead of (serialized) strings.
+// Advantages include:
+//  - guarantees serialized data is still valid
+//     - e.g. Handlebars producing JSON output might not be valid JSON itself
+//  - complex arguments are readable
+//  - format-agnostic
+//     - e.g. `jsonnet` cannot be used with YAML
+//  - handles circular references
+//  - handles non serializable types (e.g. sockets)
+// Beyond being data-centered, this templating system:
+//  - has simple syntax, to keep it truly declarative
+//     - no operators, variables scoping, references, inline functions
+//  - only includes templating features
+//     - no comments, string escaping, text blocks
+
 // Evaluate helpers values
 const substituteHelpers = function(value, data = {}, opts = {}) {
   const recursive = recursiveSubstitute.bind(null, data, opts)

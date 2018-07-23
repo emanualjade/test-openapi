@@ -27,7 +27,7 @@ const { helperHandler } = require('./error')
 //     - no comments, string escaping, text blocks
 
 // Evaluate helpers values
-const substituteHelpers = function(data, vars = {}, opts = {}) {
+const evalTemplate = function(data, vars = {}, opts = {}) {
   const recursive = recursiveSubstitute.bind(null, vars, opts)
   const optsA = { ...opts, vars, recursive }
 
@@ -36,7 +36,7 @@ const substituteHelpers = function(data, vars = {}, opts = {}) {
 
 // Recursive calls, done automatically when evaluating `$$name`
 const recursiveSubstitute = function(vars, opts, data) {
-  return substituteHelpers(data, vars, opts)
+  return evalTemplate(data, vars, opts)
 }
 
 // Evaluate an object or part of an object for helpers
@@ -209,5 +209,5 @@ const getProp = function({ data, propPath }) {
 }
 
 module.exports = {
-  substituteHelpers,
+  evalTemplate,
 }

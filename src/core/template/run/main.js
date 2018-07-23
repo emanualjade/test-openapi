@@ -4,7 +4,7 @@ const { pick, omit } = require('lodash')
 
 const { promiseThen } = require('../../../utils')
 const { addErrorHandler } = require('../../../errors')
-const { substituteHelpers } = require('../../../template')
+const { evalTemplate } = require('../../../template')
 const coreVars = require('../../../template_vars')
 
 const { getPluginsHelpers } = require('./plugin')
@@ -29,7 +29,7 @@ const run = function(task, context) {
 
   const { vars, pluginsHelpersMap } = getVars({ task, context })
 
-  const taskB = eSubstituteHelpers(taskA, vars, { path: 'task', pluginsHelpersMap })
+  const taskB = eEvalTemplate(taskA, vars, { path: 'task', pluginsHelpersMap })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }
@@ -49,7 +49,7 @@ const getVars = function({ task, context, context: { config } }) {
   return { vars, pluginsHelpersMap }
 }
 
-const eSubstituteHelpers = addErrorHandler(substituteHelpers, helpersHandler)
+const eEvalTemplate = addErrorHandler(evalTemplate, helpersHandler)
 
 // Update `originalTask` so that helpers are shown evaluated in both return value
 // and reporting

@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  ...require('./substitute'),
+  ...require('./eval'),
   ...require('./merge'),
   ...require('./parse'),
 }

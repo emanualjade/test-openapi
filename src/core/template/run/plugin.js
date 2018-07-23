@@ -1,7 +1,7 @@
 'use strict'
 
 const { addErrorHandler } = require('../../../errors')
-const { isHelperName } = require('../../../template')
+const { isTemplateName } = require('../../../template')
 
 // Retrieve all `plugin.helpers`
 const getPluginsHelpers = function({ task, context, context: { _plugins: plugins } }) {
@@ -52,7 +52,7 @@ const validateHelperNames = function({ helpers, plugin }) {
 }
 
 const validateHelperName = function({ name, plugin }) {
-  if (isHelperName({ name })) {
+  if (isTemplateName({ name })) {
     return
   }
 

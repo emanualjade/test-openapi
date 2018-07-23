@@ -5,9 +5,9 @@ const { get } = require('lodash')
 const { addErrorHandler } = require('../errors')
 const { crawl, promiseThen, promiseAllThen } = require('../utils')
 
-const { parseHelper, parseEscape } = require('./parse')
+const { parseTemplate, parseEscape } = require('./parse')
 const { checkRecursion } = require('./recursion')
-const { helperHandler } = require('./error')
+const { templateHandler } = require('./error')
 
 // This is a data templating system.
 // As opposed to most other templating system, it works over (parsed) data
@@ -26,39 +26,39 @@ const { helperHandler } = require('./error')
 //  - only includes templating features
 //     - no comments, string escaping, text blocks
 
-// Evaluate helpers values
+// Evaluate template
 const evalTemplate = function(data, vars = {}, opts = {}) {
-  const recursive = recursiveSubstitute.bind(null, vars, opts)
+  const recursive = recursiveEval.bind(null, vars, opts)
   const optsA = { ...opts, vars, recursive }
 
   return crawl(data, evalNode, { info: optsA })
 }
 
 // Recursive calls, done automatically when evaluating `$$name`
-const recursiveSubstitute = function(vars, opts, data) {
+const recursiveEval = function(vars, opts, data) {
   return evalTemplate(data, vars, opts)
 }
 
-// Evaluate an object or part of an object for helpers
+// Evaluate templates in an object or part of an object
 const evalNode = function(data, path, opts) {
-  const helper = parseHelper(data)
-  // There is no helper
-  if (helper === undefined) {
+  const template = parseTemplate(data)
+  // There are no template markers
+  if (template === undefined) {
     return data
   }
 
-  const { type } = helper
+  const { type } = template
 
   if (type === 'concat') {
-    return evalConcat({ helper, opts, path })
+    return evalConcat({ template, opts, path })
   }
 
-  return eEvalHelperNode({ helper, opts, data, path })
+  return eEvalSingle({ template, opts, data, path })
 }
 
 // Evaluate `$$name` when it's inside a string.
 // Its result will be transtyped to string and concatenated.
-const evalConcat = function({ helper: { tokens }, opts, path }) {
+const evalConcat = function({ template: { tokens }, opts, path }) {
   const maybePromises = tokens.map(token => evalConcatToken({ token, opts, path }))
   // There can be several `$$name` inside a string, in which case they are
   // evaluated in parallel
@@ -71,7 +71,7 @@ const evalConcatToken = function({ token, token: { type, name }, opts, path }) {
     return name
   }
 
-  return eEvalHelperNode({ helper: token, opts, data: name, path })
+  return eEvalSingle({ template: token, opts, data: name, path })
 }
 
 // `tokens` are joined.
@@ -82,45 +82,45 @@ const concatTokens = function(tokens) {
   return tokens.join('')
 }
 
-const evalHelperNode = function({ helper, opts }) {
-  const unescapedData = parseEscape({ helper })
-  // There was something that looked like a helper but was an escaped data
+const evalSingle = function({ template, opts }) {
+  const unescapedData = parseEscape({ template })
+  // There was something that looked like a template but was an escaped data
   if (unescapedData !== undefined) {
     return unescapedData
   }
 
   // Check for infinite recursions
-  const optsA = checkRecursion({ helper, opts })
+  const optsA = checkRecursion({ template, opts })
 
-  const { data, propPath } = getHelperData({ helper, opts: optsA })
+  const { data, propPath } = getTopLevelProp({ template, opts: optsA })
 
-  // Unkwnown helpers or helpers with `undefined` values return `undefined`,
-  // instead of throwing an error. This allows users to use dynamic helpers, where
+  // Unkwnown templates or templates with `undefined` values return `undefined`,
+  // instead of throwing an error. This allows using dynamic templates, where
   // some properties might be defined or not.
   if (data === undefined) {
     return
   }
 
   // `$$name` can be an async function, fired right away
-  return promiseThen(data, dataA => getHelperProp({ data: dataA, helper, opts: optsA, propPath }))
+  return promiseThen(data, dataA => getNestedProp({ data: dataA, template, opts: optsA, propPath }))
 }
 
-const eEvalHelperNode = addErrorHandler(evalHelperNode, helperHandler)
+const eEvalSingle = addErrorHandler(evalSingle, templateHandler)
 
-// Retrieve helper's top-level value
-const getHelperData = function({ helper, helper: { name }, opts: { vars } }) {
+// Retrieve template's top-level value
+const getTopLevelProp = function({ template, template: { name }, opts: { vars } }) {
   const { topName, propPath } = parseName({ name })
 
   const data = vars[topName]
 
-  const dataA = evalFunction({ data, helper, propPath })
+  const dataA = evalFunction({ data, template, propPath })
 
   return { data: dataA, propPath }
 }
 
 // `$$name` and `{ $$name: arg }` can both use dot notations.
 // The top-level value is first evaluated (including recursively parsing its
-// helpers) then the rest of the property path is applied.
+// templates) then the rest of the property path is applied.
 const parseName = function({ name }) {
   // Dot notation can also use brackets
   const index = name.search(/[.[]/)
@@ -148,15 +148,15 @@ const getDelimIndex = function({ name, index }) {
 // If `$$name` (but not `{ $$name: arg }`) is a function, it is evaluated right
 // away with no arguments
 // It can be an async function.
-const evalFunction = function({ data, helper, propPath }) {
-  if (!shouldFireFunction({ data, helper, propPath })) {
+const evalFunction = function({ data, template, propPath }) {
+  if (!shouldFireFunction({ data, template, propPath })) {
     return data
   }
 
   return data()
 }
 
-const shouldFireFunction = function({ data, helper: { type }, propPath }) {
+const shouldFireFunction = function({ data, template: { type }, propPath }) {
   return (
     typeof data === 'function' &&
     // Do not fire when the function is also used as an object.
@@ -169,9 +169,9 @@ const shouldFireFunction = function({ data, helper: { type }, propPath }) {
   )
 }
 
-// Retrieve helper's non-top-level value (i.e. property path)
-const getHelperProp = function({ data, helper, opts: { recursive }, propPath }) {
-  // An helper `$$name` can contain other helpers, which are then processed
+// Retrieve template's nested value (i.e. property path)
+const getNestedProp = function({ data, template, opts: { recursive }, propPath }) {
+  // A template `$$name` can contain other templates, which are then processed
   // recursively.
   // This can be used e.g. to create aliases.
   // This is done only on `$$name` but not `{ $$name: arg }` return value because:
@@ -180,10 +180,10 @@ const getHelperProp = function({ data, helper, opts: { recursive }, propPath }) 
   //    E.g. `{ $$identity: { $$identity: $$$$name } }` -> `{ $$identity: $$$name }` -> `$$name`
   const dataA = recursive(data)
 
-  return promiseThen(dataA, dataB => evalHelperProp({ data: dataB, helper, propPath }))
+  return promiseThen(dataA, dataB => evalNestedProp({ data: dataB, template, propPath }))
 }
 
-const evalHelperProp = function({ data, helper: { type, arg }, propPath }) {
+const evalNestedProp = function({ data, template: { type, arg }, propPath }) {
   const dataA = getProp({ data, propPath })
 
   // Including `undefined`
@@ -191,12 +191,12 @@ const evalHelperProp = function({ data, helper: { type, arg }, propPath }) {
     return dataA
   }
 
-  // Can use `{ $$helper: [...] }` to pass several arguments to the helper
+  // Can use `{ $$name: [...] }` to pass several arguments to the template function.
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2)`
   const args = Array.isArray(arg) ? arg : [arg]
-  // Fire helper when it's a function `{ $$name: arg }`
-  // To pass more arguments, e.g. helpers options, helpers `vars` functions must be bound.
-  // E.g. a library providing helpers could provide a factory function.
+  // Fire template when it's a function `{ $$name: arg }`
+  // To pass more arguments, e.g. options, template functions must be bound.
+  // E.g. a library providing templates could provide a factory function.
   return dataA(...args)
 }
 

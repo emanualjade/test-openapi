@@ -4,12 +4,12 @@ const { isEqual } = require('lodash')
 
 const { TestOpenApiError } = require('../errors')
 
-// Since helpers can return other helpers which then get evaluated, we need
+// Since templates can return other templates which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ helper, opts, opts: { stack = [] } }) {
-  const hasRecursion = stack.some(helperA => isEqual(helper, helperA))
+const checkRecursion = function({ template, opts, opts: { stack = [] } }) {
+  const hasRecursion = stack.some(templateA => isEqual(template, templateA))
 
-  const stackA = [...stack, helper]
+  const stackA = [...stack, template]
 
   if (!hasRecursion) {
     return { ...opts, stack: stackA }
@@ -21,10 +21,10 @@ const checkRecursion = function({ helper, opts, opts: { stack = [] } }) {
 
 // Pretty printing of the recursion stack
 const printRecursion = function({ stack }) {
-  return stack.map(printHelper).join(`\n ${RIGHT_ARROW} `)
+  return stack.map(printTemplate).join(`\n ${RIGHT_ARROW} `)
 }
 
-const printHelper = function({ type, name, arg }) {
+const printTemplate = function({ type, name, arg }) {
   if (type === 'function') {
     return `${name}: ${JSON.stringify(arg)}`
   }

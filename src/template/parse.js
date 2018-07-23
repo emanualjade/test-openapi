@@ -6,25 +6,26 @@ const { isObject, searchRegExp } = require('../utils')
 //  - `$$name` into `{ type: 'value', name: '$$name' }`
 //  - `{ $$name: arg }` into `{ type: 'function', name: '$$name', arg }`
 //  - `$$name $$nameB` into `{ type: 'concat', tokens }`
-const parseHelper = function(data) {
+const parseTemplate = function(data) {
   if (typeof data === 'string') {
-    return parseHelperString(data)
+    return parseTemplateString(data)
   }
 
-  // Not an helper
+  // No templating
   if (!isObject(data)) {
     return
   }
 
   const keys = Object.keys(data)
-  // Helpers are objects with a single property starting with `$$`
+  // Template functions can be passed arguments by using an object with a single
+  // property starting with `$$`
   // This allows objects with several properties not to need escaping
   if (keys.length !== 1) {
     return
   }
 
   const [name] = keys
-  if (!name.startsWith(HELPERS_PREFIX)) {
+  if (!TEMPLATE_REGEXP.test(name)) {
     return
   }
 
@@ -33,8 +34,8 @@ const parseHelper = function(data) {
   return { type: 'function', name, arg }
 }
 
-const parseHelperString = function(data) {
-  const tokens = searchRegExp(HELPERS_REGEXP_GLOBAL, data)
+const parseTemplateString = function(data) {
+  const tokens = searchRegExp(TEMPLATE_REGEXP_GLOBAL, data)
 
   // No matches
   if (tokens === undefined) {
@@ -53,26 +54,31 @@ const parseHelperString = function(data) {
 }
 
 const parseToken = function(name) {
-  const type = HELPERS_REGEXP.test(name) ? 'value' : 'raw'
+  const type = TEMPLATE_REGEXP.test(name) ? 'value' : 'raw'
   return { type, name }
 }
 
-// Check whether `data` is an helper
-const isHelper = function(data) {
-  const helper = parseHelper(data)
-  return helper !== undefined && !isEscape({ helper })
+// Check whether `data` is `$$name` or `{ $$name: arg }`
+const isTemplate = function(data) {
+  const template = parseTemplate(data)
+  return template !== undefined && !isEscape({ template })
 }
 
-// To escape an object that could be taken for an helper (but is not), one can
+// Check if it is `$$name` (but not `$$$name`)
+const isTemplateName = function({ name }) {
+  return TEMPLATE_REGEXP.test(name) && !isEscapeName({ name })
+}
+
+// To escape an object that could be taken for a template (but is not), one can
 // add an extra `$`, i.e. `{ $$$name: arg }` becomes `{ $$name: arg }`
 // and `$$$name` becomes `$$name`
 // This works with multiple `$` as well
-const parseEscape = function({ helper, helper: { type, name, arg } }) {
-  if (!isEscape({ helper })) {
+const parseEscape = function({ template, template: { type, name, arg } }) {
+  if (!isEscape({ template })) {
     return
   }
 
-  const nameA = name.replace(HELPERS_ESCAPE, '')
+  const nameA = name.replace(TEMPLATE_ESCAPE, '')
 
   if (type === 'function') {
     return { [nameA]: arg }
@@ -81,34 +87,29 @@ const parseEscape = function({ helper, helper: { type, name, arg } }) {
   return nameA
 }
 
-const isEscape = function({ helper: { type, name, tokens } }) {
+const isEscape = function({ template: { type, name, tokens } }) {
   if (type === 'concat') {
-    return tokens.some(helper => isEscape({ helper }))
+    return tokens.some(template => isEscape({ template }))
   }
 
   return isEscapeName({ name })
 }
 
-// Check if name is a valid helper's `$$name`
-const isHelperName = function({ name }) {
-  return HELPERS_REGEXP.test(name) && !isEscapeName({ name })
-}
-
 const isEscapeName = function({ name }) {
-  return name.startsWith(`${HELPERS_ESCAPE}${HELPERS_PREFIX}`)
+  return name.startsWith(`${TEMPLATE_ESCAPE}${TEMPLATE_PREFIX}`)
 }
 
 // Matches `$$name` where `name` can only include `A-Za-z0-9_-` and also
 // dot/bracket notations `.[]`
-const HELPERS_REGEXP = /^\$\$[\w-.[\]]+$/
-const HELPERS_REGEXP_GLOBAL = /\$\$[\w-.[\]]+/g
+const TEMPLATE_REGEXP = /^\$\$[\w-.[\]]+$/
+const TEMPLATE_REGEXP_GLOBAL = /\$\$[\w-.[\]]+/g
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
-const HELPERS_PREFIX = '$$'
-const HELPERS_ESCAPE = '$'
+const TEMPLATE_PREFIX = '$$'
+const TEMPLATE_ESCAPE = '$'
 
 module.exports = {
-  parseHelper,
-  isHelper,
+  parseTemplate,
+  isTemplate,
   parseEscape,
-  isHelperName,
+  isTemplateName,
 }

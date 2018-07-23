@@ -1,6 +1,6 @@
 'use strict'
 
-const { parseHelper } = require('../../../template')
+const { parseTemplate } = require('../../../template')
 
 const helpersHandler = function(error, task, vars, { path, pluginsHelpersMap }) {
   const errorA = prependPath({ error, path })
@@ -35,7 +35,7 @@ const addPlugin = function({ error, error: { value, module }, pluginsHelpersMap 
 // Find the plugin that created this helper (if it's coming from a `plugin.helpers`)
 const findPlugin = function({ value, pluginsHelpersMap }) {
   // Should never return `undefined` since `error.value` should always be an helper
-  const { name } = parseHelper(value)
+  const { name } = parseTemplate(value)
 
   const plugin = Object.entries(pluginsHelpersMap).find(
     ([, pluginsHelpers]) => pluginsHelpers[name] !== undefined,

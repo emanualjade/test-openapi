@@ -2,15 +2,15 @@
 
 const { customMerge } = require('../utils')
 
-const { isHelper } = require('./parse')
+const { isTemplate } = require('./parse')
 
-// Variation on Lodash `_.merge()` that never merges helpers deeply
+// Variation on Lodash `_.merge()` that never merges templates deeply
 const merge = function(...objects) {
-  return customMerge(mergeWithHelpers, ...objects)
+  return customMerge(mergeWithTemplate, ...objects)
 }
 
-const mergeWithHelpers = function(src, dest) {
-  if (isHelper(src) || isHelper(dest)) {
+const mergeWithTemplate = function(src, dest) {
+  if (isTemplate(src) || isTemplate(dest)) {
     return dest
   }
 }

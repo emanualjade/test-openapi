@@ -4,7 +4,7 @@ const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 
 // Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
-// no helpers is found or when helpers are synchronous.
+// `evalNode|evalKey` is synchronous.
 const crawl = function(value, evalNode, { evalKey, info } = {}) {
   return crawlNode(value, [], { evalNode, evalKey, info })
 }

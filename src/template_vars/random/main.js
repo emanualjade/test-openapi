@@ -9,7 +9,7 @@ const { validateIsSchema } = require('../../validation')
 const { addCustomFormats } = require('./format')
 
 // Generate random value based on a single JSON schema
-const randomHelper = function(schema) {
+const $$random = function(schema) {
   validateJsonSchema({ schema })
 
   const schemaA = fixArray({ schema })
@@ -67,5 +67,5 @@ const addSeparators = function({ value, schema: { 'x-separator': separator } }) 
 }
 
 module.exports = {
-  $$random: randomHelper,
+  $$random,
 }

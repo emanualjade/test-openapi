@@ -1,9 +1,9 @@
 'use strict'
 
 const config = require('./config')
-const { helpers } = require('./helpers')
+const { template } = require('./template')
 
 module.exports = {
   config,
-  helpers,
+  template,
 }

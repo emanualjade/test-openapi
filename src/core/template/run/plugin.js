@@ -3,39 +3,39 @@
 const { addErrorHandler } = require('../../../errors')
 const { isTemplateName } = require('../../../template')
 
-// Retrieve all `plugin.helpers`
-const getPluginsHelpers = function({ task, context, context: { _plugins: plugins } }) {
-  const pluginsHelpersMap = plugins.map(plugin => getPluginHelpers({ plugin, task, context }))
-  const pluginsHelpersMapA = Object.assign({}, ...pluginsHelpersMap)
+// Retrieve all `plugin.template`
+const getPluginsVars = function({ task, context, context: { _plugins: plugins } }) {
+  const pluginsVarsMap = plugins.map(plugin => getPluginVars({ plugin, task, context }))
+  const pluginsVarsMapA = Object.assign({}, ...pluginsVarsMap)
 
-  const pluginsHelpers = Object.assign({}, ...Object.values(pluginsHelpersMapA))
-  return { pluginsHelpers, pluginsHelpersMap: pluginsHelpersMapA }
+  const pluginsVars = Object.assign({}, ...Object.values(pluginsVarsMapA))
+  return { pluginsVars, pluginsVarsMap: pluginsVarsMapA }
 }
 
-const getPluginHelpers = function({ plugin, plugin: { name, helpers }, task, context }) {
-  if (helpers === undefined) {
+const getPluginVars = function({ plugin, plugin: { name, template }, task, context }) {
+  if (template === undefined) {
     return
   }
 
-  const helpersA = eGetHelpers({ plugin, task, context })
+  const vars = eGetVars({ plugin, task, context })
 
-  validateHelperNames({ helpers: helpersA, plugin })
+  validateVarNames({ vars, plugin })
 
-  return { [name]: helpersA }
+  return { [name]: vars }
 }
 
-const getHelpers = function({ plugin: { helpers }, task, context }) {
-  if (typeof helpers !== 'function') {
-    return helpers
+const getVars = function({ plugin: { template }, task, context }) {
+  if (typeof template !== 'function') {
+    return template
   }
 
-  const helpersA = helpers(task, context)
-  return helpersA
+  const vars = template(task, context)
+  return vars
 }
 
-// Add `error.message|module` when `plugin.helpers` throws
-const getHelpersHandler = function(error, { plugin: { name } }) {
-  error.message = `Error while retrieving 'plugin.helpers': ${error.message}`
+// Add `error.message|module` when `plugin.template` throws
+const getVarsHandler = function(error, { plugin: { name } }) {
+  error.message = `Error while retrieving 'plugin.template': ${error.message}`
 
   if (error.module === undefined) {
     error.module = `plugin-${name}`
@@ -44,24 +44,26 @@ const getHelpersHandler = function(error, { plugin: { name } }) {
   throw error
 }
 
-const eGetHelpers = addErrorHandler(getHelpers, getHelpersHandler)
+const eGetVars = addErrorHandler(getVars, getVarsHandler)
 
-// Validate `plugin.helpers` return value
-const validateHelperNames = function({ helpers, plugin }) {
-  Object.keys(helpers).forEach(name => validateHelperName({ name, plugin }))
+// Validate `plugin.template` return value
+const validateVarNames = function({ vars, plugin }) {
+  Object.keys(vars).forEach(name => validateVarName({ name, plugin }))
 }
 
-const validateHelperName = function({ name, plugin }) {
+const validateVarName = function({ name, plugin }) {
   if (isTemplateName({ name })) {
     return
   }
 
   // Throw a bug error
-  const error = new Error(`'plugin.helpers' returned an helper with an invalid name: ${name}`)
+  const error = new Error(
+    `'plugin.template' returned a template variable with an invalid name: ${name}`,
+  )
   error.module = `plugin-${plugin.name}`
   throw error
 }
 
 module.exports = {
-  getPluginsHelpers,
+  getPluginsVars,
 }

@@ -76,9 +76,9 @@ const recursiveRunTask = async function(
 }
 
 // Check for infinite recursion in `_runTask()`
-// This is separate from helpers recursion check:
-//  - helpers check recursions only within a given task
-//  - tasks recursion can happen even without any helpers involved
+// This is separate from template recursion check:
+//  - template check recursions only within a given task
+//  - tasks recursion can happen even without any templating involved
 //    (when any plugin uses `_runTask()`)
 const checkRecursion = function({ nestedPath = [], key, self }) {
   if (self || !nestedPath.includes(key)) {

@@ -4,9 +4,9 @@ const { env } = require('process')
 
 const { parseFlat } = require('../utils')
 
-// `$$env.envVarName` helper
+// `$$env.envVarName` template function
 // Replaced by `process.env.envVarName`
-const getEnvHelper = function() {
+const getEnv = function() {
   // We use a proxy (instead of a reference to `process.env` to add some logic:
   //  - case-insensitive names
   //  - value parsing
@@ -39,8 +39,8 @@ const findEnvVar = function({ envVarName }) {
   return envVar[1]
 }
 
-const envHelper = getEnvHelper()
+const $$env = getEnv()
 
 module.exports = {
-  $$env: envHelper,
+  $$env,
 }

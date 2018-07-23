@@ -18,7 +18,7 @@
     "complete": {},
     "end": {},
     "report": {},
-    "helpers": {}
+    "template": {}
   },
   "required": ["name"]
 }

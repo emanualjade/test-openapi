@@ -2,9 +2,9 @@
 
 const { parseTemplate } = require('../../../template')
 
-const helpersHandler = function(error, task, vars, { path, pluginsHelpersMap }) {
+const templateHandler = function(error, task, vars, { path, pluginsVarsMap }) {
   const errorA = prependPath({ error, path })
-  const errorB = addPlugin({ error: errorA, pluginsHelpersMap })
+  const errorB = addPlugin({ error: errorA, pluginsVarsMap })
   throw errorB
 }
 
@@ -19,12 +19,12 @@ const prependPath = function({ error, error: { property }, path }) {
 }
 
 // Add `error.module`
-const addPlugin = function({ error, error: { value, module }, pluginsHelpersMap }) {
+const addPlugin = function({ error, error: { value, module }, pluginsVarsMap }) {
   if (module !== undefined || value === undefined) {
     return error
   }
 
-  const plugin = findPlugin({ value, pluginsHelpersMap })
+  const plugin = findPlugin({ value, pluginsVarsMap })
   if (plugin !== undefined) {
     error.module = `plugin-${plugin[0]}`
   }
@@ -32,17 +32,18 @@ const addPlugin = function({ error, error: { value, module }, pluginsHelpersMap 
   return error
 }
 
-// Find the plugin that created this helper (if it's coming from a `plugin.helpers`)
-const findPlugin = function({ value, pluginsHelpersMap }) {
-  // Should never return `undefined` since `error.value` should always be an helper
+// Find the plugin that created this template variable (if it's coming from a
+// `plugin.template`)
+const findPlugin = function({ value, pluginsVarsMap }) {
+  // Should never return `undefined` since `error.value` should always be a template
   const { name } = parseTemplate(value)
 
-  const plugin = Object.entries(pluginsHelpersMap).find(
-    ([, pluginsHelpers]) => pluginsHelpers[name] !== undefined,
+  const plugin = Object.entries(pluginsVarsMap).find(
+    ([, pluginsVars]) => pluginsVars[name] !== undefined,
   )
   return plugin
 }
 
 module.exports = {
-  helpersHandler,
+  templateHandler,
 }

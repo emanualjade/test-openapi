@@ -17,10 +17,9 @@ const addSkipped = function({ task, task: { skip, key }, patterns }) {
   return { ...task, skipped: true }
 }
 
-// Any value in `task.skip` will be same as `true`. This is because helpers
+// Any value in `task.skip` will be same as `true`. This is because templates
 // are not evaluated yet, so we can't assume what the value is. But we still want
-// the `skip` plugin to be performed before helpers evaluation, as helpers
-// evaluation takes some time.
+// the `skip` plugin to be performed before templating, as templating takes some time.
 const isSkipped = function({ skip, patterns, key }) {
   return skip !== undefined || (patterns !== undefined && isMatch(key, patterns))
 }

@@ -7,22 +7,21 @@ const { TestOpenApiError } = require('../../errors')
 
 // `task.alias.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
 // run the task that defined the alias, and retrieve a specific property at `PATH`
-// It does so by adding those helpers to `startData.helpers`.
-const getHelpers = function(task, { config: { _allTasks: allTasks }, _runTask: runTask }) {
-  const aliasHelpers = allTasks.map(taskA => getTaskHelpers({ task: taskA, allTasks, runTask }))
-  const aliasHelpersA = Object.assign({}, ...aliasHelpers)
-  return aliasHelpersA
+const template = function(task, { config: { _allTasks: allTasks }, _runTask: runTask }) {
+  const aliases = allTasks.map(taskA => getTaskAliases({ task: taskA, allTasks, runTask }))
+  const aliasesA = Object.assign({}, ...aliases)
+  return aliasesA
 }
 
-const getTaskHelpers = function({ task: { key, alias }, allTasks, runTask }) {
+const getTaskAliases = function({ task: { key, alias }, allTasks, runTask }) {
   if (alias === undefined) {
     return
   }
 
-  const taskHelpers = mapValues(alias, value =>
+  const taskAliases = mapValues(alias, value =>
     evalTask.bind(null, { key, value, allTasks, runTask }),
   )
-  return taskHelpers
+  return taskAliases
 }
 
 // Runs a task and returns `task[PATH]`
@@ -72,5 +71,5 @@ const parseValue = function({ value }) {
 }
 
 module.exports = {
-  helpers: getHelpers,
+  template,
 }

@@ -7,51 +7,52 @@ const { addErrorHandler } = require('../../../errors')
 const { evalTemplate } = require('../../../template')
 const coreVars = require('../../../template_vars')
 
-const { getPluginsHelpers } = require('./plugin')
-const { helpersHandler } = require('./error')
+const { getPluginsVars } = require('./plugin')
+const { templateHandler } = require('./error')
 
-// Substitute helpers `{ $$name: arg }` and `$$name` for dynamic values.
+// Substitute templates `{ $$name: arg }` and `$$name` for dynamic values.
 // Including in deep properties.
-// Helpers are substituted before the task run, e.g. plugins do not need to be helpers-aware.
-// Helpers still happen after:
-//  - `task|only` plugins: to avoid unnecessary long helpers evaluation on skipped task
-//  - `repeat` plugin: to repeat helpers that rely on global state, e.g. `$$random`
-//    or `$$task` helpers
-// We do not provide an utility (e.g. `context.helpers()`) for other plugins to
-// use helpers because:
-//  - some helpers are task-specific, others not, i.e. we would need to provide
-//    different helpers at different stages, creating many issues
-//  - helpers are a user-facing feature. Plugin writers can `require()` those
-//    helpers directly and use their functions if needed.
+// Templates are substituted before the task run, e.g. plugins do not need to be
+// template-aware.
+// Templating still happen after:
+//  - `task|only` plugins: to avoid unnecessary long template evaluation on skipped task
+//  - `repeat` plugin: to repeat template variables that rely on global state,
+//     e.g. `$$random` or `$$task`
+// We do not provide an utility (e.g. `context.template()`) for other plugins to
+// use templating because:
+//  - some template variables are task-specific, others not, i.e. we would need
+//    to provide different template variables at different stages, creating many issues
+//  - templating is a user-facing feature. Plugin writers can `require()`
+//    template functions directly and use their functions if needed.
 const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
 
-  const { vars, pluginsHelpersMap } = getVars({ task, context })
+  const { vars, pluginsVarsMap } = getVars({ task, context })
 
-  const taskB = eEvalTemplate(taskA, vars, { path: 'task', pluginsHelpersMap })
+  const taskB = eEvalTemplate(taskA, vars, { path: 'task', pluginsVarsMap })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }
 
-// Make sure those properties are not checked for helpers
-const NO_EVAL_PROPS = ['originalTask', 'key', 'helpers', 'alias']
+// Make sure those properties are not checked for templating
+const NO_EVAL_PROPS = ['originalTask', 'key', 'alias']
 
 const getVars = function({ task, context, context: { config } }) {
-  const { pluginsHelpers, pluginsHelpersMap } = getPluginsHelpers({ task, context })
+  const { pluginsVars, pluginsVarsMap } = getPluginsVars({ task, context })
 
-  // Plugin/user-defined helpers have loading priority over core helpers.
-  // Like this, adding core helpers is non-breaking.
-  // Also this allows overriding / monkey-patching core helpers (which can be
+  // Plugin/user-defined template variable have loading priority over core ones.
+  // Like this, adding core template variables is non-breaking.
+  // Also this allows overriding / monkey-patching core (which can be
   // either good or bad).
-  const vars = { ...coreVars, ...pluginsHelpers, ...config.helpers }
+  const vars = { ...coreVars, ...pluginsVars, ...config.template }
 
-  return { vars, pluginsHelpersMap }
+  return { vars, pluginsVarsMap }
 }
 
-const eEvalTemplate = addErrorHandler(evalTemplate, helpersHandler)
+const eEvalTemplate = addErrorHandler(evalTemplate, templateHandler)
 
-// Update `originalTask` so that helpers are shown evaluated in both return value
+// Update `originalTask` so that templates are shown evaluated in both return value
 // and reporting
 const returnTask = function({ task, noEvalProps }) {
   const taskA = { ...task, ...noEvalProps }

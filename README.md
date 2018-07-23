@@ -173,7 +173,7 @@ operationId.testName:
 
 # Random value
 
-The `$$random` helper can be used to generate random values based on a
+The `$$random` template function can be used to generate random values based on a
 [JSON schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
 
 For example to generate a random password of minimum 12 characters:
@@ -190,15 +190,18 @@ operationId.testName:
 
 # Re-using another request's response
 
-The `$$task` helper can be used to re-use the response of another request.
-This can be useful to for example re-use an access token created by another request.
-Its value is `testKey testProperty`:
+A request can save its response using `alias`. Other requests will be able to
+re-use it by using template variables.
+This creates sequences of requests.
 
 ```yml
+createAccessToken:
+  alias:
+    accessToken: call.response.body.accessToken
+
 operationId.testName:
   call:
-    query.accessToken:
-      $$task: createAccessToken call.response.body.accessToken
+    query.accessToken: $$accessToken
 ```
 
 # Empty parameter

@@ -35,7 +35,7 @@ const serialize = function({ call }) {
 //  - distinguishing from `?queryVar` (empty string) and no `queryVar` (null)
 //  - being consistent with `validate` plugin, which use `null` to specify
 //    'should not be defined'
-// When used with `$$random` helper, parameters can be randomly generated or not
+// When used with `$$random`, parameters can be randomly generated or not
 // using `type: ['null', ...]`
 const removeNull = function({ call }) {
   return omitBy(call, value => value === null)

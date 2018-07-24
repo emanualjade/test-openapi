@@ -30,7 +30,7 @@ const run = function(task, context) {
 
   const { vars, pluginsVarsMap } = getVars({ task, context })
 
-  const taskB = eEvalTemplate(taskA, vars, { path: 'task', pluginsVarsMap })
+  const taskB = eEvalTemplate(taskA, vars, { pluginsVarsMap })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }

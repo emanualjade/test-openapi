@@ -2,20 +2,13 @@
 
 const { parseTemplate } = require('../../../template')
 
-const templateHandler = function(error, task, vars, { path, pluginsVarsMap }) {
-  const errorA = prependPath({ error, path })
-  const errorB = addPlugin({ error: errorA, pluginsVarsMap })
-  throw errorB
-}
-
-// Allow prepending a `path` to thrown `error.property`
-const prependPath = function({ error, error: { property }, path }) {
-  if (path === undefined || property === undefined) {
-    return error
+const templateHandler = function(error, task, vars, { pluginsVarsMap }) {
+  if (error.property !== undefined) {
+    error.property = `task.${error.property}`
   }
 
-  error.property = `${path}.${property}`
-  return error
+  const errorA = addPlugin({ error, pluginsVarsMap })
+  throw errorA
 }
 
 // Add `error.module`

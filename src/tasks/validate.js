@@ -28,6 +28,7 @@ const validateEmptyTasks = function({ tasks }) {
   throw new TestOpenApiError('No tasks were found')
 }
 
+// Make sure input tasks are valid JSON
 const validateJsonTask = function([key, task]) {
   const getError = getJsonError.bind(null, key)
   checkJson({ value: task, getError })

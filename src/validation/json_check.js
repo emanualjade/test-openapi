@@ -9,6 +9,11 @@ const { addErrorHandler } = require('../errors')
 //  - making sure return value is simple and serializable
 //  - ensuring good reporting
 //  - ensuring plugins can transfer it over network
+//  - enforce that plugins are not returning functions.
+//    Plugins should only return data/state.
+//    If they want to return logic, they should export functions.
+//    If they want to return bound functions, they should return the bound
+//    argument and export the function separately.
 // `startData` is not constrained to JSON, e.g. it can use sockets.
 const checkJson = function({ value, getError }) {
   const copy = eClone({ value, getError })

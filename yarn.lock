@@ -1941,9 +1941,18 @@ json-schema-faker@^0.5.0-rc15:
     randexp "^0.4.5"
     tslib "^1.7.1"
 
-json-schema-ref-parser@^5.0.0, json-schema-ref-parser@^5.0.3:
+json-schema-ref-parser@^5.0.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/json-schema-ref-parser/-/json-schema-ref-parser-5.1.0.tgz#640ce23f4a972068f7e12218c491f3c13efdd060"
+  dependencies:
+    call-me-maybe "^1.0.1"
+    debug "^3.1.0"
+    js-yaml "^3.12.0"
+    ono "^4.0.5"
+
+json-schema-ref-parser@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/json-schema-ref-parser/-/json-schema-ref-parser-5.1.1.tgz#adfc84bbcd3ec41536ec9df5364734884afcf1c1"
   dependencies:
     call-me-maybe "^1.0.1"
     debug "^3.1.0"
@@ -3416,13 +3425,13 @@ swagger-methods@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/swagger-methods/-/swagger-methods-1.0.4.tgz#2c5b844f4a22ab2f5e773f98193c28e386b1c37e"
 
-swagger-parser@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/swagger-parser/-/swagger-parser-5.0.0.tgz#b49cad066a90d57ccc331e5c873123a7d42e7cf9"
+swagger-parser@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/swagger-parser/-/swagger-parser-5.0.1.tgz#a9f043aeae3eb526ac99aa55b3a8aca53a8dbf3f"
   dependencies:
     call-me-maybe "^1.0.1"
     debug "^3.1.0"
-    json-schema-ref-parser "^5.0.3"
+    json-schema-ref-parser "^5.1.1"
     ono "^4.0.5"
     openapi-schema-validation "^0.4.1"
     swagger-methods "^1.0.4"

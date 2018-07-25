@@ -13,7 +13,7 @@ const validateIsSchema = function(opts) {
 }
 
 const checkIsSchema = function(opts) {
-  return checkSchema({ schema: jsonSchemaSchema, ...opts })
+  checkSchema({ schema: jsonSchemaSchema, ...opts })
 }
 
 const getJsonSchemaSchema = function() {

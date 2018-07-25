@@ -1,7 +1,9 @@
 'use strict'
 
 const memoize = require('fast-memoize')
-const { get } = require('lodash')
+const { get, omitBy } = require('lodash')
+
+const { jsonPointerToParts, getPath } = require('../utils')
 
 const { validator } = require('./validator')
 
@@ -26,72 +28,86 @@ const getError = function({
   name,
   target,
 }) {
-  const message = getErrorMessage({ error })
+  const message = getMessage({ error })
   const path = getErrorPath({ error })
-  const valueA = getErrorValue({ path, value })
-  const schemaPath = getErrorSchemaPath({ error })
-  const schemaA = getErrorSchema({ schemaPath, schema })
-  const property = getErrorProperty({ name, path, schemaPath, target })
+  const valueA = getValue({ path, value })
+  const schemaParts = getSchemaParts({ error })
+  const schemaPath = getSchemaPath({ schemaParts })
+  const schemaA = getSchema({ schemaParts, schema })
+  const property = getProperty({ name, path, schemaPath, target })
 
-  return { error: message, path, value: valueA, schemaPath, schema: schemaA, property }
+  const errorA = { error: message, value: valueA, schema: schemaA, property, path, schemaPath }
+  const errorB = omitBy(errorA, value => value === undefined)
+  return errorB
 }
 
-const getErrorMessage = function({ error }) {
+const getMessage = function({ error }) {
   return validator.errorsText([error], { dataVar: '' }).replace(/^\./, '')
 }
 
+// `error.dataPath` is properly escaped, e.g. can be `.NAME`, `[INDEX]` or
+// `["NAME"]` for names that need to be escaped.
+// However it starts with a dot, which we strip.
 const getErrorPath = function({ error: { dataPath } }) {
-  return dataPath.replace(INDEX_BRACKETS_REGEXP, '.$1').replace(/^\./, '')
+  const path = dataPath.replace(/^\./, '')
+  if (path === '') {
+    return
+  }
+
+  return path
 }
 
-// Array index: `[integer]`
-const INDEX_BRACKETS_REGEXP = /\[([\d]+)\]/g
-
-const getErrorValue = function({ path, value }) {
-  if (path === '') {
+const getValue = function({ path, value }) {
+  if (path === undefined) {
     return value
   }
 
   return get(value, path)
 }
 
-const getErrorSchemaPath = function({ error: { schemaPath } }) {
-  return schemaPath.replace('#/', '').split('/')
+const getSchemaParts = function({ error: { schemaPath } }) {
+  return jsonPointerToParts(schemaPath)
 }
 
-const getErrorSchema = function({ schemaPath, schema }) {
-  const key = schemaPath[schemaPath.length - 1]
-  const value = get(schema, schemaPath)
+const getSchemaPath = function({ schemaParts }) {
+  const schemaPathA = getPath(schemaParts)
+  if (schemaPathA === '') {
+    return
+  }
+
+  return schemaPathA
+}
+
+const getSchema = function({ schemaParts, schema }) {
+  const key = schemaParts[schemaParts.length - 1]
+  const value = get(schema, schemaParts)
   return { [key]: value }
 }
 
-// `target` is whether `error.property` shouls target the schema path or the value path
-const getErrorProperty = function({ name, path, schemaPath, target = 'value' }) {
+// `target` is whether `error.property` should target the schema path or the value path
+const getProperty = function({ name, path, schemaPath, target = 'value' }) {
   if (target === 'value') {
-    return getErrorPropertyValue({ name, path })
+    return concatPaths(name, path)
   }
 
-  return getErrorPropertySchema({ name, schemaPath })
+  return concatPaths(name, schemaPath)
 }
 
-const getErrorPropertyValue = function({ name, path }) {
-  if (name === undefined) {
-    return path
+// Concatenate two JavaScript paths
+const concatPaths = function(pathA, pathB) {
+  if (pathA === undefined) {
+    return pathB
   }
 
-  if (path === '') {
-    return name
+  if (pathB === undefined) {
+    return pathA
   }
 
-  return `${name}.${path}`
-}
-
-const getErrorPropertySchema = function({ name, schemaPath }) {
-  if (name === undefined) {
-    return schemaPath
+  if (pathB.startsWith('[')) {
+    return `${pathA}${pathB}`
   }
 
-  return [name, ...schemaPath].join('.')
+  return `${pathA}.${pathB}`
 }
 
 // Compilation is automatically memoized by `ajv` but not validation

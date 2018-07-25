@@ -1,10 +1,6 @@
 {
   "type": "object",
   "properties": {
-    "name": {
-      "type": "string",
-      "pattern": "^[a-zA-Z_$][\\w_$-]*$"
-    },
     "config": {
       "type": "object",
       "properties": {
@@ -20,6 +16,5 @@
     "end": {},
     "report": {},
     "template": {}
-  },
-  "required": ["name"]
+  }
 }

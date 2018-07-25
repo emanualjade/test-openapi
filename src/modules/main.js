@@ -53,12 +53,26 @@ const eLoadModule = addErrorHandler(loadModule, loadModuleHandler)
 
 // Validate export value
 const validateModule = function({ module, module: { name }, info, info: { schema } }) {
-  const { error } = validateFromSchema({ schema, value: module })
+  const schemaA = addNameSchema({ schema })
+
+  const { error } = validateFromSchema({ schema: schemaA, value: module })
   if (error === undefined) {
     return
   }
 
   throwBugError(`is invalid: ${error}`, { name, info })
+}
+
+// We restrict module names to make sure they can appear in dot notations
+// in `error.property` without escaping.
+// And also to make sure they are simple to read and write.
+const addNameSchema = function({ schema, schema: { properties } }) {
+  return { ...schema, properties: { ...properties, name: NAME_SCHEMA } }
+}
+
+const NAME_SCHEMA = {
+  type: 'string',
+  pattern: '^[a-zA-Z_$][\\w_$-]*$',
 }
 
 const getProps = function({ props, name }) {

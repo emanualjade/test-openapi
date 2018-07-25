@@ -16,4 +16,6 @@ module.exports = {
   ...require('./merge'),
   ...require('./crawl'),
   ...require('./search'),
+  ...require('./path'),
+  ...require('./json_pointer'),
 }

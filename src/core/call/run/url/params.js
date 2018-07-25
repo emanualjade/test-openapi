@@ -1,5 +1,6 @@
 'use strict'
 
+const { getPath } = require('../../../../utils')
 const { TestOpenApiError } = require('../../../../errors')
 
 // Replace `url` request parameters to the request URL
@@ -14,8 +15,9 @@ const addUrlParams = function({ url, rawRequest }) {
 const URL_PARAM_REGEXP = /\{([^}]+)\}/g
 
 const getUrlParam = function({ name, rawRequest }) {
-  const property = `task.call.url.${name}`
-  const value = rawRequest[`url.${name}`]
+  const nameA = `url.${name}`
+  const property = getPath(['task', 'call', nameA])
+  const value = rawRequest[nameA]
 
   if (value === undefined) {
     throw new TestOpenApiError(`The URL parameter '${name}' must be defined`, { property })

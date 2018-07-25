@@ -1,6 +1,6 @@
 'use strict'
 
-const { removePrefixes } = require('../../../utils')
+const { removePrefixes, getPath } = require('../../../utils')
 const { checkSchema } = require('../../../validation')
 
 const { checkRequired } = require('./required')
@@ -44,7 +44,7 @@ const getResponseHeader = function({ headers, name }) {
   return headers[nameB]
 }
 
-const PROPERTY = name => `task.validate.headers.${name}`
+const PROPERTY = name => getPath(['task', 'validate', `headers.${name}`])
 const NAME = name => `Response header '${name}'`
 
 module.exports = {

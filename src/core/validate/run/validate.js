@@ -1,5 +1,6 @@
 'use strict'
 
+const { getPath } = require('../../../utils')
 const { checkIsSchema } = require('../../../validation')
 
 // Make sure `task.validate.*.*` are valid JSON schemas
@@ -8,7 +9,8 @@ const validateJsonSchemas = function({ validate }) {
 }
 
 const validateJsonSchema = function([prop, value]) {
-  checkIsSchema({ value, name: `task.validate.${prop}` })
+  const name = getPath(['task', 'validate', prop])
+  checkIsSchema({ value, name })
 }
 
 module.exports = {

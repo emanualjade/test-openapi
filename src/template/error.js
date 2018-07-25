@@ -1,5 +1,7 @@
 'use strict'
 
+const { getPath } = require('../utils')
+
 // Exceptions thrown during template evaluation
 const templateHandler = function(error, { template, data, path }) {
   appendMessage({ error, template })
@@ -31,7 +33,7 @@ const TEMPLATE_ERROR_MESSAGE = 'Error when evaluating template'
 //  - `value`: `{$$FUNC: arg}` or `$$NAME`
 // In case of recursive template, the top-level node should prevail.
 const setErrorProps = function({ error, data, path }) {
-  const property = path.join('.')
+  const property = getPath(path)
   Object.assign(error, { property, value: data })
   // `error.expected` does not make any more sense since we remove `error.value`
   delete error.expected

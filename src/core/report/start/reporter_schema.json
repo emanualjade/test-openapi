@@ -2,7 +2,8 @@
   "type": "object",
   "properties": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "pattern": "^[a-zA-Z_$][\\w_$-]*$"
     },
     "config": {
       "type": "object"

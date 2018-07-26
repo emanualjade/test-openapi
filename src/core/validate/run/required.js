@@ -3,13 +3,24 @@
 const { TestOpenApiError } = require('../../../errors')
 
 // Only response headers|body that are present in `task.validate.*` are validated.
-// `type: null` means the response header|body must not be present
-// `type: [null, ...]` means it is optional
-// Otherwise, it is required
-// TODO: this does not work when `type` is not top-level in the JSON-schema,
-// e.g. `{ not: { type } }`
-const checkRequired = function({ schema, value, property, name }) {
-  const message = validateRequiredness({ schema, value })
+// Whether they are defined or not in the response is validated according to
+// `task.validate.*.x-defined` among:
+//   - `required` (default)
+//   - `optional`
+//   - `forbidden`
+const checkRequired = function({
+  schema,
+  schema: { 'x-defined': defined = DEFAULT_DEFINED },
+  value,
+  property,
+  name,
+}) {
+  const validator = DEFINED_VALIDATE[defined]
+  if (validator === undefined) {
+    return
+  }
+
+  const message = validator({ value })
   if (message === undefined) {
     return
   }
@@ -17,15 +28,7 @@ const checkRequired = function({ schema, value, property, name }) {
   throw new TestOpenApiError(`${name} ${message}`, { property, schema, value })
 }
 
-const validateRequiredness = function({ schema: { type = [] }, value }) {
-  if (type === 'null') {
-    return validateForbidden({ value })
-  }
-
-  if (!(Array.isArray(type) && type.includes('null'))) {
-    return validateRequired({ value })
-  }
-}
+const DEFAULT_DEFINED = 'required'
 
 const validateForbidden = function({ value }) {
   if (value === undefined) {
@@ -41,6 +44,11 @@ const validateRequired = function({ value }) {
   }
 
   return 'should not be empty.'
+}
+
+const DEFINED_VALIDATE = {
+  forbidden: validateForbidden,
+  required: validateRequired,
 }
 
 module.exports = {

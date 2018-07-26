@@ -1,6 +1,6 @@
 'use strict'
 
-const { isEqual } = require('lodash')
+const { isDeepStrictEqual } = require('util')
 
 const { addErrorHandler } = require('../errors')
 
@@ -17,8 +17,7 @@ const { addErrorHandler } = require('../errors')
 // `startData` is not constrained to JSON, e.g. it can use sockets.
 const checkJson = function({ value, getError }) {
   const copy = eClone({ value, getError })
-  // TODO: replace with util.isDeepStrictEqual() when we upgrade Node.js
-  if (isEqual(value, copy)) {
+  if (isDeepStrictEqual(value, copy)) {
     return
   }
 

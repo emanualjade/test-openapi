@@ -1,5 +1,14 @@
 {
   "general": {
     "type": ["string", "object"]
+  },
+  "task": {
+    "type": "object",
+    "properties": {
+      "operation": {
+        "type": "string"
+      }
+    },
+    "additionalProperties": false
   }
 }

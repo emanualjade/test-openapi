@@ -5,8 +5,8 @@ const { addSpecToCall } = require('./call')
 const { addSpecToValidate } = require('./validate')
 
 // Add OpenAPI specification to `task.call|validate.*`
-const run = function({ key, call, validate }, { pluginNames, startData }) {
-  const operation = getOperation({ key, startData })
+const run = function({ key, call, validate, spec }, { pluginNames, startData }) {
+  const operation = getOperation({ key, startData, spec })
 
   // Task does not start with an `operationId`
   if (operation === undefined) {

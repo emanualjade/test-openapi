@@ -42,7 +42,7 @@
     "methods": "^1.1.2",
     "micromatch": "^3.1.10",
     "node-notifier": "^5.2.1",
-    "openapi-schema-to-json-schema": "^2.1.0",
+    "openapi-schema-to-json-schema": "git+https://github.com/ehmicky/openapi-schema-to-json-schema.git#2d12608de9fd355ade26a15b6eb186a595fd64f7",
     "ora": "^3.0.0",
     "slice-ansi": "^1.0.0",
     "string-width": "^2.1.1",

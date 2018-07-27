@@ -15,7 +15,6 @@ const normalizeFormData = function({ params }) {
   }
 
   const paramsA = formDataToBody({ formDataParams, params })
-
   return paramsA
 }
 

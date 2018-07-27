@@ -29,18 +29,20 @@ const getOperationsByPath = function({ spec, path, pathDef }) {
 }
 
 // Normalize cherry-picked properties
-const getOperation = function({
-  spec,
-  path,
-  pathDef,
-  operation,
-  operation: { responses, operationId },
-  method,
-}) {
+const getOperation = function({ spec, path, pathDef, operation, method }) {
+  const operationId = getOperationId({ operation })
   const params = getParams({ spec, method, path, pathDef, operation })
-  const responsesA = normalizeResponses({ responses, spec, operation })
+  const responsesA = normalizeResponses({ spec, operation })
 
-  return { operationId, params, responses: responsesA }
+  return { ...operationId, params, responses: responsesA }
+}
+
+const getOperationId = function({ operation: { operationId } }) {
+  if (operationId === undefined) {
+    return
+  }
+
+  return { operationId }
 }
 
 module.exports = {

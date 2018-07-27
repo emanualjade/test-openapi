@@ -2,6 +2,10 @@
 
 // Turn OpenAPI `collectionFormat` into `$$random` `x-separator`
 const addSeparator = function({ schema, collectionFormat }) {
+  if (collectionFormat === undefined) {
+    return schema
+  }
+
   const separator = COLLECTION_FORMATS[collectionFormat]
   return { ...schema, 'x-separator': separator }
 }

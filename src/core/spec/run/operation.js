@@ -6,10 +6,7 @@
 //  - task key which should be `operationId/...`
 const getOperation = function({
   key,
-  startData: {
-    spec: { operations },
-  },
-  spec: { operation: taskOperationId } = {},
+  spec: { operation: taskOperationId, definition: { operations } } = {},
 }) {
   const operationsA = operations.filter(({ operationId }) => operationId !== undefined)
 

@@ -5,7 +5,7 @@ const { mapValues, omit, omitBy } = require('lodash')
 // Spec parameters are only generated if either:
 //  - they are required
 //  - the parameter is also specified in `task.call.*`
-//    (including as `valid` or `invalid`)
+//    (including as `valid`, `invalid` or `nothing`)
 // This works both top-level and for nested properties
 const removeOptionals = function({ params, call = {} }) {
   const paramsA = removeTopLevel({ params, call })

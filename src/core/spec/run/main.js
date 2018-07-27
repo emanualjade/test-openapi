@@ -1,12 +1,22 @@
 'use strict'
 
+const { getOperation } = require('./operation')
 const { addSpecToCall } = require('./call')
 const { addSpecToValidate } = require('./validate')
 
 // Add OpenAPI specification to `task.call|validate.*`
-const run = function({ key, call, validate }, { pluginNames, startData: { spec } }) {
-  const callA = addSpecToCall({ spec, key, call })
-  const validateA = addSpecToValidate({ spec, key, validate, pluginNames })
+const run = function({ key, call, validate }, { pluginNames, startData }) {
+  const operation = getOperation({ key, startData })
+
+  // Task does not start with an `operationId`
+  if (operation === undefined) {
+    return
+  }
+
+  const callA = addSpecToCall({ call, operation })
+
+  const validateA = addSpecToValidate({ validate, pluginNames, operation })
+
   return { call: callA, validate: validateA }
 }
 

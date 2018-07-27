@@ -203,10 +203,3 @@ operationId.testName:
   call:
     query.accessToken: $$accessToken
 ```
-
-# Empty parameter
-
-Using the value `null` or the JSON schema `type: 'null'` means "not set".
-
-For example "do not generate this request parameter", "this response header should not
-be present" or "the response body should be empty".

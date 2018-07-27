@@ -106,7 +106,7 @@ test's key.
 The above example could then be simplified to:
 
 ```yml
-getTags.exampleTest:
+getTags/exampleTest:
   call:
     query.onlyPublic: false
   validate: {}
@@ -120,7 +120,7 @@ are not `required` are only re-used if specified in the `call` property.
 Each test can use the following properties:
 
 ```yml
-operationId.testName:
+operationId/testName:
   call:
     method: string
     server: string
@@ -165,7 +165,7 @@ the HTTP response. They can either be:
 For example to validate that the response body is an array:
 
 ```yml
-operationId.testName:
+operationId/testName:
   validate:
     body:
       type: array
@@ -179,7 +179,7 @@ The `$$random` template function can be used to generate random values based on 
 For example to generate a random password of minimum 12 characters:
 
 ```yml
-operationId.testName:
+operationId/testName:
   call:
     query.password:
       $$random:
@@ -199,7 +199,7 @@ createAccessToken:
   alias:
     accessToken: call.response.body.accessToken
 
-operationId.testName:
+operationId/testName:
   call:
     query.accessToken: $$accessToken
 ```

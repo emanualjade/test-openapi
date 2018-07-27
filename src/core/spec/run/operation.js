@@ -1,9 +1,9 @@
 'use strict'
 
 // Find the operation related to a specific task, and add it
-// Does so by checking task key which should be `OperationId.key`
+// Does so by checking task key which should be `OperationId/key`
 const getSpecOperation = function({ key, spec: { operations } }) {
-  return operations.find(({ operationId }) => operationId && key.startsWith(`${operationId}.`))
+  return operations.find(({ operationId }) => operationId && key.startsWith(`${operationId}/`))
 }
 
 // Find the specification response matching both the current operation and

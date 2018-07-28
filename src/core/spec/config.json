@@ -1,7 +1,4 @@
 {
-  "general": {
-    "type": ["string", "object"]
-  },
   "task": {
     "type": "object",
     "properties": {

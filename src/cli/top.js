@@ -50,12 +50,6 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Skip tasks whose key matches the globbing pattern',
   },
-  spec: {
-    string: true,
-    alias: 's',
-    requiresArg: true,
-    describe: 'File path or URL to the OpenAPI specification',
-  },
   each: {
     describe: 'Shared options assigned to each task',
   },

@@ -6,15 +6,22 @@
 //  - task key which should be `operationId/...`
 const getOperation = function({
   key,
-  spec: { operation: taskOperationId, definition: { operations } } = {},
+  spec: { operation: taskOperationId } = {},
+  startData: {
+    spec: { [key]: definition },
+  },
 }) {
-  const operationsA = operations.filter(({ operationId }) => operationId !== undefined)
-
-  if (taskOperationId !== undefined) {
-    return operationsA.find(({ operationId }) => operationId === taskOperationId)
+  if (definition === undefined) {
+    return
   }
 
-  return operationsA.find(({ operationId }) => key.startsWith(`${operationId}/`))
+  const operations = definition.operations.filter(({ operationId }) => operationId !== undefined)
+
+  if (taskOperationId !== undefined) {
+    return operations.find(({ operationId }) => operationId === taskOperationId)
+  }
+
+  return operations.find(({ operationId }) => key.startsWith(`${operationId}/`))
 }
 
 module.exports = {

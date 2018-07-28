@@ -5,10 +5,11 @@ const { addSpecToCall } = require('./call')
 const { addSpecToValidate } = require('./validate')
 
 // Add OpenAPI specification to `task.call|validate.*`
-const run = function({ key, call, validate, spec }, { pluginNames }) {
-  const operation = getOperation({ key, spec })
+// According to `task.spec.definition` and `task.spec.operation`
+const run = function({ key, call, validate, spec }, { pluginNames, startData }) {
+  const operation = getOperation({ key, spec, startData })
 
-  // Task does not start with an `operationId`
+  // Task does not start with an `operationId`, or there is no OpenAPI definition
   if (operation === undefined) {
     return
   }

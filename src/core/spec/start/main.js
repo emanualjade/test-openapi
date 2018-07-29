@@ -9,15 +9,21 @@ const { normalizeSpec } = require('./normalize')
 // from each `task.spec.definition`, which can be a URL, a file path or directly
 // a JavaScript object
 const start = async function(startData, { config: { tasks } }) {
-  // If several tasks share the same OpenAPI specification, which is very likely,
-  // we only load it once for all of them
-  const tasksGroups = groupBy(tasks, task => JSON.stringify(getDefinition(task)))
-  const tasksGroupsA = Object.values(tasksGroups)
+  const tasksGroups = groupTasks({ tasks })
 
+  // Make sure we run all of them in parallel.
   // We return the final result in `startData.spec` `{ [task.key]: definitionObject }`
-  const specStartData = await Promise.all(tasksGroupsA.map(loadSpec))
+  const specStartData = await Promise.all(tasksGroups.map(loadSpec))
   const specStartDataA = Object.assign({}, ...specStartData)
   return { spec: specStartDataA }
+}
+
+// If several tasks share the same OpenAPI specification, which is very likely,
+// we only load it once for all of them
+const groupTasks = function({ tasks }) {
+  const tasksGroups = groupBy(tasks, stringifyDefinition)
+  const tasksGroupsA = Object.values(tasksGroups)
+  return tasksGroupsA
 }
 
 // Load and normalize an OpenAPI specification
@@ -35,6 +41,11 @@ const loadSpec = async function(tasks) {
   const specStartData = tasks.map(({ key }) => ({ [key]: definitionA }))
   const specStartDataA = Object.assign({}, ...specStartData)
   return specStartDataA
+}
+
+const stringifyDefinition = function(task) {
+  const definition = getDefinition(task)
+  return JSON.stringify(definition)
 }
 
 const getDefinition = function({ spec: { definition } }) {

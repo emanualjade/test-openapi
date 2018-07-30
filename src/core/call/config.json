@@ -19,7 +19,7 @@
       }
     },
     "patternProperties": {
-      "^url\\..+": {},
+      "^url\\.[a-zA-Z_]\\w*": {},
       "^query\\..+": {},
       "^headers\\.[^A-Z]+": {}
     },

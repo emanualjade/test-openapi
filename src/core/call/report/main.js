@@ -7,38 +7,45 @@ const { yellow, highlightValueAuto, prettifyJson, truncate } = require('../../re
 
 const { getTitle } = require('./title')
 
-const report = function({ rawRequest = {}, rawResponse = {} } = {}) {
+const report = function({ rawRequest, rawResponse } = {}) {
+  // We haven't reached `serialize` stage yet
+  if (rawRequest === undefined) {
+    return {}
+  }
+
   const title = getTitle({ rawRequest, rawResponse })
-  const request = getRequest(rawRequest)
-  const response = getResponse(rawResponse)
+  const request = getRequest({ rawRequest })
+  const response = getResponse({ rawResponse })
 
   return { title, rawRequest: undefined, rawResponse: undefined, request, response }
 }
 
 // Print HTTP request in error messages
-const getRequest = function({ method, url, body, ...rest }) {
-  if (url === undefined) {
-    return
-  }
-
-  const methodA = printMethod({ method })
-  const headersA = printHeaders(rest)
+const getRequest = function({ rawRequest, rawRequest: { method, url, body, path } }) {
+  const urlA = printUrl({ method, url, path })
+  const headersA = printHeaders(rawRequest)
   const bodyA = printBody({ body })
 
-  return `${methodA} ${url}\n\n${headersA}${bodyA}\n`
+  return `${urlA}${headersA}${bodyA}\n`
 }
 
 // Print HTTP response in error messages
-const getResponse = function({ status, body, ...rest }) {
-  if (status === undefined) {
+const getResponse = function({ rawResponse, rawResponse: { status, body } = {} }) {
+  // We haven't reached `request` stage yet
+  if (rawResponse === undefined) {
     return
   }
 
   const statusA = printStatus({ status })
-  const headersA = printHeaders(rest)
+  const headersA = printHeaders(rawResponse)
   const bodyA = printBody({ body })
 
   return `${statusA}\n\n${headersA}${bodyA}\n`
+}
+
+const printUrl = function({ method, path, url = path }) {
+  const methodA = printMethod({ method })
+  return `${methodA} ${url}\n\n`
 }
 
 const printMethod = function({ method }) {

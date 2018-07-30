@@ -41,7 +41,7 @@ const getPadLength = function({ tasks, options }) {
     .filter(task => !isSilentTask({ task, options }))
     .map(({ key }) => key.length)
   const maxLength = Math.max(...lengths)
-  return maxLength + 2
+  return maxLength + 4
 }
 
 const printTask = function({ task, task: { key, path }, resultType, padLength }) {

@@ -5,7 +5,7 @@ const ora = require('ora')
 // CLI spinner showing `INDEX/TOTAL` next to it (like a progress bar)
 class Spinner {
   // Start the spinner
-  constructor({ index = 0, total }) {
+  constructor({ index = -1, total }) {
     const instance = ora({ ...ORA_OPTS })
 
     Object.assign(this, { index, total, instance })

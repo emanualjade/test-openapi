@@ -21,7 +21,25 @@ const handleBugs = function({ error }) {
 }
 
 const findBugError = function({ error, error: { errors = [error] } }) {
-  return errors.find(isBugError)
+  const errorA = errors.find(getBugError)
+  if (errorA === undefined) {
+    return
+  }
+
+  // Retrieve nested bug error if it's nested
+  return getBugError(errorA)
+}
+
+const getBugError = function(error) {
+  if (isBugError(error)) {
+    return error
+  }
+
+  // Check for nested tasks errors
+  const { nested: { error: nestedError } = {} } = error
+  if (nestedError !== undefined) {
+    return getBugError(nestedError)
+  }
 }
 
 const isBugError = function({ name }) {

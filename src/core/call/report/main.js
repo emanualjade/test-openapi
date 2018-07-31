@@ -65,6 +65,7 @@ const printHeaders = function(object) {
 }
 
 const printHeader = function([name, value]) {
+  // Both `request.headers.*` and `response.headers.*` are normalized to lowercase
   const nameA = titleize(name)
   return `${yellow(`${nameA}:`)} ${value}`
 }

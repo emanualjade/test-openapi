@@ -35,7 +35,7 @@ const validateHeader = function({ name, schema, headers }) {
 }
 
 const getResponseHeader = function({ headers, name }) {
-  const nameB = Object.keys(headers).find(nameA => nameA.toLowerCase() === name)
+  const nameB = Object.keys(headers).find(nameA => nameA === name)
 
   if (nameB === undefined) {
     return

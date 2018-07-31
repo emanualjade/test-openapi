@@ -9,6 +9,10 @@ const { normalizeContentType } = require('./content_type')
 const { normalizeMethod } = require('./method')
 
 // Serialize request parameters
+// Request headers name are only allowed lowercase:
+//  - it makes matching them easier, both for other plugins and for the return value.
+//  - this implies server must ignore headers case
+//  - other plugins modifying `request.call` must use lowercase headers
 const serialize = function({ call }) {
   if (call === undefined) {
     return

@@ -17,6 +17,8 @@ const getReportProps = function({ task, config, startData, plugins }) {
   const reportPropsB = reportPropsA.map(removeEmptyProps)
 
   // Merge all `plugin.report()` results
+  // Reporting order should still follow plugins order and
+  // core props < core plugins < user plugins
   const reportPropsC = merge(...reportPropsB)
 
   return { title, reportProps: reportPropsC }
@@ -26,6 +28,7 @@ const getReportProps = function({ task, config, startData, plugins }) {
 const callReportFuncs = function({ task, config, startData, plugins }) {
   const pluginNames = plugins.map(({ name }) => name)
 
+  // Reporting order will follow core plugins order, then user `config.plugins` order
   const reportResult = plugins
     .map(plugin => callReportFunc({ plugin, config, startData, pluginNames, task }))
     .filter(value => value !== undefined)

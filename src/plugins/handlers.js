@@ -1,6 +1,6 @@
 'use strict'
 
-const { omitBy } = require('lodash')
+const { omitBy, mapValues } = require('lodash')
 
 const { reduceAsync, promiseThen, isObject } = require('../utils')
 const { addErrorHandler } = require('../errors')
@@ -69,19 +69,25 @@ const callHandler = function({ func, context, name, json }, input) {
 }
 
 const handleReturn = function({ value, name, json }) {
-  const valueA = removeUndefined({ value })
+  const valueA = removeUndefined(value)
 
   validateJson({ value: valueA, name, json })
 
   return valueA
 }
 
-const removeUndefined = function({ value }) {
-  if (!isObject(value)) {
-    return value
+const removeUndefined = function(value) {
+  if (isObject(value)) {
+    const valueA = omitBy(value, prop => prop === undefined)
+    return mapValues(valueA, removeUndefined)
   }
 
-  return omitBy(value, prop => prop === undefined)
+  if (Array.isArray(value)) {
+    const valueA = value.filter(prop => prop !== undefined)
+    return valueA.map(removeUndefined)
+  }
+
+  return value
 }
 
 // Make sure each handler returns only JSON

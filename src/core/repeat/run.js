@@ -18,7 +18,7 @@ const run = async function(task, { _nestedPath: nestedPath, _runTask: runTask })
   return { ...taskA, done: true }
 }
 
-const DEFAULT_REPEAT = 10
+const DEFAULT_REPEAT = 1
 
 module.exports = {
   run,

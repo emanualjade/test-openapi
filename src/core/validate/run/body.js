@@ -4,7 +4,7 @@ const { checkSchema } = require('../../../validation')
 
 const { checkRequired } = require('./required')
 
-// Validates response body against OpenAPI specification
+// Validates response body
 const validateBody = function({ validate: { body: schema }, response: { body } }) {
   if (schema === undefined) {
     return

@@ -5,7 +5,7 @@ const { checkSchema } = require('../../../validation')
 
 const { checkRequired } = require('./required')
 
-// Validates response headers against OpenAPI specification
+// Validates response headers
 const validateHeaders = function({ validate, response }) {
   const validateHeaders = removePrefixes(validate, 'headers')
   const headers = removePrefixes(response, 'headers')

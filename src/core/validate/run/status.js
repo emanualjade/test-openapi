@@ -2,7 +2,7 @@
 
 const { checkSchema } = require('../../../validation')
 
-// Validates response status code against OpenAPI specification
+// Validates response status code
 const validateStatus = function({
   validate: { status: schema = DEFAULT_STATUS },
   response: { status },

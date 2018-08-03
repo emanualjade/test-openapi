@@ -28,7 +28,7 @@ const parseUrl = function({ url }) {
 }
 
 // `path-to-regex` considers `:PORT` to be a URL variable, which is incorrect.
-// We fix this by serializing tokes back to a plain string.
+// We fix this by serializing tokens back to a plain string.
 const handlePort = function(token) {
   if (typeof token === 'string') {
     return token
@@ -78,6 +78,7 @@ const serializeUrl = function({ tokens, urlParams }) {
 }
 
 const serializeToken = function({ token, urlParams }) {
+  // This also performs `encodeURIComponent()`
   return tokensToFunction([token])(urlParams)
 }
 

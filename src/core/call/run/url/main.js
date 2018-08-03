@@ -22,8 +22,8 @@ const addUrl = function({ call, call: { request, rawRequest } = {} }) {
 const getFullUrl = function({ rawRequest }) {
   const url = getServer({ rawRequest })
   const urlA = addPath({ url, rawRequest })
-  const urlB = addUrlParams({ url: urlA, rawRequest })
-  const urlC = normalizeUrl({ url: urlB })
+  const urlB = normalizeUrl({ url: urlA })
+  const urlC = addUrlParams({ url: urlB, rawRequest })
   const urlD = addQueryParams({ url: urlC, rawRequest })
   return urlD
 }

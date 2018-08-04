@@ -3,7 +3,7 @@
     "type": "object",
     "properties": {
       "status": {
-        "type": "integer"
+        "type": ["integer", "string"]
       },
       "body": {},
       "byStatus": {}

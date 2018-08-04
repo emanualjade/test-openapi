@@ -7,10 +7,6 @@ const validateStatus = function({
   validate: { status: schema = DEFAULT_STATUS },
   response: { status },
 }) {
-  if (schema === undefined) {
-    return
-  }
-
   checkSchema({
     schema,
     value: status,

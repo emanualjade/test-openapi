@@ -2,7 +2,9 @@
   "task": {
     "type": "object",
     "properties": {
-      "status": {},
+      "status": {
+        "type": "integer"
+      },
       "body": {},
       "byStatus": {}
     },

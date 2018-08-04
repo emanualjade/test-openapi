@@ -1,24 +1,24 @@
 'use strict'
 
-const { checkSchema } = require('../../../validation')
+const { TestOpenApiError } = require('../../../errors')
 
 // Validates response status code
 const validateStatus = function({
-  validate: { status: schema = DEFAULT_STATUS },
+  validate: { status: vStatus = DEFAULT_STATUS },
   response: { status },
 }) {
-  checkSchema({
-    schema,
+  if (status === vStatus) {
+    return
+  }
+
+  throw new TestOpenApiError(`Status code should not be ${status} but ${vStatus}`, {
     value: status,
-    name: 'task.validate.status',
-    message: 'Status code',
-    target: 'schema',
-    // Otherwise it uses `task.validate.status.enum`
-    props: { property: 'task.validate.status' },
+    expected: vStatus,
+    property: 'task.validate.status',
   })
 }
 
-const DEFAULT_STATUS = { type: 'integer', enum: [200] }
+const DEFAULT_STATUS = 200
 
 module.exports = {
   validateStatus,

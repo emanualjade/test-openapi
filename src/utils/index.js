@@ -18,4 +18,5 @@ module.exports = {
   ...require('./search'),
   ...require('./path'),
   ...require('./json_pointer'),
+  ...require('./string'),
 }

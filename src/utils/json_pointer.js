@@ -19,7 +19,10 @@ const jsonPointerToParts = function(jsonPointer) {
     return ''
   }
 
-  const parts = jsonPointerB.split('/').map(unescapeJsonPointer)
+  const parts = jsonPointerB
+    .split('/')
+    .map(unescapeJsonPointer)
+    .map(numerizeIndex)
   return parts
 }
 
@@ -39,6 +42,17 @@ const decodeUriFragment = function({ jsonPointer }) {
 // Remove JSON pointer's escaping of / and ~
 const unescapeJsonPointer = function(jsonPointer) {
   return jsonPointer.replace(/~0/g, '~').replace(/~1/g, '/')
+}
+
+// Keep array indices as integers not strings
+const numerizeIndex = function(value) {
+  const valueA = Number(value)
+
+  if (!Number.isInteger(valueA)) {
+    return value
+  }
+
+  return valueA
 }
 
 module.exports = {

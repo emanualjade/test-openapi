@@ -7,7 +7,7 @@ const getPath = function(parts) {
 
 const getPart = function(part, index) {
   // Array index, i.e. object[INTEGER]
-  if (Number.isInteger(Number(part))) {
+  if (Number.isInteger(part)) {
     return `[${part}]`
   }
 

@@ -1,20 +1,29 @@
 'use strict'
 
-const { mapKeys, mapValues } = require('lodash')
+const { STATUS_REGEXP } = require('./status')
 
-// Make `validate` case-insensitive
-const normalizeCase = function({ validate: { byStatus = {}, ...validate } }) {
-  const validateA = normalizeObject(validate)
-  const byStatusA = mapValues(byStatus, normalizeObject)
-  return { ...validateA, byStatus: byStatusA }
+// Make `validate.[STATUS.]headers.*` case-insensitive
+const normalizeCase = function({ validate }) {
+  return normalizeObject(validate)
 }
 
 const normalizeObject = function(object) {
-  return mapKeys(object, normalizeKey)
+  const validateA = Object.entries(object).map(normalizeKeys)
+  const validateB = Object.assign({}, ...validateA)
+  return validateB
 }
 
-const normalizeKey = function(value, name) {
-  return name.toLowerCase()
+const normalizeKeys = function([name, value]) {
+  // Recurse over `validate.STATUS.*`
+  if (STATUS_REGEXP.test(name)) {
+    return { [name]: normalizeObject(value) }
+  }
+
+  if (!name.startsWith('headers.')) {
+    return { [name]: value }
+  }
+
+  return { [name.toLowerCase()]: value }
 }
 
 module.exports = {

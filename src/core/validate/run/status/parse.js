@@ -9,7 +9,7 @@ const { VALID_STATUSES } = require('./valid')
 const { normalizeStatuses } = require('./normalize')
 
 // Parse `validate.status` into an array of possible statuses
-const parseStatus = function(status) {
+const parseStatus = function({ status, property }) {
   // `validate.status` can be an integer because it's simpler when writing in YAML
   // (does not require quotes)
   const statusA = String(status)
@@ -21,12 +21,12 @@ const parseStatus = function(status) {
 
   const statusesB = parseRanges({ statuses: statusesA })
 
-  checkValidStatuses({ statuses: statusesB })
+  checkValidStatuses({ statuses: statusesB, property })
 
   return statusesB
 }
 
-const checkValidStatuses = function({ statuses }) {
+const checkValidStatuses = function({ statuses, property }) {
   const invalidStatuses = difference(statuses, VALID_STATUSES)
   if (invalidStatuses.length === 0) {
     return
@@ -36,10 +36,14 @@ const checkValidStatuses = function({ statuses }) {
   const expected = VALID_STATUSES.map(Number)
   throw new TestOpenApiError(
     `The task definition is invalid: those are not valid HTTP status codes: ${statusesStr}`,
-    { value, expected, property: 'task.validate.status' },
+    { value, expected, property },
   )
 }
 
+// Status code like `102` or status range like `2xx`
+const STATUS_REGEXP = /^[1-5][\dx]{2}/i
+
 module.exports = {
   parseStatus,
+  STATUS_REGEXP,
 }

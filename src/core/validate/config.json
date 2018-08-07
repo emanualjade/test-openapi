@@ -3,13 +3,32 @@
     "type": "object",
     "properties": {
       "status": {
-        "type": ["integer", "string"]
+        "oneOf": [
+          {
+            "type": "integer",
+            "minimum": 100,
+            "maximum": 599
+          },
+          {
+            "type": "string",
+            "pattern": "^[1-5][\\dxX]{2}"
+          }
+        ]
       },
-      "body": {},
-      "byStatus": {}
+      "body": {}
     },
     "patternProperties": {
-      "^headers\\..+": {}
+      "^headers\\..+": {},
+      "^[1-5][\\dxX]{2}": {
+        "type": "object",
+        "properties": {
+          "body": {}
+        },
+        "patternProperties": {
+          "^headers\\..+": {}
+        },
+        "additionalProperties": false
+      }
     },
     "additionalProperties": false
   }

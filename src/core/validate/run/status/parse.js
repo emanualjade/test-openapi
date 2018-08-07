@@ -3,8 +3,9 @@
 const { difference, uniq } = require('lodash')
 
 const { TestOpenApiError } = require('../../../../errors')
+const { sortArray } = require('../../../../utils')
 
-const { parseRanges } = require('./range')
+const { parseRanges, replaceByRanges } = require('./range')
 const { VALID_STATUSES } = require('./valid')
 const { normalizeStatuses } = require('./normalize')
 
@@ -40,10 +41,19 @@ const checkValidStatuses = function({ statuses, property }) {
   )
 }
 
+// Inverse of `parseStatus`
+const serializeStatus = function({ statuses }) {
+  const statusesA = replaceByRanges({ statuses })
+  const statusesB = sortArray(statusesA)
+  const statusKey = statusesB.join(' ')
+  return statusKey
+}
+
 // Status code like `102` or status range like `2xx`
 const STATUS_REGEXP = /^[1-5][\dx]{2}/i
 
 module.exports = {
   parseStatus,
+  serializeStatus,
   STATUS_REGEXP,
 }

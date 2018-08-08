@@ -5,7 +5,16 @@ const { platform } = require('os')
 
 const { version: libraryVersion } = require('../../package')
 
-const { TestOpenApiError } = require('./error')
+// An error indicating a problem in the library or in a plugin.
+// Note that any non `TestOpenApiError` error is considered a bug.
+// Using `BugError` allows being more explicit, and assigning `error.*` properties.
+class BugError extends Error {
+  constructor(message, properties = {}) {
+    super(message)
+
+    Object.assign(this, properties, { name: 'BugError' })
+  }
+}
 
 // Any error not using `TestOpenApiError` is a bug
 const handleBugs = function({ error }) {
@@ -17,7 +26,7 @@ const handleBugs = function({ error }) {
   const message = getBugMessage({ bugError })
 
   const { module } = bugError
-  return new TestOpenApiError(message, { module, bug: true })
+  return new BugError(message, { module, bug: true })
 }
 
 const findBugError = function({ error, error: { errors = [error] } }) {
@@ -71,6 +80,7 @@ const DEFAULT_REPOSITORY = 'test-openapi'
 const MODULE_REPOSITORY = 'test-openapi-'
 
 module.exports = {
+  BugError,
   handleBugs,
   isBugError,
 }

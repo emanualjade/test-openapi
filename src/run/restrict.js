@@ -1,18 +1,20 @@
 'use strict'
 
+const { capitalize } = require('underscore.string')
+
 const { getPath } = require('../utils')
-const { convertPlainObject } = require('../errors')
+const { convertPlainObject, BugError } = require('../errors')
 const { restrictOutput } = require('../validation')
 
 // JSON restriction is performed between `run` and `complete` handlers because:
 //  - it makes reporting and return value use the same value
 //  - `runTask()` should return non-restricted tasks
-const restrictTaskOutput = function({ task: { originalTask, ...task }, task: { key }, plugins }) {
+const restrictTaskOutput = function({ task: { originalTask, ...task }, plugins }) {
   const state = {}
 
   const taskA = convertTaskError({ task })
 
-  const taskB = restrictOutput(taskA, setRestrictError.bind(null, { key, plugins, state }))
+  const taskB = restrictOutput(taskA, setRestrictError.bind(null, { plugins, state }))
 
   // We use a `state` object because `crawl` utility does not allow returning both
   // the crawled object and extra information
@@ -45,17 +47,14 @@ const convertError = function({ error, error: { nested, nested: { error: nestedE
   return { ...errorA, nested: { ...nested, error: nestedErrorA } }
 }
 
-const setRestrictError = function({ key, plugins, state }, { message, value, path }) {
-  // Use a bug error
-  const error = new Error(`Task '${key}' ${message}`)
-
+const setRestrictError = function({ plugins, state }, { message, value, path }) {
+  const messageA = capitalize(message)
   // Make sure `error.value` is JSON serializable
   const valueA = String(value)
   const property = getPath(['task', ...path])
   const module = guessModule({ path, plugins })
-  Object.assign(error, { value: valueA, property, module })
 
-  state.error = error
+  state.error = new BugError(messageA, { value: valueA, property, module })
 }
 
 // Try to guess `error.module` from where the value was in task.*

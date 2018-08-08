@@ -12,8 +12,10 @@ const validateIsSchema = function(opts) {
   return validateFromSchema({ schema: jsonSchemaSchema, ...opts })
 }
 
-const checkIsSchema = function(opts) {
-  checkSchema({ schema: jsonSchemaSchema, ...opts })
+const checkIsSchema = function({ name, message = name, ...opts }) {
+  const messageA = `${message} is not a valid JSON schema version 4. It`
+
+  checkSchema({ schema: jsonSchemaSchema, name, message: messageA, ...opts })
 }
 
 const getJsonSchemaSchema = function() {

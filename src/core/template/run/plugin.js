@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler } = require('../../../errors')
+const { addErrorHandler, BugError } = require('../../../errors')
 const { isTemplateName } = require('../../../template')
 
 // Retrieve all `plugin.template`
@@ -56,12 +56,11 @@ const validateVarName = function({ name, plugin }) {
     return
   }
 
-  // Throw a bug error
-  const error = new Error(
+  const module = `plugin-${plugin.name}`
+  throw new BugError(
     `'plugin.template' returned a template variable with an invalid name: ${name}`,
+    { value: name, module },
   )
-  error.module = `plugin-${plugin.name}`
-  throw error
 }
 
 module.exports = {

@@ -1,6 +1,6 @@
 'use strict'
 
-const { validateIsSchema } = require('../validation')
+const { checkIsSchema } = require('../validation')
 
 // Validate export value `config` are JSON schemas
 const validateJsonSchemas = function({ plugin: { name, config = {} } }) {
@@ -10,17 +10,12 @@ const validateJsonSchemas = function({ plugin: { name, config = {} } }) {
 }
 
 const validateJsonSchema = function({ schema, name, propName }) {
-  const { error } = validateIsSchema({ value: schema, name: `config.${propName}` })
-  if (error === undefined) {
-    return
-  }
-
-  // Throw a `bug` error
-  const errorA = new Error(
-    `Plugin '${name}' is invalid: 'config.${propName}' is not a valid JSON schema: ${error}`,
-  )
-  errorA.module = `plugin-${name}`
-  throw errorA
+  checkIsSchema({
+    value: schema,
+    name: `plugin.config.${propName}`,
+    props: { module: `plugin-${name}` },
+    bug: true,
+  })
 }
 
 module.exports = {

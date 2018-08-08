@@ -1,7 +1,7 @@
 'use strict'
 
-const { addErrorHandler, TestOpenApiError } = require('../errors')
-const { validateFromSchema } = require('../validation')
+const { addErrorHandler, TestOpenApiError, BugError } = require('../errors')
+const { checkSchema } = require('../validation')
 
 // A module is either a plugin or a reporter
 const getModule = function(name, info) {
@@ -26,41 +26,43 @@ const loadModule = function({ name, info: { corePath } }) {
   return { ...module, name }
 }
 
-const loadModuleHandler = function({ code, message }, { name, info }) {
+const loadModuleHandler = function({ code, message }, { name, info, info: { title } }) {
   checkModuleNotFound({ code, name, info })
 
-  throwBugError(`could not be loaded: ${message}`, { name, info })
+  const props = getProps({ info, name })
+  throw new BugError(`The ${title} '${name}' could not be loaded: ${message}`, props)
 }
 
 // Error when loading a plugin that is not installed.
 // This will also be triggered when loading a plugin that tries to `require()`
 // a non-existing file. Unfortunately we cannot distinguish without parsing
 // `error.message` which is brittle.
-const checkModuleNotFound = function({ code, name, info: { title, modulePrefix, props } }) {
+const checkModuleNotFound = function({ code, name, info, info: { title, modulePrefix } }) {
   if (code !== 'MODULE_NOT_FOUND') {
     return
   }
 
-  const propsA = getProps({ props, name })
-
+  const props = getProps({ info, name, addModule: false })
   throw new TestOpenApiError(
     `The ${title} '${name}' is used in the configuration but is not installed. Please run 'npm install ${modulePrefix}${name}.`,
-    propsA,
+    props,
   )
 }
 
 const eLoadModule = addErrorHandler(loadModule, loadModuleHandler)
 
 // Validate export value
-const validateModule = function({ module, module: { name }, info, info: { schema } }) {
+const validateModule = function({ module, module: { name }, info, info: { title, schema } }) {
   const schemaA = addNameSchema({ schema })
-
-  const { error } = validateFromSchema({ schema: schemaA, value: module })
-  if (error === undefined) {
-    return
-  }
-
-  throwBugError(`is invalid: ${error}`, { name, info })
+  const props = getProps({ info, name })
+  checkSchema({
+    schema: schemaA,
+    value: module,
+    name,
+    message: `The ${title} '${name}'`,
+    props,
+    bug: true,
+  })
 }
 
 // We restrict module names to make sure they can appear in dot notations
@@ -75,19 +77,25 @@ const NAME_SCHEMA = {
   pattern: '^[a-zA-Z_$][\\w_$-]*$',
 }
 
-const getProps = function({ props, name }) {
-  if (props === undefined) {
+// Retrieve error.* properties
+const getProps = function({ info: { props: getProps, title }, name, addModule = true }) {
+  const props = getModuleProp({ title, name, addModule })
+
+  if (getProps === undefined) {
+    return props
+  }
+
+  const propsA = getProps({ name })
+  return { ...props, ...propsA }
+}
+
+const getModuleProp = function({ title, name, addModule }) {
+  if (!addModule) {
     return
   }
 
-  return props({ name })
-}
-
-// Throw a `bug` error
-const throwBugError = function(message, { name, info: { title } }) {
-  const errorA = new Error(`The ${title} '${name}' ${message}`)
-  errorA.module = `${title}-${name}`
-  throw errorA
+  const module = `${title}-${name}`
+  return { module }
 }
 
 module.exports = {

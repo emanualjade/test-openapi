@@ -1,12 +1,12 @@
 'use strict'
 
-const { TestOpenApiError } = require('../errors')
+const { TestOpenApiError, BugError } = require('../errors')
 
 const { validateFromSchema } = require('./validate')
 
 // Validate against JSON schema and on failure throw error with
 // `error.schema|value|property` set accordingly
-const checkSchema = function({ schema, value, name, message = name, target, props }) {
+const checkSchema = function({ schema, value, name, message = name, target, props, bug = false }) {
   const { error, schema: schemaA, value: valueA, property } = validateFromSchema({
     schema,
     value,
@@ -18,7 +18,8 @@ const checkSchema = function({ schema, value, name, message = name, target, prop
   }
 
   const messageA = getMessage({ message, error })
-  throw new TestOpenApiError(messageA, { schema: schemaA, value: valueA, property, ...props })
+  const ErrorType = bug ? BugError : TestOpenApiError
+  throw new ErrorType(messageA, { schema: schemaA, value: valueA, property, ...props })
 }
 
 const getMessage = function({ message, error }) {

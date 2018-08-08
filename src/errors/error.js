@@ -1,6 +1,8 @@
 'use strict'
 
-const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
+const { isSimpleSchema, getSimpleSchemaConstant, getWordsList } = require('../utils')
+
+const { BugError } = require('./bug')
 
 // Validation error
 // Properties (all might not be present):
@@ -10,8 +12,8 @@ const { isSimpleSchema, getSimpleSchemaConstant } = require('../utils')
 //     e.g. `plugin-PLUGIN` or `reporter-REPORTER`
 //  - `bug` `{boolean}`: true if it was a bug
 //  - `task` `{object}`: current task
-//  - `property` `{string}`: path to the property in `task` or `config`
-//    Always starts with either `task` or `config`
+//  - `property` `{string}`: path to the property in `task`, `config` or `plugin`
+//    Always starts with either `task`, `config` or `plugin`
 //  - `value` `{value}`: errored value
 //  - `expected` `{value}`: expected value
 //  - `schema` `{object}`: JSON schema v4 matched against `value`
@@ -42,9 +44,10 @@ const validateProperty = function(property) {
     return
   }
 
-  const validProperties = VALID_PROPERTIES.join(', ')
-  throw new Error(
+  const validProperties = getWordsList(VALID_PROPERTIES, { op: 'and' })
+  throw new BugError(
     `Error property '${property}' is invalid. The only valid error properties are: ${validProperties}`,
+    { value: property, expected: VALID_PROPERTIES },
   )
 }
 

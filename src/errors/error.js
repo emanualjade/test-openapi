@@ -2,10 +2,7 @@
 
 const { isSimpleSchema, getSimpleSchemaConstant, getWordsList } = require('../utils')
 
-const { BugError } = require('./bug')
-
-// Validation error
-// Properties (all might not be present):
+// Error properties (all might not be present):
 //  - `config` `{object}`: initial configuration object
 //  - `plugins` `{string[]}`: list of loaded plugins
 //  - `module` `{string}`: module that triggered the first error,
@@ -22,21 +19,17 @@ const { BugError } = require('./bug')
 // will be defined:
 //  - `errors` `{array}`: all errors.
 //  - `tasks` `{array}`: all tasks.
-class TestOpenApiError extends Error {
+class PropsError extends Error {
   constructor(message, properties = {}) {
     super(message)
 
-    validateProperties({ properties })
+    // Enforce which properties can be attached to `error.*`
+    Object.keys(properties).forEach(validateProperty)
 
-    Object.assign(this, properties, { name: 'TestOpenApiError' })
+    const propertiesA = addExpected({ properties })
 
-    addExpected({ obj: this, properties })
+    Object.assign(this, propertiesA, { name: 'PropsError' })
   }
-}
-
-// Enforce which properties can be attached to `error.*`
-const validateProperties = function({ properties }) {
-  Object.keys(properties).forEach(validateProperty)
 }
 
 const validateProperty = function(property) {
@@ -65,14 +58,34 @@ const CORE_VALID_PROPERTIES = [
 const VALID_PROPERTIES = [...USER_VALID_PROPERTIES, ...CORE_VALID_PROPERTIES]
 
 // Tries to guess `error.expected` from simple `error.schema`
-const addExpected = function({ obj, properties: { schema, expected } }) {
+const addExpected = function({ properties, properties: { schema, expected } }) {
   if (expected !== undefined || !isSimpleSchema(schema)) {
-    return
+    return properties
   }
 
-  obj.expected = getSimpleSchemaConstant(schema)
+  const expectedA = getSimpleSchemaConstant(schema)
+  return { ...properties, expected: expectedA }
+}
+
+// A normal error
+class TestOpenApiError extends PropsError {
+  constructor(...args) {
+    super(...args)
+    this.name = 'TestOpenApiError'
+  }
+}
+
+// An error indicating a problem in the library or in a plugin.
+// Note that any non `TestOpenApiError` error is considered a bug.
+// Using `BugError` allows being more explicit and assigning `error.*` properties.
+class BugError extends PropsError {
+  constructor(...args) {
+    super(...args)
+    this.name = 'BugError'
+  }
 }
 
 module.exports = {
   TestOpenApiError,
+  BugError,
 }

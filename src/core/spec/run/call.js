@@ -8,7 +8,6 @@ const { $$random } = require('../../../template_vars')
 const { getSpecialValues } = require('./special')
 const { removeOptionals } = require('./optional')
 const { setInvalidParams } = require('./invalid')
-const { removeNothingParams } = require('./nothing')
 
 // Add OpenAPI specification parameters to `task.call.*`
 const addSpecToCall = function({ call, operation: { params } }) {
@@ -25,10 +24,8 @@ const addSpecToCall = function({ call, operation: { params } }) {
 
   const paramsC = mapValues(paramsB, schema => $$random(schema))
 
-  const paramsD = removeNothingParams({ params: paramsC, specialValues })
-
   // Specification params have less priority than `task.call.*`
-  const callB = merge(paramsD, callA)
+  const callB = merge(paramsC, callA)
   return callB
 }
 

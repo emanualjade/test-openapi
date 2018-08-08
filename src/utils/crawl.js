@@ -8,7 +8,7 @@ const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 const crawl = function(
   value,
   evalNode,
-  { evalKey, info, skipUndefined = true, topDown = false } = {},
+  { evalKey, info, skipUndefined = false, topDown = false } = {},
 ) {
   return crawlNode(value, [], { evalNode, evalKey, info, skipUndefined, topDown })
 }

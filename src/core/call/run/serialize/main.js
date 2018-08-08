@@ -1,6 +1,6 @@
 'use strict'
 
-const { mapValues } = require('lodash')
+const { mapValues, omitBy } = require('lodash')
 
 const { keyToLocation, stringifyFlat } = require('../../../../utils')
 const { findBodyHandler } = require('../../body')
@@ -24,9 +24,11 @@ const serialize = function({ call }) {
 
   const request = normalizeTimeout({ call: callB })
 
-  const rawRequest = mapValues(request, stringifyParam)
+  const requestA = omitBy(request, value => value === undefined)
 
-  return { call: { ...call, request, rawRequest } }
+  const rawRequest = mapValues(requestA, stringifyParam)
+
+  return { call: { ...call, request: requestA, rawRequest } }
 }
 
 const normalizeTimeout = function({ call: { timeout = DEFAULT_TIMEOUT, ...call } }) {

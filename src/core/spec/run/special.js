@@ -5,7 +5,6 @@ const { crawl } = require('../../../utils')
 // Handle values in `call.*` that have special meanings:
 //  - `valid` means `same as OpenAPI definition`
 //  - `invalid` means `inverse of OpenAPI definition`
-//  - `nothing` means no value, even if OpenAPI parameter is required
 // Those are crawled, extracted and removed from `call.*`
 const getSpecialValues = function({ call }) {
   const specialValues = initSpecialValues()
@@ -38,7 +37,7 @@ const evalNode = function(value, path, specialValues) {
   // over `spec` params
 }
 
-const SPECIAL_VALUES = ['valid', 'invalid', 'nothing']
+const SPECIAL_VALUES = ['valid', 'invalid']
 const ESCAPING_CHAR = '\\'
 const ESCAPED_VALUES = SPECIAL_VALUES.map(value => `${ESCAPING_CHAR}${value}`)
 

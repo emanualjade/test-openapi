@@ -1,29 +1,23 @@
 'use strict'
 
-const { mergeWith } = require('lodash')
+const deepMerge = require('deepmerge')
 
-// Slight variation on Lodash `_.merge()`
+// We need a deep merge utility that:
+//  - shallow merges arrays, i.e. `{ a: [1] }` + `{ a: [2] }` = `{ a: [2] }`
+//  - do not skip `undefined`, i.e. `{ a: 1 }` + `{ a: undefined }` = `{ a: undefined }`
+//  - allow for customization, i.e. templates not being deep merged
 const merge = function(...objects) {
-  return mergeWith({}, ...objects, shallowMergeArray)
+  return deepMerge.all(objects, { arrayMerge })
 }
 
 // Allow customizing merge by adding a `func`
-const customMerge = function(func, ...objects) {
-  return mergeWith({}, ...objects, customMergeValue.bind(null, func))
+const customMerge = function(isMergeableObject, ...objects) {
+  return deepMerge.all(objects, { arrayMerge, isMergeableObject })
 }
 
-const customMergeValue = function(func, src, dest) {
-  if (Array.isArray(src)) {
-    return dest
-  }
-
-  return func(src, dest)
-}
-
-const shallowMergeArray = function(src, dest) {
-  if (Array.isArray(src)) {
-    return dest
-  }
+// Shallow merge array
+const arrayMerge = function(src, dest) {
+  return dest
 }
 
 module.exports = {

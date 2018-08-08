@@ -11,6 +11,7 @@ const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { validateTaskFile } = require('./validate')
 const { addTaskPath } = require('./path')
+const { handleUndefined } = require('./undefined')
 
 // Load YAML/JSON task files
 const loadTasks = async function({ tasks }) {
@@ -42,7 +43,9 @@ const loadTaskFile = async function({ path, commonPrefix }) {
   validateTaskFile({ tasks, path })
 
   const tasksA = addTaskPath({ tasks, path, commonPrefix })
-  return tasksA
+
+  const tasksB = handleUndefined({ tasks: tasksA })
+  return tasksB
 }
 
 const readFileHandler = function({ message }, path) {

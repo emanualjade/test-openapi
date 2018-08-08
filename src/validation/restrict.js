@@ -29,7 +29,6 @@ const { crawl, isObject, getPath } = require('../utils')
 // Applied on input config and tasks
 const restrictInput = function(obj, throwError) {
   crawl(obj, (value, path) => restrictInputValue({ value, path, throwError }), {
-    skipUndefined: false,
     topDown: true,
   })
 }
@@ -46,6 +45,7 @@ const restrictInputValue = function({ value, path, throwError }) {
 // Applied on tasks output, i.e. what is reported and returned
 const restrictOutput = function(obj, throwError) {
   return crawl(obj, (value, path) => restrictOutputValue({ value, path, throwError }), {
+    skipUndefined: true,
     topDown: true,
   })
 }

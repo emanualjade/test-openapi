@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, TestOpenApiError, convertPlainObject } = require('../errors')
+const { addErrorHandler, TestOpenApiError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run each `plugin.run()`
@@ -115,8 +115,7 @@ const throwRecursiveError = function({ task, error, getError }) {
   // are set each time
   const topError = getError()
 
-  const errorA = convertPlainObject(error)
-  topError.nested = { ...task, error: errorA }
+  topError.nested = { ...task, error }
 
   throw topError
 }

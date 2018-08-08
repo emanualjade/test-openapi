@@ -1,7 +1,6 @@
 'use strict'
 
 const { TestOpenApiError } = require('./error')
-const { convertPlainObject } = require('./convert')
 
 // If any task failed, throw an error
 const handleFinalFailure = function({ tasks }) {
@@ -15,9 +14,7 @@ const handleFinalFailure = function({ tasks }) {
 }
 
 const getFinalErrors = function({ tasks }) {
-  return tasks
-    .filter(({ error }) => error !== undefined)
-    .map(({ error }) => convertPlainObject(error))
+  return tasks.filter(({ error }) => error !== undefined).map(({ error }) => error)
 }
 
 module.exports = {

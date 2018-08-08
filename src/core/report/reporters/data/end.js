@@ -1,6 +1,5 @@
 'use strict'
 
-const { convertPlainObject } = require('../../../../errors')
 const { getSummary } = require('../../utils')
 const { isSilentTask } = require('../../level')
 
@@ -15,22 +14,9 @@ const end = function({ options, options: { spinner }, tasks }) {
 
 const getTasks = function({ tasks, options }) {
   const summary = getSummary({ tasks })
-  const tasksA = tasks.filter(task => !isSilentTask({ task, options })).map(getTask)
+  const tasksA = tasks.filter(task => !isSilentTask({ task, options }))
 
   return { summary, tasks: tasksA }
-}
-
-const getTask = function(task) {
-  const error = getError(task)
-  return { ...task, error }
-}
-
-const getError = function({ error }) {
-  if (error === undefined) {
-    return
-  }
-
-  return convertPlainObject(error)
 }
 
 module.exports = {

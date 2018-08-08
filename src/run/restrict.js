@@ -1,6 +1,7 @@
 'use strict'
 
 const { getPath } = require('../utils')
+const { convertPlainObject } = require('../errors')
 const { restrictOutput } = require('../validation')
 
 // JSON restriction is performed between `run` and `complete` handlers because:
@@ -9,25 +10,50 @@ const { restrictOutput } = require('../validation')
 const restrictTaskOutput = function({ task: { originalTask, ...task }, task: { key }, plugins }) {
   const state = {}
 
-  const taskA = restrictOutput(task, setRestrictError.bind(null, { key, plugins, state }))
+  const taskA = convertTaskError({ task })
+
+  const taskB = restrictOutput(taskA, setRestrictError.bind(null, { key, plugins, state }))
 
   // We use a `state` object because `crawl` utility does not allow returning both
   // the crawled object and extra information
   if (state.error !== undefined) {
-    taskA.error = state.error
+    taskB.error = convertPlainObject(state.error)
   }
 
   // We do not restrict/modify `originalTask` so it keeps reflecting the input
-  return { ...taskA, originalTask }
+  return { ...taskB, originalTask }
+}
+
+// Convert errors to plain objects
+const convertTaskError = function({ task, task: { error } }) {
+  if (error === undefined) {
+    return task
+  }
+
+  const errorA = convertError({ error })
+  return { ...task, error: errorA }
+}
+
+const convertError = function({ error, error: { nested, nested: { error: nestedError } = {} } }) {
+  const errorA = convertPlainObject(error)
+
+  if (nestedError === undefined) {
+    return errorA
+  }
+
+  const nestedErrorA = convertError({ error: nestedError })
+  return { ...errorA, nested: { ...nested, error: nestedErrorA } }
 }
 
 const setRestrictError = function({ key, plugins, state }, { message, value, path }) {
   // Use a bug error
   const error = new Error(`Task '${key}' ${message}`)
 
+  // Make sure `error.value` is JSON serializable
+  const valueA = String(value)
   const property = getPath(['task', ...path])
   const module = guessModule({ path, plugins })
-  Object.assign(error, { value, property, module })
+  Object.assign(error, { value: valueA, property, module })
 
   state.error = error
 }

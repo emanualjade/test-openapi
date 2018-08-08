@@ -85,7 +85,7 @@ const isJsonType = function(value) {
 
 const getMessage = function({ value, path }) {
   const property = getPath(path)
-  return `property '${property}' with value ${value} is invalid: it can only be a JSON type, undefined or a function`
+  return `property '${property}' with value '${value}' is invalid: it can only be a JSON type, undefined or a function`
 }
 
 module.exports = {

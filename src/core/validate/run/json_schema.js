@@ -31,15 +31,19 @@ const hasJsonSchema = function({ prop }) {
 // `task.validate.headers|body: non-object` is shortcut for `{ enum: [value] }`
 const applyShortcut = function({ value }) {
   const type = guessType(value)
-  return { type, enum: [value] }
+  return { ...type, enum: [value] }
 }
 
 // When using the shortcut notation, we need to set the `type` to make sure it
 // matches the value (in case it is not set, or set to several types, or set to
 // a different type)
 const guessType = function(value) {
+  if (value === undefined) {
+    return
+  }
+
   const [type] = TYPES.find(([, condition]) => condition(value))
-  return type
+  return { type }
 }
 
 const TYPES = Object.entries({

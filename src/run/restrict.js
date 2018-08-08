@@ -6,7 +6,7 @@ const { restrictOutput } = require('../validation')
 // JSON restriction is performed between `run` and `complete` handlers because:
 //  - it makes reporting and return value use the same value
 //  - `runTask()` should return non-restricted tasks
-const restrictTaskOutput = function({ task, task: { key }, plugins }) {
+const restrictTaskOutput = function({ task: { originalTask, ...task }, task: { key }, plugins }) {
   const state = {}
 
   const taskA = restrictOutput(task, setRestrictError.bind(null, { key, plugins, state }))
@@ -17,7 +17,8 @@ const restrictTaskOutput = function({ task, task: { key }, plugins }) {
     taskA.error = state.error
   }
 
-  return taskA
+  // We do not restrict/modify `originalTask` so it keeps reflecting the input
+  return { ...taskA, originalTask }
 }
 
 const setRestrictError = function({ key, plugins, state }, { message, value, path }) {

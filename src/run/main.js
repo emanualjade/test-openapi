@@ -8,6 +8,7 @@ const { loadPlugins } = require('../plugins')
 const { loadTasks } = require('./load')
 const { startTasks } = require('./start')
 const { runTask } = require('./run')
+const { restrictTaskOutput } = require('./restrict')
 const { completeTask } = require('./complete')
 const { endTasks } = require('./end')
 
@@ -70,9 +71,11 @@ const fireTasks = function({ config, config: { tasks }, startData, plugins }) {
 const fireTask = async function({ task, config, startData, plugins }) {
   const taskA = await runTask({ task, config, startData, plugins })
 
-  const taskB = await completeTask({ task: taskA, startData, plugins, config })
+  const taskB = restrictTaskOutput({ task: taskA, plugins })
 
-  return taskB
+  const taskC = await completeTask({ task: taskB, startData, plugins, config })
+
+  return taskC
 }
 
 module.exports = {

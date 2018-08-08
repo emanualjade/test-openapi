@@ -1,8 +1,8 @@
 'use strict'
 
 const { TestOpenApiError } = require('../errors')
-const { isObject } = require('../utils')
-const { checkJson } = require('../validation')
+const { isObject, getPath } = require('../utils')
+const { restrictInput } = require('../validation')
 
 // Make sure task files are not empty
 const validateTaskFile = function({ tasks, path }) {
@@ -30,12 +30,12 @@ const validateEmptyTasks = function({ tasks }) {
 
 // Make sure input tasks are valid JSON
 const validateJsonTask = function([key, task]) {
-  const getError = getJsonError.bind(null, key)
-  checkJson({ value: task, getError })
+  restrictInput(task, throwRestrictError.bind(null, key))
 }
 
-const getJsonError = function(key, message) {
-  return new TestOpenApiError(`Task '${key}' is not valid JSON${message}`, { task: key })
+const throwRestrictError = function(key, { message, value, path }) {
+  const property = getPath(['task', ...path])
+  throw new TestOpenApiError(`Task '${key}' ${message}`, { task: key, value, property })
 }
 
 module.exports = {

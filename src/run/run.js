@@ -30,7 +30,6 @@ const runAll = function({ task, task: { skipped }, config, startData, plugins, n
     context,
     errorHandler: runPluginHandler,
     stopFunc,
-    json: true,
   })
 }
 

@@ -12,7 +12,6 @@ const loadTasks = async function({ config, config: { tasks }, plugins }) {
     input: tasks,
     context: { config },
     mergeReturn,
-    json: true,
   })
 
   const allTasksA = addOriginalTasks({ tasks: allTasks })

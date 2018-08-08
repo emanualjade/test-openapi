@@ -1,10 +1,7 @@
 'use strict'
 
-const { omitBy, mapValues } = require('lodash')
-
-const { reduceAsync, promiseThen, isObject } = require('../utils')
+const { reduceAsync } = require('../utils')
 const { addErrorHandler } = require('../errors')
-const { checkJson } = require('../validation')
 
 // Run plugin `handlers` of a given `type`
 // Handlers will reduce over `input`. Their return values gets shallowly merged
@@ -19,10 +16,9 @@ const runHandlers = function({
   errorHandler,
   stopFunc,
   mergeReturn = defaultMergeReturn,
-  json = false,
 }) {
   const contextA = getContext({ context, plugins })
-  const handlers = getHandlers({ plugins, type, errorHandler, context: contextA, json })
+  const handlers = getHandlers({ plugins, type, errorHandler, context: contextA })
 
   return reduceAsync(handlers, runHandler, input, mergeReturn, stopFunc)
 }
@@ -32,11 +28,11 @@ const getContext = function({ context, plugins }) {
   return { ...context, pluginNames, _plugins: plugins }
 }
 
-const getHandlers = function({ plugins, type, errorHandler, context, json }) {
+const getHandlers = function({ plugins, type, errorHandler, context }) {
   const handlers = plugins.map(plugin => getPluginHandlers({ plugin, type }))
   const handlersA = [].concat(...handlers)
 
-  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, context, json }))
+  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, context }))
   return handlersB
 }
 
@@ -55,54 +51,16 @@ const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
   return handlersB
 }
 
-const wrapHandler = function({ handler: { func, name }, errorHandler, context, json }) {
-  const handlerA = callHandler.bind(null, { func, context, name, json })
+const wrapHandler = function({ handler: { func, name }, errorHandler, context }) {
+  const handlerA = callHandler.bind(null, { func, context })
 
   const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, name))
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return handlerC
 }
 
-const callHandler = function({ func, context, name, json }, input) {
-  const value = func(input, context)
-  return promiseThen(value, valueA => handleReturn({ value: valueA, name, json }))
-}
-
-const handleReturn = function({ value, name, json }) {
-  const valueA = removeUndefined(value)
-
-  validateJson({ value: valueA, name, json })
-
-  return valueA
-}
-
-const removeUndefined = function(value) {
-  if (isObject(value)) {
-    const valueA = omitBy(value, prop => prop === undefined)
-    return mapValues(valueA, removeUndefined)
-  }
-
-  if (Array.isArray(value)) {
-    const valueA = value.filter(prop => prop !== undefined)
-    return valueA.map(removeUndefined)
-  }
-
-  return value
-}
-
-// Make sure each handler returns only JSON
-const validateJson = function({ value, name, json }) {
-  if (!json || value === undefined) {
-    return
-  }
-
-  const getError = getJsonError.bind(null, name)
-  checkJson({ value, getError })
-}
-
-// Throw a `bug` error
-const getJsonError = function(name, message) {
-  return new Error(`The '${name}' plugin returned non-JSON properties${message}`)
+const callHandler = function({ func, context }, input) {
+  return func(input, context)
 }
 
 // Add `error.module` to every thrown error

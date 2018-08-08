@@ -1,7 +1,8 @@
 'use strict'
 
 const { TestOpenApiError } = require('../errors')
-const { checkSchema, checkJson } = require('../validation')
+const { getPath } = require('../utils')
+const { checkSchema, restrictInput } = require('../validation')
 
 const CONFIG_SCHEMA = require('./schema')
 
@@ -15,11 +16,12 @@ const validateConfig = function({ config }) {
   })
 
   // Make sure input configuration is valid JSON
-  checkJson({ value: config, getError })
+  restrictInput(config, throwRestrictError)
 }
 
-const getError = function(message) {
-  return new TestOpenApiError(`Configuration is not valid JSON${message}`)
+const throwRestrictError = function({ message, value, path }) {
+  const property = getPath(['config', ...path])
+  throw new TestOpenApiError(`Configuration ${message}`, { value, property })
 }
 
 module.exports = {

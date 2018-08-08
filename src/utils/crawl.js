@@ -5,12 +5,20 @@ const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 // Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // `evalNode|evalKey` is synchronous.
-const crawl = function(value, evalNode, { evalKey, info } = {}) {
-  return crawlNode(value, [], { evalNode, evalKey, info })
+const crawl = function(
+  value,
+  evalNode,
+  { evalKey, info, skipUndefined = true, topDown = false } = {},
+) {
+  return crawlNode(value, [], { evalNode, evalKey, info, skipUndefined, topDown })
 }
 
 const crawlNode = function(value, path, opts) {
-  // Children must be evaluated before parents
+  if (opts.topDown) {
+    const valueA = evalNodeValue({ value, path, opts })
+    return promiseThen(valueA, valueB => crawlChildren(valueB, path, opts))
+  }
+
   const valueA = crawlChildren(value, path, opts)
   return promiseThen(valueA, valueB => evalNodeValue({ value: valueB, path, opts }))
 }
@@ -36,15 +44,15 @@ const crawlProperty = function({ key, child, path, opts }) {
   const keyMaybePromise = evalNodeKey({ key, path, opts })
   const valueMaybePromise = crawlNode(child, [...path, key], opts)
   const promises = [keyMaybePromise, valueMaybePromise]
-  return promiseAllThen(promises, ([key, value]) => getProperty({ key, value }))
+  return promiseAllThen(promises, ([key, value]) => getProperty({ key, value, opts }))
 }
 
-const getProperty = function({ key, value }) {
+const getProperty = function({ key, value, opts: { skipUndefined } }) {
   // Values that are return `undefined` are omitted
   // (as opposed to being set to `undefined`) to keep task JSON-serializable
   // and avoid properties that are defined but set to `undefined`
   // Same thing for keys
-  if (key === undefined || value === undefined) {
+  if (skipUndefined && (key === undefined || value === undefined)) {
     return
   }
 

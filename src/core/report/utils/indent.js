@@ -21,7 +21,7 @@ const shouldIndent = function(string) {
 const indent = function(string, extraIndent = 0) {
   const size = INDENT_SIZE + extraIndent
   const indentString = ' '.repeat(size)
-  return indentString + string.replace(/\n/g, `\n${indentString}`)
+  return indentString + String(string).replace(/\n/g, `\n${indentString}`)
 }
 
 const INDENT_SIZE = 2

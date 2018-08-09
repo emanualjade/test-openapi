@@ -37,6 +37,7 @@ const normalizeTask = function([key, task]) {
   return { ...task, key }
 }
 
+// Validate tasks are JSON and turn `undefined` strings into actual `undefined`
 const parseTasks = function({ tasks }) {
   return tasks.map(task => parseInput(task, throwParseError.bind(null, task.key)))
 }

@@ -5,7 +5,6 @@ const { getPath } = require('../utils')
 
 const { parseInput } = require('./serialize')
 const { loadTasks } = require('./load')
-const { validateTasks } = require('./validate')
 
 // Retrieve tasks files as an array of normalized task objects
 const getTasks = async function({ config, config: { tasks } }) {
@@ -18,6 +17,15 @@ const getTasks = async function({ config, config: { tasks } }) {
   const tasksC = parseTasks({ tasks: tasksB })
 
   return { ...config, tasks: tasksC }
+}
+
+// Validate syntax of task files
+const validateTasks = function({ tasks }) {
+  if (Object.keys(tasks).length !== 0) {
+    return
+  }
+
+  throw new TestOpenApiError('No tasks were found')
 }
 
 // Normalize tasks from object to array.

@@ -9,7 +9,6 @@ const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 const { isObject, sortArray, findCommonPrefix } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
-const { validateTaskFile } = require('./validate')
 const { addTaskPath } = require('./path')
 const { handleUndefined } = require('./undefined')
 
@@ -72,6 +71,15 @@ const parseTaskFileHandler = function({ message }, { path }) {
 }
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)
+
+// Make sure task files are not empty
+const validateTaskFile = function({ tasks, path }) {
+  if (isObject(tasks)) {
+    return
+  }
+
+  throw new TestOpenApiError(`Task file '${path}' should be an object not a ${typeof tasks}`)
+}
 
 module.exports = {
   loadTasks,

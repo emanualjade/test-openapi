@@ -28,13 +28,13 @@ const { crawl, isObject, getPath } = require('../utils')
 //  - but serialized to JSON in output for the reasons above
 
 // Applied on input config and tasks
-const restrictInput = function(obj, throwError) {
-  crawl(obj, (value, path) => restrictInputValue({ value, path, throwError }), {
+const parseInput = function(obj, throwError) {
+  crawl(obj, (value, path) => parseInputValue({ value, path, throwError }), {
     topDown: true,
   })
 }
 
-const restrictInputValue = function({ value, path, throwError }) {
+const parseInputValue = function({ value, path, throwError }) {
   if (isJsonType(value) || value === undefined || typeof value === 'function') {
     return value
   }
@@ -44,14 +44,14 @@ const restrictInputValue = function({ value, path, throwError }) {
 }
 
 // Applied on tasks output, i.e. what is reported and returned
-const restrictOutput = function(obj, throwError) {
-  return crawl(obj, (value, path) => restrictOutputValue({ value, path, throwError }), {
+const serializeOutput = function(obj, throwError) {
+  return crawl(obj, (value, path) => serializeOutputValue({ value, path, throwError }), {
     skipUndefined: true,
     topDown: true,
   })
 }
 
-const restrictOutputValue = function({ value, path, throwError }) {
+const serializeOutputValue = function({ value, path, throwError }) {
   // `undefined` values are removed by `crawl()`
   if (isJsonType(value) || value === undefined) {
     return value
@@ -90,6 +90,6 @@ const getMessage = function({ value, path }) {
 }
 
 module.exports = {
-  restrictInput,
-  restrictOutput,
+  parseInput,
+  serializeOutput,
 }

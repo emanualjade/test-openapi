@@ -4,17 +4,17 @@ const { capitalize } = require('underscore.string')
 
 const { getPath } = require('../utils')
 const { convertPlainObject, BugError } = require('../errors')
-const { restrictOutput } = require('../tasks')
+const { serializeOutput } = require('../tasks')
 
-// JSON restriction is performed between `run` and `complete` handlers because:
+// JSON serialization is performed between `run` and `complete` handlers because:
 //  - it makes reporting and return value use the same value
-//  - `runTask()` should return non-restricted tasks
-const restrictTaskOutput = function({ task: { originalTask, ...task }, plugins }) {
+//  - `runTask()` should return non-serialized tasks
+const serializeTaskOutput = function({ task: { originalTask, ...task }, plugins }) {
   const state = {}
 
   const taskA = convertTaskError({ task })
 
-  const taskB = restrictOutput(taskA, setRestrictError.bind(null, { plugins, state }))
+  const taskB = serializeOutput(taskA, setSerializeError.bind(null, { plugins, state }))
 
   // We use a `state` object because `crawl` utility does not allow returning both
   // the crawled object and extra information
@@ -22,7 +22,7 @@ const restrictTaskOutput = function({ task: { originalTask, ...task }, plugins }
     taskB.error = convertPlainObject(state.error)
   }
 
-  // We do not restrict/modify `originalTask` so it keeps reflecting the input
+  // We do not serialize `originalTask` so it keeps reflecting the input
   return { ...taskB, originalTask }
 }
 
@@ -47,7 +47,7 @@ const convertError = function({ error, error: { nested, nested: { error: nestedE
   return { ...errorA, nested: { ...nested, error: nestedErrorA } }
 }
 
-const setRestrictError = function({ plugins, state }, { message, value, path }) {
+const setSerializeError = function({ plugins, state }, { message, value, path }) {
   const messageA = capitalize(message)
   // Make sure `error.value` is JSON serializable
   const valueA = String(value)
@@ -69,5 +69,5 @@ const guessModule = function({ path: [name], plugins }) {
 }
 
 module.exports = {
-  restrictTaskOutput,
+  serializeTaskOutput,
 }

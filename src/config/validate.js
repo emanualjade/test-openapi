@@ -3,7 +3,7 @@
 const { TestOpenApiError } = require('../errors')
 const { getPath } = require('../utils')
 const { checkSchema } = require('../validation')
-const { restrictInput } = require('../tasks')
+const { parseInput } = require('../tasks')
 
 const CONFIG_SCHEMA = require('./schema')
 
@@ -17,10 +17,10 @@ const validateConfig = function({ config }) {
   })
 
   // Make sure input configuration is valid JSON
-  restrictInput(config, throwRestrictError)
+  parseInput(config, throwParseError)
 }
 
-const throwRestrictError = function({ message, value, path }) {
+const throwParseError = function({ message, value, path }) {
   const property = getPath(['config', ...path])
   throw new TestOpenApiError(`Configuration ${message}`, { value, property })
 }

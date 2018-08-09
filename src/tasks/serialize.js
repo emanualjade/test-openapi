@@ -32,7 +32,7 @@ const { convertPlainObject, BugError } = require('../errors')
 
 // Applied on input config and tasks
 const parseInput = function(taskOrConfig, throwError) {
-  crawl(taskOrConfig, (value, path) => parseInputValue({ value, path, throwError }), {
+  return crawl(taskOrConfig, (value, path) => parseInputValue({ value, path, throwError }), {
     topDown: true,
   })
 }

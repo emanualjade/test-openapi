@@ -1,6 +1,6 @@
 'use strict'
 
-const { addErrorHandler, convertPlainObject } = require('../errors')
+const { addErrorHandler } = require('../errors')
 const { runHandlers } = require('../plugins')
 
 // Run each `plugin.complete()`
@@ -19,8 +19,7 @@ const completeTask = async function({ task, startData, plugins, config }) {
 // Errors in `complete` handlers return `task.error`, just like the ones in
 // `run` handlers
 const completeTaskHandler = function(error, { task }) {
-  const errorA = convertPlainObject(error)
-  return { ...task, error: errorA }
+  return { ...task, error }
 }
 
 const eCompleteTask = addErrorHandler(completeTask, completeTaskHandler)

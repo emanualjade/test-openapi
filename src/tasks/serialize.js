@@ -1,6 +1,9 @@
 'use strict'
 
+const { capitalize } = require('underscore.string')
+
 const { crawl, isObject, getPath } = require('../utils')
+const { convertPlainObject, BugError } = require('../errors')
 
 // Tasks and config are constrained to JSON.
 // Reasons:
@@ -28,8 +31,8 @@ const { crawl, isObject, getPath } = require('../utils')
 //  - but serialized to JSON in output for the reasons above
 
 // Applied on input config and tasks
-const parseInput = function(obj, throwError) {
-  crawl(obj, (value, path) => parseInputValue({ value, path, throwError }), {
+const parseInput = function(taskOrConfig, throwError) {
+  crawl(taskOrConfig, (value, path) => parseInputValue({ value, path, throwError }), {
     topDown: true,
   })
 }
@@ -44,14 +47,45 @@ const parseInputValue = function({ value, path, throwError }) {
 }
 
 // Applied on tasks output, i.e. what is reported and returned
-const serializeOutput = function(obj, throwError) {
-  return crawl(obj, (value, path) => serializeOutputValue({ value, path, throwError }), {
+const serializeOutput = function({ task, plugins }) {
+  const taskA = convertTaskError({ task })
+
+  // We use a `state` object because `crawl` utility does not allow returning both
+  // the crawled object and extra information
+  const state = {}
+
+  const taskB = crawl(taskA, (value, path) => serializeOutputValue({ value, path, state }), {
     skipUndefined: true,
     topDown: true,
   })
+
+  const { error } = state
+  const taskC = addSerializeError({ task: taskB, error, plugins })
+  return taskC
 }
 
-const serializeOutputValue = function({ value, path, throwError }) {
+// Convert errors to plain objects
+const convertTaskError = function({ task, task: { error } }) {
+  if (error === undefined) {
+    return task
+  }
+
+  const errorA = convertError({ error })
+  return { ...task, error: errorA }
+}
+
+const convertError = function({ error, error: { nested, nested: { error: nestedError } = {} } }) {
+  const errorA = convertPlainObject(error)
+
+  if (nestedError === undefined) {
+    return errorA
+  }
+
+  const nestedErrorA = convertError({ error: nestedError })
+  return { ...errorA, nested: { ...nested, error: nestedErrorA } }
+}
+
+const serializeOutputValue = function({ value, path, state }) {
   // `undefined` values are removed by `crawl()`
   if (isJsonType(value) || value === undefined) {
     return value
@@ -61,8 +95,10 @@ const serializeOutputValue = function({ value, path, throwError }) {
     return serializeFunction(value)
   }
 
+  // If the value cannot be serialized, returns the first one as `error`.
+  // Serialize that value by removing it.
   const message = getMessage({ value, path })
-  throwError({ message, value, path })
+  state.error = { message, value, path }
 }
 
 const serializeFunction = function({ name }) {
@@ -71,6 +107,41 @@ const serializeFunction = function({ name }) {
 }
 
 const DEFAULT_FUNC_NAME = 'anonymous'
+
+// If a value in `task.*` could not be serialized, we add it as `task.error`
+// so it gets properly reported (as opposed to throwing an error)
+const addSerializeError = function({ task, error, plugins }) {
+  if (error === undefined) {
+    return task
+  }
+
+  const errorA = getSerializeError({ error, plugins })
+  const errorB = convertPlainObject(errorA)
+
+  return { ...task, error: errorB }
+}
+
+const getSerializeError = function({ error: { message, value, path }, plugins }) {
+  const messageA = capitalize(message)
+  // Make sure `error.value` is JSON serializable
+  const valueA = String(value)
+  const property = getPath(['task', ...path])
+  const module = guessModule({ path, plugins })
+
+  const error = new BugError(messageA, { value: valueA, property, module })
+  return error
+}
+
+// Try to guess `error.module` from where the value was in task.*
+// This is not error-proof since plugins can modify input of other plugins.
+const guessModule = function({ path: [name], plugins }) {
+  const plugin = plugins.find(({ name: nameA }) => nameA === name)
+  if (plugin === undefined) {
+    return
+  }
+
+  return `plugin-${name}`
+}
 
 const isJsonType = function(value) {
   const type = typeof value

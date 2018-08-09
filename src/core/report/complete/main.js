@@ -1,7 +1,8 @@
 'use strict'
 
-const { callReporters } = require('./call')
-const { isSilentTask, filterTaskData } = require('./level')
+const { callReporters } = require('../call')
+
+const { callComplete } = require('./call')
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
@@ -85,37 +86,6 @@ const completeTask = async function({
 
   // Async iteration through recursion
   await completeTask({ keys, tasks, reporters, config, startData, plugins })
-}
-
-const callComplete = async function({
-  task,
-  task: { error: { nested } = {} },
-  reporters,
-  config,
-  startData,
-  plugins,
-}) {
-  const arg = getArg.bind(null, { task, plugins })
-  const context = getContext.bind(null, { task, config, startData, plugins })
-
-  await callReporters({ reporters, type: 'complete' }, arg, context)
-
-  if (nested === undefined) {
-    return
-  }
-
-  // Recurse over `task.error.nested`
-  await callComplete({ task: { ...nested, isNested: true }, reporters, config, startData, plugins })
-}
-
-const getArg = function({ task, plugins }, { options }) {
-  return filterTaskData({ task, options, plugins })
-}
-
-const getContext = function({ task, config, startData, plugins }, { options }) {
-  const silent = isSilentTask({ task, options })
-
-  return { config, startData, plugins, silent }
 }
 
 module.exports = {

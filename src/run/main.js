@@ -8,7 +8,6 @@ const { loadPlugins } = require('../plugins')
 const { loadTasks } = require('./load')
 const { startTasks } = require('./start')
 const { runTask } = require('./run')
-const { serializeTaskOutput } = require('./serialize')
 const { completeTask } = require('./complete')
 const { endTasks } = require('./end')
 
@@ -71,9 +70,7 @@ const fireTasks = function({ config, config: { tasks }, startData, plugins }) {
 const fireTask = async function({ task, config, startData, plugins }) {
   const taskA = await runTask({ task, config, startData, plugins })
 
-  const taskB = serializeTaskOutput({ task: taskA, plugins })
-
-  const taskC = await completeTask({ task: taskB, startData, plugins, config })
+  const taskC = await completeTask({ task: taskA, startData, plugins, config })
 
   return taskC
 }

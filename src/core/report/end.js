@@ -1,5 +1,7 @@
 'use strict'
 
+const { serializeOutput } = require('../../tasks')
+
 const { filterTaskData } = require('./level')
 const { callReporters } = require('./call')
 
@@ -13,7 +15,9 @@ const end = async function(
     _plugins: plugins,
   },
 ) {
-  const arg = getArg.bind(null, { tasks, plugins })
+  const tasksA = tasks.map(task => serializeOutput({ task, plugins }))
+
+  const arg = getArg.bind(null, { tasks: tasksA, plugins })
 
   await callReporters({ reporters, type: 'end' }, arg)
 }

@@ -38,6 +38,14 @@ const parseInput = function(taskOrConfig, throwError) {
 }
 
 const parseInputValue = function({ value, path, throwError }) {
+  if (value === UNDEFINED) {
+    return undefined
+  }
+
+  if (value === ESCAPED_UNDEFINED) {
+    return UNDEFINED
+  }
+
   if (isJsonType(value) || value === undefined || typeof value === 'function') {
     return value
   }
@@ -45,6 +53,14 @@ const parseInputValue = function({ value, path, throwError }) {
   const message = getMessage({ value, path })
   throwError({ message, value, path })
 }
+
+// We allow `undefined` in input as it is useful to override values.
+// E.g. a task might want to unset a value set by `glob` or `spec` plugin.
+// However since we only allow JSON in input, we allow `undefined` as a string.
+// It is converted here to an actual `undefined` value.
+// It can also be escaped with backslash if we actually meant the `undefined` string.
+const UNDEFINED = 'undefined'
+const ESCAPED_UNDEFINED = '\\undefined'
 
 // Applied on tasks output, i.e. what is reported and returned
 const serializeOutput = function({ task, plugins }) {

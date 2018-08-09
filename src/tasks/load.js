@@ -10,7 +10,6 @@ const { isObject, sortArray, findCommonPrefix } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { addTaskPath } = require('./path')
-const { handleUndefined } = require('./undefined')
 
 // Load YAML/JSON task files
 const loadTasks = async function({ tasks }) {
@@ -42,9 +41,7 @@ const loadTaskFile = async function({ path, commonPrefix }) {
   validateTaskFile({ tasks, path })
 
   const tasksA = addTaskPath({ tasks, path, commonPrefix })
-
-  const tasksB = handleUndefined({ tasks: tasksA })
-  return tasksB
+  return tasksA
 }
 
 const readFileHandler = function({ message }, path) {

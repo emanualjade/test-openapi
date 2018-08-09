@@ -31,7 +31,7 @@ const evalTemplate = function(data, vars = {}, opts = {}) {
   const recursive = recursiveEval.bind(null, vars, opts)
   const optsA = { ...opts, vars, recursive }
 
-  return crawl(data, evalNode, { info: optsA })
+  return crawl(data, evalNode.bind(null, optsA))
 }
 
 // Recursive calls, done automatically when evaluating `$$name`
@@ -40,7 +40,7 @@ const recursiveEval = function(vars, opts, data) {
 }
 
 // Evaluate templates in an object or part of an object
-const evalNode = function(data, path, opts) {
+const evalNode = function(opts, data, path) {
   const template = parseTemplate(data)
   // There are no template markers
   if (template === undefined) {

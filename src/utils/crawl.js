@@ -5,8 +5,8 @@ const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 // Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // `evalNode|evalKey` is synchronous.
-const crawl = function(value, evalNode, { evalKey, info, topDown = false } = {}) {
-  return crawlNode(value, [], { evalNode, evalKey, info, topDown })
+const crawl = function(value, evalNode, { evalKey, topDown = false } = {}) {
+  return crawlNode(value, [], { evalNode, evalKey, topDown })
 }
 
 const crawlNode = function(value, path, opts) {
@@ -56,21 +56,21 @@ const mergeProperties = function(children) {
 }
 
 // Allow modifying any type values with `evalNode`
-const evalNodeValue = function({ value, path, opts: { evalNode, info } }) {
+const evalNodeValue = function({ value, path, opts: { evalNode } }) {
   if (evalNode === undefined) {
     return value
   }
 
-  return evalNode(value, path, info)
+  return evalNode(value, path)
 }
 
 // Allow modifying property keys with `opts.evalKey`
-const evalNodeKey = function({ key, path, opts: { evalKey, info } }) {
+const evalNodeKey = function({ key, path, opts: { evalKey } }) {
   if (evalKey === undefined) {
     return key
   }
 
-  return evalKey(key, path, info)
+  return evalKey(key, path)
 }
 
 module.exports = {

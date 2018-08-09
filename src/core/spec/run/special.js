@@ -9,7 +9,7 @@ const { crawl } = require('../../../utils')
 const getSpecialValues = function({ call }) {
   const specialValues = initSpecialValues()
 
-  const callA = crawl(call, evalNode, { info: specialValues })
+  const callA = crawl(call, evalNode.bind(null, specialValues))
 
   return { call: callA, specialValues }
 }
@@ -19,7 +19,7 @@ const initSpecialValues = function() {
   return Object.assign({}, ...specialValues)
 }
 
-const evalNode = function(value, path, specialValues) {
+const evalNode = function(specialValues, value, path) {
   // Can escape special values with a backslash
   if (ESCAPED_VALUES.includes(value)) {
     return value.replace(ESCAPING_CHAR, '')

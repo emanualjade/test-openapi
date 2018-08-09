@@ -17,6 +17,7 @@ const { crawl, isObject, getPath } = require('../utils')
 //    argument and export the function separately.
 //  - allow file format agnosticism for config and tasks
 // `startData` is not constrained to JSON, e.g. it can use sockets.
+// Output here means reporting not return value.
 // Exception: functions and `undefined`:
 //  - allowed in input for convenience:
 //     - functions allow plugins to provide flexibility

@@ -71,7 +71,6 @@ const serializeOutput = function({ task, plugins }) {
   const state = {}
 
   const taskB = crawl(taskA, (value, path) => serializeOutputValue({ value, path, state }), {
-    skipUndefined: true,
     topDown: true,
   })
 
@@ -102,8 +101,15 @@ const convertError = function({ error, error: { nested, nested: { error: nestedE
 }
 
 const serializeOutputValue = function({ value, path, state }) {
-  // `undefined` values are removed by `crawl()`
-  if (isJsonType(value) || value === undefined) {
+  if (value === undefined) {
+    return UNDEFINED
+  }
+
+  if (value === UNDEFINED) {
+    return ESCAPED_UNDEFINED
+  }
+
+  if (isJsonType(value)) {
     return value
   }
 
@@ -112,7 +118,7 @@ const serializeOutputValue = function({ value, path, state }) {
   }
 
   // If the value cannot be serialized, returns the first one as `error`.
-  // Serialize that value by removing it.
+  // Serialize that value to `undefined`
   const message = getMessage({ value, path })
   state.error = { message, value, path }
 }

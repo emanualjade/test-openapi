@@ -4,7 +4,7 @@ const { omitBy } = require('lodash')
 
 const { TestOpenApiError } = require('../errors')
 const { getPath } = require('../utils')
-const { parseInput } = require('../tasks')
+const { parseInput } = require('../serialize')
 
 const { validateConfig } = require('./validate')
 const DEFAULT_CONFIG = require('./defaults')

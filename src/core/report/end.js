@@ -1,6 +1,6 @@
 'use strict'
 
-const { serializeOutput } = require('../../tasks')
+const { serializeOutput } = require('../../serialize')
 
 const { filterTaskData } = require('./level')
 const { callReporters } = require('./call')

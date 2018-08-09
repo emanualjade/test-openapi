@@ -2,8 +2,8 @@
 
 const { TestOpenApiError } = require('../errors')
 const { getPath } = require('../utils')
+const { parseInput } = require('../serialize')
 
-const { parseInput } = require('./serialize')
 const { loadTasks } = require('./load')
 
 // Retrieve tasks files as an array of normalized task objects

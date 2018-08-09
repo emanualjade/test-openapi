@@ -8,7 +8,7 @@ const { loadPlugins } = require('../plugins')
 const { loadTasks } = require('./load')
 const { startTasks } = require('./start')
 const { runTask } = require('./run')
-const { restrictTaskOutput } = require('./restrict')
+const { restrictTaskOutput } = require('./serialize')
 const { completeTask } = require('./complete')
 const { endTasks } = require('./end')
 

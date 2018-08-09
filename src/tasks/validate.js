@@ -3,7 +3,7 @@
 const { TestOpenApiError } = require('../errors')
 const { isObject, getPath } = require('../utils')
 
-const { restrictInput } = require('./restrict')
+const { restrictInput } = require('./serialize')
 
 // Make sure task files are not empty
 const validateTaskFile = function({ tasks, path }) {

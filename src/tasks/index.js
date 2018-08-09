@@ -3,5 +3,5 @@
 module.exports = {
   ...require('./get'),
   ...require('./original'),
-  ...require('./restrict'),
+  ...require('./serialize'),
 }

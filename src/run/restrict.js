@@ -4,7 +4,7 @@ const { capitalize } = require('underscore.string')
 
 const { getPath } = require('../utils')
 const { convertPlainObject, BugError } = require('../errors')
-const { restrictOutput } = require('../validation')
+const { restrictOutput } = require('../tasks')
 
 // JSON restriction is performed between `run` and `complete` handlers because:
 //  - it makes reporting and return value use the same value

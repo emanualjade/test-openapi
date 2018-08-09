@@ -2,7 +2,8 @@
 
 const { TestOpenApiError } = require('../errors')
 const { isObject, getPath } = require('../utils')
-const { restrictInput } = require('../validation')
+
+const { restrictInput } = require('./restrict')
 
 // Make sure task files are not empty
 const validateTaskFile = function({ tasks, path }) {

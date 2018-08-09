@@ -2,7 +2,8 @@
 
 const { TestOpenApiError } = require('../errors')
 const { getPath } = require('../utils')
-const { checkSchema, restrictInput } = require('../validation')
+const { checkSchema } = require('../validation')
+const { restrictInput } = require('../tasks')
 
 const CONFIG_SCHEMA = require('./schema')
 

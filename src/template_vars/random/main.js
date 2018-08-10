@@ -2,15 +2,16 @@
 
 const jsonSchemaFaker = require('json-schema-faker')
 
-const { TestOpenApiError } = require('../../errors')
 const { stringifyFlat } = require('../../utils')
-const { validateIsSchema } = require('../../validation')
+const { checkIsSchema } = require('../../validation')
 
 const { addCustomFormats } = require('./format')
 
 // Generate random value based on a single JSON schema
 const $$random = function(schema) {
-  validateJsonSchema({ schema })
+  // Validate random parameters are valid JSON schema v4
+  // We cannot use later versions because json-schema-faker does not support them
+  checkIsSchema({ value: schema })
 
   const schemaA = fixArray({ schema })
 
@@ -18,17 +19,6 @@ const $$random = function(schema) {
 
   const valueA = addSeparators({ value, schema: schemaA })
   return valueA
-}
-
-// Validate random parameters are valid JSON schema v4
-// We cannot use later versions because json-schema-faker does not support them
-const validateJsonSchema = function({ schema }) {
-  const { error } = validateIsSchema({ value: schema })
-  if (error === undefined) {
-    return
-  }
-
-  throw new TestOpenApiError(`value is not a valid JSON schema v4: ${error}`)
 }
 
 // json-schema-faker does not work properly with array schema that do not have

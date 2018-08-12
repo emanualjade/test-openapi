@@ -1,6 +1,6 @@
 'use strict'
 
-const { difference } = require('lodash')
+const { difference, omitBy } = require('lodash')
 
 const { getModule } = require('../../../modules')
 
@@ -17,7 +17,8 @@ const getReporters = function({ config }) {
 
 // Reporters are specified by using their name in `config.report.REPORTER`
 const getNames = function({ config: { report = {} } }) {
-  const names = Object.keys(report)
+  const reportA = omitBy(report, value => value !== undefined)
+  const names = Object.keys(reportA)
   const namesA = difference(names, Object.keys(COMMON_OPTIONS_SCHEMA))
 
   // When `config.report` is `undefined` or an empty object

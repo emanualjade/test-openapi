@@ -28,9 +28,8 @@ const validateHeader = function({ name, schema, headers }) {
   checkSchema({
     schema,
     value: header,
-    name: PROPERTY(name),
-    message: NAME(name),
-    target: 'schema',
+    schemaProp: PROPERTY(name),
+    message: `${NAME(name)} is invalid`,
   })
 }
 
@@ -45,7 +44,7 @@ const getResponseHeader = function({ headers, name }) {
 }
 
 const PROPERTY = name => getPath(['task', 'validate', `headers.${name}`])
-const NAME = name => `Response header '${name}'`
+const NAME = name => `response header '${name}'`
 
 module.exports = {
   validateHeaders,

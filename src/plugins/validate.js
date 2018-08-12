@@ -12,7 +12,7 @@ const validateJsonSchemas = function({ plugin: { name, config = {} } }) {
 const validateJsonSchema = function({ schema, name, propName }) {
   checkIsSchema({
     value: schema,
-    name: `plugin.config.${propName}`,
+    valueProp: `plugin.config.${propName}`,
     props: { module: `plugin-${name}` },
     bug: true,
   })

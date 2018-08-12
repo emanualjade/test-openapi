@@ -7,6 +7,10 @@
     "options": {},
     "start": {},
     "complete": {},
-    "end": {}
+    "end": {},
+    "level": {
+      "type": "string",
+      "enum": ["silent", "error", "warn", "log", "info", "debug"]
+    }
   }
 }

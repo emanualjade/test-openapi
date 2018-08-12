@@ -9,8 +9,8 @@ const validateConfig = function({ config }) {
   checkSchema({
     schema: CONFIG_SCHEMA,
     value: config,
-    name: 'config',
-    message: 'Configuration',
+    valueProp: 'config',
+    message: 'configuration is invalid',
   })
 }
 

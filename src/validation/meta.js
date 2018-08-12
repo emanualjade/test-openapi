@@ -4,12 +4,16 @@ const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
 
 const { checkSchema } = require('./check')
-const { CUSTOM_KEYWORDS } = require('./validator')
 
-const checkIsSchema = function({ name, message = name || 'schema', ...opts }) {
-  const messageA = `${message} is not a valid JSON schema version 4. It`
+const checkIsSchema = function(opts) {
+  const message = getSchemaMessage(opts)
 
-  checkSchema({ schema: jsonSchemaSchema, name, message: messageA, ...opts })
+  checkSchema({ schema: jsonSchemaSchema, message, ...opts })
+}
+
+const getSchemaMessage = function({ valueProp }) {
+  const name = valueProp === undefined ? 'schema' : `'${valueProp}'`
+  return `${name} is not a valid JSON schema version 4`
 }
 
 const getJsonSchemaSchema = function() {
@@ -42,15 +46,7 @@ const fixCustomProperties = function(schema) {
   return { ...schema, patternProperties: { '^x-*': {} }, additionalProperties: false }
 }
 
-// Allow `ajv-keywords` properties
-const addCustomKeywords = function(schema) {
-  const keywords = CUSTOM_KEYWORDS.map(name => ({ [name]: {} }))
-  const keywordsA = Object.assign({}, ...keywords)
-
-  return { ...schema, properties: { ...schema.properties, ...keywordsA } }
-}
-
-const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties, addCustomKeywords]
+const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties]
 
 const jsonSchemaSchema = getJsonSchemaSchema()
 

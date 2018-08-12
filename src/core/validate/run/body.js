@@ -19,14 +19,13 @@ const validateBody = function({ validate: { body: schema }, response: { body } }
   checkSchema({
     schema,
     value: body,
-    name: PROPERTY,
-    message: NAME,
-    target: 'schema',
+    schemaProp: PROPERTY,
+    message: `${NAME} is invalid`,
   })
 }
 
 const PROPERTY = 'task.validate.body'
-const NAME = 'Response body'
+const NAME = 'response body'
 
 module.exports = {
   validateBody,

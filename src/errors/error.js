@@ -9,8 +9,8 @@ const { isSimpleSchema, getSimpleSchemaConstant, getWordsList } = require('../ut
 //     e.g. `plugin-PLUGIN` or `reporter-REPORTER`
 //  - `bug` `{boolean}`: true if it was a bug
 //  - `task` `{object}`: current task
-//  - `property` `{string}`: path to the property in `task`, `config` or `plugin`
-//    Always starts with either `task`, `config` or `plugin`
+//  - `property` `{string}`: path to the property in `task`, `config`, `plugin`
+//    or `reporter`. Always starts with either of those.
 //  - `value` `{value}`: errored value
 //  - `expected` `{value}`: expected value
 //  - `schema` `{object}`: JSON schema v4 matched against `value`

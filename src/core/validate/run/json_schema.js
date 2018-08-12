@@ -59,8 +59,8 @@ const TYPES = Object.entries({
 
 // Validate `task.validate.headers|body` are valid JSON schemas
 const validateJsonSchema = function({ value, prop }) {
-  const name = getPath(['task', 'validate', prop])
-  checkIsSchema({ value, name })
+  const valueProp = getPath(['task', 'validate', prop])
+  checkIsSchema({ value, valueProp })
 }
 
 module.exports = {

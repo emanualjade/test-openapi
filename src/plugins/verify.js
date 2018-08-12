@@ -15,7 +15,8 @@ const verifyConfig = function({
   checkSchema({
     schema,
     value,
-    name: `config.${name}`,
+    valueProp: `config.${name}`,
+    message: `Configuration for the '${name}' plugin is invalid`,
     props: { module: `plugin-${name}` },
   })
 }
@@ -33,7 +34,8 @@ const verifyTask = function({
   checkSchema({
     schema,
     value,
-    name: `task.${name}`,
+    valueProp: `task.${name}`,
+    message: `Configuration for the '${name}' plugin is invalid`,
     props: { module: `plugin-${name}` },
   })
 }

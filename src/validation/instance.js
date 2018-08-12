@@ -1,18 +1,11 @@
 'use strict'
 
 const Ajv = require('ajv')
-const AjvKeywords = require('ajv-keywords')
 
 // Retrieve `ajv` instance
-const getValidator = function() {
-  const ajv = new Ajv(AJV_OPTS)
-
-  AjvKeywords(ajv, CUSTOM_KEYWORDS)
-
-  return ajv
+const getInstance = function() {
+  return new Ajv(AJV_OPTS)
 }
-
-const CUSTOM_KEYWORDS = ['typeof']
 
 // Make logging silent (e.g. warn on unknown format) but throws on errors
 const logger = {
@@ -33,9 +26,8 @@ const AJV_OPTS = {
 }
 
 // Called only once
-const validator = getValidator()
+const defaultInstance = getInstance()
 
 module.exports = {
-  validator,
-  CUSTOM_KEYWORDS,
+  defaultInstance,
 }

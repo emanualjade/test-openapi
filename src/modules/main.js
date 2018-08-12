@@ -58,8 +58,8 @@ const validateModule = function({ module, module: { name }, info, info: { title,
   checkSchema({
     schema: schemaA,
     value: module,
-    name,
-    message: `The ${title} '${name}'`,
+    valueProp: title,
+    message: `the ${title} '${name}' is invalid`,
     props,
     bug: true,
   })

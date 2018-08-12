@@ -1,6 +1,6 @@
 'use strict'
 
-const { mapValues } = require('lodash')
+const { mapValues, omitBy } = require('lodash')
 
 const { get } = require('../../utils')
 const { TestOpenApiError } = require('../../errors')
@@ -18,7 +18,9 @@ const getTaskAliases = function({ task: { key, alias }, allTasks, runTask }) {
     return
   }
 
-  const taskAliases = mapValues(alias, value =>
+  const aliasA = omitBy(alias, value => value === undefined)
+
+  const taskAliases = mapValues(aliasA, value =>
     evalTask.bind(null, { key, value, allTasks, runTask }),
   )
   return taskAliases

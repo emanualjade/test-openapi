@@ -31,8 +31,8 @@ const findPlugin = function({ value, pluginsVarsMap }) {
   // Should never return `undefined` since `error.value` should always be a template
   const { name } = parseTemplate(value)
 
-  const plugin = Object.entries(pluginsVarsMap).find(
-    ([, pluginsVars]) => pluginsVars[name] !== undefined,
+  const plugin = Object.entries(pluginsVarsMap).find(([, pluginsVars]) =>
+    pluginsVars.propertyIsEnumerable(name),
   )
   return plugin
 }

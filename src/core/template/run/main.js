@@ -25,10 +25,10 @@ const { templateHandler } = require('./error')
 //  - templating is a user-facing feature. Plugin writers can `require()`
 //    template functions directly and use their functions if needed.
 const run = function(task, context) {
+  const { vars, pluginsVarsMap } = getVars({ task, context })
+
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
-
-  const { vars, pluginsVarsMap } = getVars({ context })
 
   const taskB = eEvalTemplate(taskA, vars, { pluginsVarsMap })
 
@@ -36,16 +36,18 @@ const run = function(task, context) {
 }
 
 // Make sure those properties are not checked for templating
-const NO_EVAL_PROPS = ['originalTask', 'key', 'alias']
+const NO_EVAL_PROPS = ['originalTask', 'key', 'alias', 'template']
 
-const getVars = function({ context, context: { config } }) {
+// Retrieving variables cannot happen during a `start` handler because we might
+// need to pass `context._runTask()`, e.g. to `alias` `plugin.template()`
+const getVars = function({ task, context }) {
   const { pluginsVars, pluginsVarsMap } = getPluginsVars({ context })
 
   // Plugin/user-defined template variable have loading priority over core ones.
   // Like this, adding core template variables is non-breaking.
   // Also this allows overriding / monkey-patching core (which can be
   // either good or bad).
-  const vars = { ...coreVars, ...pluginsVars, ...config.template }
+  const vars = { ...coreVars, ...pluginsVars, ...task.template }
 
   return { vars, pluginsVarsMap }
 }

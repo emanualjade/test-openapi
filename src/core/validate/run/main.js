@@ -1,6 +1,6 @@
 'use strict'
 
-const { normalizeCase } = require('./case')
+const { normalizeValidate } = require('./normalize')
 const { handleJsonSchemas } = require('./json_schema')
 const { addByStatus } = require('./by_status')
 const { validateStatus } = require('./status')
@@ -13,7 +13,7 @@ const run = function({ validate = {}, call, call: { response } = {} }) {
     return
   }
 
-  const validateA = normalizeCase({ validate })
+  const validateA = normalizeValidate({ validate })
 
   const validateB = addByStatus({ validate: validateA, response })
 

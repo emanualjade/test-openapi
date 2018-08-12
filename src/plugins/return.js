@@ -21,7 +21,7 @@ const getTaskReturn = function({
   // `originalTask` is kept only for reporters
   const taskA = { key, path, skipped, error, ...pluginReturns, originalTask }
 
-  // Make sure value is similar to its JSON serialization, and avoid cluttering it
+  // Do not clutter with plugins that have nothing to return
   const taskB = omitBy(taskA, value => value === undefined)
 
   return taskB
@@ -75,7 +75,7 @@ const getAddedProps = function({ task, plugin: { name, config: { task: taskConfi
   }
 
   // `plugin.config.task` is an object. We remove its properties from `task.*`
-  const taskValueA = omitBy(taskValue, (value, key) => isConfigProp({ taskConfig, key }))
+  const taskValueA = omitBy(taskValue, (value, key) => shouldSkipProp({ value, key, taskConfig }))
 
   if (Object.keys(taskValueA).length === 0) {
     return
@@ -101,9 +101,16 @@ const OBJECT_PROPS = [
   'propertyNames',
 ]
 
+const shouldSkipProp = function({ value, key, taskConfig }) {
+  // If a plugin returned `task.*: undefined`, we do not keep in task return value
+  // Input `undefined` (i.e. from `originalTask`) are kept though.
+  return value === undefined || isConfigProp({ key, taskConfig })
+}
+
+// If a `task.*` is in `plugin.config`, it is not an `addedProp`
 const isConfigProp = function({
   key,
-  taskConfig: { additionalProperties, properties = {}, patternProperties },
+  taskConfig: { additionalProperties, properties = {}, patternProperties = {} },
 }) {
   return (
     (additionalProperties !== undefined && additionalProperties !== false) ||

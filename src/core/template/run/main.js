@@ -30,7 +30,7 @@ const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
 
-  const taskB = eEvalTemplate(taskA, vars, { pluginsVarsMap })
+  const taskB = eEvalTaskTemplate({ task: taskA, vars, pluginsVarsMap })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }
@@ -40,19 +40,23 @@ const NO_EVAL_PROPS = ['originalTask', 'key', 'alias', 'template']
 
 // Retrieving variables cannot happen during a `start` handler because we might
 // need to pass `context._runTask()`, e.g. to `alias` `plugin.template()`
-const getVars = function({ task, context }) {
+const getVars = function({ task: { template: taskTemplates }, context }) {
   const { pluginsVars, pluginsVarsMap } = getPluginsVars({ context })
 
   // Plugin/user-defined template variable have loading priority over core ones.
   // Like this, adding core template variables is non-breaking.
   // Also this allows overriding / monkey-patching core (which can be
   // either good or bad).
-  const vars = { ...coreVars, ...pluginsVars, ...task.template }
+  const vars = { ...coreVars, ...pluginsVars, ...taskTemplates }
 
   return { vars, pluginsVarsMap }
 }
 
-const eEvalTemplate = addErrorHandler(evalTemplate, templateHandler)
+const evalTaskTemplate = function({ task, vars }) {
+  return evalTemplate(task, vars)
+}
+
+const eEvalTaskTemplate = addErrorHandler(evalTaskTemplate, templateHandler)
 
 // Update `originalTask` so that templates are shown evaluated in both return value
 // and reporting

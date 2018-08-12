@@ -2,7 +2,7 @@
 
 const { parseTemplate } = require('../../../template')
 
-const templateHandler = function(error, task, vars, { pluginsVarsMap }) {
+const templateHandler = function(error, { pluginsVarsMap }) {
   if (error.property !== undefined) {
     error.property = `task.${error.property}`
   }

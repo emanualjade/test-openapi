@@ -25,6 +25,7 @@ const { templateHandler } = require('./error')
 //     - no operators, variables scoping, references, inline functions
 //  - only includes templating features
 //     - no comments, string escaping, text blocks
+// `undefined` values are not treated differently than other values.
 
 // Evaluate template
 const evalTemplate = function(data, vars = {}, opts = {}) {

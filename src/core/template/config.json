@@ -5,12 +5,5 @@
       "^\\$\\$[\\w-]+$": {}
     },
     "additionalProperties": false
-  },
-  "task": {
-    "type": "object",
-    "patternProperties": {
-      "^\\$\\$[\\w-]+$": {}
-    },
-    "additionalProperties": false
   }
 }

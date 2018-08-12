@@ -11,13 +11,12 @@ const DEFAULT_CONFIG = require('./defaults')
 
 // Load and normalize configuration
 const loadConfig = function({ config }) {
-  const configA = omitBy(config, value => value === undefined)
+  validateConfig({ config })
 
-  validateConfig({ config: configA })
-
-  const configB = parseInput(configA, throwParseError)
+  const configA = parseInput(config, throwParseError)
 
   // Apply default values
+  const configB = omitBy(configA, value => value === undefined)
   const configC = { ...DEFAULT_CONFIG, ...configB }
 
   return configC

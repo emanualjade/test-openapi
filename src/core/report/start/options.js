@@ -1,6 +1,6 @@
 'use strict'
 
-const { pick } = require('lodash')
+const { pick, omitBy } = require('lodash')
 
 const { checkSchema } = require('../../../validation')
 const { isSilent, normalizeLevel } = require('../level')
@@ -47,7 +47,8 @@ const getOptions = function({
     return globalOptions
   }
 
-  return { ...globalOptions, ...options }
+  const optionsA = omitBy(options, value => value === undefined)
+  return { ...globalOptions, ...optionsA }
 }
 
 // Validate `config.report.REPORTER.*` against `reporter.config`

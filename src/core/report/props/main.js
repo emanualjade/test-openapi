@@ -29,9 +29,9 @@ const callReportFuncs = function({ task, config, startData, plugins }) {
   const pluginNames = plugins.map(({ name }) => name)
 
   // Reporting order will follow core plugins order, then user `config.plugins` order
-  const reportResult = plugins
-    .map(plugin => callReportFunc({ plugin, config, startData, pluginNames, task }))
-    .filter(value => value !== undefined)
+  const reportResult = plugins.map(plugin =>
+    callReportFunc({ plugin, config, startData, pluginNames, task }),
+  )
 
   // Separate `title` from the rest as it is handled differently
   const titles = reportResult.map(({ title }) => title)
@@ -63,13 +63,12 @@ const callReportFunc = function({
   }
 
   const { title, ...reportProps } = newValue
+  // Skip `undefined` values returned by `plugin.report()`
+  const reportPropsA = removeEmptyProps(reportProps)
 
   // Merge `plugin.report()` to task.PLUGIN.*
   // It should have priority, but also be first in properties order
-  const reportPropsA = { ...reportProps, ...taskValue, ...reportProps }
-
-  // Returning `undefined` properties from `plugin.report()` unsets them
-  const reportPropsB = removeEmptyProps(reportPropsA)
+  const reportPropsB = { ...reportPropsA, ...taskValue, ...reportPropsA }
 
   if (Object.keys(reportPropsB).length === 0 && taskValue === undefined) {
     return { title }
@@ -89,9 +88,6 @@ const isDefinedTitle = function(title) {
 }
 
 // Do not print properties that are not present
-// It's not possible to report properties as `undefined`. The reasons are:
-//  - it makes it simpler to reason about reporting
-//  - `undefined` is not JSON serializable
 const removeEmptyProps = function(object) {
   return omitBy(object, value => value === undefined)
 }

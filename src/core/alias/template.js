@@ -7,7 +7,7 @@ const { TestOpenApiError } = require('../../errors')
 
 // `task.alias.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
 // run the task that defined the alias, and retrieve a specific property at `PATH`
-const template = function(task, { config: { _allTasks: allTasks }, _runTask: runTask }) {
+const template = function({ config: { _allTasks: allTasks }, _runTask: runTask }) {
   const aliases = allTasks.map(taskA => getTaskAliases({ task: taskA, allTasks, runTask }))
   const aliasesA = Object.assign({}, ...aliases)
   return aliasesA

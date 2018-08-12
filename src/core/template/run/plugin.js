@@ -4,32 +4,32 @@ const { addErrorHandler, BugError } = require('../../../errors')
 const { isTemplateName } = require('../../../template')
 
 // Retrieve all `plugin.template`
-const getPluginsVars = function({ task, context, context: { _plugins: plugins } }) {
-  const pluginsVarsMap = plugins.map(plugin => getPluginVars({ plugin, task, context }))
+const getPluginsVars = function({ context, context: { _plugins: plugins } }) {
+  const pluginsVarsMap = plugins.map(plugin => getPluginVars({ plugin, context }))
   const pluginsVarsMapA = Object.assign({}, ...pluginsVarsMap)
 
   const pluginsVars = Object.assign({}, ...Object.values(pluginsVarsMapA))
   return { pluginsVars, pluginsVarsMap: pluginsVarsMapA }
 }
 
-const getPluginVars = function({ plugin, plugin: { name, template }, task, context }) {
+const getPluginVars = function({ plugin, plugin: { name, template }, context }) {
   if (template === undefined) {
     return
   }
 
-  const vars = eGetVars({ plugin, task, context })
+  const vars = eGetVars({ plugin, context })
 
   validateVarNames({ vars, plugin })
 
   return { [name]: vars }
 }
 
-const getVars = function({ plugin: { template }, task, context }) {
+const getVars = function({ plugin: { template }, context }) {
   if (typeof template !== 'function') {
     return template
   }
 
-  const vars = template(task, context)
+  const vars = template(context)
   return vars
 }
 

@@ -28,7 +28,7 @@ const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
 
-  const { vars, pluginsVarsMap } = getVars({ task, context })
+  const { vars, pluginsVarsMap } = getVars({ context })
 
   const taskB = eEvalTemplate(taskA, vars, { pluginsVarsMap })
 
@@ -38,8 +38,8 @@ const run = function(task, context) {
 // Make sure those properties are not checked for templating
 const NO_EVAL_PROPS = ['originalTask', 'key', 'alias']
 
-const getVars = function({ task, context, context: { config } }) {
-  const { pluginsVars, pluginsVarsMap } = getPluginsVars({ task, context })
+const getVars = function({ context, context: { config } }) {
+  const { pluginsVars, pluginsVarsMap } = getPluginsVars({ context })
 
   // Plugin/user-defined template variable have loading priority over core ones.
   // Like this, adding core template variables is non-breaking.

@@ -5,6 +5,7 @@ const { omit } = require('lodash')
 
 const { checkSchema } = require('./check')
 
+// Like `checkSchema()` but validating that the value is a JSON schema v4
 const checkIsSchema = function(opts) {
   const message = getSchemaMessage(opts)
 

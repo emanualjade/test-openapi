@@ -28,16 +28,16 @@ const { templateHandler } = require('./error')
 // `undefined` values are not treated differently than other values.
 
 // Evaluate template
-const evalTemplate = function(data, vars = {}, opts = {}) {
+const evalTemplate = function(data, vars = {}, opts = {}, stack) {
   const recursive = recursiveEval.bind(null, vars, opts)
-  const optsA = { ...opts, vars, recursive }
+  const optsA = { ...opts, vars, stack, recursive }
 
   return crawl(data, evalNode.bind(null, optsA))
 }
 
 // Recursive calls, done automatically when evaluating `$$name`
-const recursiveEval = function(vars, opts, data) {
-  return evalTemplate(data, vars, opts)
+const recursiveEval = function(vars, opts, stack, data) {
+  return evalTemplate(data, vars, opts, stack)
 }
 
 // Evaluate templates in an object or part of an object

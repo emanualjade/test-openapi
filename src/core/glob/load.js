@@ -7,9 +7,12 @@ const { merge } = require('../../template')
 
 // Merge tasks whose name include globbing matching other task names.
 // I.e. special task name to allow for shared properties
-const load = function(tasks) {
+// Also merge `config.glob` to all tasks
+// It is like the glob task `*` except it is set on `config` instead of as a task,
+// making it possible for the user to specify on CLI.
+const load = function(tasks, { config: { glob: globConfig } }) {
   const { globTasks, nonGlobTasks } = splitTasks({ tasks })
-  const tasksA = nonGlobTasks.map(task => mergeGlob({ task, globTasks }))
+  const tasksA = nonGlobTasks.map(task => mergeGlob({ task, globTasks, globConfig }))
   return tasksA
 }
 
@@ -23,13 +26,13 @@ const isGlobTask = function({ key }) {
   return isGlob(key)
 }
 
-const mergeGlob = function({ task, globTasks }) {
+const mergeGlob = function({ task, globTasks, globConfig }) {
   const globTasksA = findGlobTasks({ task, globTasks })
   if (globTasksA.length === 0) {
     return task
   }
 
-  return merge(...globTasksA, task)
+  return merge(globConfig, ...globTasksA, task)
 }
 
 const findGlobTasks = function({ task: { key, path }, globTasks }) {

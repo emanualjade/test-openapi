@@ -9,7 +9,6 @@ const callComplete = async function({
   task,
   task: { error: { nested } = {} },
   reporters,
-  config,
   startData,
   plugins,
 }) {
@@ -21,7 +20,7 @@ const callComplete = async function({
   const taskA = serializeOutput({ task, plugins })
 
   const arg = getArg.bind(null, { task: taskA, plugins })
-  const context = getContext.bind(null, { task: taskA, config, startData, plugins })
+  const context = getContext.bind(null, { task: taskA, startData, plugins })
 
   await callReporters({ reporters, type: 'complete' }, arg, context)
 
@@ -30,17 +29,17 @@ const callComplete = async function({
     return
   }
 
-  await callComplete({ task: { ...nested, isNested: true }, reporters, config, startData, plugins })
+  await callComplete({ task: { ...nested, isNested: true }, reporters, startData, plugins })
 }
 
 const getArg = function({ task, plugins }, { options }) {
   return filterTaskData({ task, options, plugins })
 }
 
-const getContext = function({ task, config, startData, plugins }, { options }) {
+const getContext = function({ task, startData, plugins }, { options }) {
   const silent = isSilentTask({ task, options })
 
-  return { config, startData, plugins, silent }
+  return { startData, plugins, silent }
 }
 
 module.exports = {

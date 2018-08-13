@@ -127,7 +127,7 @@ const MODULE_OPTS = {
 //    Also `plugin.complete()` is still run.
 //  - `complete`: stop the current `complete`, but other tasks are still run.
 
-// `plugin.report(task, { config, pluginNames })` `{function}`
+// `plugin.report(task, { startData, pluginNames })` `{function}`
 // Returns properties to merge to `task.PLUGIN`, but only for reporting.
 // Values will be automatically formatted, and do not have to be strings.
 // Can also return a `title`, shown as a sub-title during reporting.

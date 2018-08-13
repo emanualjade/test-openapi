@@ -7,8 +7,8 @@ const { isObject, merge } = require('../../../utils')
 const { addCoreReportProps } = require('./core')
 
 // Get plugin-specific properties printed on reporting
-const getReportProps = function({ task, config, startData, plugins }) {
-  const { titles, reportProps } = callReportFuncs({ task, config, startData, plugins })
+const getReportProps = function({ task, startData, plugins }) {
+  const { titles, reportProps } = callReportFuncs({ task, startData, plugins })
 
   const title = getTitle({ titles })
 
@@ -25,12 +25,12 @@ const getReportProps = function({ task, config, startData, plugins }) {
 }
 
 // Find and call all `plugin.report()`
-const callReportFuncs = function({ task, config, startData, plugins }) {
+const callReportFuncs = function({ task, startData, plugins }) {
   const pluginNames = plugins.map(({ name }) => name)
 
   // Reporting order will follow core plugins order, then user `config.plugins` order
   const reportResult = plugins.map(plugin =>
-    callReportFunc({ plugin, config, startData, pluginNames, task }),
+    callReportFunc({ plugin, startData, pluginNames, task }),
   )
 
   // Separate `title` from the rest as it is handled differently
@@ -41,13 +41,7 @@ const callReportFuncs = function({ task, config, startData, plugins }) {
 }
 
 // Call `plugin.report()`
-const callReportFunc = function({
-  plugin: { report, name },
-  config,
-  startData,
-  pluginNames,
-  task,
-}) {
+const callReportFunc = function({ plugin: { report, name }, startData, pluginNames, task }) {
   const taskValue = task[name]
 
   // If no `plugin.report()`, reports task as is
@@ -55,7 +49,7 @@ const callReportFunc = function({
     return { [name]: taskValue }
   }
 
-  const newValue = report(taskValue, { config, startData, pluginNames })
+  const newValue = report(taskValue, { startData, pluginNames })
 
   // If not an object, including `undefined`, no need to merge or destructure
   if (!isObject(newValue)) {

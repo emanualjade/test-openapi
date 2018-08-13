@@ -17,7 +17,7 @@ const getReporters = function({ config }) {
 
 // Reporters are specified by using their name in `config.report.REPORTER`
 const getNames = function({ config: { report = {} } }) {
-  const reportA = omitBy(report, value => value !== undefined)
+  const reportA = omitBy(report, value => value === undefined)
   const names = Object.keys(reportA)
   const namesA = difference(names, Object.keys(COMMON_OPTIONS_SCHEMA))
 

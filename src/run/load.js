@@ -11,7 +11,7 @@ const { addOriginalTasks } = require('../tasks')
 //  - `only` plugin must be applied before `report` plugin prints tasks count
 //  - `glob` plugin must be applied before `alias` plugin so users can't target
 //    a glob task
-const loadTasks = async function({ config, config: { tasks }, plugins }) {
+const loadTasks = async function({ config, tasks, plugins }) {
   const allTasks = await runHandlers({
     type: 'load',
     plugins,
@@ -34,7 +34,7 @@ const loadTasks = async function({ config, config: { tasks }, plugins }) {
   //  - add `excluded`: when it needs to be performed on `tasks` only (e.g. `only` plugin)
   const tasksA = allTasksA.filter(({ excluded }) => !excluded)
 
-  return { ...config, _allTasks: allTasksA, tasks: tasksA }
+  return { allTasks: allTasksA, tasks: tasksA }
 }
 
 const mergeReturn = function(input, newInput) {

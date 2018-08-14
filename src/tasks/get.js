@@ -7,7 +7,7 @@ const { parseInput } = require('../serialize')
 const { loadTasks } = require('./load')
 
 // Retrieve tasks files as an array of normalized task objects
-const getTasks = async function({ config, config: { tasks } }) {
+const getTasks = async function({ config: { tasks } }) {
   const tasksA = await loadTasks({ tasks })
 
   validateTasks({ tasks: tasksA })
@@ -15,8 +15,7 @@ const getTasks = async function({ config, config: { tasks } }) {
   const tasksB = normalizeTasks({ tasks: tasksA })
 
   const tasksC = parseTasks({ tasks: tasksB })
-
-  return { ...config, tasks: tasksC }
+  return tasksC
 }
 
 // Validate syntax of task files

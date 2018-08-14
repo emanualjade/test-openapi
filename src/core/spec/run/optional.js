@@ -7,7 +7,7 @@ const { mapValues, omit, omitBy } = require('lodash')
 //  - the parameter is also specified in `task.call.*`
 //    (including as `valid` or `invalid`)
 // This works both top-level and for nested properties
-const removeOptionals = function({ params, call = {} }) {
+const removeOptionals = function({ params, call }) {
   const paramsA = removeTopLevel({ params, call })
   const paramsB = removeNested({ params: paramsA, call })
   return paramsB

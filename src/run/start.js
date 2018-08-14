@@ -13,12 +13,12 @@ const { runHandlers } = require('../plugins')
 //    at each run, so there are many rooms for errors and it creates burden on users.
 //  - make `run` handler a function that returns a function.
 //    This does not allow cleanup though.
-const startTasks = function({ config, plugins }) {
+const startTasks = function({ config, context, plugins }) {
   return runHandlers({
     type: 'start',
     plugins,
     input: {},
-    context: { config },
+    context: { ...context, config },
   })
 }
 

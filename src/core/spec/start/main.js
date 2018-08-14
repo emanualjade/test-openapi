@@ -8,7 +8,7 @@ const { normalizeSpec } = require('./normalize')
 // Parse, validate and normalize OpenAPI specifications (including JSON references)
 // from each `task.spec.definition`, which can be a URL, a file path or directly
 // a JavaScript object
-const start = async function(startData, { config: { _allTasks: allTasks } }) {
+const start = async function(startData, { _allTasks: allTasks }) {
   const tasksGroups = groupTasks({ allTasks })
 
   // Make sure we run all of them in parallel.

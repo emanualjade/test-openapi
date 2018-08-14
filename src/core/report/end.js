@@ -6,25 +6,23 @@ const { filterTaskData } = require('./level')
 const { callReporters } = require('./call')
 
 // Ends reporting
-const end = async function(
-  tasks,
-  {
+const end = async function(tasks, context) {
+  const {
     startData: {
       report: { reporters },
     },
     _plugins: plugins,
-  },
-) {
+  } = context
+
   const tasksA = tasks.map(task => serializeOutput({ task, plugins }))
 
   const arg = getArg.bind(null, { tasks: tasksA, plugins })
 
-  await callReporters({ reporters, type: 'end' }, arg)
+  await callReporters({ reporters, type: 'end' }, arg, context)
 }
 
 const getArg = function({ tasks, plugins }, { options }) {
-  const tasksA = tasks.map(task => filterTaskData({ task, options, plugins }))
-  return { tasks: tasksA }
+  return tasks.map(task => filterTaskData({ task, options, plugins }))
 }
 
 module.exports = {

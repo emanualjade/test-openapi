@@ -7,22 +7,22 @@ const { getHeader } = require('./header')
 const { printReportProps } = require('./report_props')
 
 // Print task errors and update spinner
-const complete = function({ options: { spinner }, ...task }, { startData, plugins, silent }) {
+const complete = function(task, { options: { spinner }, silent, ...context }) {
   if (silent) {
     return ''
   }
 
   spinner.clear()
 
-  const message = getMessage({ task, startData, plugins })
+  const message = getMessage({ task, context })
   return message
 }
 
 // Retrieve task's message to print
-const getMessage = function({ task, startData, plugins }) {
+const getMessage = function({ task, context }) {
   const resultType = getResultType(task)
 
-  const { title, reportProps } = getReportProps({ task, startData, plugins })
+  const { title, reportProps } = getReportProps({ task, context })
 
   const header = getHeader({ task, title, resultType })
 

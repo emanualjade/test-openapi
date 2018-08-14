@@ -9,8 +9,8 @@ const callComplete = async function({
   task,
   task: { error: { nested } = {} },
   reporters,
-  startData,
   plugins,
+  context,
 }) {
   // JSON serialization is performed only during reporting because:
   //  - `runTask()` should return non-serialized tasks
@@ -20,26 +20,25 @@ const callComplete = async function({
   const taskA = serializeOutput({ task, plugins })
 
   const arg = getArg.bind(null, { task: taskA, plugins })
-  const context = getContext.bind(null, { task: taskA, startData, plugins })
+  const callContext = getContext.bind(null, { task: taskA, context })
 
-  await callReporters({ reporters, type: 'complete' }, arg, context)
+  await callReporters({ reporters, type: 'complete' }, arg, callContext)
 
   // Recurse over `task.error.nested`
   if (nested === undefined) {
     return
   }
 
-  await callComplete({ task: { ...nested, isNested: true }, reporters, startData, plugins })
+  await callComplete({ task: { ...nested, isNested: true }, reporters, plugins, context })
 }
 
 const getArg = function({ task, plugins }, { options }) {
   return filterTaskData({ task, options, plugins })
 }
 
-const getContext = function({ task, startData, plugins }, { options }) {
+const getContext = function({ task, context }, { options }) {
   const silent = isSilentTask({ task, options })
-
-  return { startData, plugins, silent }
+  return { ...context, silent }
 }
 
 module.exports = {

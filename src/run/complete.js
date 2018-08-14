@@ -4,13 +4,13 @@ const { addErrorHandler } = require('../errors')
 const { runHandlers } = require('../plugins')
 
 // Run each `plugin.complete()`
-const completeTask = async function({ task, startData, plugins, config }) {
+const completeTask = async function({ task, context, plugins }) {
   // `task` cannot be modified
   await runHandlers({
     type: 'complete',
     plugins,
     input: task,
-    context: { config, startData },
+    context,
   })
 
   return task

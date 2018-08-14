@@ -6,7 +6,7 @@ const { getSummary } = require('../../utils')
 const { isSilentType } = require('../../level')
 
 // Show notification at end of run
-const end = function({ tasks, options }) {
+const end = function(tasks, { options }) {
   const opts = getOpts({ tasks, options })
 
   if (opts === undefined) {

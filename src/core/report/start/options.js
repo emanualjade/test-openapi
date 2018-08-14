@@ -9,15 +9,15 @@ const COMMON_OPTIONS_SCHEMA = require('./common_options_schema')
 const { normalizeOutput } = require('./output')
 
 // Add `config.report.REPORTER.*` as `reporter.options`
-const addOptions = async function({ reporters, config }) {
-  const promises = reporters.map(reporter => addReporterOptions({ reporter, config }))
+const addOptions = async function({ reporters, config, context }) {
+  const promises = reporters.map(reporter => addReporterOptions({ reporter, config, context }))
   const reportersA = await Promise.all(promises)
 
   const reportersB = reportersA.filter(reporter => reporter !== undefined)
   return reportersB
 }
 
-const addReporterOptions = async function({ reporter, config }) {
+const addReporterOptions = async function({ reporter, config, context }) {
   const options = getOptions({ reporter, config })
 
   validateOptions({ reporter, options })
@@ -29,7 +29,7 @@ const addReporterOptions = async function({ reporter, config }) {
     return
   }
 
-  const optionsB = transformOptions({ reporter, options: optionsA, config })
+  const optionsB = transformOptions({ reporter, options: optionsA, context })
 
   return { ...reporter, options: optionsB }
 }
@@ -82,12 +82,12 @@ const normalizeOptions = async function({ options, reporter }) {
 // This can only add new options not transform existing ones.
 // In particular, it cannot change `level|output` as `level` needs to be used
 // before this point (when checking whether level is `silent`)
-const transformOptions = function({ reporter: { options: reporterOptions }, options, config }) {
+const transformOptions = function({ reporter: { options: reporterOptions }, options, context }) {
   if (reporterOptions === undefined) {
     return options
   }
 
-  const optionsA = reporterOptions({ options, config })
+  const optionsA = reporterOptions({ ...context, options })
   return { ...optionsA, ...options }
 }
 

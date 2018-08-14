@@ -26,9 +26,9 @@ const callReporter = async function(
     return
   }
 
-  const [arg, ...argsA] = args.map(arg => result(arg, { options }))
+  const argsA = getArgs({ args, options })
 
-  const message = await reporter[type]({ ...arg, options }, ...argsA)
+  const message = await reporter[type](...argsA)
 
   if (message !== undefined) {
     output.write(message)
@@ -37,6 +37,12 @@ const callReporter = async function(
   if (type === 'end') {
     await endReporting({ output })
   }
+}
+
+const getArgs = function({ args, options }) {
+  const [arg, context] = args.map(arg => result(arg, { options }))
+  const argsA = [arg, { ...context, options }].filter(arg => arg !== undefined)
+  return argsA
 }
 
 const endReporting = async function({ output }) {

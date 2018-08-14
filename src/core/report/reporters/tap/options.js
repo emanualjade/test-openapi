@@ -5,7 +5,7 @@ const { green, red, gray, yellow } = require('../../utils')
 const { Tap } = require('./serializer')
 
 // Set TAP state
-const options = function({ config: { tasks } }) {
+const options = function({ _tasks: tasks }) {
   const count = tasks.length
   const tap = new Tap({ count, colors: THEME })
   return { tap }

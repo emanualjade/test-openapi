@@ -4,14 +4,14 @@ const { addErrorHandler, TestOpenApiError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 
 // Run each `plugin.run()`
-const runTask = async function({ task, config, startData, plugins, nestedPath }) {
-  const taskA = await eRunAll({ task, config, startData, plugins, nestedPath })
+const runTask = async function({ task, context, plugins, nestedPath }) {
+  const taskA = await eRunAll({ task, context, plugins, nestedPath })
 
   const taskB = getTaskReturn({ task: taskA, plugins })
   return taskB
 }
 
-const runAll = function({ task, task: { skipped }, config, startData, plugins, nestedPath }) {
+const runAll = function({ task, task: { skipped }, context, plugins, nestedPath }) {
   // Task marked as skipped, e.g. by `skip|only` plugins
   // Only `run` plugin handlers are skipped, i.e. `start`, `complete` and `end`
   // handlers are still run for those tasks.
@@ -21,13 +21,13 @@ const runAll = function({ task, task: { skipped }, config, startData, plugins, n
     return task
   }
 
-  const context = getContext({ config, startData, plugins, nestedPath })
+  const contextA = getContext({ context, plugins, nestedPath })
 
   return runHandlers({
     type: 'run',
     plugins,
     input: task,
-    context,
+    context: contextA,
     errorHandler: runPluginHandler,
     stopFunc,
   })
@@ -46,25 +46,25 @@ const runAllHandler = function(error) {
 
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
-const getContext = function({ config, startData, plugins, nestedPath }) {
-  const recursiveRunTaskA = recursiveRunTask.bind(null, { config, startData, plugins, nestedPath })
+const getContext = function({ context, plugins, nestedPath }) {
+  const recursiveRunTaskA = recursiveRunTask.bind(null, { context, plugins, nestedPath })
 
-  const context = { config, startData, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
-  return context
+  const contextA = { ...context, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
+  return contextA
 }
 
 // Pass simplified `_runTask()` for recursive tasks
 // Tasks can use `_nestedPath` to know if this is a recursive call
 // As opposed to regular `_runTask()`, failed task throws.
 const recursiveRunTask = async function(
-  { config, startData, plugins, nestedPath },
+  { context, plugins, nestedPath },
   { task, task: { key }, self, getError },
 ) {
   checkRecursion({ nestedPath, key, self })
 
   const nestedPathA = appendNestedPath({ nestedPath, key, self })
 
-  const taskA = await runTask({ task, config, startData, plugins, nestedPath: nestedPathA })
+  const taskA = await runTask({ task, context, plugins, nestedPath: nestedPathA })
 
   const { error } = taskA
 

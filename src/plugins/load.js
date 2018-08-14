@@ -10,12 +10,11 @@ const { verifyConfig } = require('./verify')
 
 // Retrieve `config.plugins` then `require()` all the plugins
 // Also validate their configuration
-const loadPlugins = function({ config: { plugins, ...config } }) {
+const loadPlugins = function({ config, config: { plugins } }) {
   const pluginsA = normalizePlugins({ plugins })
 
   const pluginsB = pluginsA.map(name => loadPlugin({ name, config }))
-
-  return { config, plugins: pluginsB }
+  return pluginsB
 }
 
 const normalizePlugins = function({ plugins }) {
@@ -58,7 +57,7 @@ const MODULE_OPTS = {
 // `start`, i.e. before all tasks:
 //   - `spec`: parse, validate and normalize an OpenAPI specification
 //   - `report`: start reporting
-// `task`, i.e. for each task:
+// `run`, i.e. for each task:
 //   - `repeat`: repeat each task `config.repeat` times
 //   - `template`: substitute template values
 //   - `spec`: add OpenAPI specification to `task.call|validate.*`
@@ -84,48 +83,53 @@ const MODULE_OPTS = {
 //  - `plugin.load(tasks, { config, pluginNames, _plugins })` `{function}`
 //     - fired before all tasks
 //     - only for advanced plugins
-//  - `plugin.start(startData, { config, pluginNames, _plugins })` `{function}`
+//  - `plugin.start(startData, { config, pluginNames, _plugins, _tasks, _allTasks })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { config, startData, pluginNames, _plugins, _runTask, _nestedPath })` `{function}`
+//  - `plugin.run(task, { startData, pluginNames, _plugins, _tasks, _allTasks, _runTask, _nestedPath })` `{function}`
 //     - fired for each task
-//  - `plugin.complete(task, { config, startData, pluginNames, _plugins })` `{function}`
+//  - `plugin.complete(task, { startData, pluginNames, _plugins, _tasks, _allTasks })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
 //     - only for advanced plugins
-//  - `plugin.end(tasks, { config, startData, pluginNames, _plugins })` `{function}`
+//  - `plugin.end(tasks, { config, startData, pluginNames, _plugins, _tasks, _allTasks })` `{function}`
 //     - fired after all tasks
 // Arguments:
 //   - available depends on the handler type, but can be:
 //      - `config` `{object}`: the configuration object (after being modified by `plugin.start()`)
+//         As opposed to task configuration, the global configuration is only meant
+//         for `start` and `end` handlers, not `run` nor `complete` handlers.
 //      - `startData` `{object}`: the object returned by each `start` handler
 //      - `task` `{object}`: same object as the one specified in tasks files
-//      - `tasks` `{array}`
+//      - `tasks` `{array}`: all run tasks after being modified by `run` and `complete` handlers
 //      - `pluginNames` `{array}`: list of plugins names
-//   - the following ones are only for advanced usage:
+//   - the following ones are only for advanced plugins:
 //      - `_plugins` `{array}`: list of available plugins
 //      - `_runTask({ task, property, self })` `{function}`:
 //         function allowing a task to fire another task
 //      - `_nestedPath` `{array}`: set when task was run through recursive `_runTask()`
+//      - `_tasks` `{array}`: all tasks that will be run, after `load` handlers applied
+//      - `_allTasks` `{array}`: all tasks that will be run or not, after `load` handlers applied
 //   - `load`, `start` and `run` can modify their first argument by returning it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.
-//   - the second and third arguments are read-only.
-//   - the third argument is only for advanced plugins.
+//   - the second argument is read-only.
 // Throwing an exception in:
 //  - `load`, `start` or `end`: will stop the whole run
 //  - `run`: stop the current task, but other tasks are still run.
 //    Also `plugin.complete()` is still run.
 //  - `complete`: stop the current `complete`, but other tasks are still run.
 
-// `plugin.report(task, { startData, pluginNames })` `{function}`
+// `plugin.report(task, context)` `{function}`
 // Returns properties to merge to `task.PLUGIN`, but only for reporting.
 // Values will be automatically formatted, and do not have to be strings.
 // Can also return a `title`, shown as a sub-title during reporting.
+// `context` is same as `complete` handlers
 
 // `plugin.template` or `plugin.template(context)` `{object|function}`
 // Add plugin-specific template variables.
 // Template variables have same syntax and semantics as `config.template`
 // If a function, gets same arguments as `run` handler and must return template
 // variables.
+// `context` is same as `run` handlers
 
 module.exports = {
   loadPlugins,

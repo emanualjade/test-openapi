@@ -2,7 +2,7 @@
 
 // Ends TAP v13 output
 // Write # tests|pass|fail|skip|ok comments at the end
-const end = function({ options: { tap } }) {
+const end = function(tasks, { options: { tap } }) {
   return tap.end()
 }
 

@@ -16,17 +16,19 @@ const addSpecToCall = function({ call, operation: { params } }) {
     return call
   }
 
-  const paramsA = removeOptionals({ params, call })
+  const callA = call === undefined ? {} : call
 
-  const { call: callA, specialValues } = getSpecialValues({ call })
+  const paramsA = removeOptionals({ params, call: callA })
+
+  const { call: callB, specialValues } = getSpecialValues({ call: callA })
 
   const paramsB = setInvalidParams({ params: paramsA, specialValues })
 
   const paramsC = mapValues(paramsB, schema => $$random(schema))
 
   // Specification params have less priority than `task.call.*`
-  const callB = merge(paramsC, callA)
-  return callB
+  const callC = merge(paramsC, callB)
+  return callC
 }
 
 module.exports = {

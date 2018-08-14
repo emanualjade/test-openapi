@@ -4,7 +4,7 @@ const { getSummary } = require('../../utils')
 const { isSilentTask } = require('../../level')
 
 // JSON reporter
-const end = function({ options, options: { spinner }, tasks }) {
+const end = function(tasks, { options, options: { spinner } }) {
   spinner.stop()
 
   const tasksA = getTasks({ tasks, options })

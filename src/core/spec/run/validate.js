@@ -4,7 +4,7 @@ const { mapKeys, difference, intersection } = require('lodash')
 const { STATUS_CODES } = require('statuses')
 
 const { TestOpenApiError } = require('../../../errors')
-const { getWordsList } = require('../../../utils')
+const { getWordsList, merge } = require('../../../utils')
 const { parseStatus, serializeStatus } = require('../../validate/run/status')
 
 // Add OpenAPI specification to `task.validate.*`
@@ -26,7 +26,8 @@ const addSpecToValidate = function({
     handleDefaultResponse({ responseStatus, responses }),
   )
 
-  return { status, ...validate, ...responsesA }
+  const validateA = merge({ status }, validate, responsesA)
+  return validateA
 }
 
 // Modifies `validate.status` to only allow status codes described in the specification.

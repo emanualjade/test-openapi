@@ -54,12 +54,13 @@ const callReportFunc = function({ plugin: { report, name }, context, task }) {
   }
 
   const { title, ...reportProps } = newValue
-  // Skip `undefined` values returned by `plugin.report()`
-  const reportPropsA = removeEmptyProps(reportProps)
 
   // Merge `plugin.report()` to task.PLUGIN.*
   // It should have priority, but also be first in properties order
-  const reportPropsB = { ...reportPropsA, ...taskValue, ...reportPropsA }
+  const reportPropsA = { ...reportProps, ...taskValue, ...reportProps }
+
+  // `plugin.report()` can return `undefined` to remove `task.*` from output
+  const reportPropsB = removeEmptyProps(reportPropsA)
 
   if (Object.keys(reportPropsB).length === 0 && taskValue === undefined) {
     return { title }

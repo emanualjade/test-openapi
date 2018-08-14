@@ -5,6 +5,12 @@ const { addOriginalTasks } = require('../tasks')
 
 // Run each `plugin.load()`
 // Goal is to modify `tasks`.
+// `run` handlers should be prefered, but this is for the cases where `start`
+// handlers `tasks|allTasks` arguments require the modification to have already
+// applied, e.g.:
+//  - `only` plugin must be applied before `report` plugin prints tasks count
+//  - `glob` plugin must be applied before `alias` plugin so users can't target
+//    a glob task
 const loadTasks = async function({ config, config: { tasks }, plugins }) {
   const allTasks = await runHandlers({
     type: 'load',
@@ -16,9 +22,16 @@ const loadTasks = async function({ config, config: { tasks }, plugins }) {
 
   const allTasksA = addOriginalTasks({ tasks: allTasks })
 
-  // While `skipped` tasks are still returned and reported, `excluded` tasks
-  // are not.
-  // They still need to be available in `allTasks` for recursive `_runTask()`
+  // `skipped` vs `excluded`:
+  //  - `skipped` tasks are still returned and reported (e.g. `skip` plugin)
+  //  - `excluded` tasks are not (e.g. `only` plugin)
+  // `tasks` vs `allTasks`:
+  //  - `tasks` exclude `excluded` tasks
+  //  - `allTasks` include `excluded` tasks (e.g. for recursive `_runTask()`)
+  // Load handler can either:
+  //  - transform task (including filtering it) then return it: when it needs
+  //    to be performed on both `tasks` and `allTasks` (e.g. `glob` plugin)
+  //  - add `excluded`: when it needs to be performed on `tasks` only (e.g. `only` plugin)
   const tasksA = allTasksA.filter(({ excluded }) => !excluded)
 
   return { ...config, _allTasks: allTasksA, tasks: tasksA }

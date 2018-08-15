@@ -66,7 +66,7 @@ const isTemplate = function(data) {
 
 // Check if it is `$$name` (but not `$$$name`)
 const isTemplateName = function({ name }) {
-  return TEMPLATE_REGEXP.test(name) && !isEscapeName({ name })
+  return TEMPLATE_NAME_REGEXP.test(name) && !isEscapeName({ name })
 }
 
 // To escape an object that could be taken for a template (but is not), one can
@@ -103,6 +103,8 @@ const isEscapeName = function({ name }) {
 // dot/bracket notations `.[]`
 const TEMPLATE_REGEXP = /^\$\$[\w-.[\]]+$/
 const TEMPLATE_REGEXP_GLOBAL = /\$\$[\w-.[\]]+/g
+// Matches `$$name` where `name` can only inclue `A-Za-z0-9_-`
+const TEMPLATE_NAME_REGEXP = /^\$\$[\w-]+$/
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
 const TEMPLATE_PREFIX = '$$'
 const TEMPLATE_ESCAPE = '$'

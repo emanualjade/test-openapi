@@ -4,6 +4,8 @@ const { addErrorHandler, BugError } = require('../../../errors')
 const { getPath } = require('../../../utils')
 const { isTemplateName } = require('../../../template')
 
+const { wrapTemplateVars } = require('./check')
+
 // Retrieve all `plugin.template`
 const getPluginsVars = function({ context, context: { _plugins: plugins } }) {
   const pluginsVarsMap = plugins.map(plugin => getPluginVars({ plugin, context }))
@@ -22,7 +24,9 @@ const getPluginVars = function({ plugin, plugin: { name, template }, context }) 
 
   validateVarNames({ vars, plugin })
 
-  return { [name]: vars }
+  const varsA = wrapTemplateVars({ vars, plugin })
+
+  return { [name]: varsA }
 }
 
 const getVars = function({ plugin: { template }, context }) {

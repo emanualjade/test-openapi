@@ -5,7 +5,7 @@ const { pick, omit } = require('lodash')
 const { promiseThen } = require('../../../utils')
 const { addErrorHandler } = require('../../../errors')
 const { evalTemplate } = require('../../../template')
-const coreVars = require('../../../template_vars')
+const coreVars = require('../variables')
 
 const { getPluginsVars } = require('./plugin')
 const { templateHandler } = require('./error')

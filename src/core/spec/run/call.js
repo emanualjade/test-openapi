@@ -3,7 +3,7 @@
 const { mapValues } = require('lodash')
 
 const { merge } = require('../../../utils')
-const { $$random } = require('../../../template_vars')
+const { $$random } = require('../../template/variables')
 
 const { getSpecialValues } = require('./special')
 const { removeOptionals } = require('./optional')

@@ -2,8 +2,8 @@
 
 const jsonSchemaFaker = require('json-schema-faker')
 
-const { stringifyFlat } = require('../../utils')
-const { checkIsSchema } = require('../../validation')
+const { stringifyFlat } = require('../../../../utils')
+const { checkIsSchema } = require('../../../../validation')
 
 const { addCustomFormats } = require('./format')
 

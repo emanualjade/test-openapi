@@ -1,6 +1,7 @@
 'use strict'
 
 const { addErrorHandler, BugError } = require('../../../errors')
+const { getPath } = require('../../../utils')
 const { isTemplateName } = require('../../../template')
 
 // Retrieve all `plugin.template`
@@ -56,10 +57,11 @@ const validateVarName = function({ name, plugin }) {
     return
   }
 
+  const property = getPath(['plugin', 'template', name])
   const module = `plugin-${plugin.name}`
   throw new BugError(
-    `'plugin.template' returned a template variable with an invalid name: ${name}`,
-    { value: name, module },
+    `'plugin.template' returned a template variable with an invalid name '${name}': it must be prefixed with $$ and only contain letters, digits, underscores and dashes`,
+    { value: name, property, module },
   )
 }
 

@@ -72,13 +72,17 @@ const validateVarName = function({ name, plugin }) {
   )
 }
 
+// Ensure `plugin.template` merge priority follows `plugins` order
+// Core template variables always have least priority
+// Plugin/user-defined template variable have loading priority over core ones.
+// Like this, adding core template variables is non-breaking.
+// Also this allows overriding / monkey-patching core (which can be
+// either good or bad).
 const mergePluginsVars = function({ plugins, pluginsVarsMap }) {
-  // Ensure `plugin.template` merge priority follows `plugins` order
   const pluginsVars = plugins
     .filter(({ name }) => name !== 'template')
     .map(({ name }) => pluginsVarsMap[name])
     .reverse()
-  // Core template variables always have least priority
   const pluginsVarsA = Object.assign({}, pluginsVarsMap.template, ...pluginsVars)
   return pluginsVarsA
 }

@@ -5,7 +5,6 @@ const { pick, omit } = require('lodash')
 const { promiseThen } = require('../../../utils')
 const { addErrorHandler } = require('../../../errors')
 const { evalTemplate } = require('../../../template')
-const coreVars = require('../variables')
 
 const { getPluginsVars } = require('./plugin')
 const { templateHandler } = require('./error')
@@ -43,11 +42,7 @@ const NO_EVAL_PROPS = ['originalTask', 'key', 'alias', 'template']
 const getVars = function({ task: { template: taskTemplates }, context }) {
   const { pluginsVars, pluginsVarsMap } = getPluginsVars({ context })
 
-  // Plugin/user-defined template variable have loading priority over core ones.
-  // Like this, adding core template variables is non-breaking.
-  // Also this allows overriding / monkey-patching core (which can be
-  // either good or bad).
-  const vars = { ...coreVars, ...pluginsVars, ...taskTemplates }
+  const vars = { ...pluginsVars, ...taskTemplates }
 
   return { vars, pluginsVarsMap }
 }

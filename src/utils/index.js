@@ -19,4 +19,5 @@ module.exports = {
   ...require('./path'),
   ...require('./json_pointer'),
   ...require('./string'),
+  ...require('./cardinal'),
 }

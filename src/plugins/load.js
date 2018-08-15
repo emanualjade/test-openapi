@@ -77,6 +77,14 @@ const MODULE_OPTS = {
 // `plugin.config.task` `{object}`
 // JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
 
+// `plugin.config['template.$$NAME']` `{object|object[]}`
+// JSON schema describing the arguments to the template helper function `$$name`.
+// `$$name` must be returned by `plugin.template`.
+// Note that this validates the helper's argument, not the template variable itself
+// (which must be a function).
+// Can use an array of JSON schemas to describe several positional arguments.
+// Arguments are required unless `jsonSchema.x-optional` is `true`
+
 // `plugin.load|start|run|complete|end` `{function|function[]}`
 // Handlers, i.e. functions fired by each plugin. This is where the logic is.
 // Types:

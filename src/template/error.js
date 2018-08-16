@@ -1,5 +1,7 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { getPath } = require('../utils')
 
 // Exceptions thrown during template evaluation
@@ -34,9 +36,14 @@ const TEMPLATE_ERROR_MESSAGE = 'Error when evaluating template'
 // In case of recursive template, the top-level node should prevail.
 const setErrorProps = function({ error, data, path }) {
   const property = getPath(path)
-  Object.assign(error, { property, value: data })
-  // `error.expected` does not make any more sense since we remove `error.value`
-  delete error.expected
+
+  // We move template error attributes from `error.*` to `error.value.*`
+  // to allow `error.*` to set its own attributes, e.g. `error.property` below
+  const errorProps = omit(error, 'name')
+  Object.keys(errorProps).forEach(errorProp => delete error[errorProp])
+  const value = { template: data, ...errorProps }
+
+  Object.assign(error, { property, value })
 }
 
 module.exports = {

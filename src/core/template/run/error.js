@@ -27,9 +27,9 @@ const addPlugin = function({ error, error: { value, module }, pluginsVarsMap }) 
 
 // Find the plugin that created this template variable (if it's coming from a
 // `plugin.template`)
-const findPlugin = function({ value, pluginsVarsMap }) {
+const findPlugin = function({ value: { template }, pluginsVarsMap }) {
   // Should never return `undefined` since `error.value` should always be a template
-  const { name } = parseTemplate(value)
+  const { name } = parseTemplate(template)
 
   const plugin = Object.entries(pluginsVarsMap).find(([, pluginsVars]) =>
     pluginsVars.propertyIsEnumerable(name),

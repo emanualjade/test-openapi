@@ -49,8 +49,18 @@ const getErrorProps = function({
   opts: { schemaProp, props },
   error: { value, schema, valuePath, schemaPath },
 }) {
+  const property = getProperty({ schemaProp, valuePath, schemaPath })
+  return { value, schema, ...property, ...props }
+}
+
+const getProperty = function({ schemaProp, valuePath, schemaPath }) {
   const property = schemaProp === undefined ? valuePath : schemaPath
-  return { value, schema, property, ...props }
+
+  if (property === '') {
+    return
+  }
+
+  return { property }
 }
 
 module.exports = {

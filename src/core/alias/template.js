@@ -2,7 +2,7 @@
 
 const { mapValues, omitBy } = require('lodash')
 
-const { get } = require('../../utils')
+const { get, tryGet } = require('../../utils')
 const { TestOpenApiError } = require('../../errors')
 
 // `task.alias.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
@@ -57,11 +57,14 @@ const getTaskProp = function({ task, task: { key }, value }) {
 
   const taskProp = get(task, path)
 
-  if (taskProp === undefined && !options.includes('optional')) {
-    throw new TestOpenApiError(`task '${key}' did not return any property '${path}'`)
+  if (taskProp !== undefined || options.includes('optional')) {
+    return taskProp
   }
 
-  return taskProp
+  const { wrongPath, value: valueA } = tryGet(task, path)
+  throw new TestOpenApiError(`task '${key}' did not return any property '${wrongPath}'`, {
+    value: valueA,
+  })
 }
 
 // Parse '[PATH] [OPTS,...]'

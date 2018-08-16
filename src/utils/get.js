@@ -3,12 +3,9 @@
 // Like Lodash.get() except takes into account objects whose properties have dots
 // E.g. _.get({ a: { 'b.c': true } }, 'a.b.c') does not work
 const get = function(value, path) {
-  const pathA = path.replace(BRACKETS_REGEXP, '.$1')
+  const pathA = removeBrackets({ path })
   return getProperty(value, pathA)
 }
-
-// Allow array bracket notations `[integer]`
-const BRACKETS_REGEXP = /\[([\d]+)\]/g
 
 const getProperty = function(value, path) {
   // We can only follow `path` within objects and arrays
@@ -46,6 +43,64 @@ const getLargestString = function(memo, string) {
   return memo
 }
 
+// Similar to `get()` but using the longest path that does not return `undefined`.
+// Also set the parent path as a top-level property.
+const tryGet = function(value, path) {
+  const pathA = splitPath({ path })
+
+  // Find longest path that does not return `undefined`
+  const wrongIndex = pathA.findIndex((_, index) => isWrongPath({ path: pathA, value, index }))
+
+  // If the first path part already returns `undefined`, return top-value value as is
+  if (wrongIndex === 0) {
+    return { wrongPath: pathA[0], value }
+  }
+
+  const wrongPath = getWrongPath({ path: pathA, index: wrongIndex })
+
+  const parentPath = getParentPath({ path: pathA, index: wrongIndex })
+  const childValue = get(value, parentPath)
+  const valueA = { [parentPath]: childValue }
+
+  return { wrongPath, value: valueA }
+}
+
+const splitPath = function({ path }) {
+  const pathA = removeBrackets({ path })
+  const pathB = pathA.split('.')
+  return pathB
+}
+
+const isWrongPath = function({ path, value, index }) {
+  const pathB = path.slice(0, index + 1).join('.')
+  return get(value, pathB) === undefined
+}
+
+const getWrongPath = function({ path, index }) {
+  // When no value returned `undefined`
+  if (index === -1) {
+    return
+  }
+
+  return path.slice(0, index + 1).join('.')
+}
+
+const getParentPath = function({ path, index }) {
+  if (index === -1) {
+    return path.join('.')
+  }
+
+  return path.slice(0, index).join('.')
+}
+
+// Allow array bracket notations `[integer]` by replacing them to dots
+const removeBrackets = function({ path }) {
+  return path.replace(BRACKETS_REGEXP, '.$1').replace(/^\./, '')
+}
+
+const BRACKETS_REGEXP = /\[([\d]+)\]/g
+
 module.exports = {
   get,
+  tryGet,
 }

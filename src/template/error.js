@@ -39,12 +39,15 @@ const setErrorProps = function({ error, data, path }) {
 
   // We move template error attributes from `error.*` to `error.value.*`
   // to allow `error.*` to set its own attributes, e.g. `error.property` below
-  const errorProps = omit(error, 'name')
+  const errorProps = omit(error, KEPT_ERROR_PROPS)
   Object.keys(errorProps).forEach(errorProp => delete error[errorProp])
   const value = { template: data, ...errorProps }
 
   Object.assign(error, { property, value })
 }
+
+// Do not move those error properties
+const KEPT_ERROR_PROPS = ['name', 'nested']
 
 module.exports = {
   templateHandler,

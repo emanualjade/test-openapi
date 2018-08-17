@@ -28,6 +28,7 @@
   "dependencies": {
     "ajv": "^6.5.1",
     "chalk": "^2.4.1",
+    "cli-truncate": "^1.1.0",
     "cross-fetch": "^2.2.2",
     "deepmerge": "^2.1.1",
     "emphasize": "^2.0.0",

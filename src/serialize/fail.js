@@ -20,7 +20,7 @@ const addSerializeFail = function({ task, error, plugins }) {
 
 const getSerializeFail = function({ error: { message, value, path }, plugins }) {
   const messageA = capitalize(message)
-  // Make sure `error.value` is JSON serializable
+  // Make sure `error.value` is serializable
   const valueA = String(value)
   const property = getPath(['task', ...path])
   const module = guessModule({ path, plugins })

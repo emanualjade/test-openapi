@@ -36,10 +36,14 @@ const KEYS = {
   // We allow it under OpenAPI 2 using `x-nullable` which is used by other libraries
   // like Redoc.
   'x-nullable': 'nullable',
-  // OpenAPI 3 `oneOf` does not exist in OpenAPI 2, but it's very useful because
-  // it allows alternatives of `type`,
-  // We allow it under OpenAPI 2 using `x-oneOf`.
+  // JSON schema v4 `oneOf|anyOf|not` does not exist in OpenAPI 2
+  // JSON schema v4 `additionalItems|dependencies` does not exist in OpenAPI 2/3
+  // We allow it using `x-oneOf|x-anyOf|x-not|x-additionalItems|dependencies`.
   'x-oneOf': 'oneOf',
+  'x-anyOf': 'anyOf',
+  'x-not': 'not',
+  'x-additionalItems': 'additionalItems',
+  'x-dependencies': 'dependencies',
 }
 
 module.exports = {

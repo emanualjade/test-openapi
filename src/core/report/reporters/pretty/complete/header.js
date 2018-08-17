@@ -16,9 +16,9 @@ const { MARKS, COLORS } = require('../constants')
 // Header of the the message, with:
 //  - a symbol indicating whether the task passed, failed or was skipped
 //  - the task key
-//  - the `title` (as returned by `plugin.report()`)
-const getHeader = function({ task, task: { isNested }, title, resultType }) {
-  const subKeys = getSubKeys({ task, title })
+//  - the `titles` (as returned by `plugin.report()`)
+const getHeader = function({ task, task: { isNested }, titles, resultType }) {
+  const subKeys = getSubKeys({ task, titles })
 
   if (isNested) {
     return getNestedHeader({ task, subKeys })
@@ -27,9 +27,9 @@ const getHeader = function({ task, task: { isNested }, title, resultType }) {
   return getFullHeader({ task, subKeys, resultType })
 }
 
-// Show `task.path` and all concatenated `title` from `plugin.report()`
-const getSubKeys = function({ task: { path }, title }) {
-  return [path, title].map(getSubKey).join('')
+// Show `task.path` and all `titles` from `plugin.report()`
+const getSubKeys = function({ task: { path }, titles }) {
+  return [path, titles.join('\n')].map(getSubKey).join('')
 }
 
 const getSubKey = function(string) {

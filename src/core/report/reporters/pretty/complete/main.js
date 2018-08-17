@@ -22,9 +22,9 @@ const complete = function(task, { options: { spinner }, silent, ...context }) {
 const getMessage = function({ task, context }) {
   const resultType = getResultType(task)
 
-  const { title, reportProps } = getReportProps({ task, context })
+  const { titles, reportProps } = getReportProps({ task, context })
 
-  const header = getHeader({ task, title, resultType })
+  const header = getHeader({ task, titles, resultType })
 
   const reportPropsA = printReportProps({ reportProps, resultType })
 

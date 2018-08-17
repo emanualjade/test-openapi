@@ -10,8 +10,6 @@ const { addCoreReportProps } = require('./core')
 const getReportProps = function({ task, context }) {
   const { titles, reportProps } = callReportFuncs({ task, context })
 
-  const title = getTitle({ titles })
-
   const reportPropsA = addCoreReportProps({ reportProps, task })
 
   const reportPropsB = reportPropsA.map(removeEmptyProps)
@@ -21,7 +19,7 @@ const getReportProps = function({ task, context }) {
   // core props < core plugins < user plugins
   const reportPropsC = merge(...reportPropsB)
 
-  return { title, reportProps: reportPropsC }
+  return { titles, reportProps: reportPropsC }
 }
 
 // Find and call all `plugin.report()`
@@ -30,7 +28,7 @@ const callReportFuncs = function({ task, context, context: { _plugins: plugins }
   const reportResult = plugins.map(plugin => callReportFunc({ plugin, context, task }))
 
   // Separate `title` from the rest as it is handled differently
-  const titles = reportResult.map(({ title }) => title)
+  const titles = reportResult.map(({ title }) => title).filter(isDefinedTitle)
   const reportProps = reportResult.map(props => omit(props, 'title'))
 
   return { titles, reportProps }
@@ -67,12 +65,6 @@ const callReportFunc = function({ plugin: { report, name }, context, task }) {
   }
 
   return { title, [name]: reportPropsB }
-}
-
-// Retrieve printed task title by concatenating all `title` from `plugin.report()`
-// result
-const getTitle = function({ titles }) {
-  return titles.filter(isDefinedTitle).join(' ')
 }
 
 const isDefinedTitle = function(title) {

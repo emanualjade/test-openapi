@@ -26,7 +26,7 @@
     "url": "https://github.com/Cardero-X/test-openapi/issues"
   },
   "dependencies": {
-    "ajv": "^6.5.1",
+    "ajv": "^6.5.3",
     "chalk": "^2.4.1",
     "cli-truncate": "^1.1.0",
     "cross-fetch": "^2.2.2",

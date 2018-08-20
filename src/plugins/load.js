@@ -60,7 +60,7 @@ const MODULE_OPTS = {
 }
 
 // `load`, i.e. before all tasks:
-//   - `merge`: merge tasks whose name include globbing matching other task names.
+//   - `merge`: merge tasks to other tasks according to RegExps matching
 //   - `only`: select tasks according to `config|task.only`
 //   - `skip`: skip tasks according to `config|task.skip`
 // `start`, i.e. before all tasks:

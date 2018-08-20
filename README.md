@@ -134,7 +134,6 @@ operationId/testName:
     headers.NAME: any
     body: any
 # More tests
-...
 ```
 
 - `operationId`: OpenAPI's `operationId`, i.e. a unique string identifying
@@ -190,14 +189,14 @@ operationId/testName:
 
 # Re-using another request's response
 
-A request can save its response using `alias`. Other requests will be able to
+A request can save its response using `variables`. Other requests will be able to
 re-use it by using template variables.
 This creates sequences of requests.
 
 ```yml
 createAccessToken:
-  alias:
-    accessToken: call.response.body.accessToken
+  variables:
+    $$accessToken: call.response.body.accessToken
 
 operationId/testName:
   call:

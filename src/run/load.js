@@ -9,7 +9,7 @@ const { addOriginalTasks } = require('../tasks')
 // handlers `tasks|allTasks` arguments require the modification to have already
 // applied, e.g.:
 //  - `only` plugin must be applied before `report` plugin prints tasks count
-//  - `glob` plugin must be applied before `alias` plugin so users can't target
+//  - `glob` plugin must be applied before `variables` plugin so users can't target
 //    a glob task
 const loadTasks = async function({ config, tasks, plugins }) {
   const allTasks = await runHandlers({

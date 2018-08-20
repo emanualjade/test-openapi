@@ -35,10 +35,10 @@ const run = function(task, context) {
 }
 
 // Make sure those properties are not checked for templating
-const NO_EVAL_PROPS = ['originalTask', 'key', 'alias', 'template']
+const NO_EVAL_PROPS = ['originalTask', 'key', 'variables', 'template']
 
 // Retrieving variables cannot happen during a `start` handler because we might
-// need to pass `context._runTask()`, e.g. to `alias` `plugin.template()`
+// need to pass `context._runTask()`, e.g. to `variables` `plugin.template()`
 const getVars = function({ task: { template: taskTemplates }, context }) {
   const { pluginsVars, pluginsVarsMap } = getPluginsVars({ context })
 

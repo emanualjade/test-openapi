@@ -5,37 +5,37 @@ const { mapValues, omitBy } = require('lodash')
 const { get, tryGet } = require('../../utils')
 const { TestOpenApiError } = require('../../errors')
 
-// `task.alias.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
-// run the task that defined the alias, and retrieve a specific property at `PATH`
+// `task.variables.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
+// run the task that defined the variables, and retrieve a specific property at `PATH`
 const template = function({ _allTasks: allTasks, _runTask: runTask }) {
-  const aliases = allTasks.map(taskA => getTaskAliases({ task: taskA, allTasks, runTask }))
-  const aliasesA = Object.assign({}, ...aliases)
-  return aliasesA
+  const variables = allTasks.map(taskA => getTaskVariables({ task: taskA, allTasks, runTask }))
+  const variablesA = Object.assign({}, ...variables)
+  return variablesA
 }
 
-const getTaskAliases = function({ task: { key, alias }, allTasks, runTask }) {
-  if (alias === undefined) {
+const getTaskVariables = function({ task: { key, variables }, allTasks, runTask }) {
+  if (variables === undefined) {
     return
   }
 
-  const aliasA = omitBy(alias, value => value === undefined)
+  const variablesA = omitBy(variables, value => value === undefined)
 
-  const taskAliases = mapValues(aliasA, value =>
+  const taskVariables = mapValues(variablesA, value =>
     evalTask.bind(null, { key, value, allTasks, runTask }),
   )
-  return taskAliases
+  return taskVariables
 }
 
 // Runs a task and returns `task[PATH]`
 const evalTask = async function({ key, value, allTasks, runTask }) {
-  const taskA = await runAliasTask({ key, allTasks, runTask })
+  const taskA = await runVariableTask({ key, allTasks, runTask })
 
   const taskProp = getTaskProp({ task: taskA, value })
   return taskProp
 }
 
 // Runs the task
-const runAliasTask = async function({ key, allTasks, runTask }) {
+const runVariableTask = async function({ key, allTasks, runTask }) {
   const task = allTasks.find(task => task.key === key)
 
   const getError = getTaskError.bind(null, { task })

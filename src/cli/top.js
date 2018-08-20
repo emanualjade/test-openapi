@@ -41,7 +41,7 @@ const CONFIG = {
     string: true,
     alias: 'f',
     requiresArg: true,
-    describe: 'Only run tasks whose key matches the globbing pattern',
+    describe: 'Only run tasks whose key matches the regular expression',
   },
   skip: {
     array: true,

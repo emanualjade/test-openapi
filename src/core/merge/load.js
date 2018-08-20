@@ -1,10 +1,9 @@
 'use strict'
 
-const { isMatch } = require('micromatch')
-
+const { TestOpenApiError, addErrorHandler } = require('../../errors')
 const { merge } = require('../../template')
 
-// Merge tasks whose name include globbing matching other task names.
+// Merge tasks whose name include RegExp matching other task names.
 // I.e. special task name to allow for shared properties
 // Also merge `config.merge` to all tasks: it is like the `merge` task `*` except
 // it is set on `config` instead of as a task, making it possible for the user to
@@ -36,9 +35,24 @@ const mergeTask = function({ task, mergeTasks, mergeConfig }) {
 
 const findMergeTasks = function({ task: { key, path }, mergeTasks }) {
   return mergeTasks
-    .filter(({ merge: taskPattern }) => isMatch(key, taskPattern))
+    .filter(({ merge }) => eTestRegExp({ merge, key }))
     .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, path }))
 }
+
+const testRegExp = function({ merge, key }) {
+  // Always matched case-insensitively
+  const regExp = new RegExp(merge, 'i')
+  return regExp.test(key)
+}
+
+const testRegExpHandler = function({ message }, { merge }) {
+  throw new TestOpenApiError(`'task.merge' '${merge}' is invalid: ${message}`, {
+    value: merge,
+    property: 'task.merge',
+  })
+}
+
+const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 
 // Compute which `merge` tasks have priority over each other.
 // Mostly depends on the file it was loaded in with priority:

@@ -1,12 +1,10 @@
 'use strict'
 
-const { mapValues } = require('lodash')
-
 // Add `task.path`
 // Make it as short as possible
 const addTaskPath = function({ tasks, path, commonPrefix }) {
   const pathA = getTaskPath({ path, commonPrefix })
-  const tasksA = mapValues(tasks, task => ({ ...task, path: pathA }))
+  const tasksA = tasks.map(task => ({ ...task, path: pathA }))
   return tasksA
 }
 

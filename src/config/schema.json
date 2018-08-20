@@ -8,17 +8,10 @@
       }
     },
     "tasks": {
-      "oneOf": [
-        {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        {
-          "type": "object"
-        }
-      ]
+      "type": "array",
+      "items": {
+        "type": ["string", "object"]
+      }
     }
   }
 }

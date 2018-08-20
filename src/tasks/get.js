@@ -5,35 +5,16 @@ const { getPath } = require('../utils')
 const { parseInput } = require('../serialize')
 
 const { loadTasks } = require('./load')
+const { validateTasksSyntax } = require('./validate')
 
-// Retrieve tasks files as an array of normalized task objects
+// Retrieve tasks as an array of normalized task objects
 const getTasks = async function({ config: { tasks } }) {
   const tasksA = await loadTasks({ tasks })
 
-  validateTasks({ tasks: tasksA })
+  validateTasksSyntax({ tasks: tasksA })
 
-  const tasksB = normalizeTasks({ tasks: tasksA })
-
-  const tasksC = parseTasks({ tasks: tasksB })
-  return tasksC
-}
-
-// Validate syntax of task files
-const validateTasks = function({ tasks }) {
-  if (Object.keys(tasks).length !== 0) {
-    return
-  }
-
-  throw new TestOpenApiError('No tasks were found')
-}
-
-// Normalize tasks from object to array.
-const normalizeTasks = function({ tasks }) {
-  return Object.entries(tasks).map(normalizeTask)
-}
-
-const normalizeTask = function([key, task]) {
-  return { ...task, key }
+  const tasksB = parseTasks({ tasks: tasksA })
+  return tasksB
 }
 
 // Validate tasks are JSON and turn `undefined` strings into actual `undefined`

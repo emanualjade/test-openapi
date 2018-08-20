@@ -5,32 +5,47 @@ const { readFile } = require('fs')
 
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
+const { sortBy } = require('lodash')
 
-const { isObject, sortArray, findCommonPrefix } = require('../utils')
+const { findCommonPrefix } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
 const { addTaskPath } = require('./path')
+const { validateFileTasks, validateInlineTasks } = require('./validate')
 
-// Load YAML/JSON task files
+// Load tasks.
+// Tasks are specified as an array of objects instead of a map of objects
+// (with `task.key` as key) because:
+//  - it is closer to final output. Final output needs to be an array to be
+//    streaming-friendly.
+//  - it gives a stronger sense that tasks are run in parallel.
+//  - it allows `task.name` to be `undefined`.
 const loadTasks = async function({ tasks }) {
-  // Tasks can either be directly a plain object
-  if (isObject(tasks)) {
-    return tasks
-  }
+  const fileTasks = await loadFileTasks({ tasks })
 
-  // Can use globbing
-  const paths = await fastGlob(tasks)
+  const inlineTasks = loadInlineTasks({ tasks })
+
+  const tasksA = [...fileTasks, ...inlineTasks]
 
   // Ensure task object keys order is always the same, because it's the one
   // used for reporting and we want an ordered and stable output
-  const pathsA = sortArray(paths)
-
-  const commonPrefix = findCommonPrefix(pathsA)
-
-  const tasksA = await Promise.all(pathsA.map(path => loadTaskFile({ path, commonPrefix })))
-  const tasksB = Object.assign({}, ...tasksA)
-
+  const tasksB = sortBy(tasksA, 'path')
   return tasksB
+}
+
+// Load tasks that are specified in files
+const loadFileTasks = async function({ tasks }) {
+  const tasksA = tasks.filter(task => typeof task === 'string')
+
+  // Can use globbing
+  const paths = await fastGlob(tasksA)
+
+  const commonPrefix = findCommonPrefix(paths)
+
+  const tasksB = await Promise.all(paths.map(path => loadTaskFile({ path, commonPrefix })))
+  const tasksC = [].concat(...tasksB)
+
+  return tasksC
 }
 
 // Load and parse each task file in parallel
@@ -38,7 +53,7 @@ const loadTaskFile = async function({ path, commonPrefix }) {
   const content = await eReadFile(path)
   const tasks = eParseTaskFile({ path, content })
 
-  validateTaskFile({ tasks, path })
+  validateFileTasks({ tasks, path })
 
   const tasksA = addTaskPath({ tasks, path, commonPrefix })
   return tasksA
@@ -69,13 +84,13 @@ const parseTaskFileHandler = function({ message }, { path }) {
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)
 
-// Make sure task files are not empty
-const validateTaskFile = function({ tasks, path }) {
-  if (isObject(tasks)) {
-    return
-  }
+// Load tasks that are specified directly as objects
+const loadInlineTasks = function({ tasks }) {
+  const tasksA = tasks.filter(task => typeof task !== 'string')
 
-  throw new TestOpenApiError(`Task file '${path}' should be an object not a ${typeof tasks}`)
+  validateInlineTasks({ tasks: tasksA })
+
+  return tasksA
 }
 
 module.exports = {

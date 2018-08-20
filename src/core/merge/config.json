@@ -3,7 +3,18 @@
     "type": "object"
   },
   "task": {
-    "type": "string",
-    "format": "regex"
+    "oneOf": [
+      {
+        "type": "string",
+        "format": "regex"
+      },
+      {
+        "type": "array",
+        "items": {
+          "type": "string",
+          "format": "regex"
+        }
+      }
+    ]
   }
 }

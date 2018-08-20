@@ -35,11 +35,15 @@ const mergeTask = function({ task, mergeTasks, mergeConfig }) {
 
 const findMergeTasks = function({ task: { key, path }, mergeTasks }) {
   return mergeTasks
-    .filter(({ merge }) => eTestRegExp({ merge, key }))
+    .filter(({ merge }) => eTestRegExps({ merge, key }))
     .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, path }))
 }
 
-const testRegExp = function({ merge, key }) {
+const testRegExps = function({ merge, key }) {
+  if (Array.isArray(merge)) {
+    return merge.some(mergeA => testRegExps({ merge: mergeA, key }))
+  }
+
   // Always matched case-insensitively
   const regExp = new RegExp(merge, 'i')
   return regExp.test(key)
@@ -52,7 +56,7 @@ const testRegExpHandler = function({ message }, { merge }) {
   })
 }
 
-const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
+const eTestRegExps = addErrorHandler(testRegExps, testRegExpHandler)
 
 // Compute which `merge` tasks have priority over each other.
 // Mostly depends on the file it was loaded in with priority:

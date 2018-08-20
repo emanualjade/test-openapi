@@ -1,16 +1,17 @@
 'use strict'
 
-const { isMatch } = require('micromatch')
+const { TestOpenApiError, addErrorHandler } = require('../../errors')
+const { testRegExp } = require('../../utils')
 
 // `task.skip: anyValue` will skip those tasks
-// Can also use `config.skip: 'glob' or ['glob', ...]`
-const load = function(tasks, { config: { skip: patterns } }) {
-  const tasksA = tasks.map(task => addSkipped({ task, patterns }))
+// Can also use `config.skip: 'RegExp' or ['RegExp', ...]`
+const load = function(tasks, { config: { skip: configSkip } }) {
+  const tasksA = tasks.map(task => addSkipped({ task, configSkip }))
   return tasksA
 }
 
-const addSkipped = function({ task, task: { skip, key }, patterns }) {
-  if (!isSkipped({ skip, patterns, key })) {
+const addSkipped = function({ task, task: { skip, key }, configSkip }) {
+  if (!isSkipped({ skip, configSkip, key })) {
     return task
   }
 
@@ -20,9 +21,18 @@ const addSkipped = function({ task, task: { skip, key }, patterns }) {
 // Any value in `task.skip` will be same as `true`. This is because templates
 // are not evaluated yet, so we can't assume what the value is. But we still want
 // the `skip` plugin to be performed before templating, as templating takes some time.
-const isSkipped = function({ skip, patterns, key }) {
-  return skip !== undefined || (patterns !== undefined && isMatch(key, patterns))
+const isSkipped = function({ skip, configSkip, key }) {
+  return skip !== undefined || (configSkip !== undefined && eTestRegExp(configSkip, key))
 }
+
+const testRegExpHandler = function({ message }, configSkip) {
+  throw new TestOpenApiError(`'config.skip' '${configSkip}' is invalid: ${message}`, {
+    value: configSkip,
+    property: 'config.skip',
+  })
+}
+
+const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 
 module.exports = {
   load,

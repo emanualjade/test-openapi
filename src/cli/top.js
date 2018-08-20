@@ -48,7 +48,7 @@ const CONFIG = {
     string: true,
     alias: 'x',
     requiresArg: true,
-    describe: 'Skip tasks whose key matches the globbing pattern',
+    describe: 'Skip tasks whose key matches the regular expression',
   },
   merge: {
     describe: 'Shared options assigned to each task',

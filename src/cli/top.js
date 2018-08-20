@@ -50,7 +50,7 @@ const CONFIG = {
     requiresArg: true,
     describe: 'Skip tasks whose key matches the globbing pattern',
   },
-  glob: {
+  merge: {
     describe: 'Shared options assigned to each task',
   },
 }
@@ -64,7 +64,7 @@ Can include globbing patterns.
 Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
 
 const RUN_EXAMPLE =
-  '$0 --spec ./openapi.yml --glob.call.server http://localhost:5001 ./**/*.tasks.yml'
+  '$0 --spec ./openapi.yml --merge.call.server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
   defineCli,

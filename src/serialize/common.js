@@ -23,7 +23,7 @@ const { isObject, getPath } = require('../utils')
 //     - functions allow plugins to provide flexibility
 //     - `undefined` is tedious to remove.
 //       It also provide with the possibility to override values, e.g. using
-//       `undefined` allow to remove a value that was set by a `glob` task
+//       `undefined` allow to remove a value that was set by a `merge` task
 //       or by `spec` plugin.
 //  - but serialized to JSON in output for the reasons above
 
@@ -47,7 +47,7 @@ const getMessage = function({ value, path }) {
 }
 
 // We allow `undefined` in input as it is useful to override values.
-// E.g. a task might want to unset a value set by `glob` or `spec` plugin.
+// E.g. a task might want to unset a value set by `merge` or `spec` plugin.
 // However since we only allow JSON in input, we allow `undefined` as a string.
 // It is converted here to an actual `undefined` value.
 // It can also be escaped with backslash if we actually meant the `undefined` string.

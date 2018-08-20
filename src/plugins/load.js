@@ -28,7 +28,16 @@ const normalizePlugins = function({ plugins }) {
 }
 
 // Plugins always included
-const CORE_PLUGINS = ['glob', 'only', 'skip', 'repeat', 'variables', 'template', 'verify', 'report']
+const CORE_PLUGINS = [
+  'merge',
+  'only',
+  'skip',
+  'repeat',
+  'variables',
+  'template',
+  'verify',
+  'report',
+]
 
 // TODO: use a separate bundled package instead
 const DEFAULT_PLUGINS = ['spec', 'call', 'validate']
@@ -51,7 +60,7 @@ const MODULE_OPTS = {
 }
 
 // `load`, i.e. before all tasks:
-//   - `glob`: merge tasks whose name include globbing matching other task names.
+//   - `merge`: merge tasks whose name include globbing matching other task names.
 //   - `only`: select tasks according to `config|task.only`
 //   - `skip`: skip tasks according to `config|task.skip`
 // `start`, i.e. before all tasks:
@@ -59,6 +68,7 @@ const MODULE_OPTS = {
 //   - `report`: start reporting
 // `run`, i.e. for each task:
 //   - `repeat`: repeat each task `config.repeat` times
+//   - `variables`: add template variables from `task.variables`
 //   - `template`: substitute template values
 //   - `spec`: add OpenAPI specification to `task.call|validate.*`
 //   - `call`: fire HTTP call

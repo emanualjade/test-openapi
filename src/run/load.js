@@ -9,8 +9,8 @@ const { addOriginalTasks } = require('../tasks')
 // handlers `tasks|allTasks` arguments require the modification to have already
 // applied, e.g.:
 //  - `only` plugin must be applied before `report` plugin prints tasks count
-//  - `glob` plugin must be applied before `variables` plugin so users can't target
-//    a glob task
+//  - `merge` plugin must be applied before `variables` plugin so users can't target
+//    a `merge` task
 const loadTasks = async function({ config, tasks, plugins }) {
   const allTasks = await runHandlers({
     type: 'load',
@@ -30,7 +30,7 @@ const loadTasks = async function({ config, tasks, plugins }) {
   //  - `allTasks` include `excluded` tasks (e.g. for recursive `_runTask()`)
   // Load handler can either:
   //  - transform task (including filtering it) then return it: when it needs
-  //    to be performed on both `tasks` and `allTasks` (e.g. `glob` plugin)
+  //    to be performed on both `tasks` and `allTasks` (e.g. `merge` plugin)
   //  - add `excluded`: when it needs to be performed on `tasks` only (e.g. `only` plugin)
   const tasksA = allTasksA.filter(({ excluded }) => !excluded)
 

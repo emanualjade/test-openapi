@@ -5,14 +5,12 @@
   "task": {
     "oneOf": [
       {
-        "type": "string",
-        "format": "regex"
+        "type": "string"
       },
       {
         "type": "array",
         "items": {
-          "type": "string",
-          "format": "regex"
+          "type": "string"
         }
       }
     ]

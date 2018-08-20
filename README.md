@@ -38,7 +38,7 @@ A single test performs the following:
 # Example
 
 ```yml
-exampleTest:
+- key: exampleTest
   call:
     method: GET
     server: http://localhost:8081
@@ -89,28 +89,27 @@ Other tests are shown failing at the end. A final summary is also present.
 
 # OpenAPI
 
-If you have already described your API endpoints with
-[OpenAPI](https://www.openapis.org/), the following will automatically be re-used
-in the tests (so you don't need to repeat them): HTTP method, URL, path,
-query variables, request body, response status, response headers
-and response body.
+If you have described your API endpoints with [OpenAPI](https://www.openapis.org/),
+you can point to the `operationId` by using the `spec.operation` property.
+
+```yml
+- key: exampleTest
+  spec:
+    operation: getTags
+  call:
+    query.onlyPublic: false
+  validate: {}
+```
+
+The test will then re-use the [OpenAPI](https://www.openapis.org/) endpoint description:
+
+- `call` will re-use the HTTP method, URL, path, query variables and request body
+- `validate` will re-use the response status, response headers and response body.
 
 You only need to specify request parameters and response validation when they
 differ from the OpenAPI specification. For example: "if this query variable is
 set to this specific value, validate that the status code is 403". They will
 be deeply merged to the OpenAPI specification.
-
-To re-use the OpenAPI specification, the `operationId` must be prefixed to the
-test's key.
-
-The above example could then be simplified to:
-
-```yml
-getTags/exampleTest:
-  call:
-    query.onlyPublic: false
-  validate: {}
-```
 
 OpenAPI parameters that are `required` are always re-used. OpenAPI parameters that
 are not `required` are only re-used if specified in the `call` property.
@@ -120,7 +119,9 @@ are not `required` are only re-used if specified in the `call` property.
 Each test can use the following properties:
 
 ```yml
-operationId/testName:
+- key: testName
+  spec:
+    operation: operationId
   call:
     method: string
     server: string
@@ -136,9 +137,9 @@ operationId/testName:
 # More tests
 ```
 
-- `operationId`: OpenAPI's `operationId`, i.e. a unique string identifying
+- `key`: an arbitrary name for the test.
+- `spec.operation`: OpenAPI's `operationId`, i.e. a unique string identifying
   an endpoint. For example `getTags`.
-- `testName`: an arbitrary name for the test.
 - `call`: HTTP request parameters
   - `method`: HTTP method
   - `server`: server's origin (protocol + host)
@@ -164,7 +165,7 @@ the HTTP response. They can either be:
 For example to validate that the response body is an array:
 
 ```yml
-operationId/testName:
+- key: testName
   validate:
     body:
       type: array
@@ -178,7 +179,7 @@ The `$$random` template function can be used to generate random values based on 
 For example to generate a random password of minimum 12 characters:
 
 ```yml
-operationId/testName:
+- key: testName
   call:
     query.password:
       $$random:
@@ -190,15 +191,15 @@ operationId/testName:
 # Re-using another request's response
 
 A request can save its response using `variables`. Other requests will be able to
-re-use it by using template variables.
+re-use it as template variables.
 This creates sequences of requests.
 
 ```yml
-createAccessToken:
+- key: createAccessToken
   variables:
     $$accessToken: call.response.body.accessToken
 
-operationId/testName:
+- key: testName
   call:
     query.accessToken: $$accessToken
 ```

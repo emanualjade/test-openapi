@@ -1,6 +1,5 @@
 'use strict'
 
-const isGlob = require('is-glob')
 const { isMatch } = require('micromatch')
 
 const { merge } = require('../../template')
@@ -18,12 +17,12 @@ const load = function(tasks, { config: { merge: mergeConfig } }) {
 
 const splitTasks = function({ tasks }) {
   const mergeTasks = tasks.filter(isMergeTask)
-  const nonMergeTasks = tasks.filter(({ key }) => !isMergeTask({ key }))
+  const nonMergeTasks = tasks.filter(task => !isMergeTask(task))
   return { mergeTasks, nonMergeTasks }
 }
 
-const isMergeTask = function({ key }) {
-  return isGlob(key)
+const isMergeTask = function({ merge }) {
+  return merge !== undefined
 }
 
 const mergeTask = function({ task, mergeTasks, mergeConfig }) {
@@ -37,7 +36,7 @@ const mergeTask = function({ task, mergeTasks, mergeConfig }) {
 
 const findMergeTasks = function({ task: { key, path }, mergeTasks }) {
   return mergeTasks
-    .filter(({ key: taskPattern }) => isMatch(key, taskPattern))
+    .filter(({ merge: taskPattern }) => isMatch(key, taskPattern))
     .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, path }))
 }
 

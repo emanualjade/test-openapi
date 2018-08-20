@@ -1,5 +1,8 @@
 {
   "general": {
     "type": "object"
+  },
+  "task": {
+    "type": "string"
   }
 }

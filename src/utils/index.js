@@ -20,4 +20,5 @@ module.exports = {
   ...require('./json_pointer'),
   ...require('./string'),
   ...require('./cardinal'),
+  ...require('./regexp'),
 }

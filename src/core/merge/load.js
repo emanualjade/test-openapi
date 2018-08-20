@@ -1,6 +1,7 @@
 'use strict'
 
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
+const { testRegExp } = require('../../utils')
 const { merge } = require('../../template')
 
 // Merge tasks whose name include RegExp matching other task names.
@@ -35,28 +36,18 @@ const mergeTask = function({ task, mergeTasks, mergeConfig }) {
 
 const findMergeTasks = function({ task: { key, path }, mergeTasks }) {
   return mergeTasks
-    .filter(({ merge }) => eTestRegExps({ merge, key }))
+    .filter(({ merge }) => eTestRegExp(merge, key))
     .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, path }))
 }
 
-const testRegExps = function({ merge, key }) {
-  if (Array.isArray(merge)) {
-    return merge.some(mergeA => testRegExps({ merge: mergeA, key }))
-  }
-
-  // Always matched case-insensitively
-  const regExp = new RegExp(merge, 'i')
-  return regExp.test(key)
-}
-
-const testRegExpHandler = function({ message }, { merge }) {
+const testRegExpHandler = function({ message }, merge) {
   throw new TestOpenApiError(`'task.merge' '${merge}' is invalid: ${message}`, {
     value: merge,
     property: 'task.merge',
   })
 }
 
-const eTestRegExps = addErrorHandler(testRegExps, testRegExpHandler)
+const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 
 // Compute which `merge` tasks have priority over each other.
 // Mostly depends on the file it was loaded in with priority:

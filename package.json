@@ -34,7 +34,7 @@
     "emphasize": "^2.0.0",
     "faker": "^4.1.0",
     "fast-glob": "^2.2.1",
-    "fast-memoize": "^2.4.0",
+    "fast-memoize": "^2.5.1",
     "has-ansi": "^3.0.0",
     "is-mergeable-object": "^1.1.0",
     "js-yaml": "^3.12.0",

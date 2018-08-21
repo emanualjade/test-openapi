@@ -1,28 +1,20 @@
 'use strict'
 
 // Find the operation related to a specific task, and add it
-// Does so by checking OpenAPI's `operationId` against either:
-//  - `task.operation`
-//  - task key which should be `operationId ...`
+// Does so by checking OpenAPI's `operationId` against `task.spec.operation`
 const getOperation = function({
   key,
-  name,
   spec: { operation: taskOperationId } = {},
   startData: {
-    spec: { [key]: definition },
+    spec: { [key]: { operations } = {} },
   },
 }) {
-  if (definition === undefined) {
+  if (operations === undefined || taskOperationId === undefined) {
     return
   }
 
-  const operations = definition.operations.filter(({ operationId }) => operationId !== undefined)
-
-  if (taskOperationId !== undefined) {
-    return operations.find(({ operationId }) => operationId === taskOperationId)
-  }
-
-  return operations.find(({ operationId }) => name.startsWith(`${operationId} `))
+  const operation = operations.find(({ operationId }) => operationId === taskOperationId)
+  return operation
 }
 
 module.exports = {

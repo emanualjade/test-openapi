@@ -12,14 +12,14 @@ const { isObject } = require('../utils')
 // Note that `task.done` is not kept
 const getTaskReturn = function({
   task,
-  task: { key, path, skipped, error, originalTask },
+  task: { key, scope, name, skipped, error, originalTask },
   plugins,
 }) {
   const pluginReturns = getPluginReturns({ plugins, task })
 
   // Enforce properties order: `key`, `skipped`, `error`, added `task.*`, original `task.*`
   // `originalTask` is kept only for reporters
-  const taskA = { key, path, skipped, error, ...pluginReturns, originalTask }
+  const taskA = { key, scope, name, skipped, error, ...pluginReturns, originalTask }
 
   // Do not clutter with plugins that have nothing to return
   const taskB = omitBy(taskA, value => value === undefined)

@@ -1,7 +1,11 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { isObject } = require('../utils')
 const { TestOpenApiError } = require('../errors')
+
+const { getScope } = require('./scope')
 
 // Validate content of tasks specified in files
 const validateFileTasks = function({ tasks, path }) {
@@ -46,16 +50,84 @@ const validateTasksSyntax = function({ tasks }) {
   }
 
   tasks.forEach(validateTaskSyntax)
+
+  validateDuplicateKeys({ tasks })
 }
 
-const validateTaskSyntax = function({ path, key, ...task }) {
-  if (typeof key === 'string' && key !== '') {
+const validateTaskSyntax = function(task) {
+  const syntaxTest = SYNTAX_TESTS.find(({ test }) => test(task))
+  if (syntaxTest === undefined) {
     return
   }
 
-  const pathA = path === undefined ? '' : `at path '${path}' `
+  const taskA = omit(task, 'key')
   throw new TestOpenApiError(
-    `The following task ${pathA}is missing a 'key':\n${JSON.stringify(task, null, 2)}`,
+    `${syntaxTest.message} in the following task:\n${JSON.stringify(taskA, null, 2)}`,
+  )
+}
+
+const SYNTAX_TESTS = [
+  {
+    test: ({ name }) => name === undefined || name === '',
+    message: "'name' must be defined",
+  },
+  {
+    test: ({ name }) => typeof name !== 'string',
+    message: "'name' must be a string",
+  },
+  {
+    test: ({ name }) => name.includes('/'),
+    message: "'name' must not contain any slash",
+  },
+  {
+    test: ({ scope }) => scope === '',
+    message: "'scope' must not be an empty string",
+  },
+  {
+    test: ({ scope }) => scope !== undefined && typeof scope !== 'string',
+    message: "'scope' must not be either undefined or a string",
+  },
+  {
+    test: ({ scope }) => typeof scope === 'string' && scope.includes('/'),
+    message: "'scope' must not contain any slash",
+  },
+]
+
+// `task.key` must be unique
+const validateDuplicateKeys = function({ tasks }) {
+  tasks.forEach(validateDuplicateKey)
+}
+
+const validateDuplicateKey = function({ key, scope, name }, index, tasks) {
+  const tasksA = tasks.slice(index + 1)
+  const isDuplicate = tasksA.some(({ key: keyA }) => key === keyA)
+  if (!isDuplicate) {
+    return
+  }
+
+  throw new TestOpenApiError(
+    `Two tasks in the same 'scope' '${scope}' have the same 'name' '${name}'`,
+  )
+}
+
+// Since we use filenames as `task.scope` which itself is used in `task.key`,
+// and `task.key` must be unique, we validate every filename is unique.
+const validateScopes = function({ paths }) {
+  const scopes = paths.map(getScope)
+  scopes.forEach((scope, index) => validateScope({ scope, index, scopes, paths }))
+}
+
+const validateScope = function({ scope, index, scopes, paths }) {
+  const scopesA = scopes.slice(index + 1)
+  const duplicateScopeIndex = scopesA.indexOf(scope)
+  if (duplicateScopeIndex === -1) {
+    return
+  }
+
+  const path = paths[index]
+  const duplicatePath = paths[duplicateScopeIndex + index + 1]
+  throw new TestOpenApiError(
+    `Each task file name must be unique, but the two following files are not: '${path}' and '${duplicatePath}'`,
   )
 }
 
@@ -63,4 +135,5 @@ module.exports = {
   validateFileTasks,
   validateInlineTasks,
   validateTasksSyntax,
+  validateScopes,
 }

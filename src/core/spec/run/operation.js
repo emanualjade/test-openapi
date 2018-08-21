@@ -6,6 +6,7 @@
 //  - task key which should be `operationId ...`
 const getOperation = function({
   key,
+  name,
   spec: { operation: taskOperationId } = {},
   startData: {
     spec: { [key]: definition },
@@ -21,7 +22,7 @@ const getOperation = function({
     return operations.find(({ operationId }) => operationId === taskOperationId)
   }
 
-  return operations.find(({ operationId }) => key.startsWith(`${operationId} `))
+  return operations.find(({ operationId }) => name.startsWith(`${operationId} `))
 }
 
 module.exports = {

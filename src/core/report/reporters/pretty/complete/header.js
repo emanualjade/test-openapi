@@ -18,7 +18,7 @@ const { MARKS, COLORS } = require('../constants')
 //  - the task key
 //  - the `titles` (as returned by `plugin.report()`)
 const getHeader = function({ task, task: { isNested }, titles, resultType }) {
-  const subKeys = getSubKeys({ task, titles })
+  const subKeys = getSubKeys({ titles })
 
   if (isNested) {
     return getNestedHeader({ task, subKeys })
@@ -27,9 +27,11 @@ const getHeader = function({ task, task: { isNested }, titles, resultType }) {
   return getFullHeader({ task, subKeys, resultType })
 }
 
-// Show `task.path` and all `titles` from `plugin.report()`
-const getSubKeys = function({ task: { path }, titles }) {
-  return [path, titles.join('\n')].map(getSubKey).join('')
+// Show all `titles` from `plugin.report()`
+const getSubKeys = function({ titles }) {
+  const titlesA = titles.join('\n')
+  const subKey = getSubKey(titlesA)
+  return subKey
 }
 
 const getSubKey = function(string) {

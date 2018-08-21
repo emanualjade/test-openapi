@@ -1,7 +1,7 @@
 'use strict'
 
 const { getResultType, gray, indent } = require('../../../utils')
-const { isSilentTask, isSilentType } = require('../../../level')
+const { isSilentType } = require('../../../level')
 const { LINE, COLORS, MARKS } = require('../constants')
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,
@@ -10,7 +10,7 @@ const printTasksList = function({ tasks, options }) {
   const tasksList = RESULT_TYPES
     // Filter according to `config.report.REPORTER.level`
     .filter(resultType => !isSilentType({ resultType, options }))
-    .map(resultType => printTasks({ tasks, resultType, options }))
+    .map(resultType => printTasks({ tasks, resultType }))
     // Do not show newlines if no tasks is to be shown
     .filter(tasksListPart => tasksListPart !== '')
     .join('\n\n')
@@ -26,52 +26,36 @@ const printTasksList = function({ tasks, options }) {
 // Order matters
 const RESULT_TYPES = ['skip', 'pass', 'fail']
 
-const printTasks = function({ tasks, resultType, options }) {
-  const padLength = getPadLength({ tasks, options })
-
+const printTasks = function({ tasks, resultType }) {
   return tasks
     .filter(task => getResultType(task) === resultType)
-    .map(task => printTask({ task, resultType, padLength }))
+    .map(task => printTask({ task, resultType }))
     .join('\n')
 }
 
-// Vertically align all `task.path`
-const getPadLength = function({ tasks, options }) {
-  const lengths = tasks
-    .filter(task => !isSilentTask({ task, options }))
-    .map(({ key }) => key.length)
-  const maxLength = Math.max(...lengths)
-  return maxLength + 4
-}
-
-const printTask = function({ task, task: { key, path }, resultType, padLength }) {
-  const name = getTaskName({ key, path, padLength })
-  const taskA = TASK_PRINTERS[resultType]({ task, name })
+const printTask = function({ task, task: { key }, resultType }) {
+  const taskA = TASK_PRINTERS[resultType]({ task, key })
 
   const taskB = `${MARKS[resultType]}  ${taskA}`
   const taskC = COLORS[resultType](taskB)
   return taskC
 }
 
-const getTaskName = function({ key, path = '', padLength }) {
-  return `${key.padEnd(padLength)}${path}`
+const printTaskSkip = function({ key }) {
+  return key
 }
 
-const printTaskSkip = function({ name }) {
-  return name
-}
-
-const printTaskPass = function({ name }) {
-  return name
+const printTaskPass = function({ key }) {
+  return key
 }
 
 const printTaskFail = function({
-  name,
+  key,
   task: {
     error: { message },
   },
 }) {
-  return `${name}\n${gray(indent(message, 1))}`
+  return `${key}\n${gray(indent(message, 1))}`
 }
 
 const TASK_PRINTERS = {

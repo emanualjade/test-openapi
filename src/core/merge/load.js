@@ -1,5 +1,7 @@
 'use strict'
 
+const { omit } = require('lodash')
+
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
 const { testRegExp } = require('../../utils')
 const { merge } = require('../../template')
@@ -34,10 +36,11 @@ const mergeTask = function({ task, mergeTasks, mergeConfig }) {
   return merge(mergeConfig, ...mergeTasksA, task)
 }
 
-const findMergeTasks = function({ task: { key, path }, mergeTasks }) {
+const findMergeTasks = function({ task: { key, scope }, mergeTasks }) {
   return mergeTasks
     .filter(({ merge }) => eTestRegExp(merge, key))
-    .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, path }))
+    .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, scope }))
+    .map(task => omit(task, NOT_MERGED_ATTRIBUTES))
 }
 
 const testRegExpHandler = function({ message }, merge) {
@@ -50,46 +53,48 @@ const testRegExpHandler = function({ message }, merge) {
 const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 
 // Compute which `merge` tasks have priority over each other.
-// Mostly depends on the file it was loaded in with priority:
-//   same file > no file > other files in alphabetical order
-// Within the same file, `merge` tasks declared last in keys order have priority.
+// Mostly depends on the scope it was loaded in with priority:
+//   same scope > no scope > other scopes in alphabetical order
+// Within the same scope, `merge` tasks declared last in keys order have priority.
 // Note that we do not use `config.tasks` order as globbing expansion order is not stable.
-const compareMergeTasks = function({ taskA: { path: pathA }, taskB: { path: pathB }, path }) {
-  // Inside the same file, we use object keys order, i.e. `merge` tasks declared
+const compareMergeTasks = function({ taskA: { scope: scopeA }, taskB: { scope: scopeB }, scope }) {
+  // Inside the same scope, we use object keys order, i.e. `merge` tasks declared
   // last have priority.
   // Object keys order is not very reliable, so we must make sure `tasks` does not
   // change order since tasks loading.
   // Returning 0 will let `Array.sort()` rely on array order instead.
-  if (pathA === pathB) {
+  if (scopeA === scopeB) {
     return 0
   }
 
-  // `merge` tasks within the same file have priority
-  if (pathA === path) {
+  // `merge` tasks within the same scope have priority
+  if (scopeA === scope) {
     return 1
   }
 
-  if (pathB === path) {
+  if (scopeB === scope) {
     return -1
   }
 
-  // `merge` tasks within no file (i.e. passed directly as objects) come next
-  if (pathA === undefined) {
+  // `merge` tasks within no scope (i.e. passed directly as objects) come next
+  if (scopeA === undefined) {
     return 1
   }
 
-  if (pathB === undefined) {
+  if (scopeB === undefined) {
     return -1
   }
 
-  // We then rely on task file name alphabetical order.
-  // Tasks whose filenames is closer to z have higher priority.
-  if (pathA < pathB) {
+  // We then rely on task scope name alphabetical order.
+  // Tasks whose scope is closer to z have higher priority.
+  if (scopeA < scopeB) {
     return -1
   }
 
   return 1
 }
+
+const NOT_MERGED_ATTRIBUTES = ['key', 'scope', 'name', 'merge']
 
 module.exports = {
   load,

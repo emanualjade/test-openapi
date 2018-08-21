@@ -7,15 +7,14 @@ const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 const { sortBy } = require('lodash')
 
-const { findCommonPrefix } = require('../utils')
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
-const { addTaskPath } = require('./path')
-const { validateFileTasks, validateInlineTasks } = require('./validate')
+const { validateScopes, validateFileTasks, validateInlineTasks } = require('./validate')
+const { addScopes, addKey } = require('./scope')
 
 // Load tasks.
 // Tasks are specified as an array of objects instead of a map of objects
-// (with `task.key` as key) because:
+// (with `task.name` as key) because:
 //  - it is closer to final output. Final output needs to be an array to be
 //    streaming-friendly.
 //  - it gives a stronger sense that tasks are run in parallel.
@@ -27,10 +26,12 @@ const loadTasks = async function({ tasks }) {
 
   const tasksA = [...fileTasks, ...inlineTasks]
 
+  const tasksB = tasksA.map(addKey)
+
   // Ensure task object keys order is always the same, because it's the one
   // used for reporting and we want an ordered and stable output
-  const tasksB = sortBy(tasksA, 'path')
-  return tasksB
+  const tasksC = sortBy(tasksB, 'scope')
+  return tasksC
 }
 
 // Load tasks that are specified in files
@@ -40,22 +41,22 @@ const loadFileTasks = async function({ tasks }) {
   // Can use globbing
   const paths = await fastGlob(tasksA)
 
-  const commonPrefix = findCommonPrefix(paths)
+  validateScopes({ paths })
 
-  const tasksB = await Promise.all(paths.map(path => loadTaskFile({ path, commonPrefix })))
+  const tasksB = await Promise.all(paths.map(path => loadTaskFile({ path })))
   const tasksC = [].concat(...tasksB)
 
   return tasksC
 }
 
 // Load and parse each task file in parallel
-const loadTaskFile = async function({ path, commonPrefix }) {
+const loadTaskFile = async function({ path }) {
   const content = await eReadFile(path)
   const tasks = eParseTaskFile({ path, content })
 
   validateFileTasks({ tasks, path })
 
-  const tasksA = addTaskPath({ tasks, path, commonPrefix })
+  const tasksA = addScopes({ tasks, path })
   return tasksA
 }
 

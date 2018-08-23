@@ -1131,6 +1131,10 @@ fast-diff@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/fast-diff/-/fast-diff-1.1.2.tgz#4b62c42b8e03de3f848460b639079920695d0154"
 
+fast-equals@^1.6.0:
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/fast-equals/-/fast-equals-1.6.0.tgz#171c5dbcae34761b337d839105a11c5e91a4fe3b"
+
 fast-glob@^2.2.1:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-2.2.2.tgz#71723338ac9b4e0e2fff1d6748a2a13d5ed352bf"
@@ -1150,9 +1154,9 @@ fast-levenshtein@~2.0.4:
   version "2.0.6"
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
 
-fast-memoize@^2.5.1:
-  version "2.5.1"
-  resolved "https://registry.yarnpkg.com/fast-memoize/-/fast-memoize-2.5.1.tgz#c3519241e80552ce395e1a32dcdde8d1fd680f5d"
+fast-stringify@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/fast-stringify/-/fast-stringify-1.1.0.tgz#6caf0af2456296adac9d0c9c6f0522d18297f57a"
 
 fault@^1.0.2:
   version "1.0.2"
@@ -2230,6 +2234,10 @@ methods@^1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/methods/-/methods-1.1.2.tgz#5529a4d67654134edcc5266656835b0f851afcee"
 
+micro-memoize@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/micro-memoize/-/micro-memoize-2.1.0.tgz#52be7e6ea94cc02f8ca879ee5ad6fe3be13608f0"
+
 micromatch@^3.0.4, micromatch@^3.1.10, micromatch@^3.1.4, micromatch@^3.1.8:
   version "3.1.10"
   resolved "https://registry.yarnpkg.com/micromatch/-/micromatch-3.1.10.tgz#70859bc95c9840952f359a068a3fc49f9ecfac23"
@@ -2301,6 +2309,14 @@ mkdirp@^0.5.0, mkdirp@^0.5.1:
   resolved "https://registry.yarnpkg.com/mkdirp/-/mkdirp-0.5.1.tgz#30057438eac6cf7f8c4767f38648d6697d75c903"
   dependencies:
     minimist "0.0.8"
+
+moize@^5.4.0:
+  version "5.4.0"
+  resolved "https://registry.yarnpkg.com/moize/-/moize-5.4.0.tgz#98497bb860e5b8c2ee39b764d07b125dc503bb38"
+  dependencies:
+    fast-equals "^1.6.0"
+    fast-stringify "^1.1.0"
+    micro-memoize "^2.1.0"
 
 ms@2.0.0:
   version "2.0.0"

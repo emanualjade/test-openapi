@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/Cardero-X/test-openapi.git"
   },
-  "homepage": "https://github.com/Cardero-X/test-openapi#readme",
+  "homepage": "https://github.com/Cardero-X/test-openapi",
   "bugs": {
     "url": "https://github.com/Cardero-X/test-openapi/issues"
   },

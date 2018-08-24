@@ -6,7 +6,7 @@ const ora = require('ora')
 class Spinner {
   // Start the spinner
   constructor({ index = -1, total }) {
-    const instance = ora({ ...ORA_OPTS })
+    const instance = ora(ORA_OPTS)
 
     Object.assign(this, { index, total, instance })
 

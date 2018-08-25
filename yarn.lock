@@ -1914,7 +1914,7 @@ json-schema-faker@^0.5.0-rc15:
     randexp "^0.4.5"
     tslib "^1.7.1"
 
-json-schema-ref-parser@^5.0.0, json-schema-ref-parser@^5.1.1:
+json-schema-ref-parser@^5.0.0:
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/json-schema-ref-parser/-/json-schema-ref-parser-5.1.2.tgz#c9cdaec76ea894f71eb3776c3b3291dfa62e56c9"
   dependencies:
@@ -1922,6 +1922,15 @@ json-schema-ref-parser@^5.0.0, json-schema-ref-parser@^5.1.1:
     debug "^3.1.0"
     js-yaml "^3.12.0"
     ono "^4.0.5"
+
+json-schema-ref-parser@^5.1.3:
+  version "5.1.3"
+  resolved "https://registry.yarnpkg.com/json-schema-ref-parser/-/json-schema-ref-parser-5.1.3.tgz#f86c5868f40898e69169e1bbc854725a4fd0e1ad"
+  dependencies:
+    call-me-maybe "^1.0.1"
+    debug "^3.1.0"
+    js-yaml "^3.12.0"
+    ono "^4.0.6"
 
 json-schema-traverse@^0.4.1:
   version "0.4.1"
@@ -2557,7 +2566,7 @@ onetime@^2.0.0:
   dependencies:
     mimic-fn "^1.0.0"
 
-ono@^4.0.5:
+ono@^4.0.5, ono@^4.0.6:
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/ono/-/ono-4.0.6.tgz#b865214e07dacf6e6dc7f1d498c7fba42a810ff5"
   dependencies:
@@ -2569,7 +2578,7 @@ openapi-schema-to-json-schema@^2.1.0:
   dependencies:
     deep-equal "^1.0.1"
 
-openapi-schema-validation@^0.4.1:
+openapi-schema-validation@^0.4.2:
   version "0.4.2"
   resolved "https://registry.yarnpkg.com/openapi-schema-validation/-/openapi-schema-validation-0.4.2.tgz#895c29021be02e000f71c51f859da52118eb1e21"
   dependencies:
@@ -3388,18 +3397,18 @@ swagger-methods@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/swagger-methods/-/swagger-methods-1.0.4.tgz#2c5b844f4a22ab2f5e773f98193c28e386b1c37e"
 
-swagger-parser@^5.0.2:
-  version "5.0.2"
-  resolved "https://registry.yarnpkg.com/swagger-parser/-/swagger-parser-5.0.2.tgz#8ff382dd7b2ce39d8ad68b9d56ee9973abfb7f19"
+swagger-parser@^5.0.4:
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/swagger-parser/-/swagger-parser-5.0.4.tgz#a9cc19cdea984fe222bcd01dc2337d29f7f8c313"
   dependencies:
     call-me-maybe "^1.0.1"
     debug "^3.1.0"
-    json-schema-ref-parser "^5.1.1"
-    ono "^4.0.5"
-    openapi-schema-validation "^0.4.1"
+    json-schema-ref-parser "^5.1.3"
+    ono "^4.0.6"
+    openapi-schema-validation "^0.4.2"
     swagger-methods "^1.0.4"
     swagger-schema-official "2.0.0-bab6bed"
-    z-schema "^3.19.1"
+    z-schema "^3.23.0"
 
 swagger-schema-official@2.0.0-bab6bed:
   version "2.0.0-bab6bed"
@@ -3794,7 +3803,7 @@ yargs@^7.1.0:
     y18n "^3.2.1"
     yargs-parser "^5.0.0"
 
-z-schema@^3.19.1:
+z-schema@^3.23.0:
   version "3.23.0"
   resolved "https://registry.yarnpkg.com/z-schema/-/z-schema-3.23.0.tgz#a80a8822938a3038591761a655a899f2833d5e51"
   dependencies:

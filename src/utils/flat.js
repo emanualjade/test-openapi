@@ -17,7 +17,7 @@ const stringifyFlat = function(value) {
 const parseFlat = function(value) {
   try {
     return JSON.parse(value)
-  } catch (error) {
+  } catch {
     return value
   }
 }

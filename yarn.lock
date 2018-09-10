@@ -2565,9 +2565,9 @@ ono@^4.0.6:
   dependencies:
     format-util "^1.0.3"
 
-openapi-schema-to-json-schema@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/openapi-schema-to-json-schema/-/openapi-schema-to-json-schema-2.1.0.tgz#6d8371c23a3230ab3dc50add1d4068402361a169"
+openapi-schema-to-json-schema@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/openapi-schema-to-json-schema/-/openapi-schema-to-json-schema-2.2.0.tgz#5f41b3485c7fa5a67003215cd1ab1889ca1372a3"
   dependencies:
     deep-equal "^1.0.1"
 

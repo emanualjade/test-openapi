@@ -14,11 +14,17 @@ const getPluginsVars = function({ context, context: { _plugins: plugins } }) {
 }
 
 const getPluginsVarsMap = function({ context, plugins }) {
-  const pluginsVarsMap = plugins.map(plugin => getPluginVars({ plugin, context }))
+  const pluginsVarsMap = plugins.map(plugin =>
+    getPluginVars({ plugin, context }),
+  )
   return Object.assign({}, ...pluginsVarsMap)
 }
 
-const getPluginVars = function({ plugin, plugin: { name, template }, context }) {
+const getPluginVars = function({
+  plugin,
+  plugin: { name, template },
+  context,
+}) {
   if (template === undefined) {
     return
   }
@@ -83,7 +89,11 @@ const mergePluginsVars = function({ plugins, pluginsVarsMap }) {
     .filter(({ name }) => name !== 'template')
     .map(({ name }) => pluginsVarsMap[name])
     .reverse()
-  const pluginsVarsA = Object.assign({}, pluginsVarsMap.template, ...pluginsVars)
+  const pluginsVarsA = Object.assign(
+    {},
+    pluginsVarsMap.template,
+    ...pluginsVars,
+  )
   return pluginsVarsA
 }
 

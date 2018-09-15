@@ -14,7 +14,8 @@ const filterTaskData = function({
   plugins,
 }) {
   return plugins.reduce(
-    (taskA, { name }) => reduceTaskData({ task: taskA, originalTask, name, taskData }),
+    (taskA, { name }) =>
+      reduceTaskData({ task: taskA, originalTask, name, taskData }),
     task,
   )
 }

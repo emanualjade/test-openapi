@@ -7,7 +7,8 @@ const { testRegExp } = require('../../utils')
 // `task.only: anyValue` will only run those tasks
 const load = function(tasks, { config: { only: configOnly } }) {
   // Check if `config|task.only` is used, so we know whether to perform an `only` run
-  const enabled = configOnly !== undefined || tasks.some(({ only }) => only !== undefined)
+  const enabled =
+    configOnly !== undefined || tasks.some(({ only }) => only !== undefined)
   if (!enabled) {
     return
   }
@@ -27,14 +28,20 @@ const addExcluded = function({ task, task: { only, key }, configOnly }) {
 
 // Any value in `task.only` will be same as `true`. See `skip` plugin for explanation.
 const isOnly = function({ only, configOnly, key }) {
-  return only !== undefined || (configOnly !== undefined && eTestRegExp(configOnly, key))
+  return (
+    only !== undefined ||
+    (configOnly !== undefined && eTestRegExp(configOnly, key))
+  )
 }
 
 const testRegExpHandler = function({ message }, configOnly) {
-  throw new TestOpenApiError(`'config.only' '${configOnly}' is invalid: ${message}`, {
-    value: configOnly,
-    property: 'config.only',
-  })
+  throw new TestOpenApiError(
+    `'config.only' '${configOnly}' is invalid: ${message}`,
+    {
+      value: configOnly,
+      property: 'config.only',
+    },
+  )
 }
 
 const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)

@@ -26,18 +26,29 @@ const loadModule = function({ name, info: { corePath } }) {
   return { ...module, name }
 }
 
-const loadModuleHandler = function({ code, message }, { name, info, info: { title } }) {
+const loadModuleHandler = function(
+  { code, message },
+  { name, info, info: { title } },
+) {
   checkModuleNotFound({ code, name, info })
 
   const props = getProps({ info, name })
-  throw new BugError(`The ${title} '${name}' could not be loaded: ${message}`, props)
+  throw new BugError(
+    `The ${title} '${name}' could not be loaded: ${message}`,
+    props,
+  )
 }
 
 // Error when loading a plugin that is not installed.
 // This will also be triggered when loading a plugin that tries to `require()`
 // a non-existing file. Unfortunately we cannot distinguish without parsing
 // `error.message` which is brittle.
-const checkModuleNotFound = function({ code, name, info, info: { title, modulePrefix } }) {
+const checkModuleNotFound = function({
+  code,
+  name,
+  info,
+  info: { title, modulePrefix },
+}) {
   if (code !== 'MODULE_NOT_FOUND') {
     return
   }
@@ -52,7 +63,12 @@ const checkModuleNotFound = function({ code, name, info, info: { title, modulePr
 const eLoadModule = addErrorHandler(loadModule, loadModuleHandler)
 
 // Validate export value
-const validateModule = function({ module, module: { name }, info, info: { title, schema } }) {
+const validateModule = function({
+  module,
+  module: { name },
+  info,
+  info: { title, schema },
+}) {
   const schemaA = addNameSchema({ schema })
   const props = getProps({ info, name })
   checkSchema({
@@ -78,7 +94,11 @@ const NAME_SCHEMA = {
 }
 
 // Retrieve error.* properties
-const getProps = function({ info: { props: getProps, title }, name, addModule = true }) {
+const getProps = function({
+  info: { props: getProps, title },
+  name,
+  addModule = true,
+}) {
   const props = getModuleProp({ title, name, addModule })
 
   if (getProps === undefined) {

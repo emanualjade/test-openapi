@@ -9,7 +9,11 @@ const { sortBy } = require('lodash')
 
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
-const { validateScopes, validateFileTasks, validateInlineTasks } = require('./validate')
+const {
+  validateScopes,
+  validateFileTasks,
+  validateInlineTasks,
+} = require('./validate')
 const { addScopes, addKey } = require('./scope')
 
 // Load tasks.
@@ -80,7 +84,9 @@ const YAML_OPTS = {
 }
 
 const parseTaskFileHandler = function({ message }, { path }) {
-  throw new TestOpenApiError(`Task file '${path}' is not valid YAML nor JSON: ${message}`)
+  throw new TestOpenApiError(
+    `Task file '${path}' is not valid YAML nor JSON: ${message}`,
+  )
 }
 
 const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)

@@ -21,7 +21,11 @@ const getParams = function({
 
   const paramsB = normalizeParams({ params: paramsA })
 
-  const contentNegotiations = getNegotiationsParams({ spec, operation, params: paramsB })
+  const contentNegotiations = getNegotiationsParams({
+    spec,
+    operation,
+    params: paramsB,
+  })
 
   const paramsC = normalizeFormData({ params: paramsB })
 

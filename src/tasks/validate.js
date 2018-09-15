@@ -62,7 +62,11 @@ const validateTaskSyntax = function(task) {
 
   const taskA = omit(task, 'key')
   throw new TestOpenApiError(
-    `${syntaxTest.message} in the following task:\n${JSON.stringify(taskA, null, 2)}`,
+    `${syntaxTest.message} in the following task:\n${JSON.stringify(
+      taskA,
+      null,
+      2,
+    )}`,
   )
 }
 
@@ -114,7 +118,9 @@ const validateDuplicateKey = function({ key, scope, name }, index, tasks) {
 // and `task.key` must be unique, we validate every filename is unique.
 const validateScopes = function({ paths }) {
   const scopes = paths.map(getScope)
-  scopes.forEach((scope, index) => validateScope({ scope, index, scopes, paths }))
+  scopes.forEach((scope, index) =>
+    validateScope({ scope, index, scopes, paths }),
+  )
 }
 
 const validateScope = function({ scope, index, scopes, paths }) {

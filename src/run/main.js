@@ -1,6 +1,10 @@
 'use strict'
 
-const { addErrorHandler, topLevelHandler, handleFinalFailure } = require('../errors')
+const {
+  addErrorHandler,
+  topLevelHandler,
+  handleFinalFailure,
+} = require('../errors')
 const { loadConfig } = require('../config')
 const { getTasks, removeOriginalTasks } = require('../tasks')
 const { loadPlugins } = require('../plugins')
@@ -38,7 +42,11 @@ const eRun = addErrorHandler(run, topLevelHandler)
 
 // Fire all plugin handlers for all tasks
 const performRun = async function({ config, tasks, plugins }) {
-  const { tasks: tasksA, allTasks } = await loadTasks({ config, tasks, plugins })
+  const { tasks: tasksA, allTasks } = await loadTasks({
+    config,
+    tasks,
+    plugins,
+  })
   const context = { _tasks: tasksA, _allTasks: allTasks }
 
   const startData = await startTasks({ config, context, plugins })

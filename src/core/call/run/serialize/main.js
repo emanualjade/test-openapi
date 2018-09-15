@@ -42,7 +42,9 @@ const serialize = function({ call }) {
   return { call: { ...call, request: requestB, rawRequest: rawRequestA } }
 }
 
-const normalizeTimeout = function({ call: { timeout = DEFAULT_TIMEOUT, ...call } }) {
+const normalizeTimeout = function({
+  call: { timeout = DEFAULT_TIMEOUT, ...call },
+}) {
   return { ...call, timeout }
 }
 
@@ -60,7 +62,10 @@ const stringifyParamFlat = function({ value }) {
 }
 
 // Stringify the request body according to HTTP request header `Content-Type`
-const stringifyBody = function({ value, call: { 'headers.content-type': contentType } }) {
+const stringifyBody = function({
+  value,
+  call: { 'headers.content-type': contentType },
+}) {
   // Default stringifiers tries JSON.stringify()
   const { stringify = stringifyFlat } = findBodyHandler({ mime: contentType })
 

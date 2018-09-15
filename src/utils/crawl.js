@@ -16,13 +16,17 @@ const crawlNode = function(value, path, opts) {
   }
 
   const valueA = crawlChildren(value, path, opts)
-  return promiseThen(valueA, valueB => evalNodeValue({ value: valueB, path, opts }))
+  return promiseThen(valueA, valueB =>
+    evalNodeValue({ value: valueB, path, opts }),
+  )
 }
 
 // Siblings evaluation is done in parallel for best performance.
 const crawlChildren = function(value, path, opts) {
   if (Array.isArray(value)) {
-    const children = value.map((child, index) => crawlNode(child, [...path, index], opts))
+    const children = value.map((child, index) =>
+      crawlNode(child, [...path, index], opts),
+    )
     return promiseAll(children)
   }
 

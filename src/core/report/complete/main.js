@@ -53,12 +53,25 @@ const getCount = function({ keys, tasks }) {
   return count
 }
 
-const completeTasks = async function({ count, keys, tasks, reporters, plugins, context }) {
+const completeTasks = async function({
+  count,
+  keys,
+  tasks,
+  reporters,
+  plugins,
+  context,
+}) {
   const keysA = keys.slice(0, count)
   await completeTask({ keys: keysA, tasks, reporters, plugins, context })
 }
 
-const completeTask = async function({ keys: [key, ...keys], tasks, reporters, plugins, context }) {
+const completeTask = async function({
+  keys: [key, ...keys],
+  tasks,
+  reporters,
+  plugins,
+  context,
+}) {
   if (key === undefined) {
     return
   }

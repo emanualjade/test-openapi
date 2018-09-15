@@ -15,7 +15,9 @@ const removeOptionals = function({ params, call }) {
 
 // Spec parameters are marked as required by using `optional: false` (default)
 const removeTopLevel = function({ params, call }) {
-  const paramsA = omitBy(params, (param, key) => isSkippedOptional({ param, key, call }))
+  const paramsA = omitBy(params, (param, key) =>
+    isSkippedOptional({ param, key, call }),
+  )
   const paramsB = mapValues(paramsA, removeOptionalProp)
   return paramsB
 }
@@ -31,7 +33,9 @@ const removeOptionalProp = function(param) {
 
 // Spec nested properties are marked as required by using JSON schema `required`
 const removeNested = function({ params, call }) {
-  return mapValues(params, (schema, key) => removeNonRequired({ schema, definedProps: call[key] }))
+  return mapValues(params, (schema, key) =>
+    removeNonRequired({ schema, definedProps: call[key] }),
+  )
 }
 
 // Remove properties that are neither required nor specified in `definedProps`

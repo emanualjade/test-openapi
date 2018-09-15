@@ -3,7 +3,9 @@
 // From 22 to "22nd", etc.
 const numberToCardinal = function(integer) {
   if (!Number.isInteger(integer) || integer < 1) {
-    throw new Error(`Invalid input '${integer}': it must be an integer greater than 0`)
+    throw new Error(
+      `Invalid input '${integer}': it must be an integer greater than 0`,
+    )
   }
 
   const integerA = String(integer)

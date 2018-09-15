@@ -12,7 +12,11 @@ const templateHandler = function(error, { pluginsVarsMap }) {
 }
 
 // Add `error.module`
-const addPlugin = function({ error, error: { value, module }, pluginsVarsMap }) {
+const addPlugin = function({
+  error,
+  error: { value, module },
+  pluginsVarsMap,
+}) {
   if (module !== undefined || value === undefined) {
     return error
   }

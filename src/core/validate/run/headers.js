@@ -18,7 +18,12 @@ const validateHeaders = function({ validate, response }) {
 const validateHeader = function({ name, schema, headers }) {
   const header = getResponseHeader({ headers, name })
 
-  checkRequired({ schema, value: header, property: PROPERTY(name), name: NAME(name) })
+  checkRequired({
+    schema,
+    value: header,
+    property: PROPERTY(name),
+    name: NAME(name),
+  })
 
   if (header === undefined) {
     return

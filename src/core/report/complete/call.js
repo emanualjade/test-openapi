@@ -29,7 +29,12 @@ const callComplete = async function({
     return
   }
 
-  await callComplete({ task: { ...nested, isNested: true }, reporters, plugins, context })
+  await callComplete({
+    task: { ...nested, isNested: true },
+    reporters,
+    plugins,
+    context,
+  })
 }
 
 const getArg = function({ task, plugins }, { options }) {

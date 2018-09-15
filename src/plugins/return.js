@@ -19,7 +19,15 @@ const getTaskReturn = function({
 
   // Enforce properties order: `key`, `skipped`, `error`, added `task.*`, original `task.*`
   // `originalTask` is kept only for reporters
-  const taskA = { key, scope, name, skipped, error, ...pluginReturns, originalTask }
+  const taskA = {
+    key,
+    scope,
+    name,
+    skipped,
+    error,
+    ...pluginReturns,
+    originalTask,
+  }
 
   // Do not clutter with plugins that have nothing to return
   const taskB = omitBy(taskA, value => value === undefined)
@@ -43,7 +51,12 @@ const getPluginReturn = function({ task, plugin, plugin: { name } }) {
   return { [name]: returnValue }
 }
 
-const getReturnValue = function({ task, task: { originalTask }, plugin, plugin: { name } }) {
+const getReturnValue = function({
+  task,
+  task: { originalTask },
+  plugin,
+  plugin: { name },
+}) {
   const addedProps = getAddedProps({ task, plugin })
 
   const originalValue = originalTask[name]
@@ -61,7 +74,10 @@ const getReturnValue = function({ task, task: { originalTask }, plugin, plugin: 
 
 // Retrieve the properties from `task.PLUGIN.*` that have been added by this
 // plugin, i.e. not in `originalTask.*`
-const getAddedProps = function({ task, plugin: { name, config: { task: taskConfig } = {} } }) {
+const getAddedProps = function({
+  task,
+  plugin: { name, config: { task: taskConfig } = {} },
+}) {
   const taskValue = task[name]
 
   // If there is no `plugin.config.task`, return `task.*` as is
@@ -75,7 +91,9 @@ const getAddedProps = function({ task, plugin: { name, config: { task: taskConfi
   }
 
   // `plugin.config.task` is an object. We remove its properties from `task.*`
-  const taskValueA = omitBy(taskValue, (value, key) => shouldSkipProp({ value, key, taskConfig }))
+  const taskValueA = omitBy(taskValue, (value, key) =>
+    shouldSkipProp({ value, key, taskConfig }),
+  )
 
   if (Object.keys(taskValueA).length === 0) {
     return
@@ -86,7 +104,10 @@ const getAddedProps = function({ task, plugin: { name, config: { task: taskConfi
 
 // Check if JSON schema is `type` `object`
 const isObjectType = function({ taskConfig, taskConfig: { type } }) {
-  return type === 'object' || OBJECT_PROPS.some(prop => taskConfig[prop] !== undefined)
+  return (
+    type === 'object' ||
+    OBJECT_PROPS.some(prop => taskConfig[prop] !== undefined)
+  )
 }
 
 // `type` is optional, so we guess by looking at properties
@@ -115,7 +136,9 @@ const isConfigProp = function({
   return (
     (additionalProperties !== undefined && additionalProperties !== false) ||
     properties[key] !== undefined ||
-    Object.keys(patternProperties).some(pattern => new RegExp(pattern).test(key))
+    Object.keys(patternProperties).some(pattern =>
+      new RegExp(pattern).test(key),
+    )
   )
 }
 

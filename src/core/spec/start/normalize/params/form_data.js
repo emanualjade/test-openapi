@@ -25,7 +25,9 @@ const formDataToBody = function({ formDataParams, params }) {
 }
 
 const getBody = function({ formDataParams }) {
-  const properties = mapKeys(formDataParams, (value, key) => removeFormDataPrefix(key))
+  const properties = mapKeys(formDataParams, (value, key) =>
+    removeFormDataPrefix(key),
+  )
   const required = getRequired({ properties })
   // OpenAPI 2.0 `formData` parameters can be individually made required, but the
   // specification does not prescribe whether the request body is required or not.

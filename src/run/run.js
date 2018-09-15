@@ -11,7 +11,13 @@ const runTask = async function({ task, context, plugins, nestedPath }) {
   return taskB
 }
 
-const runAll = function({ task, task: { skipped }, context, plugins, nestedPath }) {
+const runAll = function({
+  task,
+  task: { skipped },
+  context,
+  plugins,
+  nestedPath,
+}) {
   // Task marked as skipped, e.g. by `skip|only` plugins
   // Only `run` plugin handlers are skipped, i.e. `start`, `complete` and `end`
   // handlers are still run for those tasks.
@@ -47,9 +53,17 @@ const runAllHandler = function(error) {
 const eRunAll = addErrorHandler(runAll, runAllHandler)
 
 const getContext = function({ context, plugins, nestedPath }) {
-  const recursiveRunTaskA = recursiveRunTask.bind(null, { context, plugins, nestedPath })
+  const recursiveRunTaskA = recursiveRunTask.bind(null, {
+    context,
+    plugins,
+    nestedPath,
+  })
 
-  const contextA = { ...context, _runTask: recursiveRunTaskA, _nestedPath: nestedPath }
+  const contextA = {
+    ...context,
+    _runTask: recursiveRunTaskA,
+    _nestedPath: nestedPath,
+  }
   return contextA
 }
 
@@ -64,7 +78,12 @@ const recursiveRunTask = async function(
 
   const nestedPathA = appendNestedPath({ nestedPath, key, self })
 
-  const taskA = await runTask({ task, context, plugins, nestedPath: nestedPathA })
+  const taskA = await runTask({
+    task,
+    context,
+    plugins,
+    nestedPath: nestedPathA,
+  })
 
   const { error } = taskA
 

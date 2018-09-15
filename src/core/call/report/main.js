@@ -3,7 +3,12 @@
 const { titleize } = require('underscore.string')
 
 const { removePrefixes, sortArray } = require('../../../utils')
-const { yellow, highlightValueAuto, prettifyJson, truncate } = require('../../report/utils')
+const {
+  yellow,
+  highlightValueAuto,
+  prettifyJson,
+  truncate,
+} = require('../../report/utils')
 
 const { getTitle } = require('./title')
 
@@ -17,11 +22,20 @@ const report = function({ rawRequest, rawResponse } = {}) {
   const request = getRequest({ rawRequest })
   const response = getResponse({ rawResponse })
 
-  return { title, rawRequest: undefined, rawResponse: undefined, request, response }
+  return {
+    title,
+    rawRequest: undefined,
+    rawResponse: undefined,
+    request,
+    response,
+  }
 }
 
 // Print HTTP request in error messages
-const getRequest = function({ rawRequest, rawRequest: { method, url, body, path } }) {
+const getRequest = function({
+  rawRequest,
+  rawRequest: { method, url, body, path },
+}) {
   const urlA = printUrl({ method, url, path })
   const headersA = printHeaders(rawRequest)
   const bodyA = printBody({ body })
@@ -30,7 +44,10 @@ const getRequest = function({ rawRequest, rawRequest: { method, url, body, path 
 }
 
 // Print HTTP response in error messages
-const getResponse = function({ rawResponse, rawResponse: { status, body } = {} }) {
+const getResponse = function({
+  rawResponse,
+  rawResponse: { status, body } = {},
+}) {
   // We haven't reached `request` stage yet
   if (rawResponse === undefined) {
     return

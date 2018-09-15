@@ -6,7 +6,10 @@ const { parseFlat } = require('../../../utils')
 const { findBodyHandler } = require('../body')
 
 // Parse response
-const parse = function({ call, call: { rawResponse: { status, body, ...headers } = {} } = {} }) {
+const parse = function({
+  call,
+  call: { rawResponse: { status, body, ...headers } = {} } = {},
+}) {
   if (call === undefined) {
     return
   }

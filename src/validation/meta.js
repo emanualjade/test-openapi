@@ -44,7 +44,11 @@ const fixFormat = function(schema) {
 // `x-*` custom properties are not present in JSON schema v4 meta-schema but are
 // actually allowed
 const fixCustomProperties = function(schema) {
-  return { ...schema, patternProperties: { '^x-*': {} }, additionalProperties: false }
+  return {
+    ...schema,
+    patternProperties: { '^x-*': {} },
+    additionalProperties: false,
+  }
 }
 
 const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties]

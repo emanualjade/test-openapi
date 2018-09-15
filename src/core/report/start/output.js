@@ -25,11 +25,17 @@ const getFileStream = function({ output }) {
   })
 }
 
-const getFileStreamHandler = function({ message }, { output, reporter: { name } }) {
-  throw new TestOpenApiError(`Could not write output to file '${output}': ${message}`, {
-    property: `config.report.${name}.output`,
-    value: output,
-  })
+const getFileStreamHandler = function(
+  { message },
+  { output, reporter: { name } },
+) {
+  throw new TestOpenApiError(
+    `Could not write output to file '${output}': ${message}`,
+    {
+      property: `config.report.${name}.output`,
+      value: output,
+    },
+  )
 }
 
 const eGetFileStream = addErrorHandler(getFileStream, getFileStreamHandler)

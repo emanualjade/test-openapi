@@ -12,7 +12,14 @@ class Tap {
   constructor({ count, colors } = {}) {
     const colorsA = getColors({ colors })
 
-    Object.assign(this, { index: 0, pass: 0, fail: 0, skip: 0, count, colors: colorsA })
+    Object.assign(this, {
+      index: 0,
+      pass: 0,
+      fail: 0,
+      skip: 0,
+      count,
+      colors: colorsA,
+    })
   }
 }
 

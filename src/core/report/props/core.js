@@ -18,7 +18,13 @@ const getCoreReportProps = function({
   const propertyA = getProperty({ property })
   const moduleA = getModule({ module })
 
-  return { message, ...values, property: propertyA, 'JSON schema': schemaA, ...moduleA }
+  return {
+    message,
+    ...values,
+    property: propertyA,
+    'JSON schema': schemaA,
+    ...moduleA,
+  }
 }
 
 const getValues = function({ expected, value }) {

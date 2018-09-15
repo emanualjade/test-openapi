@@ -18,7 +18,12 @@ const runHandlers = function({
   mergeReturn = defaultMergeReturn,
 }) {
   const contextA = getContext({ context, plugins })
-  const handlers = getHandlers({ plugins, type, errorHandler, context: contextA })
+  const handlers = getHandlers({
+    plugins,
+    type,
+    errorHandler,
+    context: contextA,
+  })
 
   return reduceAsync(handlers, runHandler, input, mergeReturn, stopFunc)
 }
@@ -32,7 +37,9 @@ const getHandlers = function({ plugins, type, errorHandler, context }) {
   const handlers = plugins.map(plugin => getPluginHandlers({ plugin, type }))
   const handlersA = [].concat(...handlers)
 
-  const handlersB = handlersA.map(handler => wrapHandler({ handler, errorHandler, context }))
+  const handlersB = handlersA.map(handler =>
+    wrapHandler({ handler, errorHandler, context }),
+  )
   return handlersB
 }
 
@@ -51,10 +58,17 @@ const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
   return handlersB
 }
 
-const wrapHandler = function({ handler: { func, name }, errorHandler, context }) {
+const wrapHandler = function({
+  handler: { func, name },
+  errorHandler,
+  context,
+}) {
   const handlerA = callHandler.bind(null, { func, context })
 
-  const handlerB = addErrorHandler(handlerA, pluginErrorHandler.bind(null, name))
+  const handlerB = addErrorHandler(
+    handlerA,
+    pluginErrorHandler.bind(null, name),
+  )
   const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
   return handlerC
 }

@@ -45,7 +45,10 @@ const isFormDataMime = function(mime) {
   return FORM_DATA_MIMES.some(formDataMime => mime.startsWith(formDataMime))
 }
 
-const FORM_DATA_MIMES = ['application/x-www-form-urlencoded', 'multipart/form-data']
+const FORM_DATA_MIMES = [
+  'application/x-www-form-urlencoded',
+  'multipart/form-data',
+]
 
 const isFormData = function(key) {
   return FORM_DATA_REGEXP.test(key)

@@ -15,7 +15,9 @@ const getSpecialValues = function({ call }) {
 }
 
 const initSpecialValues = function() {
-  const specialValues = SPECIAL_VALUES.map(specialValue => ({ [specialValue]: [] }))
+  const specialValues = SPECIAL_VALUES.map(specialValue => ({
+    [specialValue]: [],
+  }))
   return Object.assign({}, ...specialValues)
 }
 

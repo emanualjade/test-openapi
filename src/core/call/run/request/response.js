@@ -3,7 +3,11 @@
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response
-const getRawResponse = async function({ rawResponse, rawResponse: { status }, rawRequest }) {
+const getRawResponse = async function({
+  rawResponse,
+  rawResponse: { status },
+  rawRequest,
+}) {
   const headers = getHeaders({ rawResponse })
   const body = await eGetBody({ rawResponse, rawRequest })
 
@@ -17,7 +21,9 @@ const getRawResponse = async function({ rawResponse, rawResponse: { status }, ra
 //  - it is automatically done by both the Fetch standard and Node.js core `http` module
 const getHeaders = function({ rawResponse: { headers } }) {
   const headersA = [...headers.entries()]
-  const headersB = headersA.map(([name, value]) => ({ [`headers.${name}`]: value }))
+  const headersB = headersA.map(([name, value]) => ({
+    [`headers.${name}`]: value,
+  }))
   const headersC = Object.assign({}, ...headersB)
   return headersC
 }
@@ -27,16 +33,24 @@ const getBody = function({ rawResponse }) {
   return rawResponse.text()
 }
 
-const getBodyHandler = function({ message, type }, { rawRequest: { timeout } }) {
+const getBodyHandler = function(
+  { message, type },
+  { rawRequest: { timeout } },
+) {
   const property = 'task.call.response.body'
 
   if (type === 'body-timeout') {
-    throw new TestOpenApiError(`Parsing the response body took more than ${timeout} milliseconds`, {
-      property,
-    })
+    throw new TestOpenApiError(
+      `Parsing the response body took more than ${timeout} milliseconds`,
+      {
+        property,
+      },
+    )
   }
 
-  throw new TestOpenApiError(`Could not read response body: ${message}`, { property })
+  throw new TestOpenApiError(`Could not read response body: ${message}`, {
+    property,
+  })
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)

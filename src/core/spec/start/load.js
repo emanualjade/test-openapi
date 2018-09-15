@@ -21,14 +21,18 @@ const loadSpecHandler = function({ message, details }) {
 
 // Validate OpenAPI file exists and can be fetched
 const fetchSpecHandler = function({ message }) {
-  throw new TestOpenApiError(`OpenAPI specification could not be loaded: ${message}`)
+  throw new TestOpenApiError(
+    `OpenAPI specification could not be loaded: ${message}`,
+  )
 }
 
 // Validate OpenAPI specification syntax
 const invalidSpecHandler = function({ details, details: [{ path }] }) {
   const message = details.map(getErrorMessage).join(`\n${INDENT}`)
   throw new TestOpenApiError(
-    `OpenAPI specification is invalid at ${path.join('.')}:\n${INDENT}${message}`,
+    `OpenAPI specification is invalid at ${path.join(
+      '.',
+    )}:\n${INDENT}${message}`,
   )
 }
 

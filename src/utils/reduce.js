@@ -9,6 +9,7 @@ const reduceAsync = function(array, mapFunc, prevVal, secondMapFunc, stopFunc) {
 
 const asyncReducer = function(prevVal, input) {
   const { array, mapFunc, stopFunc, index = 0 } = input
+
   if (index === array.length) {
     return prevVal
   }

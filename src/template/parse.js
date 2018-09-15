@@ -17,6 +17,7 @@ const parseTemplate = function(data) {
   }
 
   const keys = Object.keys(data)
+
   // Template functions can be passed arguments by using an object with a single
   // property starting with `$$`
   // This allows objects with several properties not to need escaping
@@ -25,6 +26,7 @@ const parseTemplate = function(data) {
   }
 
   const [name] = keys
+
   if (!TEMPLATE_REGEXP.test(name)) {
     return
   }

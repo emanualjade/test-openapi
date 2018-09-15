@@ -24,6 +24,7 @@ const validateFromSchema = function({
   instance = defaultInstance,
 }) {
   const passed = instance.validate(schema, value)
+
   if (passed) {
     return
   }

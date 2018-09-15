@@ -29,6 +29,7 @@ const parseStatus = function({ status, property }) {
 
 const checkValidStatuses = function({ statuses, property }) {
   const invalidStatuses = difference(statuses, VALID_STATUSES)
+
   if (invalidStatuses.length === 0) {
     return
   }

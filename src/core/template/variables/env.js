@@ -15,6 +15,7 @@ const getEnv = function() {
 
 const getEnvVar = function(proxy, envVarName) {
   const envVar = findEnvVar({ envVarName })
+
   if (envVar === undefined) {
     return
   }
@@ -34,6 +35,7 @@ const findEnvVar = function({ envVarName }) {
   const envVar = Object.entries(env).find(
     ([key]) => key.toLowerCase() === envVarNameA,
   )
+
   if (envVar === undefined) {
     return
   }

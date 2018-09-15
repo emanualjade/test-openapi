@@ -10,6 +10,7 @@ const { BugError } = require('./error')
 // Any error not using `TestOpenApiError` is a bug
 const handleBugs = function({ error }) {
   const bugError = findBugError({ error })
+
   if (bugError === undefined) {
     return error
   }
@@ -22,6 +23,7 @@ const handleBugs = function({ error }) {
 
 const findBugError = function({ error, error: { errors = [error] } }) {
   const errorA = errors.find(getBugError)
+
   if (errorA === undefined) {
     return
   }
@@ -37,6 +39,7 @@ const getBugError = function(error) {
 
   // Check for nested tasks errors
   const { nested: { error: nestedError } = {} } = error
+
   if (nestedError !== undefined) {
     return getBugError(nestedError)
   }

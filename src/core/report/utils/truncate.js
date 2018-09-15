@@ -37,6 +37,7 @@ const getLastLine = function({ end }) {
 
 const findLastLine = function({ end }) {
   const index = end.indexOf('\n')
+
   if (index === -1) {
     return end
   }

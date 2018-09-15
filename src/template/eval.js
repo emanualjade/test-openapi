@@ -43,6 +43,7 @@ const recursiveEval = function(vars, opts, stack, data) {
 // Evaluate templates in an object or part of an object
 const evalNode = function(opts, data, path) {
   const template = parseTemplate(data)
+
   // There are no template markers
   if (template === undefined) {
     return data
@@ -87,6 +88,7 @@ const concatTokens = function(tokens) {
 
 const evalSingle = function({ template, opts }) {
   const unescapedData = parseEscape({ template })
+
   // There was something that looked like a template but was an escaped data
   if (unescapedData !== undefined) {
     return unescapedData
@@ -133,6 +135,7 @@ const getTopLevelProp = function({
 const parseName = function({ name }) {
   // Dot notation can also use brackets
   const index = name.search(/[.[]/)
+
   if (index === -1) {
     return { topName: name }
   }

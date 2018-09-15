@@ -30,6 +30,7 @@ const groupTasks = function({ allTasks }) {
 const loadSpec = async function(tasks) {
   // All tasks have same OpenAPI specification here, so just pick the first one
   const definition = getDefinition(tasks[0])
+
   if (definition === undefined) {
     return
   }

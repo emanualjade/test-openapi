@@ -47,9 +47,7 @@ const removeNonRequired = function({
     return schema
   }
 
-  const propertiesA = omitBy(properties, (property, name) => {
-    return !required.includes(name) && definedProps[name] === undefined
-  })
+  const propertiesA = omitBy(properties, (property, name) => !required.includes(name) && definedProps[name] === undefined)
 
   const propertiesB = mapValues(propertiesA, (property, name) =>
     removeNonRequired({ schema: property, definedProps: definedProps[name] }),

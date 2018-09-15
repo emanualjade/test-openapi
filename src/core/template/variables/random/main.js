@@ -21,7 +21,7 @@ const $$random = function(schema) {
   return valueA
 }
 
-// json-schema-faker does not work properly with array schema that do not have
+// Json-schema-faker does not work properly with array schema that do not have
 // an `items.type` property
 const fixArray = function({ schema, schema: { type, items = {} } }) {
   if (type !== 'array' || items.type !== undefined) {

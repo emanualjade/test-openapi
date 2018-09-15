@@ -7,6 +7,7 @@
 // `regExp` must have the `g` flag.
 const searchRegExp = function(regExp, string) {
   const delims = string.match(regExp)
+
   if (delims === null) {
     return
   }

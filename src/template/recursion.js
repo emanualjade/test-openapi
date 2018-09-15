@@ -37,7 +37,7 @@ const printTemplate = function({ type, name, arg }) {
   return name
 }
 
-const RIGHT_ARROW = '\u21aa'
+const RIGHT_ARROW = '\u21AA'
 
 module.exports = {
   checkRecursion,

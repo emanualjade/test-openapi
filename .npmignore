@@ -2,7 +2,6 @@
 .env
 *.swp
 *.swo
-package-lock.json
 node_modules
 npm-debug.log
 tmp

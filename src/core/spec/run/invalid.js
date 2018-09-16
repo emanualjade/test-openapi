@@ -25,8 +25,8 @@ const getInvalidParam = function({ param }) {
   }
 
   // TODO: json-schema-faker support for the `not` keyword is lacking
-  // E.g. `type` array is not supported, so `invalid value` actually does not work
-  // at the moment.
+  // E.g. `type` array is not supported, so `invalid value` actually does not
+  // work at the moment.
   return { not: param }
 }
 

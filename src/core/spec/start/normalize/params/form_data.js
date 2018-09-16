@@ -5,7 +5,8 @@ const { omitBy, pickBy, mapKeys } = require('lodash')
 const { isFormData, removeFormDataPrefix } = require('../form_data')
 
 // Merge `formData` parameters into a single `task.call.body` parameter
-//   { type: 'object', properties: { one: { ... }, two: { ... } }, required: ['one'] }
+//   { type: 'object', properties: { one: { ... }, two: { ... } },
+//     required: ['one'] }
 // TODO: make `collectionFormat` work for `formData` parameters
 const normalizeFormData = function({ params }) {
   const formDataParams = pickBy(params, (value, key) => isFormData(key))
@@ -29,8 +30,9 @@ const getBody = function({ formDataParams }) {
     removeFormDataPrefix(key),
   )
   const required = getRequired({ properties })
-  // OpenAPI 2.0 `formData` parameters can be individually made required, but the
-  // specification does not prescribe whether the request body is required or not.
+  // OpenAPI 2.0 `formData` parameters can be individually made required, but
+  // the specification does not prescribe whether the request body is required
+  // or not.
   // So we assume it is.
   return { type: 'object', properties, required }
 }

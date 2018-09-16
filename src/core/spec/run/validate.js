@@ -5,7 +5,9 @@ const { STATUS_CODES } = require('statuses')
 
 const { TestOpenApiError } = require('../../../errors')
 const { getWordsList, merge } = require('../../../utils')
-const { parseStatus, serializeStatus } = require('../../validate/run/status')
+const {
+  utils: { parseStatus, serializeStatus },
+} = require('../../validate')
 
 // Add OpenAPI specification to `task.validate.*`
 // Use the specification response matching both the current operation and
@@ -30,7 +32,8 @@ const addSpecToValidate = function({
   return validateA
 }
 
-// Modifies `validate.status` to only allow status codes described in the specification.
+// Modifies `validate.status` to only allow status codes described in the
+// specification.
 // If `validate.status` already exists, intersects with it.
 const getSpecStatus = function({
   validate: { status = DEFAULT_STATUS },
@@ -61,7 +64,8 @@ const getSpecStatus = function({
   return statusA
 }
 
-// The default value of `validate.status` is assigned later, so we need to assign it now
+// The default value of `validate.status` is assigned later, so we need to
+// assign it now
 const DEFAULT_STATUS = '2xx'
 
 // Can only specify `validate.status` of status codes described in specification

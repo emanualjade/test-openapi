@@ -9,9 +9,13 @@ const { isObject } = require('../../../utils')
 // Colors used in reporting
 const { yellow, magenta, reset, italic, bold, inverse } = chalk
 
+// eslint-disable-next-line no-magic-numbers
 const red = chalk.rgb(200, 0, 0)
+// eslint-disable-next-line no-magic-numbers
 const green = chalk.rgb(0, 150, 0)
+// eslint-disable-next-line no-magic-numbers
 const gray = chalk.rgb(100, 100, 100)
+// eslint-disable-next-line no-magic-numbers
 const orange = chalk.rgb(250, 100, 50)
 
 // Utility function

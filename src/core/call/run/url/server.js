@@ -1,6 +1,8 @@
 'use strict'
 
-const { $$env } = require('../../../template/variables')
+const {
+  template: { $$env },
+} = require('../../../template')
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
@@ -43,7 +45,7 @@ const getPort = function() {
 }
 
 // Remove trailing slashes in base URL
-const TRAILING_SLASH_REGEXP = /\/$/
+const TRAILING_SLASH_REGEXP = /\/$/u
 
 module.exports = {
   getServer,

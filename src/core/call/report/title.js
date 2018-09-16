@@ -19,7 +19,7 @@ const getUrl = function({ rawRequest: { method, url } }) {
 }
 
 // Remove query variables from URL
-const QUERY_REGEXP = /\?.*/
+const QUERY_REGEXP = /\?.*/u
 
 const getStatus = function({ rawResponse: { status } = {} }) {
   // We haven't reached `request` stage yet

@@ -4,6 +4,8 @@ const { basename } = require('path')
 
 const { omit } = require('lodash')
 
+const { TestOpenApiError } = require('../errors')
+
 // Add `task.scope`.
 // It is the filename without file extensions.
 // It is `undefined` for inline tasks unless they specify it.
@@ -15,7 +17,7 @@ const addScopes = function({ tasks, path }) {
 
 const getScope = function(path) {
   const filename = basename(path)
-  const scope = filename.replace(/\..*/, '')
+  const scope = filename.replace(/\..*/u, '')
   return scope
 }
 
@@ -37,8 +39,33 @@ const addKey = function({ scope, name, ...task }) {
   return { key, scope, name, ...task }
 }
 
+// Since we use filenames as `task.scope` which itself is used in `task.key`,
+// and `task.key` must be unique, we validate every filename is unique.
+const validateScopes = function({ paths }) {
+  const scopes = paths.map(getScope)
+  scopes.forEach((scope, index) =>
+    validateScope({ scope, index, scopes, paths }),
+  )
+}
+
+const validateScope = function({ scope, index, scopes, paths }) {
+  const scopesA = scopes.slice(index + 1)
+  const duplicateScopeIndex = scopesA.indexOf(scope)
+
+  if (duplicateScopeIndex === -1) {
+    return
+  }
+
+  const path = paths[index]
+  const duplicatePath = paths[duplicateScopeIndex + index + 1]
+  throw new TestOpenApiError(
+    `Each task file name must be unique, but the two following files are not: '${path}' and '${duplicatePath}'`,
+  )
+}
+
 module.exports = {
   addScopes,
   getScope,
   addKey,
+  validateScopes,
 }

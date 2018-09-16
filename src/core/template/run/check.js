@@ -6,7 +6,8 @@ const { BugError, TestOpenApiError } = require('../../../errors')
 const { getPath, numberToCardinal } = require('../../../utils')
 const { checkSchema } = require('../../../validation')
 
-// Wrap template helper functions with JSON schema validation from `plugin.config['template.*']`
+// Wrap template helper functions with JSON schema validation from
+// `plugin.config['template.*']`
 const wrapTemplateVars = function({ vars, plugin }) {
   const templateConfig = getTemplateConfig({ plugin })
 
@@ -33,7 +34,8 @@ const TEMPLATE_CONFIG_PREFIX = 'template.'
 
 // Wrap the template helper function
 const wrapTemplateVar = function({ value, name, schema, plugin }) {
-  // Some template values might be optionally generated, so we ignore `undefined`
+  // Some template values might be optionally generated, so we ignore
+  // `undefined`
   if (value === undefined) {
     return
   }
@@ -52,10 +54,9 @@ const validateTemplateConfig = function({ value, name, schemaProp, plugin }) {
     return
   }
 
-  const module = `plugin-${plugin.name}`
   throw new BugError(
     `'plugin.config["template.${name}"]' can only be defined if 'plugin.template.${name}' is a function`,
-    { value, property: schemaProp, module },
+    { value, property: schemaProp, module: `plugin-${plugin.name}` },
   )
 }
 
@@ -86,7 +87,8 @@ const getMessage = function({ name, index }) {
   return message
 }
 
-// Helper function arguments cannot be `undefined` unless `schema.x-optional: true`
+// Helper function arguments cannot be `undefined` unless
+// `schema.x-optional: true`
 const checkVarUndefined = function({
   schema: { 'x-optional': isOptional = false },
   message,

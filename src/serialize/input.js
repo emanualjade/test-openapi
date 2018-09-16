@@ -14,9 +14,7 @@ const parseInput = function(taskOrConfig, throwError) {
   return crawl(
     taskOrConfig,
     (value, path) => parseInputValue({ value, path, throwError }),
-    {
-      topDown: true,
-    },
+    { topDown: true },
   )
 }
 
@@ -29,12 +27,16 @@ const parseInputValue = function({ value, path, throwError }) {
     return UNDEFINED
   }
 
-  if (isJsonType(value) || value === undefined || typeof value === 'function') {
+  if (isAllowed(value)) {
     return value
   }
 
   const message = getMessage({ value, path })
   throwError({ message, value, path })
+}
+
+const isAllowed = function(value) {
+  return isJsonType(value) || value === undefined || typeof value === 'function'
 }
 
 module.exports = {

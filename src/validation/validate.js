@@ -1,3 +1,4 @@
+/* eslint-disable-line max-lines */
 'use strict'
 
 const Ajv = require('ajv')
@@ -12,7 +13,8 @@ const { defaultInstance } = require('./instance')
 // Wrapper around AJV validate() that augments its error return value:
 //  - error.message: better error message.
 //    Can be prefixed by `arg.message`
-//  - error.value|schema: specific property within value|schema that triggered the error
+//  - error.value|schema: specific property within value|schema that triggered
+//    the error
 //  - error.valuePath|schemaPath: path to error.value|schema.
 //    Can be prefixed by `arg.valueProp|schemaProp`
 const validateFromSchema = function({
@@ -67,7 +69,7 @@ const getError = function({
     valuePath,
     schemaPath,
   }
-  const errorB = omitBy(errorA, value => value === undefined)
+  const errorB = omitBy(errorA, valueB => valueB === undefined)
   return errorB
 }
 
@@ -75,9 +77,11 @@ const getMessage = function({ error, message, valueProp }) {
   const messagePrefix = getMessagePrefix({ message, valueProp })
   const errorMessage = Ajv.prototype
     .errorsText([error], { dataVar: '' })
-    .replace(/^[. ]/, '')
+    .replace(FIRST_CHAR_REGEXP, '')
   return `${messagePrefix}: ${errorMessage}`
 }
+
+const FIRST_CHAR_REGEXP = /^[. ]/u
 
 const getMessagePrefix = function({ message, valueProp }) {
   if (message !== undefined) {
@@ -95,8 +99,10 @@ const getMessagePrefix = function({ message, valueProp }) {
 // `["NAME"]` for names that need to be escaped.
 // However it starts with a dot, which we strip.
 const getErrorPath = function({ error: { dataPath } }) {
-  return dataPath.replace(/^\./, '')
+  return dataPath.replace(FIRST_DOT_REGEXP, '')
 }
+
+const FIRST_DOT_REGEXP = /^\./u
 
 const getValue = function({ errorPath, value }) {
   if (errorPath === '') {

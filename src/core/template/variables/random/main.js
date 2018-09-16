@@ -8,9 +8,10 @@ const { checkIsSchema } = require('../../../../validation')
 const { addCustomFormats } = require('./format')
 
 // Generate random value based on a single JSON schema
-const $$random = function(schema) {
+const random = function(schema) {
   // Validate random parameters are valid JSON schema v4
-  // We cannot use later versions because json-schema-faker does not support them
+  // We cannot use later versions because json-schema-faker does not support
+  // them
   checkIsSchema({ value: schema })
 
   const schemaA = fixArray({ schema })
@@ -45,8 +46,8 @@ const addFakerOptions = function() {
 
 addFakerOptions()
 
-// If `task.random.*.x-separator: string` defined, used it to concatenate an array
-// into a string
+// If `task.random.*.x-separator: string` defined, used it to concatenate an
+// array into a string
 // This is used to make OpenAPI `collectionFormat` work
 const addSeparators = function({
   value,
@@ -60,5 +61,5 @@ const addSeparators = function({
 }
 
 module.exports = {
-  $$random,
+  $$random: random,
 }

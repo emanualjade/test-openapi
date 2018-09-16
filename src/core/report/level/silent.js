@@ -11,7 +11,8 @@ const isSilent = function({
   return types.length === 0
 }
 
-// Some `config.report.REPORTER.level` will only show errors, i.e. see if task should be silent
+// Some `config.report.REPORTER.level` will only show errors, i.e. see if task
+// should be silent
 const isSilentTask = function({ task, options }) {
   const resultType = getResultType(task)
   return isSilentType({ resultType, options })

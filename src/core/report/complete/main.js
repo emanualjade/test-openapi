@@ -19,6 +19,7 @@ const complete = async function(task, context) {
   // Save current task's result (i.e. reporting input)
   // `startData.report.tasks|index` are stateful and directly mutated because
   // they need to be shared between parallel tasks
+  // eslint-disable-next-line fp/no-mutation
   tasks[task.key] = task
 
   // Only use keys not reported yet
@@ -28,6 +29,7 @@ const complete = async function(task, context) {
   const count = getCount({ keys, tasks })
 
   // Update index to last reported task
+  // eslint-disable-next-line fp/no-mutation
   report.index += count
 
   // `reporter.tick()` is like `reporter.complete()` except it is not buffered.

@@ -10,6 +10,7 @@ const getEnv = function() {
   // We use a proxy (instead of a reference to `process.env` to add some logic:
   //  - case-insensitive names
   //  - value parsing
+  // eslint-disable-next-line fp/no-proxy
   return new Proxy({}, { get: getEnvVar })
 }
 
@@ -43,8 +44,8 @@ const findEnvVar = function({ envVarName }) {
   return envVar[1]
 }
 
-const $$env = getEnv()
+const envTemplate = getEnv()
 
 module.exports = {
-  $$env,
+  $$env: envTemplate,
 }

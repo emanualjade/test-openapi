@@ -45,14 +45,14 @@ const parseBody = function({ body, headers }) {
   // On bad servers, this could be undefined
   const mime = headers['headers.content-type']
 
-  const { parse } = findBodyHandler({ mime })
+  const { parse: parseFunc } = findBodyHandler({ mime })
 
   // Defaults to leaving as is
-  if (parse === undefined) {
+  if (parseFunc === undefined) {
     return bodyA
   }
 
-  return parse(bodyA)
+  return parseFunc(bodyA)
 }
 
 const trimBody = function({ body }) {

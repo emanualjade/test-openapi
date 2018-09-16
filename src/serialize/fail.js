@@ -26,9 +26,13 @@ const getSerializeFail = function({
   // Make sure `error.value` is serializable
   const valueA = String(value)
   const property = getPath(['task', ...path])
-  const module = guessModule({ path, plugins })
+  const moduleProp = guessModule({ path, plugins })
 
-  const error = new BugError(messageA, { value: valueA, property, module })
+  const error = new BugError(messageA, {
+    value: valueA,
+    property,
+    ...moduleProp,
+  })
   return error
 }
 
@@ -41,7 +45,7 @@ const guessModule = function({ path: [name], plugins }) {
     return
   }
 
-  return `plugin-${name}`
+  return { module: `plugin-${name}` }
 }
 
 module.exports = {

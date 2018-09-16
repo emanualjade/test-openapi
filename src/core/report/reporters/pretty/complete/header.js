@@ -65,7 +65,8 @@ const getFullHeader = function({ task: { key }, subKeys, resultType }) {
 }
 
 // If the line is too long, truncate it
-// If the line is too short, pad it so that `chalk.inverse()` covers the whole line
+// If the line is too short, pad it so that `chalk.inverse()` covers the whole
+// line
 const fitContent = function({ content }) {
   return content
     .split('\n')

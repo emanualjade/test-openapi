@@ -28,7 +28,8 @@ const callReportFuncs = function({
   context,
   context: { _plugins: plugins },
 }) {
-  // Reporting order will follow core plugins order, then user `config.plugins` order
+  // Reporting order will follow core plugins order, then user `config.plugins`
+  // order
   const reportResult = plugins.map(plugin =>
     callReportFunc({ plugin, context, task }),
   )
@@ -49,28 +50,45 @@ const callReportFunc = function({ plugin: { report, name }, context, task }) {
     return { [name]: taskValue }
   }
 
-  const contextA = omit(context, ['options', 'silent'])
-  const newValue = report(taskValue, contextA)
+  const reportValue = getReportValue({ report, context, taskValue })
 
   // If not an object, including `undefined`, no need to merge or destructure
-  if (!isObject(newValue)) {
-    return { [name]: newValue }
+  if (!isObject(reportValue)) {
+    return { [name]: reportValue }
   }
 
-  const { title, ...reportProps } = newValue
+  const { title, reportProps } = mergeReportValue({ reportValue, taskValue })
 
+  if (hasNoReportProps({ reportProps, taskValue })) {
+    return { title }
+  }
+
+  return { title, [name]: reportProps }
+}
+
+const getReportValue = function({ report, context, taskValue }) {
+  const contextA = omit(context, OMITTED_CONTEXT_PROPS)
+  const reportValue = report(taskValue, contextA)
+  return reportValue
+}
+
+const OMITTED_CONTEXT_PROPS = ['options', 'silent']
+
+const mergeReportValue = function({
+  reportValue: { title, ...reportProps },
+  taskValue,
+}) {
   // Merge `plugin.report()` to task.PLUGIN.*
   // It should have priority, but also be first in properties order
   const reportPropsA = { ...reportProps, ...taskValue, ...reportProps }
 
   // `plugin.report()` can return `undefined` to remove `task.*` from output
   const reportPropsB = removeEmptyProps(reportPropsA)
+  return { title, reportProps: reportPropsB }
+}
 
-  if (Object.keys(reportPropsB).length === 0 && taskValue === undefined) {
-    return { title }
-  }
-
-  return { title, [name]: reportPropsB }
+const hasNoReportProps = function({ reportProps, taskValue }) {
+  return Object.keys(reportProps).length === 0 && taskValue === undefined
 }
 
 const isDefinedTitle = function(title) {

@@ -2,7 +2,8 @@
 
 const { pickBy, mapKeys } = require('lodash')
 
-// Handle special dot notation `task['headers.NAME']`, `task['query.NAME']`, etc.
+// Handle special dot notation `task['headers.NAME']`,
+// `task['query.NAME']`, etc.
 // Returned as object
 const removePrefixes = function(object, prefix) {
   const objectA = pickBy(object, (value, name) => name.startsWith(prefix))

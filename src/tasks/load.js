@@ -9,12 +9,8 @@ const { sortBy } = require('lodash')
 
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 
-const {
-  validateScopes,
-  validateFileTasks,
-  validateInlineTasks,
-} = require('./validate')
-const { addScopes, addKey } = require('./scope')
+const { validateFileTasks, validateInlineTasks } = require('./validate')
+const { addScopes, addKey, validateScopes } = require('./scope')
 
 // Load tasks.
 // Tasks are specified as an array of objects instead of a map of objects

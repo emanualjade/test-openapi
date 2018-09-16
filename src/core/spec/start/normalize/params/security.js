@@ -7,7 +7,8 @@ const { locationToKey } = require('../../../../../utils')
 
 const IN_TO_LOCATION = require('./in_to_location')
 
-// Normalize OpenAPI security request parameters into specification-agnostic format
+// Normalize OpenAPI security request parameters into specification-agnostic
+// format
 const getSecParams = function({
   spec: { securityDefinitions, security: apiSecurity = [] },
   operation: { security = apiSecurity },

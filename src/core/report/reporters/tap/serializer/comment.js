@@ -3,8 +3,8 @@
 const { checkArgument } = require('./check')
 
 // TAP comment
-const comment = function(comment) {
-  checkArgument(comment, 'string')
+const comment = function(commentString) {
+  checkArgument(commentString, 'string')
 
   return this.colors.comment(`# ${comment}\n\n`)
 }

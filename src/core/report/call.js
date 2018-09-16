@@ -42,8 +42,10 @@ const callReporter = async function(
 }
 
 const getArgs = function({ args, options }) {
-  const [arg, context] = args.map(arg => result(arg, { options }))
-  const argsA = [arg, { ...context, options }].filter(arg => arg !== undefined)
+  const [argA, context] = args.map(arg => result(arg, { options }))
+  const argsA = [argA, { ...context, options }].filter(
+    argB => argB !== undefined,
+  )
   return argsA
 }
 

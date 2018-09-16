@@ -25,7 +25,7 @@ const runHandlers = function({
     context: contextA,
   })
 
-  return reduceAsync(handlers, runHandler, input, mergeReturn, stopFunc)
+  return reduceAsync(handlers, runHandler, { input, mergeReturn, stopFunc })
 }
 
 const getContext = function({ context, plugins }) {
@@ -82,6 +82,7 @@ const callHandler = function({ func, context }, input) {
 const pluginErrorHandler = function(name, error) {
   // Recursive handlers already have `error.module` defined
   if (error.module === undefined) {
+    // eslint-disable-next-line fp/no-mutation, no-param-reassign
     error.module = `plugin-${name}`
   }
 

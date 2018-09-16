@@ -10,11 +10,11 @@ const getModule = function(name, info) {
     return name
   }
 
-  const module = eLoadModule({ name, info })
+  const moduleObj = eLoadModule({ name, info })
 
-  validateModule({ module, info })
+  validateModule({ moduleObj, info })
 
-  return module
+  return moduleObj
 }
 
 // Load module
@@ -22,8 +22,8 @@ const getModule = function(name, info) {
 // Can only done once we moved core plugins/reporters to separate repositories
 const loadModule = function({ name, info: { corePath } }) {
   // eslint-disable-next-line import/no-dynamic-require
-  const module = require(`${corePath}${name}`)
-  return { ...module, name }
+  const moduleObj = require(`${corePath}${name}`)
+  return { ...moduleObj, name }
 }
 
 const loadModuleHandler = function(
@@ -64,8 +64,8 @@ const eLoadModule = addErrorHandler(loadModule, loadModuleHandler)
 
 // Validate export value
 const validateModule = function({
-  module,
-  module: { name },
+  moduleObj,
+  moduleObj: { name },
   info,
   info: { title, schema },
 }) {
@@ -73,7 +73,7 @@ const validateModule = function({
   const props = getProps({ info, name })
   checkSchema({
     schema: schemaA,
-    value: module,
+    value: moduleObj,
     valueProp: title,
     message: `the ${title} '${name}' is invalid`,
     props,
@@ -95,7 +95,7 @@ const NAME_SCHEMA = {
 
 // Retrieve error.* properties
 const getProps = function({
-  info: { props: getProps, title },
+  info: { props: getErrorProps, title },
   name,
   addModule = true,
 }) {
@@ -105,7 +105,7 @@ const getProps = function({
     return props
   }
 
-  const propsA = getProps({ name })
+  const propsA = getErrorProps({ name })
   return { ...props, ...propsA }
 }
 
@@ -114,8 +114,7 @@ const getModuleProp = function({ title, name, addModule }) {
     return
   }
 
-  const module = `${title}-${name}`
-  return { module }
+  return { module: `${title}-${name}` }
 }
 
 module.exports = {

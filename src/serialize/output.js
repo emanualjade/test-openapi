@@ -13,8 +13,8 @@ const {
 
 // Applied on tasks output, i.e. what is reported and returned
 const serializeOutput = function({ task, plugins }) {
-  // We use a `state` object because `crawl` utility does not allow returning both
-  // the crawled object and extra information
+  // We use a `state` object because `crawl` utility does not allow returning
+  // both the crawled object and extra information
   const state = {}
 
   const taskA = crawl(
@@ -30,6 +30,7 @@ const serializeOutput = function({ task, plugins }) {
   return taskB
 }
 
+// eslint-disable-next-line complexity, max-statements
 const serializeOutputValue = function({ value, path, state }) {
   if (value === undefined) {
     return UNDEFINED
@@ -54,6 +55,7 @@ const serializeOutputValue = function({ value, path, state }) {
   // If the value cannot be serialized, returns the first one as `error`.
   // Serialize that value to `undefined`
   const message = getMessage({ value, path })
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
   state.error = { message, value, path }
 }
 

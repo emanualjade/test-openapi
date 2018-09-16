@@ -30,9 +30,11 @@ const checkSchema = function({ bug = false, value, ...opts }) {
 // Values whose key is defined but whose value is `undefined` `opts.value` are
 // mostly ignored by ajv except:
 //  - if top-level `opts.value` itself is `undefined`
-//  - `propertyNames`: this should be ok since it validates the key not the value
+//  - `propertyNames`: this should be ok since it validates the key not
+//    the value
 //  - `minProperties|maxProperties|patternProperties|additionalProperties`:
-//    this is problematic as `undefined` should behave as if the key was not defined.
+//    this is problematic as `undefined` should behave as if the key was not
+//    defined.
 // I.e. we remove `undefined` values deeply
 const removeUndefined = function({ value }) {
   return crawl(value, removeUndefinedProp)

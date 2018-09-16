@@ -4,13 +4,13 @@ const { omit } = require('lodash')
 
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
 const { testRegExp } = require('../../utils')
-const { merge } = require('../../template')
+const { merge: mergeWithTemplates } = require('../../template')
 
 // Merge tasks whose name include RegExp matching other task names.
 // I.e. special task name to allow for shared properties
-// Also merge `config.merge` to all tasks: it is like the `merge` task `*` except
-// it is set on `config` instead of as a task, making it possible for the user to
-// specify on CLI.
+// Also merge `config.merge` to all tasks: it is like the `merge` task `*`
+// except it is set on `config` instead of as a task, making it possible for
+// the user to specify on CLI.
 const load = function(tasks, { config: { merge: mergeConfig } }) {
   const { mergeTasks, nonMergeTasks } = splitTasks({ tasks })
   const tasksA = nonMergeTasks.map(task =>
@@ -36,10 +36,11 @@ const mergeTask = function({ task, mergeTasks, mergeConfig }) {
     return task
   }
 
-  return merge(mergeConfig, ...mergeTasksA, task)
+  return mergeWithTemplates(mergeConfig, ...mergeTasksA, task)
 }
 
 const findMergeTasks = function({ task: { key, scope }, mergeTasks }) {
+  // eslint-disable-next-line fp/no-mutating-methods
   return mergeTasks
     .filter(({ merge }) => eTestRegExp(merge, key))
     .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, scope }))
@@ -58,17 +59,20 @@ const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 // Compute which `merge` tasks have priority over each other.
 // Mostly depends on the scope it was loaded in with priority:
 //   same scope > no scope > other scopes in alphabetical order
-// Within the same scope, `merge` tasks declared last in keys order have priority.
-// Note that we do not use `config.tasks` order as globbing expansion order is not stable.
+// Within the same scope, `merge` tasks declared last in keys order have
+// priority.
+// Note that we do not use `config.tasks` order as globbing expansion order is
+// not stable.
+// eslint-disable-next-line max-statements, complexity
 const compareMergeTasks = function({
   taskA: { scope: scopeA },
   taskB: { scope: scopeB },
   scope,
 }) {
-  // Inside the same scope, we use object keys order, i.e. `merge` tasks declared
-  // last have priority.
-  // Object keys order is not very reliable, so we must make sure `tasks` does not
-  // change order since tasks loading.
+  // Inside the same scope, we use object keys order, i.e. `merge` tasks
+  // declared last have priority.
+  // Object keys order is not very reliable, so we must make sure `tasks` does
+  // not change order since tasks loading.
   // Returning 0 will let `Array.sort()` rely on array order instead.
   if (scopeA === scopeB) {
     return 0

@@ -7,10 +7,10 @@ const { checkRequired } = require('./required')
 
 // Validates response headers
 const validateHeaders = function({ validate, response }) {
-  const validateHeaders = removePrefixes(validate, 'headers')
+  const validatedHeaders = removePrefixes(validate, 'headers')
   const headers = removePrefixes(response, 'headers')
 
-  Object.entries(validateHeaders).forEach(([name, schema]) =>
+  Object.entries(validatedHeaders).forEach(([name, schema]) =>
     validateHeader({ name, schema, headers }),
   )
 }

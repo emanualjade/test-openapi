@@ -8,8 +8,8 @@ const testRegExp = function(regExp, value) {
   }
 
   // Always matched case-insensitively
-  const regExpA = new RegExp(regExp, 'i')
-  return regExpA.test(value)
+  const regExpB = new RegExp(regExp, 'iu')
+  return regExpB.test(value)
 }
 
 module.exports = {

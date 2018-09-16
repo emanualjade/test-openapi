@@ -7,14 +7,29 @@ const config = require('./config.json')
 const UPPERCASE_METHODS = METHODS.map(method => method.toUpperCase())
 
 // Add all allowed HTTP methods to config validation
-const validateHttpMethods = function({ config }) {
-  config.task.properties.method.enum = [...METHODS, ...UPPERCASE_METHODS]
+const validateHttpMethods = function({
+  config: configA,
+  config: {
+    task,
+    task: {
+      properties,
+      properties: { method },
+    },
+  },
+}) {
+  const methods = [...METHODS, ...UPPERCASE_METHODS]
 
-  return config
+  return {
+    ...configA,
+    task: {
+      ...task,
+      properties: { ...properties, method: { ...method, enum: methods } },
+    },
+  }
 }
 
-const configA = validateHttpMethods({ config })
+const configB = validateHttpMethods({ config })
 
 module.exports = {
-  config: configA,
+  config: configB,
 }

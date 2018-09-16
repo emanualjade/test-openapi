@@ -17,7 +17,8 @@ const {
 // Syntax highlighting, as YAML
 const highlightValue = function(string, value) {
   // Already highlighted
-  // Also we do not highlight values that were already a string at the beginning,
+  // Also we do not highlight values that were already a string at the
+  // beginning,
   // as they are probably not YAML (e.g. `error.message`)
   if (hasAnsi(string) || typeof value === 'string') {
     return string
@@ -35,9 +36,10 @@ const highlightValue = function(string, value) {
 // We temporarily convert them to a special marker to work around the problem
 // TODO: fix this hack
 const KEY_CHARS = '.'
-const KEY_CHARS_REGEXP = /\./g
-const KEY_MARKER = '_'.repeat(10)
-const KEY_MARKER_REGEXP = new RegExp(KEY_MARKER, 'g')
+const KEY_CHARS_REGEXP = /\./gu
+const KEY_MARKER_LENGTH = 10
+const KEY_MARKER = '_'.repeat(KEY_MARKER_LENGTH)
+const KEY_MARKER_REGEXP = new RegExp(KEY_MARKER, 'gu')
 
 // Console (ANSI sequences) syntax color highlighting
 // Automatically guesses MIME type/format

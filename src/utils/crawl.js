@@ -15,9 +15,9 @@ const crawlNode = function(value, path, opts) {
     return promiseThen(valueA, valueB => crawlChildren(valueB, path, opts))
   }
 
-  const valueA = crawlChildren(value, path, opts)
-  return promiseThen(valueA, valueB =>
-    evalNodeValue({ value: valueB, path, opts }),
+  const valueC = crawlChildren(value, path, opts)
+  return promiseThen(valueC, valueD =>
+    evalNodeValue({ value: valueD, path, opts }),
   )
 }
 
@@ -44,7 +44,9 @@ const crawlProperty = function({ key, child, path, opts }) {
   const keyMaybePromise = evalNodeKey({ key, path, opts })
   const valueMaybePromise = crawlNode(child, [...path, key], opts)
   const promises = [keyMaybePromise, valueMaybePromise]
-  return promiseAllThen(promises, ([key, value]) => getProperty({ key, value }))
+  return promiseAllThen(promises, ([keyA, value]) =>
+    getProperty({ key: keyA, value }),
+  )
 }
 
 const getProperty = function({ key, value }) {

@@ -65,6 +65,7 @@ const performRun = async function({ config, tasks, plugins }) {
 
 // Add `error.plugins` to every thrown error
 const performRunHandler = function(error, { plugins }) {
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
   error.plugins = plugins.map(({ name }) => name)
   throw error
 }

@@ -11,6 +11,18 @@ const parseTemplate = function(data) {
     return parseTemplateString(data)
   }
 
+  const name = getTemplateName(data)
+
+  if (name === undefined) {
+    return
+  }
+
+  // `{ $$name: arg }`
+  const arg = data[name]
+  return { type: 'function', name, arg }
+}
+
+const getTemplateName = function(data) {
   // No templating
   if (!isObject(data)) {
     return
@@ -18,8 +30,8 @@ const parseTemplate = function(data) {
 
   const keys = Object.keys(data)
 
-  // Template functions can be passed arguments by using an object with a single
-  // property starting with `$$`
+  // Template functions can be passed arguments by using an object with a
+  // single property starting with `$$`
   // This allows objects with several properties not to need escaping
   if (keys.length !== 1) {
     return
@@ -31,9 +43,7 @@ const parseTemplate = function(data) {
     return
   }
 
-  // `{ $$name: arg }`
-  const arg = data[name]
-  return { type: 'function', name, arg }
+  return name
 }
 
 const parseTemplateString = function(data) {
@@ -103,10 +113,10 @@ const isEscapeName = function({ name }) {
 
 // Matches `$$name` where `name` can only include `A-Za-z0-9_-` and also
 // dot/bracket notations `.[]`
-const TEMPLATE_REGEXP = /^\$\$[\w-.[\]]+$/
-const TEMPLATE_REGEXP_GLOBAL = /\$\$[\w-.[\]]+/g
+const TEMPLATE_REGEXP = /^\$\$[\w.[\]-]+$/u
+const TEMPLATE_REGEXP_GLOBAL = /\$\$[\w.[\]-]+/gu
 // Matches `$$name` where `name` can only inclue `A-Za-z0-9_-`
-const TEMPLATE_NAME_REGEXP = /^\$\$[\w-]+$/
+const TEMPLATE_NAME_REGEXP = /^\$\$[\w-]+$/u
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
 const TEMPLATE_PREFIX = '$$'
 const TEMPLATE_ESCAPE = '$'

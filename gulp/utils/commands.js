@@ -7,11 +7,12 @@ const PluginError = require('plugin-error')
 
 // Execute a shell command
 const execCommand = function(command, { quiet = false, cwd } = {}) {
-  const [commandA, ...args] = command.trim().split(/ +/)
+  const [commandA, ...args] = command.trim().split(/ +/u)
   const envA = getEnv()
   const stdio = getStdio({ quiet })
   const child = spawn(commandA, args, { env: envA, stdio, cwd })
 
+  // eslint-disable-next-line promise/avoid-new
   return new Promise(execCommandPromise.bind(null, { child, command }))
 }
 
@@ -24,6 +25,7 @@ const getEnv = function() {
 
 const getPath = function({ env: { PATH = '' } }) {
   const hasLocalDir = PATH.split(':').includes(LOCAL_NODE_BIN_DIR)
+
   if (hasLocalDir) {
     return PATH
   }

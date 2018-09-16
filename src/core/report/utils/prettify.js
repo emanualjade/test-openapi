@@ -8,7 +8,7 @@ const prettifyJson = function(string) {
 }
 
 // Try to parse JSON, give up if exception
-const prettifyJsonHandler = function(_, string) {
+const prettifyJsonHandler = function(unhandledError, string) {
   return string
 }
 

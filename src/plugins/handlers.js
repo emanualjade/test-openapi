@@ -25,7 +25,11 @@ const runHandlers = function({
     context: contextA,
   })
 
-  return reduceAsync(handlers, runHandler, { input, mergeReturn, stopFunc })
+  return reduceAsync(handlers, runHandler, {
+    prevVal: input,
+    secondMapFunc: mergeReturn,
+    stopFunc,
+  })
 }
 
 const getContext = function({ context, plugins }) {

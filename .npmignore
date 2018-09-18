@@ -18,5 +18,4 @@ gulpfile.js
 .gulp.json
 .editorconfig
 .eslintrc.yml
-.prettierignore
 .prettierrc.yml

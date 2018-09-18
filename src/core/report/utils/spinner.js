@@ -3,35 +3,39 @@
 const ora = require('ora')
 
 // CLI spinner showing `INDEX/TOTAL` next to it (like a progress bar)
-class Spinner {
-  // Start the spinner
-  constructor({ index = -1, total }) {
-    const instance = ora(ORA_OPTS)
+// Start the spinner
+const startSpinner = function({ index = -1, total }) {
+  const instance = ora(ORA_OPTS)
 
-    Object.assign(this, { index, total, instance })
+  const state = { index, total, instance }
 
-    this.update()
+  incrementSpinner(state)
 
-    this.instance.start()
-  }
+  instance.start()
 
-  // Increment CLI spinner index
-  update() {
-    this.index++
+  return state
+}
 
-    this.instance.text = `${this.index}/${this.total}`
-  }
+// Increment CLI spinner index
+const incrementSpinner = function(state) {
+  // We need to mutate state because the spinner is shared by parallel tasks
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
+  state.index += 1
 
-  // Temporarily hide the spinner, so that some output can be done without the
-  // spinner persisting in terminal
-  clear() {
-    this.instance.clear()
-  }
+  const { index, total, instance } = state
+  // eslint-disable-next-line fp/no-mutation
+  instance.text = `${index}/${total}`
+}
 
-  // Remove the CLI spinner
-  stop() {
-    this.instance.stop()
-  }
+// Temporarily hide the spinner, so that some output can be done without the
+// spinner persisting in terminal
+const clearSpinner = function({ instance }) {
+  instance.clear()
+}
+
+// Remove the CLI spinner
+const stopSpinner = function({ instance }) {
+  instance.stop()
 }
 
 const ORA_OPTS = {
@@ -39,5 +43,8 @@ const ORA_OPTS = {
 }
 
 module.exports = {
-  Spinner,
+  startSpinner,
+  incrementSpinner,
+  clearSpinner,
+  stopSpinner,
 }

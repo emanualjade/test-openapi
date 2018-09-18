@@ -1,8 +1,10 @@
 'use strict'
 
+const { incrementSpinner } = require('../../utils')
+
 // Update spinner
 const tick = function({ options: { spinner } }) {
-  spinner.update()
+  incrementSpinner(spinner)
 }
 
 module.exports = {

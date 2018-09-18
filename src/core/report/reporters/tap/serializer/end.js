@@ -3,15 +3,14 @@
 const { getPlanString } = require('./plan')
 
 // Final TAP comments, indicating number of tests|pass|fail|skip
-const end = function() {
-  const { pass, fail, skip, count: initialCount } = this
+const end = function({ pass, fail, skip, count: initialCount, colors }) {
   const count = pass + fail + skip
 
-  const planString = getPlan.call(this, { initialCount, count })
+  const planString = getPlan({ colors, initialCount, count })
 
   const endCommentString = getEndCommentString({ pass, fail, skip, count })
 
-  const endComment = [...planString, this.colors.final(endCommentString)].join(
+  const endComment = [...planString, colors.final(endCommentString)].join(
     '\n\n',
   )
 
@@ -19,13 +18,13 @@ const end = function() {
 }
 
 // Add final plan if not initially specified
-const getPlan = function({ initialCount, count }) {
+const getPlan = function({ colors, initialCount, count }) {
   if (initialCount !== undefined) {
     return []
   }
 
   const planString = getPlanString({ count })
-  return [this.colors.plan(planString)]
+  return [colors.plan(planString)]
 }
 
 const getEndCommentString = function({ pass, fail, skip, count }) {

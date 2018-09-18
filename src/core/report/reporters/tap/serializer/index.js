@@ -1,5 +1,10 @@
 'use strict'
 
 module.exports = {
-  ...require('./main'),
+  ...require('./init'),
+  ...require('./start'),
+  ...require('./test'),
+  ...require('./assert'),
+  ...require('./comment'),
+  ...require('./end'),
 }

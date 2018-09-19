@@ -7,7 +7,8 @@
   "scripts": {
     "test": "gulp test",
     "lint": "gulp lint",
-    "describe": "gulp --tasks"
+    "describe": "gulp --tasks",
+    "release": "release-it"
   },
   "license": "MIT",
   "repository": {
@@ -66,7 +67,8 @@
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.4.0",
     "gulp": "^4.0.0",
     "plugin-error": "^1.0.1",
-    "prettier": "^1.14.2"
+    "prettier": "^1.14.2",
+    "release-it": "^7.6.1"
   },
   "engines": {
     "node": ">=10.10.0"

@@ -42,7 +42,7 @@ const getEndOk = function({ fail }) {
     return ''
   }
 
-  return `\n# ok`
+  return '\n# ok'
 }
 
 module.exports = {

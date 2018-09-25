@@ -1,13 +1,8 @@
-.idea
-.env
+*~
 *.swp
-*.swo
-node_modules
 npm-debug.log
-tmp
-log
-bundles/*
-.vscode
-yarn-error.log
+node_modules
+core
 .eslintcache
 .npmrc
+.yarn-error.log

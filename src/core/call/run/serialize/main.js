@@ -7,6 +7,8 @@ const { findBodyHandler } = require('../../body')
 
 const { normalizeContentType } = require('./content_type')
 const { normalizeMethod } = require('./method')
+const { normalizeUserAgent } = require('./user_agent')
+const { addFetchRequestHeaders, addContentLength } = require('./extra_headers')
 
 // Serialize request parameters
 // Request headers name are only allowed lowercase:
@@ -22,13 +24,22 @@ const serialize = function({ call }) {
 
   const callB = normalizeMethod({ call: callA })
 
-  const request = normalizeTimeout({ call: callB })
+  const callC = normalizeUserAgent({ call: callB })
+
+  const callD = normalizeTimeout({ call: callC })
+
+  const request = addFetchRequestHeaders({ call: callD })
 
   const requestA = omitBy(request, value => value === undefined)
 
   const rawRequest = mapValues(requestA, stringifyParam)
 
-  return { call: { ...call, request: requestA, rawRequest } }
+  const { request: requestB, rawRequest: rawRequestA } = addContentLength({
+    request: requestA,
+    rawRequest,
+  })
+
+  return { call: { ...call, request: requestB, rawRequest: rawRequestA } }
 }
 
 const normalizeTimeout = function({ call: { timeout = DEFAULT_TIMEOUT, ...call } }) {

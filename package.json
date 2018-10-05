@@ -26,7 +26,7 @@
     "cross-fetch": "^2.2.2",
     "deepmerge": "^2.2.1",
     "emphasize": "^2.0.0",
-    "eslint-plugin-prettier": "^2.7.0",
+    "eslint-plugin-prettier": "^3.0.0",
     "faker": "^4.1.0",
     "fast-glob": "^2.2.3",
     "has-ansi": "^3.0.0",

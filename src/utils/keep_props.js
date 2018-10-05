@@ -1,7 +1,7 @@
 'use strict'
 
 // Wraps a functor so it does not modify a function `name`, `length`, etc.
-const keepFuncName = function(functor) {
+const keepProps = function(functor) {
   return (originalFunc, ...args) => {
     const wrappedFunc = functor(originalFunc, ...args)
 
@@ -23,5 +23,5 @@ const copyProperty = function({ originalFunc, wrappedFunc, propName }) {
 }
 
 module.exports = {
-  keepFuncName,
+  keepProps,
 }

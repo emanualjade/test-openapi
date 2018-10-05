@@ -1,3 +1,5 @@
+// We use classes because that's the most conventional way of extending errors
+/* eslint-disable fp/no-class, fp/no-this */
 'use strict'
 
 const {
@@ -26,17 +28,19 @@ const {
 class PropsError extends Error {
   constructor(message, properties = {}) {
     super(message)
+    // eslint-disable-next-line fp/no-mutation
+    this.name = 'PropsError'
 
-    // Enforce which properties can be attached to `error.*`
     Object.keys(properties).forEach(validateProperty)
 
-    const propertiesA = addExpected({ properties })
+    const expected = getExpected({ properties })
 
-    this.name = 'PropsError'
-    Object.assign(this, propertiesA)
+    // eslint-disable-next-line fp/no-mutating-assign
+    Object.assign(this, { ...properties, expected })
   }
 }
 
+// Enforce which properties can be attached to `error.*`
 const validateProperty = function(property) {
   if (VALID_PROPERTIES.includes(property)) {
     return
@@ -63,19 +67,20 @@ const CORE_VALID_PROPERTIES = [
 const VALID_PROPERTIES = [...USER_VALID_PROPERTIES, ...CORE_VALID_PROPERTIES]
 
 // Tries to guess `error.expected` from simple `error.schema`
-const addExpected = function({ properties, properties: { schema, expected } }) {
+const getExpected = function({ properties: { schema, expected } }) {
   if (expected !== undefined || !isSimpleSchema(schema)) {
-    return properties
+    return
   }
 
   const expectedA = getSimpleSchemaConstant(schema)
-  return { ...properties, expected: expectedA }
+  return { expected: expectedA }
 }
 
 // A normal error
 class TestOpenApiError extends PropsError {
   constructor(...args) {
     super(...args)
+    // eslint-disable-next-line fp/no-mutation
     this.name = 'TestOpenApiError'
   }
 }
@@ -87,6 +92,7 @@ class TestOpenApiError extends PropsError {
 class BugError extends PropsError {
   constructor(...args) {
     super(...args)
+    // eslint-disable-next-line fp/no-mutation
     this.name = 'BugError'
   }
 }
@@ -95,3 +101,4 @@ module.exports = {
   TestOpenApiError,
   BugError,
 }
+/* eslint-enable fp/no-class, fp/no-this */

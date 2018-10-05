@@ -1,6 +1,6 @@
 extends:
-- standard
-- plugin:prettier/recommended
+  - standard
+  - plugin:prettier/recommended
 env:
   jasmine: true
 parserOptions:
@@ -12,11 +12,11 @@ rules:
   no-duplicate-imports: 2
   no-mixed-requires: 2
   sort-imports:
-  - 2
-  - ignoreMemberSort: true
+    - 2
+    - ignoreMemberSort: true
   no-unused-vars:
-  - 2
-  - {}
+    - 2
+    - {}
 
   import/named: 2
   import/default: 2
@@ -39,8 +39,8 @@ rules:
   import/no-amd: 2
   import/no-deprecated: 2
   import/order:
-  - 2
-  - newlines-between: always
+    - 2
+    - newlines-between: always
   import/no-unresolved:
-  - 2
-  - commonjs: true
+    - 2
+    - commonjs: true

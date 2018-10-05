@@ -3397,9 +3397,9 @@ swagger-methods@^1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/swagger-methods/-/swagger-methods-1.0.4.tgz#2c5b844f4a22ab2f5e773f98193c28e386b1c37e"
 
-swagger-parser@^5.0.4:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/swagger-parser/-/swagger-parser-5.0.4.tgz#a9cc19cdea984fe222bcd01dc2337d29f7f8c313"
+swagger-parser@^5.0.5:
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/swagger-parser/-/swagger-parser-5.0.5.tgz#52cf173dcb1f3189fa30da4d18f293887e79707d"
   dependencies:
     call-me-maybe "^1.0.1"
     debug "^3.1.0"

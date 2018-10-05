@@ -2,13 +2,14 @@
 
 const { getResultType, SEPARATOR } = require('../../../utils')
 const { getReportProps } = require('../../../props')
+const serializer = require('../serializer')
 
 const { getErrorProps } = require('./error_props')
 
 // Add TAP output for each task, as a single assert
 const complete = function(task, { options: { tap }, silent, ...context }) {
   const assert = getAssert({ task, context })
-  const message = tap.assert(assert)
+  const message = serializer.assert(tap, assert)
 
   if (silent) {
     return ''

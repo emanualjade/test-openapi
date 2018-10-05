@@ -4,13 +4,12 @@ const { version } = require('./version')
 const { plan } = require('./plan')
 
 // Start TAP output
-const start = function() {
+const start = function({ count, colors }) {
   const versionString = version()
 
-  const { count } = this
   const planString = plan({ count })
 
-  return `${this.colors.version(versionString)}${this.colors.plan(planString)}`
+  return `${colors.version(versionString)}${colors.plan(planString)}`
 }
 
 module.exports = {

@@ -5,10 +5,10 @@ const { getErrorProps } = require('./error_props')
 const { checkArgument } = require('./check')
 
 // TAP assert
-const assert = function({ ok, name = '', directive = {}, error }) {
+const assert = function(state, { ok, name = '', directive = {}, error }) {
   const category = getCategory({ ok, directive })
 
-  const index = updateState.call(this, { category })
+  const index = updateState({ state, category })
 
   const okString = getOk({ ok })
 
@@ -18,7 +18,7 @@ const assert = function({ ok, name = '', directive = {}, error }) {
 
   const errorProps = getErrorProps({ ok, error })
 
-  return this.colors[category](
+  return state.colors[category](
     `${okString} ${index}${nameString}${directiveString}${errorProps}\n\n`,
   )
 }
@@ -36,10 +36,13 @@ const getCategory = function({ ok, directive: { skip } }) {
 }
 
 // Update index|tests|pass|skip|fail counters
-const updateState = function({ category }) {
-  this[category]++
+const updateState = function({ state, category }) {
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
+  state[category] += 1
 
-  return ++this.index
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
+  state.index += 1
+  return state.index
 }
 
 const getOk = function({ ok }) {

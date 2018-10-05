@@ -4,20 +4,20 @@ const { assert } = require('./assert')
 const { checkArgument } = require('./check')
 
 // TAP test, i.e. group of asserts
-const test = function(testName, asserts = []) {
+const test = function(state, testName, asserts = []) {
   checkArgument(testName, 'string')
 
-  const testHeader = getTestHeader.call(this, { testName, asserts })
+  const testHeader = getTestHeader({ state, testName, asserts })
 
-  const assertsString = asserts.map(assertOpts => assert.call(this, assertOpts))
+  const assertsString = asserts.map(assertOpts => assert(state, assertOpts))
 
   const testString = [testHeader, ...assertsString].join('\n\n')
   return testString
 }
 
-const getTestHeader = function({ testName, asserts }) {
+const getTestHeader = function({ state: { colors }, testName, asserts }) {
   const category = getCategory({ asserts })
-  return this.colors[category](`# ${testName}`)
+  return colors[category](`# ${testName}`)
 }
 
 const getCategory = function({ asserts }) {

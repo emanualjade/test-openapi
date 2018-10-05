@@ -16,7 +16,7 @@ const random = function(schema) {
 
   const schemaA = fixArray({ schema })
 
-  const value = jsonSchemaFaker(schemaA)
+  const value = jsonSchemaFaker.generate(schemaA)
 
   const valueA = addSeparators({ value, schema: schemaA })
   return valueA
@@ -39,6 +39,7 @@ const addFakerOptions = function() {
     failOnInvalidFormat: false,
     // All deep properties always generated
     optionalsProbability: 1,
+    fixedProbabilities: true,
   })
 
   addCustomFormats()

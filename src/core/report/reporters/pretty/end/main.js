@@ -1,6 +1,6 @@
 'use strict'
 
-const { indent } = require('../../../utils')
+const { indent, stopSpinner } = require('../../../utils')
 const { LINE } = require('../constants')
 
 const { printTasksList } = require('./list')
@@ -8,7 +8,7 @@ const { printSummary } = require('./summary')
 
 // Clears spinner and print summarized tasks list and final counters message
 const end = function(tasks, { options, options: { spinner } }) {
-  spinner.stop()
+  stopSpinner(spinner)
 
   const endMessage = getEndMessage({ tasks, options })
   return endMessage

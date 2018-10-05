@@ -1,11 +1,11 @@
 'use strict'
 
-const { getSummary } = require('../../utils')
+const { getSummary, stopSpinner } = require('../../utils')
 const { isSilentTask } = require('../../level')
 
 // JSON reporter
 const end = function(tasks, { options, options: { spinner } }) {
-  spinner.stop()
+  stopSpinner(spinner)
 
   const tasksA = getTasks({ tasks, options })
   const tasksB = JSON.stringify(tasksA, null, 2)

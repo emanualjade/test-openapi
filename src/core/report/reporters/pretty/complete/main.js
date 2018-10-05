@@ -1,6 +1,6 @@
 'use strict'
 
-const { getResultType } = require('../../../utils')
+const { getResultType, clearSpinner } = require('../../../utils')
 const { getReportProps } = require('../../../props')
 
 const { getHeader } = require('./header')
@@ -12,7 +12,7 @@ const complete = function(task, { options: { spinner }, silent, ...context }) {
     return ''
   }
 
-  spinner.clear()
+  clearSpinner(spinner)
 
   const message = getMessage({ task, context })
   return message

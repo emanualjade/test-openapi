@@ -151,7 +151,7 @@ const parseName = function({ name }) {
 }
 
 // Dot notation can also use brackets
-const BRACKETS_REGEXP = /.\[\]/u
+const BRACKETS_REGEXP = /[.[]/u
 
 // Brackets are kept but not dots (because of how `_.get()` works)
 const getDelimIndex = function({ name, index }) {

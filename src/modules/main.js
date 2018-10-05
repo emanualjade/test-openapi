@@ -101,7 +101,7 @@ const getProps = function({
 }) {
   const props = getModuleProp({ title, name, addModule })
 
-  if (getProps === undefined) {
+  if (getErrorProps === undefined) {
     return props
   }
 

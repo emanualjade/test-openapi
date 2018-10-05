@@ -1,7 +1,7 @@
 'use strict'
 
 const Ajv = require('ajv')
-const memoize = require('fast-memoize')
+const moize = require('moize').default
 const { get, omitBy } = require('lodash')
 const { capitalize } = require('underscore.string')
 
@@ -120,7 +120,7 @@ const concatProp = function(prop, path) {
 }
 
 // Compilation is automatically memoized by `ajv` but not validation
-const mValidateFromSchema = memoize(validateFromSchema)
+const mValidateFromSchema = moize(validateFromSchema)
 
 module.exports = {
   validateFromSchema: mValidateFromSchema,

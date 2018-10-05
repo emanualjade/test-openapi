@@ -8,7 +8,10 @@ const { TestOpenApiError } = require('../../../errors')
 //  - if `task.validate.*.x-optional: false` (default): must be defined
 const checkRequired = function({
   schema,
-  schema: { 'x-optional': isOptional = false, 'x-forbidden': isForbidden = false },
+  schema: {
+    'x-optional': isOptional = false,
+    'x-forbidden': isForbidden = false,
+  },
   value,
   property,
   name,
@@ -27,7 +30,11 @@ const validateForbidden = function({ schema, value, property, name }) {
     return
   }
 
-  throw new TestOpenApiError(`${name} should be empty`, { property, schema, value })
+  throw new TestOpenApiError(`${name} should be empty`, {
+    property,
+    schema,
+    value,
+  })
 }
 
 const validateRequired = function({ schema, value, property, name }) {
@@ -35,7 +42,11 @@ const validateRequired = function({ schema, value, property, name }) {
     return
   }
 
-  throw new TestOpenApiError(`${name} should not be empty`, { property, schema, value })
+  throw new TestOpenApiError(`${name} should not be empty`, {
+    property,
+    schema,
+    value,
+  })
 }
 
 module.exports = {

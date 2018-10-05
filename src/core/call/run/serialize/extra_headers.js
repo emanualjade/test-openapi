@@ -33,7 +33,10 @@ const addContentLength = function({ request, rawRequest }) {
   }
 
   const requestA = { ...request, 'headers.content-length': contentLength }
-  const rawRequestA = { ...rawRequest, 'headers.content-length': String(contentLength) }
+  const rawRequestA = {
+    ...rawRequest,
+    'headers.content-length': String(contentLength),
+  }
   return { request: requestA, rawRequest: rawRequestA }
 }
 

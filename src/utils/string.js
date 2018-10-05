@@ -3,7 +3,10 @@
 const { toSentence } = require('underscore.string')
 
 // Turn ['a', 'b', 'c'] into 'a, b or c'
-const getWordsList = function(words, { op = 'or', quotes = false, json = false } = {}) {
+const getWordsList = function(
+  words,
+  { op = 'or', quotes = false, json = false } = {},
+) {
   if (words.length === 0) {
     return ''
   }

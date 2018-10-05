@@ -13,7 +13,9 @@ const getOperation = function({
     return
   }
 
-  const operation = operations.find(({ operationId }) => operationId === taskOperationId)
+  const operation = operations.find(
+    ({ operationId }) => operationId === taskOperationId,
+  )
   return operation
 }
 

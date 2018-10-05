@@ -30,11 +30,25 @@ const validateFromSchema = function({
 
   const [error] = instance.errors
 
-  const errorA = getError({ error, schema, value, schemaProp, valueProp, message })
+  const errorA = getError({
+    error,
+    schema,
+    value,
+    schemaProp,
+    valueProp,
+    message,
+  })
   return errorA
 }
 
-const getError = function({ error, schema, value, schemaProp, valueProp, message }) {
+const getError = function({
+  error,
+  schema,
+  value,
+  schemaProp,
+  valueProp,
+  message,
+}) {
   const messageA = getMessage({ error, message, valueProp })
 
   const errorPath = getErrorPath({ error })
@@ -45,14 +59,22 @@ const getError = function({ error, schema, value, schemaProp, valueProp, message
   const schemaA = getSchema({ schemaParts, schema })
   const schemaPath = getSchemaPath({ schemaParts, schemaProp })
 
-  const errorA = { message: messageA, value: valueA, schema: schemaA, valuePath, schemaPath }
+  const errorA = {
+    message: messageA,
+    value: valueA,
+    schema: schemaA,
+    valuePath,
+    schemaPath,
+  }
   const errorB = omitBy(errorA, value => value === undefined)
   return errorB
 }
 
 const getMessage = function({ error, message, valueProp }) {
   const messagePrefix = getMessagePrefix({ message, valueProp })
-  const errorMessage = Ajv.prototype.errorsText([error], { dataVar: '' }).replace(/^[. ]/, '')
+  const errorMessage = Ajv.prototype
+    .errorsText([error], { dataVar: '' })
+    .replace(/^[. ]/, '')
   return `${messagePrefix}: ${errorMessage}`
 }
 

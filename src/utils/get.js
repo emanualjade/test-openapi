@@ -49,7 +49,9 @@ const tryGet = function(value, path) {
   const pathA = splitPath({ path })
 
   // Find longest path that does not return `undefined`
-  const wrongIndex = pathA.findIndex((_, index) => isWrongPath({ path: pathA, value, index }))
+  const wrongIndex = pathA.findIndex((_, index) =>
+    isWrongPath({ path: pathA, value, index }),
+  )
 
   // If the first path part already returns `undefined`, return top-value value as is
   if (wrongIndex === 0) {

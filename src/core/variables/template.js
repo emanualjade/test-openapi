@@ -8,12 +8,18 @@ const { TestOpenApiError } = require('../../errors')
 // `task.variables.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
 // run the task that defined the variables, and retrieve a specific property at `PATH`
 const template = function({ _allTasks: allTasks, _runTask: runTask }) {
-  const variables = allTasks.map(taskA => getTaskVariables({ task: taskA, allTasks, runTask }))
+  const variables = allTasks.map(taskA =>
+    getTaskVariables({ task: taskA, allTasks, runTask }),
+  )
   const variablesA = Object.assign({}, ...variables)
   return variablesA
 }
 
-const getTaskVariables = function({ task: { key, variables }, allTasks, runTask }) {
+const getTaskVariables = function({
+  task: { key, variables },
+  allTasks,
+  runTask,
+}) {
   if (variables === undefined) {
     return
   }
@@ -62,9 +68,12 @@ const getTaskProp = function({ task, task: { key }, value }) {
   }
 
   const { wrongPath, value: valueA } = tryGet(task, path)
-  throw new TestOpenApiError(`task '${key}' did not return any property '${wrongPath}'`, {
-    value: valueA,
-  })
+  throw new TestOpenApiError(
+    `task '${key}' did not return any property '${wrongPath}'`,
+    {
+      value: valueA,
+    },
+  )
 }
 
 // Parse '[PATH] [OPTS,...]'

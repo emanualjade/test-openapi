@@ -22,14 +22,20 @@ const addSkipped = function({ task, task: { skip, key }, configSkip }) {
 // are not evaluated yet, so we can't assume what the value is. But we still want
 // the `skip` plugin to be performed before templating, as templating takes some time.
 const isSkipped = function({ skip, configSkip, key }) {
-  return skip !== undefined || (configSkip !== undefined && eTestRegExp(configSkip, key))
+  return (
+    skip !== undefined ||
+    (configSkip !== undefined && eTestRegExp(configSkip, key))
+  )
 }
 
 const testRegExpHandler = function({ message }, configSkip) {
-  throw new TestOpenApiError(`'config.skip' '${configSkip}' is invalid: ${message}`, {
-    value: configSkip,
-    property: 'config.skip',
-  })
+  throw new TestOpenApiError(
+    `'config.skip' '${configSkip}' is invalid: ${message}`,
+    {
+      value: configSkip,
+      property: 'config.skip',
+    },
+  )
 }
 
 const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)

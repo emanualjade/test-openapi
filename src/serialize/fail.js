@@ -18,7 +18,10 @@ const addSerializeFail = function({ task, error, plugins }) {
   return { ...task, error: errorB }
 }
 
-const getSerializeFail = function({ error: { message, value, path }, plugins }) {
+const getSerializeFail = function({
+  error: { message, value, path },
+  plugins,
+}) {
   const messageA = capitalize(message)
   // Make sure `error.value` is serializable
   const valueA = String(value)

@@ -6,8 +6,14 @@ const { normalizeSchema } = require('./json_schema')
 const { getNegotiationsResponse } = require('./content_negotiation')
 
 // Normalize OpenAPI responses into specification-agnostic format
-const normalizeResponses = function({ spec, operation, operation: { responses } }) {
-  return mapValues(responses, response => normalizeResponse({ response, spec, operation }))
+const normalizeResponses = function({
+  spec,
+  operation,
+  operation: { responses },
+}) {
+  return mapValues(responses, response =>
+    normalizeResponse({ response, spec, operation }),
+  )
 }
 
 const normalizeResponse = function({ response, spec, operation }) {
@@ -20,7 +26,11 @@ const getResponseBody = function({ response: { schema = {} } }) {
   return normalizeSchema({ schema })
 }
 
-const getResponseHeaders = function({ response: { headers = {} }, spec, operation }) {
+const getResponseHeaders = function({
+  response: { headers = {} },
+  spec,
+  operation,
+}) {
   const headersA = mapValues(headers, getResponseHeader)
 
   const contentNegotiations = getNegotiationsResponse({ spec, operation })

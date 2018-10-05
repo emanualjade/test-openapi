@@ -90,7 +90,9 @@ const eSerializeToken = addErrorHandler(serializeToken, serializeTokenHandler)
 
 const throwError = function(message, { name }) {
   const property = getPath(['task', 'call', `url.${name}`])
-  throw new TestOpenApiError(`The URL parameter '${name}' ${message}`, { property })
+  throw new TestOpenApiError(`The URL parameter '${name}' ${message}`, {
+    property,
+  })
 }
 
 module.exports = {

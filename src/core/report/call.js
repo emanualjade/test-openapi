@@ -7,7 +7,9 @@ const { result } = require('../../utils')
 
 // Call reporters' functions then write return value to output
 const callReporters = async function({ reporters, type }, ...args) {
-  const promises = reporters.map(reporter => callReporter({ reporter, type }, ...args))
+  const promises = reporters.map(reporter =>
+    callReporter({ reporter, type }, ...args),
+  )
   await Promise.all(promises)
 }
 

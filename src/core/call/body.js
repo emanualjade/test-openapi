@@ -16,9 +16,12 @@ const normalizeHandler = function({ name, condition, parse, stringify }) {
 }
 
 const bodyHandler = function(name, { message }) {
-  throw new TestOpenApiError(`Could not read response body as ${name}: ${message}`, {
-    property: 'task.call.response.body',
-  })
+  throw new TestOpenApiError(
+    `Could not read response body as ${name}: ${message}`,
+    {
+      property: 'task.call.response.body',
+    },
+  )
 }
 
 const isJson = function({ mime }) {

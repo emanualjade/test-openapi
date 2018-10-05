@@ -10,7 +10,9 @@ const { normalizeOutput } = require('./output')
 
 // Add `config.report.REPORTER.*` as `reporter.options`
 const addOptions = async function({ reporters, config, context }) {
-  const promises = reporters.map(reporter => addReporterOptions({ reporter, config, context }))
+  const promises = reporters.map(reporter =>
+    addReporterOptions({ reporter, config, context }),
+  )
   const reportersA = await Promise.all(promises)
 
   const reportersB = reportersA.filter(reporter => reporter !== undefined)
@@ -82,7 +84,11 @@ const normalizeOptions = async function({ options, reporter }) {
 // This can only add new options not transform existing ones.
 // In particular, it cannot change `level|output` as `level` needs to be used
 // before this point (when checking whether level is `silent`)
-const transformOptions = function({ reporter: { options: reporterOptions }, options, context }) {
+const transformOptions = function({
+  reporter: { options: reporterOptions },
+  options,
+  context,
+}) {
   if (reporterOptions === undefined) {
     return options
   }

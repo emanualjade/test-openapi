@@ -19,12 +19,18 @@ const getTasks = async function({ config: { tasks } }) {
 
 // Validate tasks are JSON and turn `undefined` strings into actual `undefined`
 const parseTasks = function({ tasks }) {
-  return tasks.map(task => parseInput(task, throwParseError.bind(null, task.key)))
+  return tasks.map(task =>
+    parseInput(task, throwParseError.bind(null, task.key)),
+  )
 }
 
 const throwParseError = function(key, { message, value, path }) {
   const property = getPath(['task', ...path])
-  throw new TestOpenApiError(`Task '${key}' ${message}`, { task: key, value, property })
+  throw new TestOpenApiError(`Task '${key}' ${message}`, {
+    task: key,
+    value,
+    property,
+  })
 }
 
 module.exports = {

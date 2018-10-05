@@ -17,11 +17,14 @@ const validateStatus = function({
   }
 
   const { value: expected, statusesStr } = normalizeStatuses(vStatuses)
-  throw new TestOpenApiError(`Status code should not be ${status} but ${statusesStr}`, {
-    value: status,
-    expected,
-    property: PROPERTY,
-  })
+  throw new TestOpenApiError(
+    `Status code should not be ${status} but ${statusesStr}`,
+    {
+      value: status,
+      expected,
+      property: PROPERTY,
+    },
+  )
 }
 
 const DEFAULT_STATUS = '2xx'

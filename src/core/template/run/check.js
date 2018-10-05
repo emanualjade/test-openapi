@@ -20,7 +20,9 @@ const wrapTemplateVars = function({ vars, plugin }) {
 
 // Return `plugin.config['template.*']`
 const getTemplateConfig = function({ plugin: { config } }) {
-  const templateConfig = pickBy(config, (value, key) => key.startsWith(TEMPLATE_CONFIG_PREFIX))
+  const templateConfig = pickBy(config, (value, key) =>
+    key.startsWith(TEMPLATE_CONFIG_PREFIX),
+  )
   const templateConfigA = mapKeys(templateConfig, (value, key) =>
     key.replace(TEMPLATE_CONFIG_PREFIX, ''),
   )
@@ -85,7 +87,10 @@ const getMessage = function({ name, index }) {
 }
 
 // Helper function arguments cannot be `undefined` unless `schema.x-optional: true`
-const checkVarUndefined = function({ schema: { 'x-optional': isOptional = false }, message }) {
+const checkVarUndefined = function({
+  schema: { 'x-optional': isOptional = false },
+  message,
+}) {
   if (isOptional) {
     return
   }

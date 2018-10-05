@@ -15,7 +15,11 @@ const start = async function(startData, context) {
 
   const ordering = getOrdering(context)
 
-  await callReporters({ reporters: reportersA, type: 'start' }, undefined, context)
+  await callReporters(
+    { reporters: reportersA, type: 'start' },
+    undefined,
+    context,
+  )
 
   return { report: { reporters: reportersA, ...ordering } }
 }

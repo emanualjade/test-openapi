@@ -60,7 +60,9 @@ const evalNode = function(opts, data, path) {
 // Evaluate `$$name` when it's inside a string.
 // Its result will be transtyped to string and concatenated.
 const evalConcat = function({ template: { tokens }, opts, path }) {
-  const maybePromises = tokens.map(token => evalConcatToken({ token, opts, path }))
+  const maybePromises = tokens.map(token =>
+    evalConcatToken({ token, opts, path }),
+  )
   // There can be several `$$name` inside a string, in which case they are
   // evaluated in parallel
   return promiseAllThen(maybePromises, concatTokens)
@@ -103,13 +105,19 @@ const evalSingle = function({ template, opts }) {
   }
 
   // `$$name` can be an async function, fired right away
-  return promiseThen(data, dataA => getNestedProp({ data: dataA, template, opts: optsA, propPath }))
+  return promiseThen(data, dataA =>
+    getNestedProp({ data: dataA, template, opts: optsA, propPath }),
+  )
 }
 
 const eEvalSingle = addErrorHandler(evalSingle, templateHandler)
 
 // Retrieve template's top-level value
-const getTopLevelProp = function({ template, template: { name }, opts: { vars } }) {
+const getTopLevelProp = function({
+  template,
+  template: { name },
+  opts: { vars },
+}) {
   const { topName, propPath } = parseName({ name })
 
   const data = vars[topName]
@@ -171,7 +179,12 @@ const shouldFireFunction = function({ data, template: { type }, propPath }) {
 }
 
 // Retrieve template's nested value (i.e. property path)
-const getNestedProp = function({ data, template, opts: { recursive }, propPath }) {
+const getNestedProp = function({
+  data,
+  template,
+  opts: { recursive },
+  propPath,
+}) {
   // A template `$$name` can contain other templates, which are then processed
   // recursively.
   // This can be used e.g. to create aliases.
@@ -181,7 +194,9 @@ const getNestedProp = function({ data, template, opts: { recursive }, propPath }
   //    E.g. `{ $$identity: { $$identity: $$$$name } }` -> `{ $$identity: $$$name }` -> `$$name`
   const dataA = recursive(data)
 
-  return promiseThen(dataA, dataB => evalNestedProp({ data: dataB, template, propPath }))
+  return promiseThen(dataA, dataB =>
+    evalNestedProp({ data: dataB, template, propPath }),
+  )
 }
 
 const evalNestedProp = function({ data, template: { type, arg }, propPath }) {

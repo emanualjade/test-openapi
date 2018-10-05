@@ -32,7 +32,11 @@ const addSpecToValidate = function({
 
 // Modifies `validate.status` to only allow status codes described in the specification.
 // If `validate.status` already exists, intersects with it.
-const getSpecStatus = function({ validate: { status = DEFAULT_STATUS }, responses, operationId }) {
+const getSpecStatus = function({
+  validate: { status = DEFAULT_STATUS },
+  responses,
+  operationId,
+}) {
   // If `default` is used, any status code is allowed.
   if (responses.default !== undefined) {
     return status
@@ -45,7 +49,12 @@ const getSpecStatus = function({ validate: { status = DEFAULT_STATUS }, response
   // Only keep specification statuses from `validate.status`
   const statusesA = intersection(statuses, responseStatuses)
 
-  validateEmptyStatus({ statuses: statusesA, responseStatuses, status, operationId })
+  validateEmptyStatus({
+    statuses: statusesA,
+    responseStatuses,
+    status,
+    operationId,
+  })
 
   // Serialize back to same format as `validate.status` input
   const statusA = serializeStatus({ statuses: statusesA })
@@ -56,7 +65,12 @@ const getSpecStatus = function({ validate: { status = DEFAULT_STATUS }, response
 const DEFAULT_STATUS = '2xx'
 
 // Can only specify `validate.status` of status codes described in specification
-const validateEmptyStatus = function({ statuses, responseStatuses, status, operationId }) {
+const validateEmptyStatus = function({
+  statuses,
+  responseStatuses,
+  status,
+  operationId,
+}) {
   if (statuses.length !== 0) {
     return
   }

@@ -11,7 +11,9 @@ const end = function() {
 
   const endCommentString = getEndCommentString({ pass, fail, skip, count })
 
-  const endComment = [...planString, this.colors.final(endCommentString)].join('\n\n')
+  const endComment = [...planString, this.colors.final(endCommentString)].join(
+    '\n\n',
+  )
 
   return `${endComment}\n`
 }

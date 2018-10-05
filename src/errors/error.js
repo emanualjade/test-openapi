@@ -1,6 +1,10 @@
 'use strict'
 
-const { isSimpleSchema, getSimpleSchemaConstant, getWordsList } = require('../utils')
+const {
+  isSimpleSchema,
+  getSimpleSchemaConstant,
+  getWordsList,
+} = require('../utils')
 
 // Error properties (all might not be present):
 //  - `config` `{object}`: initial configuration object

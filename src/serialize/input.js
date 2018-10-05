@@ -2,13 +2,22 @@
 
 const { crawl } = require('../utils')
 
-const { isJsonType, getMessage, UNDEFINED, ESCAPED_UNDEFINED } = require('./common')
+const {
+  isJsonType,
+  getMessage,
+  UNDEFINED,
+  ESCAPED_UNDEFINED,
+} = require('./common')
 
 // Applied on input config and tasks
 const parseInput = function(taskOrConfig, throwError) {
-  return crawl(taskOrConfig, (value, path) => parseInputValue({ value, path, throwError }), {
-    topDown: true,
-  })
+  return crawl(
+    taskOrConfig,
+    (value, path) => parseInputValue({ value, path, throwError }),
+    {
+      topDown: true,
+    },
+  )
 }
 
 const parseInputValue = function({ value, path, throwError }) {

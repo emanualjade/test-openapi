@@ -38,7 +38,9 @@ const getPathParam = function({ path }) {
 // Transform an OpenAPI path `/path/{variable}` into an Express-style path `/path/:variable`
 // Note that according to OpenAPI spec, path variables are always required.
 const getExpressPath = function({ path }) {
-  return path.replace(URL_PARAM_REGEXP, (match, name) => getExpressVariable({ name, path }))
+  return path.replace(URL_PARAM_REGEXP, (match, name) =>
+    getExpressVariable({ name, path }),
+  )
 }
 
 // Matches `url` request parameters, e.g. `/model/{id}`

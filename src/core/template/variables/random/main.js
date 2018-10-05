@@ -48,7 +48,10 @@ addFakerOptions()
 // If `task.random.*.x-separator: string` defined, used it to concatenate an array
 // into a string
 // This is used to make OpenAPI `collectionFormat` work
-const addSeparators = function({ value, schema: { 'x-separator': separator } }) {
+const addSeparators = function({
+  value,
+  schema: { 'x-separator': separator },
+}) {
   if (separator === undefined || !Array.isArray(value)) {
     return value
   }

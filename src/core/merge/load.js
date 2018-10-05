@@ -13,7 +13,9 @@ const { merge } = require('../../template')
 // specify on CLI.
 const load = function(tasks, { config: { merge: mergeConfig } }) {
   const { mergeTasks, nonMergeTasks } = splitTasks({ tasks })
-  const tasksA = nonMergeTasks.map(task => mergeTask({ task, mergeTasks, mergeConfig }))
+  const tasksA = nonMergeTasks.map(task =>
+    mergeTask({ task, mergeTasks, mergeConfig }),
+  )
   return tasksA
 }
 
@@ -57,7 +59,11 @@ const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 //   same scope > no scope > other scopes in alphabetical order
 // Within the same scope, `merge` tasks declared last in keys order have priority.
 // Note that we do not use `config.tasks` order as globbing expansion order is not stable.
-const compareMergeTasks = function({ taskA: { scope: scopeA }, taskB: { scope: scopeB }, scope }) {
+const compareMergeTasks = function({
+  taskA: { scope: scopeA },
+  taskB: { scope: scopeB },
+  scope,
+}) {
   // Inside the same scope, we use object keys order, i.e. `merge` tasks declared
   // last have priority.
   // Object keys order is not very reliable, so we must make sure `tasks` does not

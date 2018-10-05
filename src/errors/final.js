@@ -14,7 +14,9 @@ const handleFinalFailure = function({ tasks }) {
 }
 
 const getFinalErrors = function({ tasks }) {
-  return tasks.filter(({ error }) => error !== undefined).map(({ error }) => error)
+  return tasks
+    .filter(({ error }) => error !== undefined)
+    .map(({ error }) => error)
 }
 
 module.exports = {

@@ -6,7 +6,8 @@ const { checkArgument } = require('./check')
 const getDirective = function({ directive = {} }) {
   checkArgument(directive, 'object')
 
-  const [directiveName, comment] = Object.entries(directive).find(isDirective) || []
+  const [directiveName, comment] =
+    Object.entries(directive).find(isDirective) || []
 
   if (directiveName === undefined || comment === false) {
     return ''

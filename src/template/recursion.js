@@ -6,7 +6,11 @@ const { TestOpenApiError } = require('../errors')
 
 // Since templates can return other templates which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({ template, opts, opts: { recursive, stack = [] } }) {
+const checkRecursion = function({
+  template,
+  opts,
+  opts: { recursive, stack = [] },
+}) {
   const hasRecursion = stack.some(templateA => isEqual(template, templateA))
 
   const stackA = [...stack, template]

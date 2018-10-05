@@ -23,9 +23,15 @@ const getReportProps = function({ task, context }) {
 }
 
 // Find and call all `plugin.report()`
-const callReportFuncs = function({ task, context, context: { _plugins: plugins } }) {
+const callReportFuncs = function({
+  task,
+  context,
+  context: { _plugins: plugins },
+}) {
   // Reporting order will follow core plugins order, then user `config.plugins` order
-  const reportResult = plugins.map(plugin => callReportFunc({ plugin, context, task }))
+  const reportResult = plugins.map(plugin =>
+    callReportFunc({ plugin, context, task }),
+  )
 
   // Separate `title` from the rest as it is handled differently
   const titles = reportResult.map(({ title }) => title).filter(isDefinedTitle)

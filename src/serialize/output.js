@@ -4,7 +4,12 @@ const { crawl } = require('../utils')
 const { convertPlainObject } = require('../errors')
 
 const { addSerializeFail } = require('./fail')
-const { isJsonType, getMessage, UNDEFINED, ESCAPED_UNDEFINED } = require('./common')
+const {
+  isJsonType,
+  getMessage,
+  UNDEFINED,
+  ESCAPED_UNDEFINED,
+} = require('./common')
 
 // Applied on tasks output, i.e. what is reported and returned
 const serializeOutput = function({ task, plugins }) {
@@ -12,9 +17,13 @@ const serializeOutput = function({ task, plugins }) {
   // the crawled object and extra information
   const state = {}
 
-  const taskA = crawl(task, (value, path) => serializeOutputValue({ value, path, state }), {
-    topDown: true,
-  })
+  const taskA = crawl(
+    task,
+    (value, path) => serializeOutputValue({ value, path, state }),
+    {
+      topDown: true,
+    },
+  )
 
   const { error } = state
   const taskB = addSerializeFail({ task: taskA, error, plugins })

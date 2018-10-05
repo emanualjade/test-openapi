@@ -3,7 +3,16 @@
 const { highlight, highlightAuto } = require('emphasize')
 const hasAnsi = require('has-ansi')
 
-const { red, gray, yellow, magenta, reset, italic, bold, inverse } = require('./colors')
+const {
+  red,
+  gray,
+  yellow,
+  magenta,
+  reset,
+  italic,
+  bold,
+  inverse,
+} = require('./colors')
 
 // Syntax highlighting, as YAML
 const highlightValue = function(string, value) {

@@ -19,3 +19,4 @@ gulpfile.js
 .editorconfig
 .eslintrc.yml
 .prettierrc.yml
+.release-it.json

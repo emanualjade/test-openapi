@@ -44,7 +44,7 @@
     "statuses": "^1.5.0",
     "string-width": "^2.1.1",
     "strip-ansi": "^5.0.0",
-    "swagger-parser": "^5.0.6",
+    "swagger-parser": "^6.0.0",
     "type-is": "^1.6.16",
     "underscore.string": "^3.3.5",
     "yargs": "^12.0.1"

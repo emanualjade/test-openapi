@@ -1,6 +1,6 @@
 {
   "name": "test-openapi",
-  "version": "36.0.0",
+  "version": "37.0.0",
   "description": "Automated client requests",
   "main": "index.js",
   "bin": "bin/test-openapi",

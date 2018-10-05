@@ -22,7 +22,8 @@ const loadConfig = function({ config }) {
   return configC
 }
 
-// Validate configuration is JSON and turn `undefined` strings into actual `undefined`
+// Validate configuration is JSON and turn `undefined` strings into
+// actual `undefined`
 const throwParseError = function({ message, value, path }) {
   const property = getPath(['config', ...path])
   throw new TestOpenApiError(`Configuration ${message}`, { value, property })

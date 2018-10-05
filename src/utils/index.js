@@ -19,5 +19,6 @@ module.exports = {
   ...require('./json_pointer'),
   ...require('./string'),
   ...require('./cardinal'),
+  // eslint-disable-next-line import/max-dependencies
   ...require('./regexp'),
 }

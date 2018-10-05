@@ -3,7 +3,7 @@
 const { exit } = require('process')
 
 const { addErrorHandler } = require('../errors')
-const { run: runTasks } = require('../run')
+const { run } = require('../run')
 
 const { defineCli } = require('./top')
 const { parseConfig } = require('./parse')
@@ -12,7 +12,7 @@ const { parseConfig } = require('./parse')
 const runCli = async function() {
   const yargs = defineCli()
   const config = parseConfig({ yargs })
-  const tasks = await runTasks(config)
+  const tasks = await run(config)
   return tasks
 }
 

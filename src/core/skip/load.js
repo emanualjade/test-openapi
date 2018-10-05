@@ -19,8 +19,9 @@ const addSkipped = function({ task, task: { skip, key }, configSkip }) {
 }
 
 // Any value in `task.skip` will be same as `true`. This is because templates
-// are not evaluated yet, so we can't assume what the value is. But we still want
-// the `skip` plugin to be performed before templating, as templating takes some time.
+// are not evaluated yet, so we can't assume what the value is. But we still
+// want the `skip` plugin to be performed before templating, as templating
+// takes some time.
 const isSkipped = function({ skip, configSkip, key }) {
   return (
     skip !== undefined ||

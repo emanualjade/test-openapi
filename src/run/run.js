@@ -1,3 +1,4 @@
+/* eslint-disable-line max-lines */
 'use strict'
 
 const { addErrorHandler, TestOpenApiError } = require('../errors')
@@ -44,7 +45,9 @@ const runAll = function({
 const runAllHandler = function(error) {
   const { task } = error
 
+  // eslint-disable-next-line fp/no-delete, no-param-reassign
   delete error.task
+  // eslint-disable-next-line fp/no-mutation
   task.error = error
 
   return task
@@ -112,7 +115,8 @@ const RIGHT_ARROW = '\u21AA'
 
 const appendNestedPath = function({ nestedPath = [], key, self }) {
   // `_nestedPath` is unchanged if `self: true`
-  // Used when `_runTask()` is called to call current task, e.g. by `repeat` plugin
+  // Used when `_runTask()` is called to call current task,
+  // e.g. by `repeat` plugin
   if (self) {
     return nestedPath
   }
@@ -126,6 +130,7 @@ const appendNestedPath = function({ nestedPath = [], key, self }) {
 // This can be done recursively, leading to a chain of `error.nested`
 const throwRecursiveError = function({ task, error, getError }) {
   if (getError === undefined) {
+    // eslint-disable-next-line fp/no-mutation, no-param-reassign
     error.task = task
     throw error
   }
@@ -134,6 +139,7 @@ const throwRecursiveError = function({ task, error, getError }) {
   // are set each time
   const topError = getError()
 
+  // eslint-disable-next-line fp/no-mutation
   topError.nested = { ...task, error }
 
   throw topError
@@ -147,6 +153,7 @@ const throwRecursiveError = function({ task, error, getError }) {
 const runPluginHandler = function(error, task) {
   // Recursive tasks already have `error.task` defined
   if (error.task === undefined) {
+    // eslint-disable-next-line fp/no-mutation, no-param-reassign
     error.task = task
   }
 

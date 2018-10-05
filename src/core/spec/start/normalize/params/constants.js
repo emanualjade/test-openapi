@@ -2,7 +2,8 @@
 
 const { TestOpenApiError } = require('../../../../../errors')
 
-// Operation's method, server and path as a `task.call.method|server|path` parameter
+// Operation's method, server and path as a `task.call.method|server|path`
+// parameter
 const getConstants = function({ spec, method, path }) {
   const serverParam = getServerParam({ spec })
   const methodParam = getMethodParam({ method })
@@ -35,7 +36,8 @@ const getPathParam = function({ path }) {
   return pathParam
 }
 
-// Transform an OpenAPI path `/path/{variable}` into an Express-style path `/path/:variable`
+// Transform an OpenAPI path `/path/{variable}` into an Express-style path
+// `/path/:variable`
 // Note that according to OpenAPI spec, path variables are always required.
 const getExpressPath = function({ path }) {
   return path.replace(URL_PARAM_REGEXP, (match, name) =>
@@ -46,7 +48,7 @@ const getExpressPath = function({ path }) {
 // Matches `url` request parameters, e.g. `/model/{id}`
 // It's quite loose because the OpenAPI specification does not specify
 // which characters are allowed in `url` request parameter names
-const URL_PARAM_REGEXP = /\{([^}]+)\}/g
+const URL_PARAM_REGEXP = /\{([^}]+)\}/gu
 
 const getExpressVariable = function({ name, path }) {
   if (VALID_EXPRESS_PATH_NAME.test(name)) {
@@ -61,7 +63,7 @@ const getExpressVariable = function({ name, path }) {
 // Valid path variable name according to `path-to-regexp` library.
 // We are sligtly more restrictive as we disallow starting with a digit,
 // to distinguish from URL port.
-const VALID_EXPRESS_PATH_NAME = /^[a-zA-Z_]\w*$/
+const VALID_EXPRESS_PATH_NAME = /^[a-zA-Z_]\w*$/u
 
 const getConstant = function({ value, key }) {
   return { [key]: { type: 'string', enum: [value] } }

@@ -1,5 +1,6 @@
 'use strict'
 
+// eslint-disable-next-line import/no-internal-modules
 const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
 
@@ -25,7 +26,8 @@ const removeId = function(schema) {
   return omit(schema, ['id', '$schema'])
 }
 
-// `exclusiveMinimum` boolean is not valid in the JSON schema version used by `ajv`
+// `exclusiveMinimum` boolean is not valid in the JSON schema version
+// used by `ajv`
 const fixMultipleOf = function(schema) {
   const multipleOf = { type: 'number', exclusiveMinimum: 0 }
 

@@ -7,7 +7,8 @@ const { TestOpenApiError, addErrorHandler } = require('../../../errors')
 
 // Where to output report according to `config.report.REPORTER.output`
 const normalizeOutput = async function({ options: { output }, reporter }) {
-  // When `config.report.REPORTER.output` is `undefined` (default), write to `stdout`
+  // When `config.report.REPORTER.output` is `undefined` (default), write to
+  // `stdout`
   if (output === undefined) {
     return stdout
   }
@@ -18,6 +19,7 @@ const normalizeOutput = async function({ options: { output }, reporter }) {
 }
 
 const getFileStream = function({ output }) {
+  // eslint-disable-next-line promise/avoid-new
   return new Promise((resolve, reject) => {
     const stream = createWriteStream(output)
     stream.on('open', resolve.bind(null, stream))

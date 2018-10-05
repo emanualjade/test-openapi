@@ -2,7 +2,8 @@
 
 const { TestOpenApiError } = require('../../../errors')
 
-// Only response headers|body that are present in `task.validate.*` are validated.
+// Only response headers|body that are present in `task.validate.*` are
+// validated.
 // Whether they are defined or not in the response is validated according to:
 //  - if `task.validate.*.x-forbidden: false`: must not be defined
 //  - if `task.validate.*.x-optional: false` (default): must be defined

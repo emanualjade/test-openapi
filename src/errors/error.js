@@ -32,7 +32,8 @@ class PropsError extends Error {
 
     const propertiesA = addExpected({ properties })
 
-    Object.assign(this, propertiesA, { name: 'PropsError' })
+    this.name = 'PropsError'
+    Object.assign(this, propertiesA)
   }
 }
 
@@ -81,7 +82,8 @@ class TestOpenApiError extends PropsError {
 
 // An error indicating a problem in the library or in a plugin.
 // Note that any non `TestOpenApiError` error is considered a bug.
-// Using `BugError` allows being more explicit and assigning `error.*` properties.
+// Using `BugError` allows being more explicit and assigning
+// `error.*` properties.
 class BugError extends PropsError {
   constructor(...args) {
     super(...args)

@@ -11,19 +11,26 @@ const addCoreReportProps = function({ reportProps, task }) {
 
 // Core `reportProps` always present on error
 const getCoreReportProps = function({
-  error: { expected, value, message, property, schema, module } = {},
+  error: {
+    expected,
+    value,
+    message,
+    property,
+    schema,
+    module: moduleProp,
+  } = {},
 }) {
   const values = getValues({ expected, value })
   const schemaA = getJsonSchema({ schema })
   const propertyA = getProperty({ property })
-  const moduleA = getModule({ module })
+  const modulePropA = getModule({ moduleProp })
 
   return {
     message,
     ...values,
     property: propertyA,
     'JSON schema': schemaA,
-    ...moduleA,
+    ...modulePropA,
   }
 }
 
@@ -36,8 +43,8 @@ const getValues = function({ expected, value }) {
 }
 
 const getJsonSchema = function({ schema }) {
-  // Do not print JSON schemas which are simplistic, as they do not provide extra
-  // information over `Expected value`
+  // Do not print JSON schemas which are simplistic, as they do not provide
+  // extra information over `Expected value`
   if (isSimpleSchema(schema)) {
     return
   }
@@ -50,16 +57,18 @@ const getProperty = function({ property }) {
     return
   }
 
-  return property.replace(/^task\./, '')
+  return property.replace(PROPERTY_REGEXP, '')
 }
 
+const PROPERTY_REGEXP = /^task\./u
+
 // From `module: plugin|reporter-NAME` to `Plugin|Reporter: NAME`
-const getModule = function({ module }) {
-  if (module === undefined) {
+const getModule = function({ moduleProp }) {
+  if (moduleProp === undefined) {
     return
   }
 
-  const [type, ...name] = module.split('-')
+  const [type, ...name] = moduleProp.split('-')
   const nameA = name.join('-')
 
   return { [type]: nameA }

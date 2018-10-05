@@ -1,7 +1,7 @@
 'use strict'
 
-// When using a `formData` parameter, make sure the `Content-Type` request header
-// includes `urlencoded` or `multipart/form-data`
+// When using a `formData` parameter, make sure the `Content-Type` request
+// header includes `urlencoded` or `multipart/form-data`
 // When using a `body` parameter, do the opposite.
 const filterFormDataMimes = function({ mimes, params }) {
   if (hasFormDataParams({ params })) {
@@ -31,8 +31,8 @@ const keepFormDataMimes = function({ mimes }) {
 const removeFormDataMimes = function({ mimes }) {
   const mimesA = mimes.filter(mime => !isFormDataMime(mime))
 
-  // This means the spec `consumes` property only allow `formData` MIMEs (not `body`),
-  // but some `body` parameters are still used.
+  // This means the spec `consumes` property only allow `formData` MIMEs
+  // (not `body`), but some `body` parameters are still used.
   // This is an error that we fix by keeping the `consumes` property as is.
   if (mimesA.length === 0) {
     return mimes
@@ -58,7 +58,7 @@ const removeFormDataPrefix = function(key) {
   return key.replace(FORM_DATA_REGEXP, '')
 }
 
-const FORM_DATA_REGEXP = /^formData\./
+const FORM_DATA_REGEXP = /^formData\./u
 
 module.exports = {
   filterFormDataMimes,

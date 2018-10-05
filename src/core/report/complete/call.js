@@ -16,7 +16,8 @@ const callComplete = async function({
   //  - `runTask()` should return non-serialized tasks
   //  - return value (including `error.tasks`) does not need to be serialized
   //    since it is consumed in JavaScript
-  // We do not need to omit `originalTask` as it is already removed at that point.
+  // We do not need to omit `originalTask` as it is already removed at that
+  // point.
   const taskA = serializeOutput({ task, plugins })
 
   const arg = getArg.bind(null, { task: taskA, plugins })

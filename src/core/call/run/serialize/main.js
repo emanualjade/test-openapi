@@ -12,7 +12,8 @@ const { addFetchRequestHeaders, addContentLength } = require('./extra_headers')
 
 // Serialize request parameters
 // Request headers name are only allowed lowercase:
-//  - it makes matching them easier, both for other plugins and for the return value.
+//  - it makes matching them easier, both for other plugins and for the
+//    return value.
 //  - this implies server must ignore headers case
 //  - other plugins modifying `request.call` must use lowercase headers
 const serialize = function({ call }) {
@@ -20,15 +21,9 @@ const serialize = function({ call }) {
     return
   }
 
-  const callA = normalizeContentType({ call })
+  const callA = normalizeCall({ call })
 
-  const callB = normalizeMethod({ call: callA })
-
-  const callC = normalizeUserAgent({ call: callB })
-
-  const callD = normalizeTimeout({ call: callC })
-
-  const request = addFetchRequestHeaders({ call: callD })
+  const request = addFetchRequestHeaders({ call: callA })
 
   const requestA = omitBy(request, value => value === undefined)
 
@@ -40,6 +35,18 @@ const serialize = function({ call }) {
   })
 
   return { call: { ...call, request: requestB, rawRequest: rawRequestA } }
+}
+
+const normalizeCall = function({ call }) {
+  const callA = normalizeContentType({ call })
+
+  const callB = normalizeMethod({ call: callA })
+
+  const callC = normalizeUserAgent({ call: callB })
+
+  const callD = normalizeTimeout({ call: callC })
+
+  return callD
 }
 
 const normalizeTimeout = function({

@@ -19,6 +19,7 @@ const copyProperties = function({ originalFunc, wrappedFunc }) {
 
 const copyProperty = function({ originalFunc, wrappedFunc, propName }) {
   const prop = Object.getOwnPropertyDescriptor(originalFunc, propName)
+  // eslint-disable-next-line fp/no-mutating-methods
   Object.defineProperty(wrappedFunc, propName, prop)
 }
 

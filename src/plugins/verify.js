@@ -21,8 +21,8 @@ const verifyConfig = function({
   })
 }
 
-// Validate plugin-specific task configuration against a JSON schema specified in
-// `plugin.task`
+// Validate plugin-specific task configuration against a JSON schema specified
+// in `plugin.task`
 const verifyTask = function({
   plugin: { config: { task: schema } = {}, name },
   task: { [name]: value },

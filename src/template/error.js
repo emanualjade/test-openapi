@@ -15,6 +15,7 @@ const templateHandler = function(error, { template, data, path }) {
 
 const appendMessage = function({ error, template: { name } }) {
   const message = getMessage({ error })
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
   error.message = `${TEMPLATE_ERROR_MESSAGE} '${name}': ${message}`
 }
 
@@ -24,9 +25,10 @@ const getMessage = function({ error: { message } }) {
     return message
   }
 
-  return message.replace(/^[^:]*: /, '')
+  return message.replace(TEMPLATE_ERROR_REGEXP, '')
 }
 
+const TEMPLATE_ERROR_REGEXP = /^[^:]*: /u
 const TEMPLATE_ERROR_MESSAGE = 'Error when evaluating template'
 
 // Attach error properties to every error thrown during template evaluation:
@@ -40,9 +42,11 @@ const setErrorProps = function({ error, data, path }) {
   // We move template error attributes from `error.*` to `error.value.*`
   // to allow `error.*` to set its own attributes, e.g. `error.property` below
   const errorProps = omit(error, KEPT_ERROR_PROPS)
+  // eslint-disable-next-line fp/no-delete, no-param-reassign
   Object.keys(errorProps).forEach(errorProp => delete error[errorProp])
   const value = { template: data, ...errorProps }
 
+  // eslint-disable-next-line fp/no-mutating-assign
   Object.assign(error, { property, value })
 }
 

@@ -1,6 +1,7 @@
 'use strict'
 
 const jsonSchemaFaker = require('json-schema-faker')
+// eslint-disable-next-line import/no-internal-modules
 const formatRegExps = require('ajv/lib/compile/formats')
 
 // Allow `json-schema-faker` to use all the `format` that `ajv` can handle,
@@ -15,7 +16,7 @@ const addCustomFormat = function([name, regexp]) {
 }
 
 // UUID any version
-const UUID_REGEXP = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/
+const UUID_REGEXP = /^[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/u
 
 const CUSTOM_FORMATS = {
   // JSON schema v6

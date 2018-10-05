@@ -5,7 +5,8 @@ const { is: isMime } = require('type-is')
 const { addErrorHandler, TestOpenApiError } = require('../../errors')
 
 // Retrieve a parser and stringifier for a specific MIME type
-// TODO: replace by real body parsing library and add support for other content types
+// TODO: replace by real body parsing library and add support for other
+// content types
 const findBodyHandler = function({ mime }) {
   return BODY_HANDLERS.find(({ condition }) => condition({ mime })) || {}
 }

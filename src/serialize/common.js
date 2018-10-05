@@ -29,11 +29,8 @@ const { isObject, getPath } = require('../utils')
 
 // Check if valid JSON type
 const isJsonType = function(value) {
-  const type = typeof value
   return (
-    type === 'string' ||
-    type === 'number' ||
-    type === 'boolean' ||
+    ['string', 'number', 'boolean'].includes(typeof value) ||
     value === null ||
     Array.isArray(value) ||
     isObject(value)
@@ -50,7 +47,8 @@ const getMessage = function({ value, path }) {
 // E.g. a task might want to unset a value set by `merge` or `spec` plugin.
 // However since we only allow JSON in input, we allow `undefined` as a string.
 // It is converted here to an actual `undefined` value.
-// It can also be escaped with backslash if we actually meant the `undefined` string.
+// It can also be escaped with backslash if we actually meant the
+// `undefined` string.
 const UNDEFINED = 'undefined'
 const ESCAPED_UNDEFINED = '\\undefined'
 

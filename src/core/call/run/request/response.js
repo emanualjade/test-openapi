@@ -16,9 +16,11 @@ const getRawResponse = async function({
 
 // Normalize response headers to a plain object
 // Response headers name are normalized to lowercase:
-//  - it makes matching them easier, both for other plugins and for the return value.
+//  - it makes matching them easier, both for other plugins and for the
+// return value.
 //  - this implies original case is lost
-//  - it is automatically done by both the Fetch standard and Node.js core `http` module
+//  - it is automatically done by both the Fetch standard and Node.js
+//    core `http` module
 const getHeaders = function({ rawResponse: { headers } }) {
   const headersA = [...headers.entries()]
   const headersB = headersA.map(([name, value]) => ({

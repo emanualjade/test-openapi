@@ -16,7 +16,8 @@ const run = async function(
   const tasks = new Array(repeat)
     .fill()
     .map(() => runTask({ task, self: true }))
-  // We only keep the first task. If any fails, the first error will be propagated.
+  // We only keep the first task. If any fails, the first error will be
+  // propagated.
   const [taskA] = await Promise.all(tasks)
 
   // We interrupt next handlers since we already ran them

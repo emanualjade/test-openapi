@@ -4,7 +4,8 @@ const { difference, uniq } = require('lodash')
 
 const { VALID_STATUSES_MAP } = require('./valid')
 
-// `validate.status` can be `1xx`, `2xx`, `3xx`, `4xx` or `5xx`, case-insensitively
+// `validate.status` can be `1xx`, `2xx`, `3xx`, `4xx` or `5xx`,
+// case-insensitively
 const parseRanges = function({ statuses }) {
   const statusesA = statuses.map(parseRange)
   const statusesB = [].concat(...statusesA)
@@ -21,7 +22,7 @@ const parseRange = function(status) {
   return statuses
 }
 
-const RANGE_REGEXP = /^[1-5]xx$/i
+const RANGE_REGEXP = /^[1-5]xx$/iu
 
 // Replace `100` + `101` + `102` by `1xx`, for any status code range
 const replaceByRanges = function({ statuses }) {

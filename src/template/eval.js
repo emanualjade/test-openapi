@@ -1,3 +1,4 @@
+/* eslint-disable-line max-lines */
 'use strict'
 
 const { get } = require('lodash')
@@ -28,6 +29,7 @@ const { templateHandler } = require('./error')
 // `undefined` values are not treated differently than other values.
 
 // Evaluate template
+// eslint-disable-next-line max-params
 const evalTemplate = function(data, vars = {}, opts = {}, stack) {
   const recursive = recursiveEval.bind(null, vars, opts)
   const optsA = { ...opts, vars, stack, recursive }
@@ -36,6 +38,7 @@ const evalTemplate = function(data, vars = {}, opts = {}, stack) {
 }
 
 // Recursive calls, done automatically when evaluating `$$name`
+// eslint-disable-next-line max-params
 const recursiveEval = function(vars, opts, stack, data) {
   return evalTemplate(data, vars, opts, stack)
 }
@@ -133,8 +136,7 @@ const getTopLevelProp = function({
 // The top-level value is first evaluated (including recursively parsing its
 // templates) then the rest of the property path is applied.
 const parseName = function({ name }) {
-  // Dot notation can also use brackets
-  const index = name.search(/[.[]/)
+  const index = name.search(BRACKETS_REGEXP)
 
   if (index === -1) {
     return { topName: name }
@@ -147,6 +149,9 @@ const parseName = function({ name }) {
 
   return { topName, propPath }
 }
+
+// Dot notation can also use brackets
+const BRACKETS_REGEXP = /.\[\]/u
 
 // Brackets are kept but not dots (because of how `_.get()` works)
 const getDelimIndex = function({ name, index }) {
@@ -191,10 +196,12 @@ const getNestedProp = function({
   // A template `$$name` can contain other templates, which are then processed
   // recursively.
   // This can be used e.g. to create aliases.
-  // This is done only on `$$name` but not `{ $$name: arg }` return value because:
+  // This is done only on `$$name` but not `{ $$name: arg }` return value
+  // because:
   //  - in functions, it is most likely not the desired intention of the user
   //  - it would require complex escaping (if user does not desire recursion)
-  //    E.g. `{ $$identity: { $$identity: $$$$name } }` -> `{ $$identity: $$$name }` -> `$$name`
+  //    E.g. `{ $$identity: { $$identity: $$$$name } }` ->
+  //    `{ $$identity: $$$name }` -> `$$name`
   const dataA = recursive(data)
 
   return promiseThen(dataA, dataB =>
@@ -210,7 +217,8 @@ const evalNestedProp = function({ data, template: { type, arg }, propPath }) {
     return dataA
   }
 
-  // Can use `{ $$name: [...] }` to pass several arguments to the template function.
+  // Can use `{ $$name: [...] }` to pass several arguments to the template
+  // function.
   // E.g. `{ $$myFunc: [1, 2] }` will fire `$$myFunc(1, 2)`
   const args = Array.isArray(arg) ? arg : [arg]
   // Fire template when it's a function `{ $$name: arg }`

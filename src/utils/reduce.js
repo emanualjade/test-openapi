@@ -3,7 +3,11 @@
 const { promiseThen } = require('./promise')
 
 // Like Array.reduce(), but supports async
-const reduceAsync = function(array, mapFunc, prevVal, secondMapFunc, stopFunc) {
+const reduceAsync = function(
+  array,
+  mapFunc,
+  { prevVal, secondMapFunc, stopFunc },
+) {
   return asyncReducer(prevVal, { array, mapFunc, secondMapFunc, stopFunc })
 }
 

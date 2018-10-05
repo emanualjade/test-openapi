@@ -49,9 +49,11 @@ const getVars = function({ plugin: { template }, context }) {
 
 // Add `error.message|module` when `plugin.template` throws
 const getVarsHandler = function(error, { plugin: { name } }) {
+  // eslint-disable-next-line fp/no-mutation, no-param-reassign
   error.message = `Error while retrieving 'plugin.template': ${error.message}`
 
   if (error.module === undefined) {
+    // eslint-disable-next-line fp/no-mutation, no-param-reassign
     error.module = `plugin-${name}`
   }
 
@@ -71,10 +73,9 @@ const validateVarName = function({ name, plugin }) {
   }
 
   const property = getPath(['plugin', 'template', name])
-  const module = `plugin-${plugin.name}`
   throw new BugError(
     `'plugin.template' returned a template variable with an invalid name '${name}': it must be prefixed with $$ and only contain letters, digits, underscores and dashes`,
-    { value: name, property, module },
+    { value: name, property, module: `plugin-${plugin.name}` },
   )
 }
 
@@ -85,6 +86,7 @@ const validateVarName = function({ name, plugin }) {
 // Also this allows overriding / monkey-patching core (which can be
 // either good or bad).
 const mergePluginsVars = function({ plugins, pluginsVarsMap }) {
+  // eslint-disable-next-line fp/no-mutating-methods
   const pluginsVars = plugins
     .filter(({ name }) => name !== 'template')
     .map(({ name }) => pluginsVarsMap[name])

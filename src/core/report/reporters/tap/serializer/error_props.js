@@ -35,7 +35,7 @@ const getAt = function({ stack }) {
 }
 
 // Remove leading '  at' from stack trace
-const AT_REGEXP = /^.*at /
+const AT_REGEXP = /^.*at /u
 
 // Serialize error to indented YAML
 const serializeErrorProps = function({ error }) {

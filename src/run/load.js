@@ -9,7 +9,8 @@ const { addOriginalTasks } = require('../tasks')
 // handlers `tasks|allTasks` arguments require the modification to have already
 // applied, e.g.:
 //  - `only` plugin must be applied before `report` plugin prints tasks count
-//  - `merge` plugin must be applied before `variables` plugin so users can't target
+//  - `merge` plugin must be applied before `variables` plugin so users can't
+//    target
 //    a `merge` task
 const loadTasks = async function({ config, tasks, plugins }) {
   const allTasks = await runHandlers({
@@ -31,7 +32,8 @@ const loadTasks = async function({ config, tasks, plugins }) {
   // Load handler can either:
   //  - transform task (including filtering it) then return it: when it needs
   //    to be performed on both `tasks` and `allTasks` (e.g. `merge` plugin)
-  //  - add `excluded`: when it needs to be performed on `tasks` only (e.g. `only` plugin)
+  //  - add `excluded`: when it needs to be performed on `tasks` only (e.g.
+  //    `only` plugin)
   const tasksA = allTasksA.filter(({ excluded }) => !excluded)
 
   return { allTasks: allTasksA, tasks: tasksA }

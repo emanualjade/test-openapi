@@ -37,18 +37,27 @@ const keepAdded = function({ task, originalTask, name }) {
     return task
   }
 
-  if (!isObject(originalTask[name]) || !isObject(task[name])) {
+  if (!areObjects({ task, originalTask, name })) {
     return omit(task, name)
   }
 
-  const originalTaskKeys = Object.keys(originalTask[name])
-  const taskValue = omit(task[name], originalTaskKeys)
+  const taskValue = removeOriginalTaskKeys({ task, originalTask, name })
 
   if (Object.keys(taskValue).length === 0) {
     return omit(task, name)
   }
 
   return { ...task, [name]: taskValue }
+}
+
+const areObjects = function({ task, originalTask, name }) {
+  return isObject(originalTask[name]) && isObject(task[name])
+}
+
+const removeOriginalTaskKeys = function({ task, originalTask, name }) {
+  const originalTaskKeys = Object.keys(originalTask[name])
+  const taskValue = omit(task[name], originalTaskKeys)
+  return taskValue
 }
 
 const TASK_DATA = {

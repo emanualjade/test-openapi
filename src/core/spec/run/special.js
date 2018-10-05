@@ -33,6 +33,7 @@ const evalNode = function(specialValues, value, path) {
   }
 
   // Keep track of paths of special values
+  // eslint-disable-next-line fp/no-mutating-methods
   specialValues[value].push(path)
 
   // Return `undefined`, i.e. remove this node, otherwise it would have priority

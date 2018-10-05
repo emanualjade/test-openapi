@@ -13,6 +13,8 @@ const lint = function() {
 
   return execCommand(command)
 }
+
+// eslint-disable-next-line fp/no-mutation
 lint.description = 'Lint source files'
 
 const test = series(lint)

@@ -1,6 +1,7 @@
 'use strict'
 
-// Like Lodash.get() except takes into account objects whose properties have dots
+// Like Lodash.get() except takes into account objects whose properties
+// have dots
 // E.g. _.get({ a: { 'b.c': true } }, 'a.b.c') does not work
 const get = function(value, path) {
   const pathA = removeBrackets({ path })
@@ -9,12 +10,12 @@ const get = function(value, path) {
 
 const getProperty = function(value, path) {
   // We can only follow `path` within objects and arrays
-  if (typeof value !== 'object' || value === null) {
+  if (!isComplex(value)) {
     return
   }
 
   // When we reached the final property
-  if (value.propertyIsEnumerable(path)) {
+  if ({}.propertyIsEnumerable.call(value, path)) {
     return value[path]
   }
 
@@ -34,6 +35,10 @@ const getProperty = function(value, path) {
   return getProperty(child, childPath)
 }
 
+const isComplex = function(value) {
+  return typeof value === 'object' && value !== null
+}
+
 // If several keys match, take the largest one
 const getLargestString = function(memo, string) {
   if (string.length >= memo.length) {
@@ -43,17 +48,19 @@ const getLargestString = function(memo, string) {
   return memo
 }
 
-// Similar to `get()` but using the longest path that does not return `undefined`.
+// Similar to `get()` but using the longest path that does not
+// return `undefined`.
 // Also set the parent path as a top-level property.
 const tryGet = function(value, path) {
   const pathA = splitPath({ path })
 
   // Find longest path that does not return `undefined`
-  const wrongIndex = pathA.findIndex((_, index) =>
+  const wrongIndex = pathA.findIndex((valueA, index) =>
     isWrongPath({ path: pathA, value, index }),
   )
 
-  // If the first path part already returns `undefined`, return top-value value as is
+  // If the first path part already returns `undefined`, return top-value value
+  // as is
   if (wrongIndex === 0) {
     return { wrongPath: pathA[0], value }
   }
@@ -62,9 +69,9 @@ const tryGet = function(value, path) {
 
   const parentPath = getParentPath({ path: pathA, index: wrongIndex })
   const childValue = get(value, parentPath)
-  const valueA = { [parentPath]: childValue }
+  const valueB = { [parentPath]: childValue }
 
-  return { wrongPath, value: valueA }
+  return { wrongPath, value: valueB }
 }
 
 const splitPath = function({ path }) {
@@ -97,10 +104,10 @@ const getParentPath = function({ path, index }) {
 
 // Allow array bracket notations `[integer]` by replacing them to dots
 const removeBrackets = function({ path }) {
-  return path.replace(BRACKETS_REGEXP, '.$1').replace(/^\./, '')
+  return path.replace(BRACKETS_REGEXP, '.$1').replace(/^\./u, '')
 }
 
-const BRACKETS_REGEXP = /\[([\d]+)\]/g
+const BRACKETS_REGEXP = /\[([\d]+)\]/gu
 
 module.exports = {
   get,

@@ -11,12 +11,12 @@ const { normalizeStatuses } = require('./normalize')
 
 // Parse `validate.status` into an array of possible statuses
 const parseStatus = function({ status, property }) {
-  // `validate.status` can be an integer because it's simpler when writing in YAML
-  // (does not require quotes)
+  // `validate.status` can be an integer because it's simpler when writing in
+  // YAML (does not require quotes)
   const statusA = String(status)
 
   // `validate.status` can a space-delimited list of statuses
-  const statuses = statusA.split(/\s+/)
+  const statuses = statusA.split(/\s+/u)
 
   const statusesA = uniq(statuses)
 
@@ -51,7 +51,7 @@ const serializeStatus = function({ statuses }) {
 }
 
 // Status code like `102` or status range like `2xx`
-const STATUS_REGEXP = /^[1-5][\dx]{2}/i
+const STATUS_REGEXP = /^[1-5][\dx]{2}/iu
 
 module.exports = {
   parseStatus,

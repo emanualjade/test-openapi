@@ -9,7 +9,9 @@ const getInstance = function() {
 
 // Make logging silent (e.g. warn on unknown format) but throws on errors
 const logger = {
+  // eslint-disable-next-line no-empty-function
   log() {},
+  // eslint-disable-next-line no-empty-function
   warn() {},
   error(message) {
     throw message

@@ -1,7 +1,5 @@
 'use strict'
 
-const { URL } = require('url')
-
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Escape, normalize and validate the request URL
@@ -19,8 +17,8 @@ const normalizeUrl = function({ url: originalUrl }) {
 // we allow it since `task.call.server` can contain the base path.
 const escapeUrl = function(url) {
   return encodeURI(url)
-    .replace(/#/g, '%23')
-    .replace(/\?/g, '%3F')
+    .replace(/#/gu, '%23')
+    .replace(/\?/gu, '%3F')
 }
 
 const parseUrl = function({ url }) {

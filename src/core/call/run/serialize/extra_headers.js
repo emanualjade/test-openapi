@@ -1,8 +1,13 @@
 'use strict'
 
+const {
+  Buffer: { byteLength },
+} = require('buffer')
+
 const { mapKeys } = require('lodash')
 
-// The `node-fetch` library adds few HTTP request headers, so we add them to `rawRequest`
+// The `node-fetch` library adds few HTTP request headers, so we add them
+// to `rawRequest`
 // Unfortunately the library does not allow accessing them, so we need to repeat
 // its logic here and recalculate them.
 const addFetchRequestHeaders = function({ call }) {
@@ -43,7 +48,7 @@ const addContentLength = function({ request, rawRequest }) {
 
 const getContentLength = function({ rawRequest: { method, body } }) {
   if (body != null) {
-    return Buffer.byteLength(body)
+    return byteLength(body)
   }
 
   if (!['put', 'post'].includes(method)) {

@@ -5,8 +5,9 @@ const { mapValues, omitBy } = require('lodash')
 const { get, tryGet } = require('../../utils')
 const { TestOpenApiError } = require('../../errors')
 
-// `task.variables.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task, to
-// run the task that defined the variables, and retrieve a specific property at `PATH`
+// `task.variables.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task,
+// to run the task that defined the variables, and retrieve a specific property
+// at `PATH`
 const template = function({ _allTasks: allTasks, _runTask: runTask }) {
   const variables = allTasks.map(taskA =>
     getTaskVariables({ task: taskA, allTasks, runTask }),
@@ -42,11 +43,11 @@ const evalTask = async function({ key, value, allTasks, runTask }) {
 
 // Runs the task
 const runVariableTask = async function({ key, allTasks, runTask }) {
-  const task = allTasks.find(task => task.key === key)
+  const taskA = allTasks.find(task => task.key === key)
 
-  const getError = getTaskError.bind(null, { task })
-  const taskA = await runTask({ task, getError })
-  return taskA
+  const getError = getTaskError.bind(null, { task: taskA })
+  const taskB = await runTask({ task: taskA, getError })
+  return taskB
 }
 
 const getTaskError = function({ task: { key } }) {
@@ -78,7 +79,7 @@ const getTaskProp = function({ task, task: { key }, value }) {
 
 // Parse '[PATH] [OPTS,...]'
 const parseValue = function({ value }) {
-  const [path, options = ''] = value.split(/\s+/)
+  const [path, options = ''] = value.split(/\s+/u)
   const optionsA = options.split(',').filter(option => option !== '')
 
   return { path, options: optionsA }

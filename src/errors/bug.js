@@ -17,8 +17,7 @@ const handleBugs = function({ error }) {
 
   const message = getBugMessage({ bugError })
 
-  const { module } = bugError
-  return new BugError(message, { module, bug: true })
+  return new BugError(message, { module: bugError.module, bug: true })
 }
 
 const findBugError = function({ error, error: { errors = [error] } }) {
@@ -65,12 +64,12 @@ test-openapi: ${libraryVersion}
 ${stack}`
 }
 
-const getRepositoryName = function({ bugError: { module } }) {
+const getRepositoryName = function({ bugError }) {
   if (module === undefined) {
     return DEFAULT_REPOSITORY
   }
 
-  return `${MODULE_REPOSITORY}${module}`
+  return `${MODULE_REPOSITORY}${bugError.module}`
 }
 
 const DEFAULT_REPOSITORY = 'test-openapi'

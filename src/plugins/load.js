@@ -85,12 +85,15 @@ const MODULE_OPTS = {
 // JSON schema describing the plugin general configuration at `config.PLUGIN`
 
 // `plugin.config.task` `{object}`
-// JSON schema describing the plugin task-specific configuration at `task.PLUGIN`
+// JSON schema describing the plugin task-specific configuration
+// at `task.PLUGIN`
 
 // `plugin.config['template.$$NAME']` `{object|object[]}`
-// JSON schema describing the arguments to the template helper function `$$name`.
+// JSON schema describing the arguments to the template helper
+// function `$$name`.
 // `$$name` must be returned by `plugin.template`.
-// Note that this validates the helper's argument, not the template variable itself
+// Note that this validates the helper's argument, not the template variable
+// itself
 // (which must be a function).
 // Can use an array of JSON schemas to describe several positional arguments.
 // Arguments are required unless `jsonSchema.x-optional` is `true`
@@ -101,32 +104,43 @@ const MODULE_OPTS = {
 //  - `plugin.load(tasks, { config, pluginNames, _plugins })` `{function}`
 //     - fired before all tasks
 //     - only for advanced plugins
-//  - `plugin.start(startData, { config, pluginNames, _plugins, _tasks, _allTasks })` `{function}`
+//  - `plugin.start(startData, { config, pluginNames, _plugins, _tasks,
+//    _allTasks })` `{function}`
 //     - fired before all tasks
-//  - `plugin.run(task, { startData, pluginNames, _plugins, _tasks, _allTasks, _runTask, _nestedPath })` `{function}`
+//  - `plugin.run(task, { startData, pluginNames, _plugins, _tasks, _allTasks,
+//     _runTask, _nestedPath })` `{function}`
 //     - fired for each task
-//  - `plugin.complete(task, { startData, pluginNames, _plugins, _tasks, _allTasks })` `{function}`
+//  - `plugin.complete(task, { startData, pluginNames, _plugins, _tasks,
+//    _allTasks })` `{function}`
 //     - fired for each task, but after `run` type, whether it has failed or not
 //     - only for advanced plugins
-//  - `plugin.end(tasks, { config, startData, pluginNames, _plugins, _tasks, _allTasks })` `{function}`
+//  - `plugin.end(tasks, { config, startData, pluginNames, _plugins, _tasks,
+//    _allTasks })` `{function}`
 //     - fired after all tasks
 // Arguments:
 //   - available depends on the handler type, but can be:
-//      - `config` `{object}`: the configuration object (after being modified by `plugin.start()`)
-//         As opposed to task configuration, the global configuration is only meant
-//         for `start` and `end` handlers, not `run` nor `complete` handlers.
+//      - `config` `{object}`: the configuration object (after being modified
+//         by `plugin.start()`)
+//         As opposed to task configuration, the global configuration is only
+//         meant for `start` and `end` handlers, not `run` nor `complete`
+//         handlers.
 //      - `startData` `{object}`: the object returned by each `start` handler
 //      - `task` `{object}`: same object as the one specified in tasks files
-//      - `tasks` `{array}`: all run tasks after being modified by `run` and `complete` handlers
+//      - `tasks` `{array}`: all run tasks after being modified by `run` and
+//         `complete` handlers
 //      - `pluginNames` `{array}`: list of plugins names
 //   - the following ones are only for advanced plugins:
 //      - `_plugins` `{array}`: list of available plugins
 //      - `_runTask({ task, property, self })` `{function}`:
 //         function allowing a task to fire another task
-//      - `_nestedPath` `{array}`: set when task was run through recursive `_runTask()`
-//      - `_tasks` `{array}`: all tasks that will be run, after `load` handlers applied
-//      - `_allTasks` `{array}`: all tasks that will be run or not, after `load` handlers applied
-//   - `load`, `start` and `run` can modify their first argument by returning it:
+//      - `_nestedPath` `{array}`: set when task was run through recursive
+//        `_runTask()`
+//      - `_tasks` `{array}`: all tasks that will be run, after `load` handlers
+//        applied
+//      - `_allTasks` `{array}`: all tasks that will be run or not, after
+//        `load` handlers applied
+//   - `load`, `start` and `run` can modify their first argument by returning
+//      it:
 //      - which will be automatically shallowly merged into the current input.
 //      - arguments should not be mutated.
 //   - the second argument is read-only.

@@ -4,11 +4,8 @@ const { titleize } = require('underscore.string')
 
 const { removePrefixes, sortArray } = require('../../../utils')
 const {
-  yellow,
-  highlightValueAuto,
-  prettifyJson,
-  truncate,
-} = require('../../report/utils')
+  utils: { yellow, highlightValueAuto, prettifyJson, truncate },
+} = require('../../report')
 
 const { getTitle } = require('./title')
 
@@ -82,7 +79,8 @@ const printHeaders = function(object) {
 }
 
 const printHeader = function([name, value]) {
-  // Both `request.headers.*` and `response.headers.*` are normalized to lowercase
+  // Both `request.headers.*` and `response.headers.*` are normalized
+  // to lowercase
   const nameA = titleize(name)
   return `${yellow(`${nameA}:`)} ${value}`
 }

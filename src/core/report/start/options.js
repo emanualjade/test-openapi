@@ -71,7 +71,8 @@ const getOptionsSchema = function({ reporter: { config } }) {
   return { type: 'object', properties, additionalProperties: false }
 }
 
-// Normalize `config.report.REPORTER.level|output` and set to `reporter.options.level|output`
+// Normalize `config.report.REPORTER.level|output` and set to
+// `reporter.options.level|output`
 const normalizeOptions = async function({ options, reporter }) {
   const level = normalizeLevel({ options, reporter })
 

@@ -4,7 +4,7 @@ extends:
 env:
   jasmine: true
 parserOptions:
-  # At the moment, eslint-config-standard is still using `8`
+  # At the moment, eslint-config-standard is still using `2018`
   ecmaVersion: 2018
   sourceType: script
 rules:

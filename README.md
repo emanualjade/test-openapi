@@ -27,7 +27,7 @@ yarn integrationTest
 
 Tests are specified in YAML (or JSON) files at `./**/*.tasks.yml`
 
-Those files are plain objects where each key represents a single test.
+Those files contain an array of test definitions.
 
 A single test performs the following:
 
@@ -38,7 +38,7 @@ A single test performs the following:
 # Example
 
 ```yml
-- key: exampleTest
+- name: exampleTest
   call:
     method: GET
     server: http://localhost:8081
@@ -93,7 +93,7 @@ If you have described your API endpoints with [OpenAPI](https://www.openapis.org
 you can point to the `operationId` by using the `spec.operation` property.
 
 ```yml
-- key: exampleTest
+- name: exampleTest
   spec:
     operation: getTags
   call:
@@ -119,7 +119,7 @@ are not `required` are only re-used if specified in the `call` property.
 Each test can use the following properties:
 
 ```yml
-- key: testName
+- name: testName
   spec:
     operation: operationId
   call:
@@ -137,7 +137,7 @@ Each test can use the following properties:
 # More tests
 ```
 
-- `key`: an arbitrary name for the test.
+- `name`: an arbitrary name for the test.
 - `spec.operation`: OpenAPI's `operationId`, i.e. a unique string identifying
   an endpoint. For example `getTags`.
 - `call`: HTTP request parameters
@@ -165,7 +165,7 @@ the HTTP response. They can either be:
 For example to validate that the response body is an array:
 
 ```yml
-- key: testName
+- name: testName
   validate:
     body:
       type: array
@@ -179,7 +179,7 @@ The `$$random` template function can be used to generate random values based on 
 For example to generate a random password of minimum 12 characters:
 
 ```yml
-- key: testName
+- name: testName
   call:
     query.password:
       $$random:
@@ -195,11 +195,11 @@ re-use it as template variables.
 This creates sequences of requests.
 
 ```yml
-- key: createAccessToken
+- name: createAccessToken
   variables:
     $$accessToken: call.response.body.accessToken
 
-- key: testName
+- name: testName
   call:
     query.accessToken: $$accessToken
 ```

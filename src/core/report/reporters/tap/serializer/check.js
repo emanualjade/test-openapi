@@ -5,6 +5,7 @@ const { isObject } = require('../../../../../utils')
 // Check input arguments
 const checkArgument = function(value, type) {
   const isValid = TYPES[type](value)
+
   if (isValid) {
     return
   }

@@ -30,6 +30,7 @@ const replaceByRanges = function({ statuses }) {
 
 const replaceByRange = function(statuses, [range, rangeStatuses]) {
   const statusesA = difference(statuses, rangeStatuses)
+
   // Only if all possible status codes for that range are here
   if (statuses.length - statusesA.length !== rangeStatuses.length) {
     return statuses

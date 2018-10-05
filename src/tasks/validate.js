@@ -56,6 +56,7 @@ const validateTasksSyntax = function({ tasks }) {
 
 const validateTaskSyntax = function(task) {
   const syntaxTest = SYNTAX_TESTS.find(({ test }) => test(task))
+
   if (syntaxTest === undefined) {
     return
   }
@@ -105,6 +106,7 @@ const validateDuplicateKeys = function({ tasks }) {
 const validateDuplicateKey = function({ key, scope, name }, index, tasks) {
   const tasksA = tasks.slice(index + 1)
   const isDuplicate = tasksA.some(({ key: keyA }) => key === keyA)
+
   if (!isDuplicate) {
     return
   }
@@ -126,6 +128,7 @@ const validateScopes = function({ paths }) {
 const validateScope = function({ scope, index, scopes, paths }) {
   const scopesA = scopes.slice(index + 1)
   const duplicateScopeIndex = scopesA.indexOf(scope)
+
   if (duplicateScopeIndex === -1) {
     return
   }

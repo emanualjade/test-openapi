@@ -44,6 +44,7 @@ const getPluginReturns = function({ plugins, task }) {
 
 const getPluginReturn = function({ task, plugin, plugin: { name } }) {
   const returnValue = getReturnValue({ task, plugin })
+
   if (returnValue === undefined) {
     return
   }

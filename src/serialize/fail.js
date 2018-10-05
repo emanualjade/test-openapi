@@ -36,6 +36,7 @@ const getSerializeFail = function({
 // This is not error-proof since plugins can modify input of other plugins.
 const guessModule = function({ path: [name], plugins }) {
   const plugin = plugins.find(({ name: nameA }) => nameA === name)
+
   if (plugin === undefined) {
     return
   }

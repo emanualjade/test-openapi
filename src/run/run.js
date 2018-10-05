@@ -108,7 +108,7 @@ const checkRecursion = function({ nestedPath = [], key, self }) {
   throw new TestOpenApiError(`Infinite task recursion:\n   ${cycle}`)
 }
 
-const RIGHT_ARROW = '\u21aa'
+const RIGHT_ARROW = '\u21AA'
 
 const appendNestedPath = function({ nestedPath = [], key, self }) {
   // `_nestedPath` is unchanged if `self: true`

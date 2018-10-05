@@ -9,6 +9,7 @@ const load = function(tasks, { config: { only: configOnly } }) {
   // Check if `config|task.only` is used, so we know whether to perform an `only` run
   const enabled =
     configOnly !== undefined || tasks.some(({ only }) => only !== undefined)
+
   if (!enabled) {
     return
   }

@@ -5,6 +5,7 @@ const { TestOpenApiError } = require('./error')
 // If any task failed, throw an error
 const handleFinalFailure = function({ tasks }) {
   const errors = getFinalErrors({ tasks })
+
   if (errors.length === 0) {
     return
   }

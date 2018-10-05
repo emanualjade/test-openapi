@@ -31,6 +31,7 @@ const isMergeTask = function({ merge }) {
 
 const mergeTask = function({ task, mergeTasks, mergeConfig }) {
   const mergeTasksA = findMergeTasks({ task, mergeTasks })
+
   if (mergeTasksA.length === 0) {
     return task
   }

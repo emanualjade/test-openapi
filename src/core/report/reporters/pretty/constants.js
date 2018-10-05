@@ -4,7 +4,7 @@ const { gray, red, green, HORIZONTAL_LINE } = require('../../utils')
 
 const MARKS = {
   // Pause symbol
-  skip: '\u23f8',
+  skip: '\u23F8',
   // Check symbol
   pass: '\u2714',
   // Cross symbol

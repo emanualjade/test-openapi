@@ -37,6 +37,7 @@ const handlePort = function(token) {
   // Not if `:NUMBER*` nor `:NUMBER+`
   const { name, optional, repeat } = token
   const isPort = !optional && !repeat && PORT_REGEXP.test(name)
+
   if (!isPort) {
     return token
   }

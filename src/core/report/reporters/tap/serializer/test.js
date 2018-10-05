@@ -22,6 +22,7 @@ const getTestHeader = function({ testName, asserts }) {
 
 const getCategory = function({ asserts }) {
   const failed = asserts.some(({ ok }) => !ok)
+
   if (failed) {
     return 'fail'
   }

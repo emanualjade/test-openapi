@@ -15,6 +15,7 @@ const checkSchema = function({ bug = false, value, ...opts }) {
   const valueA = removeUndefined({ value })
 
   const error = validateFromSchema({ ...opts, value: valueA })
+
   if (error === undefined) {
     return
   }

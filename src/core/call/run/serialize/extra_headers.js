@@ -28,6 +28,7 @@ const DEFAULT_CONNECTION = 'close'
 // Same for `Content-Length` (must be done after body has been serialized)
 const addContentLength = function({ request, rawRequest }) {
   const contentLength = getContentLength({ rawRequest })
+
   if (contentLength === undefined) {
     return { request, rawRequest }
   }

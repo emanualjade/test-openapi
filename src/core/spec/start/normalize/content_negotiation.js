@@ -14,6 +14,7 @@ const getNegotiationsParams = function({ spec, operation, params }) {
 const getContentTypeParam = function({ spec, operation, params }) {
   const consumes = getConsumes({ spec, operation })
   const consumesA = filterFormDataMimes({ mimes: consumes, params })
+
   if (consumesA === undefined) {
     return
   }
@@ -25,6 +26,7 @@ const getContentTypeParam = function({ spec, operation, params }) {
 // But the Accept header is always the same
 const getAcceptParam = function({ spec, operation }) {
   const produces = getProduces({ spec, operation })
+
   if (produces === undefined) {
     return
   }
@@ -37,6 +39,7 @@ const getAcceptParam = function({ spec, operation }) {
 // Get OpenAPI `produces` property as a `Content-Type` response header
 const getNegotiationsResponse = function({ spec, operation }) {
   const produces = getProduces({ spec, operation })
+
   if (produces === undefined) {
     return
   }

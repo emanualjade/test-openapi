@@ -22,6 +22,7 @@ const addPlugin = function({
   }
 
   const plugin = findPlugin({ value, pluginsVarsMap })
+
   if (plugin !== undefined) {
     error.module = `plugin-${plugin[0]}`
   }

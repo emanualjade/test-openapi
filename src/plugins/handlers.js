@@ -45,6 +45,7 @@ const getHandlers = function({ plugins, type, errorHandler, context }) {
 
 const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
   const handlers = plugin[type]
+
   if (handlers === undefined) {
     return []
   }

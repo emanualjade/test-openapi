@@ -15,9 +15,9 @@ const numberToCardinal = function(integer) {
 }
 
 const CARDINALS = {
-  '1': 'st',
-  '2': 'nd',
-  '3': 'rd',
+  1: 'st',
+  2: 'nd',
+  3: 'rd',
 }
 
 const DEFAULT_CARDINAL = 'th'

@@ -76,6 +76,7 @@ const normalizeObject = function(value) {
 
 const normalizeReportPropKey = function(value, name) {
   const tapName = TAP_NAMES[name]
+
   if (tapName !== undefined) {
     return tapName
   }

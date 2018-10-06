@@ -2,6 +2,11 @@
   "name": "test-openapi",
   "version": "38.0.0",
   "main": "index.js",
+  "files": [
+    "bin",
+    "src",
+    "!*~"
+  ],
   "bin": {
     "test-openapi": "bin/test_openapi.js"
   },

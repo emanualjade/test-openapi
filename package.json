@@ -1,7 +1,6 @@
 {
   "name": "test-openapi",
   "version": "38.0.0",
-  "description": "Automated client requests",
   "main": "index.js",
   "bin": {
     "test-openapi": "bin/test_openapi.js"
@@ -12,12 +11,14 @@
     "describe": "gulp --tasks",
     "release": "release-it"
   },
+  "description": "Automated client requests",
+  "keywords": [],
   "license": "MIT",
+  "homepage": "https://github.com/Cardero-X/test-openapi",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Cardero-X/test-openapi.git"
+    "url": "https://github.com/Cardero-X/test-openapi"
   },
-  "homepage": "https://github.com/Cardero-X/test-openapi",
   "bugs": {
     "url": "https://github.com/Cardero-X/test-openapi/issues"
   },

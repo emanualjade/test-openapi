@@ -19,10 +19,7 @@
   "keywords": [],
   "license": "MIT",
   "homepage": "https://github.com/Cardero-X/test-openapi",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Cardero-X/test-openapi"
-  },
+  "repository": "Cardero-X/test-openapi",
   "bugs": {
     "url": "https://github.com/Cardero-X/test-openapi/issues"
   },

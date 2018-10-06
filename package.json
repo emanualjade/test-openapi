@@ -23,6 +23,10 @@
   "bugs": {
     "url": "https://github.com/Cardero-X/test-openapi/issues"
   },
+  "directories": {
+    "doc": "docs",
+    "lib": "src"
+  },
   "dependencies": {
     "ajv": "^6.5.4",
     "chalk": "^2.4.1",

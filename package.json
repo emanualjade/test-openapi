@@ -3,7 +3,9 @@
   "version": "38.0.0",
   "description": "Automated client requests",
   "main": "index.js",
-  "bin": "bin/test-openapi",
+  "bin": {
+    "test-openapi": "bin/test_openapi.js"
+  },
   "scripts": {
     "test": "gulp test",
     "lint": "gulp lint",

@@ -13,7 +13,6 @@
   "scripts": {
     "test": "gulp test",
     "lint": "gulp lint",
-    "describe": "gulp --tasks",
     "release": "release-it"
   },
   "description": "Automated client requests",

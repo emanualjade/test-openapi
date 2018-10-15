@@ -2,6 +2,6 @@
 
 module.exports = {
   ...require('./src'),
-  // eslint-disable-next-line import/no-internal-modules, node/no-unpublished-require
+  // eslint-disable-next-line import/no-internal-modules
   ...require('./src/core/spec'),
 }

@@ -13,6 +13,11 @@ const getNegotiationsParams = function({ spec, operation, params }) {
 // A random request Content-Type will be picked
 const getContentTypeParam = function({ spec, operation, params }) {
   const consumes = getConsumes({ spec, operation })
+
+  if(consumes === undefined) {
+    return
+  }
+
   const consumesA = filterFormDataMimes({ mimes: consumes, params })
 
   if (consumesA === undefined) {

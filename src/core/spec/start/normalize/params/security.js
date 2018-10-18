@@ -94,8 +94,8 @@ const getDefHttpKey = function({ scheme }) {
     )
   }
 
-  const location = IN_TO_LOCATION['headers']
-  const key = locationToKey({ name: 'Authorization', location})
+  const location = IN_TO_LOCATION['header']
+  const key = locationToKey({ name: 'authorization', location})
 
   return { [key]: { type: 'string', optional: false } }
 }

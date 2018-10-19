@@ -27,13 +27,13 @@ test-openapi
 
 If a task failed, exit code will be `1`.
 
-Options are passed as CLI flags:
+Options are passed as CLI flags.
 
 ```shell
 test-openapi --merge.spec.definition openapi_schema.yml
 ```
 
-Tasks are passed as positional argument:
+Tasks are passed as positional argument.
 
 ```shell
 test-openapi **/*.tasks.yml
@@ -99,8 +99,8 @@ Each task must specify a `name` unique within its file.
           isPublic:
             type: boolean
 
+# And so on
 - name: anotherTask
-  # And so on
 ```
 
 This task calls:
@@ -214,12 +214,11 @@ The HTTP response is validated against the `validate` task property.
   - this can be either:
     - any value checked for equality
     - a
-      [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
-      - the following properties can also be used:
-        - `x-optional` `{boolean}` (default: `true`): if `false`, validate that
-          the HTTP header is present in the response
-        - `x-forbidden` `{boolean}` (default: `false`): if `true`, validate
-          that the HTTP header is not present in the response
+      [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject) with the additional following properties:
+      - `x-optional` `{boolean}` (default: `true`): if `false`, validate that
+        the HTTP header is present in the response
+      - `x-forbidden` `{boolean}` (default: `false`): if `true`, validate
+        that the HTTP header is not present in the response
 - `body` `{any|jsonSchema}`:
   - expected value for the response body
   - this can be either a non-object checked for equality or a
@@ -259,7 +258,7 @@ described your API endpoints with [OpenAPI](https://www.openapis.org/).
   - it is likely that the same OpenAPI document is re-used across tasks, so
     the [`merge` task property](#shared-properties) can be used
   - the OpenAPI document syntax is validated
-  - only OpenAPI 2.0 is currently supported, but we plan to add OpenAPI 3.0
+  - only OpenAPI 2.0 is currently supported but we plan to add OpenAPI 3.0
     support
 
 The following OpenAPI properties are currently used:
@@ -289,8 +288,6 @@ The following OpenAPI properties are currently used:
 - the
   [response's](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject) `schema` and `headers` OpenAPI properties are used to
   validate the HTTP response (`validate.status|body|headers`)
-  - the task will also validate that the status code is among the ones
-    described in the OpenAPI definition
 
 OpenAPI schemas can use the following extensions:
 
@@ -410,7 +407,7 @@ The task will fail if the variable is `undefined` unless you append the word
 
 By default all tasks are run in parallel at the same time.
 
-To only run few tasks use the `only` option.
+To only run a few tasks use the `only` option.
 
 ```shell
 test-openapi --only 'taskNameRegularExpression/.*'

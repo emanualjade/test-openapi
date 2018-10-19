@@ -20,10 +20,6 @@ const getContentTypeParam = function({ spec, operation, params }) {
 
   const consumesA = filterFormDataMimes({ mimes: consumes, params })
 
-  if (consumesA === undefined) {
-    return
-  }
-
   const value = { type: 'string', enum: consumesA }
   return { 'headers.content-type': value }
 }

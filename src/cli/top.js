@@ -34,7 +34,7 @@ const CONFIG = {
     alias: 'l',
     requiresArg: true,
     describe:
-      'Verbosity among "debug", "info", "log" (default for most reporting styles), "warn" (default for "pretty" reporting styles), "error" or "silent"',
+      'Verbosity among "debug", "info" (default for most reporting styles), "warn" (default for "pretty" reporting styles), "error" or "silent"',
   },
   only: {
     array: true,

@@ -61,10 +61,10 @@ Automated client requests
 
 TASKS_FILES... are JSON or YAML files containing the tasks to perform.
 Can include globbing patterns.
-Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
+Defaults to any file ending with 'tasks.yml.json'`
 
 const RUN_EXAMPLE =
-  '$0 --spec ./openapi.yml --merge.call.server http://localhost:5001 ./**/*.tasks.yml'
+  '$0 --merge.spec.definition ./openapi.yml --merge.call.server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
   defineCli,

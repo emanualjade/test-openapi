@@ -10,7 +10,7 @@
     "end": {},
     "level": {
       "type": "string",
-      "enum": ["silent", "error", "warn", "log", "info", "debug"]
+      "enum": ["silent", "error", "warn", "info", "debug"]
     }
   }
 }

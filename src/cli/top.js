@@ -34,7 +34,7 @@ const CONFIG = {
     alias: 'l',
     requiresArg: true,
     describe:
-      'Verbosity among "debug", "info", "log" (default for most reporting styles), "warn" (default for "pretty" reporting styles), "error" or "silent"',
+      'Verbosity among "debug", "info" (default for most reporting styles), "warn" (default for "pretty" reporting styles), "error" or "silent"',
   },
   only: {
     array: true,
@@ -61,10 +61,10 @@ Automated client requests
 
 TASKS_FILES... are JSON or YAML files containing the tasks to perform.
 Can include globbing patterns.
-Defaults to any file ending with 'spec.yml|json' or 'tasks.yml.json'`
+Defaults to any file ending with 'tasks.yml.json'`
 
 const RUN_EXAMPLE =
-  '$0 --spec ./openapi.yml --merge.call.server http://localhost:5001 ./**/*.tasks.yml'
+  '$0 --merge.spec.definition ./openapi.yml --merge.call.server http://localhost:5001 ./**/*.tasks.yml'
 
 module.exports = {
   defineCli,

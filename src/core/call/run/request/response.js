@@ -44,9 +44,7 @@ const getBodyHandler = function(
   if (type === 'body-timeout') {
     throw new TestOpenApiError(
       `Parsing the response body took more than ${timeout} milliseconds`,
-      {
-        property,
-      },
+      { property },
     )
   }
 

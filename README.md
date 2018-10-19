@@ -1,41 +1,84 @@
-[![downloads](https://img.shields.io/npm/dt/test-openapi.svg?logo=npm)](https://www.npmjs.com/package/test-openapi) [![last commit](https://img.shields.io/github/last-commit/Cardero-X/test-openapi.svg?logo=github)](https://github.com/Cardero-X/test-openapi/graphs/contributors) [![license](https://img.shields.io/github/license/Cardero-X/test-openapi.svg?logo=github)](https://opensource.org/licenses/MIT) [![npm](https://img.shields.io/npm/v/test-openapi.svg?logo=npm)](https://www.npmjs.com/package/test-openapi) [![node](https://img.shields.io/node/v/test-openapi.svg?logo=node.js)](#) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?logo=javascript)](https://standardjs.com) [![eslint-config-standard-prettier-fp](https://img.shields.io/badge/eslint-config--standard--prettier--fp-green.svg?logo=eslint)](https://github.com/autoserver-org/eslint-config-standard-prettier-fp)
+[![downloads](https://img.shields.io/npm/dt/test-openapi.svg?logo=npm)](https://www.npmjs.com/package/test-openapi) [![last commit](https://img.shields.io/github/last-commit/Cardero-X/test-openapi.svg?logo=github)](https://github.com/Cardero-X/test-openapi/graphs/contributors) [![license](https://img.shields.io/github/license/Cardero-X/test-openapi.svg?logo=github)](https://opensource.org/licenses/MIT) [![npm](https://img.shields.io/npm/v/test-openapi.svg?logo=npm)](https://www.npmjs.com/package/test-openapi) [![node](https://img.shields.io/node/v/test-openapi.svg?logo=node.js)](#) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg?logo=javascript)](https://standardjs.com) [![eslint-config-standard-prettier-fp](https://img.shields.io/badge/eslint-config--standard--prettier--fp-green.svg?logo=eslint)](https://github.com/autoserver-org/eslint-config-standard-prettier-fp) [![Gitter](https://img.shields.io/gitter/room/autoserver-org/Lobby.svg)](https://gitter.im/autoserver-org/Lobby)
 
 Automatic API integration testing.
 
 # Features
 
-- **Declarative**. Tests are specified in simple YAML files.
-- **Easy**. Each test is a single HTTP request/response. You only need to specify
-  the request parameters and the response validation.
-- Integrated to [**OpenAPI**](https://www.openapis.org/). Tests re-use your
-  [OpenAPI](https://www.openapis.org/) specification by default, making them
-  less verbose and ensuring they match your documentation.
-- **Fast**. Tests have minimum overhead and run in parallel.
-- Nice **developer experience**. Reporting is pretty, informative and usable.
+- **Declarative**. Tasks are specified in [simple YAML files](#tasks).
+- **Easy**. Each task is a single HTTP request/response. You only need to
+  specify the [request parameters](#http-requests) and the
+  [response validation](#response-validation). More complex requests flows
+  [are also supported](#sequences-of-requests).
+- Integrated to [**OpenAPI**](#openapi). Tasks re-use your OpenAPI
+  specification by default, making them less verbose and ensuring they match
+  your documentation.
+- **Fast**. Tasks have minimum overhead and run in parallel.
+- Nice **developer experience**. [Reporting](#example-output) is pretty,
+  informative and usable.
+- [**Data-driven testing**](#data-driven-testing) thanks to a simple
+  [templating system](#template-variables)
 - **Flexible**. Core functionalities can be extended with plugins.
 
-# Usage
+# Usage (shell)
 
 ```shell
-yarn integrationTest
+test-openapi
 ```
 
-# Tests
+If a task failed, exit code will be `1`.
 
-Tests are specified in YAML (or JSON) files at `./**/*.tasks.yml`
+Options are passed as CLI flags.
 
-Those files contain an array of test definitions.
+```shell
+test-openapi --merge.spec.definition openapi_schema.yml
+```
 
-A single test performs the following:
+Tasks are passed as positional argument.
 
-- sends an HTTP request to the API. The request parameters are specified
-  using the `call` property.
-- validates the HTTP response according to the `validate` property.
+```shell
+test-openapi **/*.tasks.yml
+```
 
-# Example
+# Usage (Node.js)
+
+```js
+const { run } = require('test-openapi')
+
+const results = await run(options)
+```
+
+If a task failed, `run()` will reject the promise with a `TestOpenApiError`.
+
+Options are passed as arguments. Tasks are passed as a `tasks` argument.
+
+```js
+const results = await run({
+  tasks: ['**/*.tasks.yml'],
+  merge: { spec: { definition: 'openapi_schema.yml' } },
+})
+```
+
+# Tasks
+
+Tasks are specified in YAML or JSON files.
+
+By default tasks at `**/*.tasks.yml|json` will be used.
+
+Each task file contains an array of tasks definitions.
+
+A single task performs the following:
+
+- sends an HTTP request to the API. The request parameters are specified using
+  the [`call` property](#http-requests).
+- validates the HTTP response according to the
+  [`validate` property](#response-validation).
+
+Each task must specify a `name` unique within its file.
+
+# Example input
 
 ```yml
-- name: exampleTest
+- name: exampleTask
   call:
     method: GET
     server: http://localhost:8081
@@ -55,9 +98,12 @@ A single test performs the following:
             maxLength: 32
           isPublic:
             type: boolean
+
+# And so on
+- name: anotherTask
 ```
 
-This test calls:
+This task calls:
 
 ```http
 GET http://localhost:8081/icoTagNames?onlyPublic=false
@@ -68,13 +114,14 @@ It then validates that:
 - the response status is `200`
 - the response body is an array of `{ tag: string, isPublic: boolean }`
 
-# Reporting
+# Example output
 
-This screenshot shows a typical test run with few test failures.
+This screenshot shows a typical task run with few task failures.
 
 ![Screenshot](docs/screenshot.png)
 
-The failed test is called `getLists.success` and performs the following HTTP request:
+The failed task is called `getLists.success` and performs the following HTTP
+request:
 
 ```http
 GET http://127.0.0.1:8081/lists?accessToken=8ac7e235-3ad2-4b9a-8a22
@@ -82,113 +129,256 @@ GET http://127.0.0.1:8081/lists?accessToken=8ac7e235-3ad2-4b9a-8a22
 
 It expects a status code of 200 but receives 500 instead.
 
-Other tests are shown failing at the end. A final summary is also present.
+Other tasks are shown failing at the end. A final summary is also present.
 
-# OpenAPI
+# HTTP requests
 
-If you have described your API endpoints with [OpenAPI](https://www.openapis.org/),
-you can point to the `operationId` by using the `spec.operation` property.
-
-```yml
-- name: exampleTest
-  spec:
-    operation: getTags
-  call:
-    query.onlyPublic: false
-  validate: {}
-```
-
-The test will then re-use the [OpenAPI](https://www.openapis.org/) endpoint description:
-
-- `call` will re-use the HTTP method, URL, path, query variables and request body
-- `validate` will re-use the response status, response headers and response body.
-
-You only need to specify request parameters and response validation when they
-differ from the OpenAPI specification. For example: "if this query variable is
-set to this specific value, validate that the status code is 403". They will
-be deeply merged to the OpenAPI specification.
-
-OpenAPI parameters that are `required` are always re-used. OpenAPI parameters that
-are not `required` are only re-used if specified in the `call` property.
-
-# Available properties
-
-Each test can use the following properties:
+HTTP requests are specified with the `call` task property.
 
 ```yml
-- name: testName
-  spec:
-    operation: operationId
+- name: taskName
   call:
-    method: string
-    server: string
-    path: string
-    url.NAME: any
-    query.NAME: any
-    headers.NAME: any
-    body: any
-  validate:
-    status: number
-    headers.NAME: any
-    body: any
-# More tests
+    method: PUT
+    server: http://localhost:8081
+    path: /tags/:tagName
+    url.tagName: exampleTagName
+    query.accessToken: 1e42f0e1
+    headers.content-type: application/json
+    body:
+      _id: 1
+      name: exampleTagName
+      color: red
 ```
 
-- `name`: an arbitrary name for the test.
-- `spec.operation`: OpenAPI's `operationId`, i.e. a unique string identifying
-  an endpoint. For example `getTags`.
-- `call`: HTTP request parameters
-  - `method`: HTTP method
-  - `server`: server's origin (protocol + host)
-  - `path`: URL's path
-  - `url.NAME`: variable inside the URL using `{NAME}` notation.
-    For example, if the path is `/companies/{companyId}` it can be `path.companyId`.
-  - `query.NAME`: URL query variable
-  - `headers.NAME`: HTTP request header
-  - `body`: request body
-- `validate`: HTTP response
-  - `status` (default: `200`): HTTP status code
-  - `headers.NAME`: response header
-  - `body`: response body
+- `method` `{string}` (default: `GET`): HTTP method
+- `server` `{string}`:
+  - server's origin (protocol + hostname + port)
+  - default values:
+    - protocol: `http://`
+    - hostname: environment variable `HOST` or (if absent) `localhost`
+    - port: environment variable `PORT` (if present)
+- `path` `{string}`: URL's path
+- `url.NAME` `{any}`:
+  - variable inside `server` or `path` using the `:NAME` notation
+  - for example if the `path` is `/tags/:tagName` it can be `url.tagName`
+  - the syntax is the same as
+    [Express route parameters](https://expressjs.com/en/guide/routing.html#route-parameters):
+    - `:NAME`: required parameter
+    - `:NAME?`: optional parameter
+    - `:NAME*`: several optional parameters
+    - `:NAME+`: several required parameters
+- `query.NAME` `{any}`:
+  - URL query variable
+  - specify a list delimited by `&=` to use `NAME` several times
+    - e.g. `query.name: "a&=b&=c"` becomes the query variables
+      `?name=a&name=b&name=c`
+- `headers.NAME` `{any}`:
+  - HTTP request header
+  - case insensitive
+  - `headers.content-type` defaults to:
+    - `application/json` if `body` is an object or an array
+    - `application/octet-stream` otherwise
+- `body` `{any}`: request body
+
+`url.NAME`, `query.NAME`, `headers.NAME` and `body` can be either a string or
+any other JSON type:
+
+- they will be serialized according to the HTTP request header `Content-Type`
+- however at the moment only JSON is supported. Notably `multipart/form-data`
+  and `x-www-form-urlencoded` are not supported yet.
+- same goes for the response headers and body
 
 # Response validation
 
-`validate.status`, `validate.headers.NAME` and `validate.body` are checked against
-the HTTP response. They can either be:
-
-- any value checked for equality
-- a [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
-
-For example to validate that the response body is an array:
+The HTTP response is validated against the `validate` task property.
 
 ```yml
-- name: testName
+- name: taskName
   validate:
+    status: 201
+    headers.content-type: application/json
     body:
       type: array
 ```
 
-# Random value
+- `status` `{string|integer}`:
+  - expected HTTP status code
+  - can be:
+    - a specific status code like `201`
+    - a range like `1xx`, `2xx`, `3xx`, `4xx` or `5xx`
+    - a space-delimited list of these like `201 202 3xx`
+  - default: `2xx`
+- `headers.NAME` `{any|jsonSchema}`:
+  - expected value for this HTTP response header
+  - `NAME` is case-insensitive
+  - this can be either:
+    - any value checked for equality
+    - a
+      [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject) with the additional following properties:
+      - `x-optional` `{boolean}` (default: `true`): if `false`, validate that
+        the HTTP header is present in the response
+      - `x-forbidden` `{boolean}` (default: `false`): if `true`, validate
+        that the HTTP header is not present in the response
+- `body` `{any|jsonSchema}`:
+  - expected value for the response body
+  - this can be either a non-object checked for equality or a
+    [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
+    (like `headers.NAME`)
 
-The `$$random` template function can be used to generate random values based on a
-[JSON schema](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject).
-
-For example to generate a random password of minimum 12 characters:
+Validation can also vary according to the response's status code by using the
+following notation.
 
 ```yml
-- name: testName
+- name: taskName
+  validate:
+    201:
+      body:
+        type: array
+    400:
+      body:
+        type: object
+```
+
+# OpenAPI
+
+The `call` and `validate` tasks properties can be pre-filled if you have
+described your API endpoints with [OpenAPI](https://www.openapis.org/).
+
+```yml
+- name: taskName
+  spec:
+    operation: getTags
+    definition: ../openapi_document.yml
+```
+
+- `operation` `{string}`: OpenAPI's
+  [`operationId`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object)
+- `definition` `{string}`:
+  - path to the OpenAPI document
+  - it is likely that the same OpenAPI document is re-used across tasks, so
+    the [`merge` task property](#shared-properties) can be used
+  - the OpenAPI document syntax is validated
+  - only OpenAPI 2.0 is currently supported but we plan to add OpenAPI 3.0
+    support
+
+The following OpenAPI properties are currently used:
+
+- the
+  [`consumes` OpenAPI property](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object)
+  sets the request `Content-Type` header (`call['headers.content-type']`)
+- the
+  [`produces` OpenAPI property](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object)
+  sets the request `Accept` header (`call['headers.accept']`) and validate the
+  response's `Content-Type` header (`validate['headers.content-type']`)
+- the
+  [`host` and `basePath` OpenAPI properties](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object) set the
+  `call.server` task property. At the moment the protocol is always `http://`.
+- the `call.method` and `call.path` is taken from the
+  [OpenAPI definition](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#path-item-object)
+- the request parameters are randomly generated from the
+  [`parameters` OpenAPI property](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#parameterObject):
+  - the random generation is based on
+    [JSON schema faker](https://github.com/json-schema-faker/json-schema-faker)
+  - OpenAPI parameters not marked as `required` will only be used (and merged)
+    if they are explicitly present in the `call` task property
+  - the following special values can used in the `call` task property:
+    - `valid`: re-use the OpenAPI parameter definition. Useful if the OpenAPI
+      parameter is not marked as `required`. Redundant otherwise.
+    - `undefined`: do not use the OpenAPI parameter definition
+- the
+  [response's](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject) `schema` and `headers` OpenAPI properties are used to
+  validate the HTTP response (`validate.status|body|headers`)
+
+OpenAPI schemas can use the following extensions:
+
+- `schema.x-nullable|oneOf|anyOf|not`: behaves like OpenAPI 3.0
+  `nullable|oneOf|anyOf|not`
+- `schema.x-additionalItems|dependencies`: behaves like JSON schemas
+  `additionalItems|dependencies`
+
+# Shared properties
+
+To specify properties shared by all tasks, use the `merge` option:
+
+```shell
+test-openapi --merge.spec.definition ../openapi_document.yml
+```
+
+To specify properties shared by a few tasks, create a task with a `merge`
+property.
+
+```yml
+- name: sharedTask
+  merge: invalidCheck/.*
+  validate:
+    status: 400
+```
+
+The `merge` property should be a regular expression (or an array of them)
+targeting other tasks by `name`.
+The shared task will not be run. Instead it will be deeply merged to the target
+tasks.
+
+The target tasks can override the shared task by using `undefined` inside task
+properties.
+
+# Template variables
+
+Template variables can be used using the `$$name` notation.
+
+Template variables are specified using the `template` task property.
+
+```yml
+- name: exampleTask
+  template:
+    $$exampleVariable: true
   call:
+    query.isPublic: $$exampleVariable
+```
+
+The example above will be compiled to:
+
+```yml
+- name: exampleTask
+  call:
+    query.isPublic: true
+```
+
+Template variables can:
+
+- be concatenated within a string like `$$exampleVariable --- $$anotherVariable`
+- use brackets and dots to access object properties and array indexes like
+  `$$exampleArray[0].propertyName`
+- be functions:
+  - by default they are triggered with no arguments
+  - to specify arguments one can use the following notation:
+    `{ $$exampleFunction: [firstArg, secondArg] }`
+
+The following template variables are always available:
+
+- `$$env`: use environment variables (case-insensitively)
+- `$$random`: generate fake data using a
+  [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
+- `$$faker`: generate fake data using
+  [Faker.js](https://github.com/marak/Faker.js/)
+
+```yml
+- name: exampleTask
+  call:
+    server: $$env.SERVER
     query.password:
       $$random:
         type: string
         minLength: 12
         pattern: '[a-zA-Z0-9]'
+    body:
+      name: $$faker.name.firstName
 ```
 
-# Re-using another request's response
+# Sequences of requests
 
-A request can save its response using `variables`. Other requests will be able to
-re-use it as template variables.
+A request can save its response using `variables`. Other requests will be able
+to re-use it as template variables.
 This creates sequences of requests.
 
 ```yml
@@ -196,7 +386,86 @@ This creates sequences of requests.
   variables:
     $$accessToken: call.response.body.accessToken
 
-- name: testName
+- name: taskName
   call:
     query.accessToken: $$accessToken
 ```
+
+The `call.request` and `call.response` are available to re-use the HTTP request
+and response.
+
+The task will fail if the variable is `undefined` unless you append the word
+`optional` to its value.
+
+```yml
+- name: createAccessToken
+  variables:
+    $$accessToken: call.response.body.accessToken optional
+```
+
+# Tasks selection
+
+By default all tasks are run in parallel at the same time.
+
+To only run a few tasks use the `only` option.
+
+```shell
+test-openapi --only 'taskNameRegularExpression/.*'
+```
+
+Or the `only` task property.
+
+```yml
+- name: taskName
+  only: true
+```
+
+The `skip` option and task property can be used to do the opposite.
+
+# Reporting
+
+The following reporters are available:
+
+- `pretty`: default reporter
+- `tap`: [Test Anything Protocol](https://testanything.org/)
+- `notify`: desktop notification
+- `data`: JSON output
+
+Specify the `--report.REPORTER` option to select which reporter to use
+
+```shell
+test-openapi --report.notify --report.pretty
+```
+
+Use the `--report.REPORTER.output` to redirect the output of a reporter to a
+file:
+
+```shell
+test-openapi --report.pretty.output path/to/file.txt
+```
+
+Use the `--report.REPORTER.level` to modify the verbosity:
+
+```shell
+test-openapi --report.pretty.level info
+```
+
+The available levels are:
+
+- `silent`
+- `error`
+- `warn` (default for `pretty`)
+- `info` (default for `tap` and `notify`)
+- `debug` (default for `data`)
+
+# Data-driven testing
+
+Tasks can be repeated several times using the `repeat` task property.
+
+```yml
+- name: exampleTask
+  repeat: 10
+```
+
+This enables data-driven testing when used with the `$$random` template
+function.

@@ -5,7 +5,7 @@ const { omit } = require('lodash')
 const { getParams } = require('./params')
 const { normalizeResponses } = require('./response')
 
-// Normalize OpenAPI operation into specification-agnostic format
+// Normalize OpenAPI 2.0 operation into specification-agnostic format
 const normalizeSpec = function({ spec }) {
   const operations = getOperations({ spec })
   return { operations }

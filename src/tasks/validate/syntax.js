@@ -48,7 +48,7 @@ const SYNTAX_TESTS = [
   },
   {
     test: ({ scope }) => scope !== undefined && typeof scope !== 'string',
-    message: "'scope' must not be either undefined or a string",
+    message: "'scope' must be either undefined or a string",
   },
   {
     test: ({ scope }) => typeof scope === 'string' && scope.includes('/'),

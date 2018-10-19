@@ -1,6 +1,6 @@
 {
   "name": "test-openapi",
-  "version": "38.1.1",
+  "version": "39.0.0",
   "main": "index.js",
   "files": [
     "bin",
@@ -47,7 +47,7 @@
     "openapi-schema-to-json-schema": "^2.2.0",
     "ora": "^3.0.0",
     "path-to-regexp": "^2.4.0",
-    "slice-ansi": "^1.0.0",
+    "slice-ansi": "^2.0.0",
     "statuses": "^1.5.0",
     "string-width": "^2.1.1",
     "strip-ansi": "^5.0.0",

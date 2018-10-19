@@ -29,10 +29,6 @@ const isByStatus = function(value, name) {
 }
 
 const matchesResponse = function({ status, response }) {
-  if (!STATUS_REGEXP.test(status)) {
-    return false
-  }
-
   const property = getPath(['task', 'validate', status])
   const statuses = parseStatus({ status, property })
 

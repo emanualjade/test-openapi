@@ -55,7 +55,7 @@ const normalizeTimeout = function({
   return { ...call, timeout }
 }
 
-const DEFAULT_TIMEOUT = 1e4
+const DEFAULT_TIMEOUT = 1e6
 
 const stringifyParam = function(value, key, call) {
   const { location } = keyToLocation({ key })

@@ -32,10 +32,7 @@ const isSkipped = function({ skip, configSkip, key }) {
 const testRegExpHandler = function({ message }, configSkip) {
   throw new TestOpenApiError(
     `'config.skip' '${configSkip}' is invalid: ${message}`,
-    {
-      value: configSkip,
-      property: 'config.skip',
-    },
+    { value: configSkip, property: 'config.skip' },
   )
 }
 

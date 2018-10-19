@@ -41,10 +41,7 @@ const isOnly = function({ only, configOnly, key }) {
 const testRegExpHandler = function({ message }, configOnly) {
   throw new TestOpenApiError(
     `'config.only' '${configOnly}' is invalid: ${message}`,
-    {
-      value: configOnly,
-      property: 'config.only',
-    },
+    { value: configOnly, property: 'config.only' },
   )
 }
 

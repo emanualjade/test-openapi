@@ -33,10 +33,7 @@ const getFileStreamHandler = function(
 ) {
   throw new TestOpenApiError(
     `Could not write output to file '${output}': ${message}`,
-    {
-      property: `config.report.${name}.output`,
-      value: output,
-    },
+    { property: `config.report.${name}.output`, value: output },
   )
 }
 

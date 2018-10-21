@@ -22,16 +22,23 @@ const getServerValue = function({ rawRequest: { server } }) {
 const getDefaultServer = function() {
   const hostname = getHostname()
   const port = getPort()
-  const server = `http://${hostname}${port}`
+  const scheme = getScheme()
+  const server = `${scheme}://${hostname}${port}`
   return server
+}
+
+const DEFAULT_HOSTNAME = 'localhost'
+const DEFAULT_SCHEME = 'http'
+
+// Defaults to environment variable HTTP_SCHEME or to 'http'
+const getScheme = function() {
+  return $$env.SCHEME || DEFAULT_SCHEME
 }
 
 // Defaults to environment variable HOST or to `localhost`
 const getHostname = function() {
   return $$env.HOST || DEFAULT_HOSTNAME
 }
-
-const DEFAULT_HOSTNAME = 'localhost'
 
 // Defaults to environment variable PORT or the protocol's default port
 const getPort = function() {

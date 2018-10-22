@@ -1,3 +1,13 @@
+# 39.1.0
+
+## Features
+
+- Support `specification.schemes` from OpenAPI 2.0
+
+## Upgrade dev dependencies
+
+- `eslint-config-standard-prettier-fp`
+
 # 39.0.1
 
 ## Bug fixes

@@ -4,8 +4,8 @@ const { TestOpenApiError } = require('../../../../../errors')
 
 // Operation's method, server and path as a `task.call.method|server|path`
 // parameter
-const getConstants = function({ spec, method, path }) {
-  const serverParam = getServerParam({ spec })
+const getConstants = function({ spec, operation, method, path }) {
+  const serverParam = getServerParam({ spec, operation })
   const methodParam = getMethodParam({ method })
   const pathParam = getPathParam({ path })
 
@@ -14,7 +14,8 @@ const getConstants = function({ spec, method, path }) {
 
 // Retrieve `task.call.server`
 const getServerParam = function({
-  spec: { schemes = DEFAULT_SCHEMES, host: hostname, basePath },
+  spec: { schemes: specSchemes = DEFAULT_SCHEMES, host: hostname, basePath },
+  operation: { schemes = specSchemes },
 }) {
   // Only if OpenAPI `host` is defined
   if (hostname === undefined) {

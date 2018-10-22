@@ -31,7 +31,7 @@ const getParams = function({
 
   const secParams = getSecParams({ spec, operation })
 
-  const constants = getConstants({ spec, method, path })
+  const constants = getConstants({ spec, operation, method, path })
 
   const paramsD = merge(contentNegotiations, secParams, paramsC, constants)
 

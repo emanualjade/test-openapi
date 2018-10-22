@@ -1,3 +1,9 @@
+# 39.2.0
+
+## Features
+
+- Support OpenAPI 2.0 `operation.schemes`
+
 # 39.1.0
 
 ## Features

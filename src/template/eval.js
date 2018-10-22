@@ -1,6 +1,10 @@
 /* eslint-disable-line max-lines */
 'use strict'
 
+const {
+  types: { isProxy },
+} = require('util')
+
 const { get } = require('lodash')
 
 const { addErrorHandler } = require('../errors')
@@ -40,6 +44,12 @@ const evalTemplate = function(data, vars = {}, opts = {}, stack) {
 // Recursive calls, done automatically when evaluating `$$name`
 // eslint-disable-next-line max-params
 const recursiveEval = function(vars, opts, stack, data) {
+  // Otherwise proxy like `$$env` are transformed to plain objects
+  // TODO: find better solution
+  if (isProxy(data)) {
+    return data
+  }
+
   return evalTemplate(data, vars, opts, stack)
 }
 

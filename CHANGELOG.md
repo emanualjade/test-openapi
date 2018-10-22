@@ -1,3 +1,9 @@
+# 39.2.1
+
+## Bug fixes
+
+- Fix `$$env` not working
+
 # 39.2.0
 
 ## Features

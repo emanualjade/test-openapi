@@ -1,3 +1,9 @@
+# Pending
+
+## Upgrade dependencies
+
+- Node to `11.0.0`
+
 # 39.2.1
 
 ## Bug fixes

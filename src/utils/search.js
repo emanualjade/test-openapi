@@ -14,15 +14,14 @@ const searchRegExp = function(regExp, string) {
 
   const matches = string.split(regExp)
 
-  const tokens = matches.map((match, index) =>
+  const tokens = matches.flatMap((match, index) =>
     interleaveDelims({ match, index, delims }),
   )
-  const tokensA = [].concat(...tokens)
 
   // Non-delimiters are empty strings when delimiters are at the beginning or
   // the end, or when two delimiters follow each others.
-  const tokensB = tokensA.filter(token => token !== '')
-  return tokensB
+  const tokensA = tokens.filter(token => token !== '')
+  return tokensA
 }
 
 // Interleave delimiters and non-delimiters

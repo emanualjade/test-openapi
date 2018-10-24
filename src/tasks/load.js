@@ -44,8 +44,7 @@ const loadFileTasks = async function({ tasks }) {
   validateScopes({ paths })
 
   const tasksB = await Promise.all(paths.map(path => loadTaskFile({ path })))
-  const tasksC = [].concat(...tasksB)
-
+  const tasksC = tasksB.flat()
   return tasksC
 }
 

@@ -7,10 +7,9 @@ const { VALID_STATUSES_MAP } = require('./valid')
 // `validate.status` can be `1xx`, `2xx`, `3xx`, `4xx` or `5xx`,
 // case-insensitively
 const parseRanges = function({ statuses }) {
-  const statusesA = statuses.map(parseRange)
-  const statusesB = [].concat(...statusesA)
-  const statusesC = uniq(statusesB)
-  return statusesC
+  const statusesA = statuses.flatMap(parseRange)
+  const statusesB = uniq(statusesA)
+  return statusesB
 }
 
 const parseRange = function(status) {

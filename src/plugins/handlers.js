@@ -38,13 +38,9 @@ const getContext = function({ context, plugins }) {
 }
 
 const getHandlers = function({ plugins, type, errorHandler, context }) {
-  const handlers = plugins.map(plugin => getPluginHandlers({ plugin, type }))
-  const handlersA = [].concat(...handlers)
-
-  const handlersB = handlersA.map(handler =>
-    wrapHandler({ handler, errorHandler, context }),
-  )
-  return handlersB
+  return plugins
+    .flatMap(plugin => getPluginHandlers({ plugin, type }))
+    .map(handler => wrapHandler({ handler, errorHandler, context }))
 }
 
 const getPluginHandlers = function({ plugin, plugin: { name }, type }) {

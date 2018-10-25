@@ -472,17 +472,25 @@ an array of inputs.
 ```yml
 - name: exampleTask
   repeat:
-    data: [apples, oranges, plums]
+    data:
+      - name: apples
+        quantity: 1
+      - name: oranges
+        quantity: 10
+      - name: plums
+        quantity: 100
   call:
     method: GET
     path: /fruits/:fruitName
-    url.fruitName: $$data
+    url.fruitName: $$data.name
+    query:
+      quantity: $$data.quantity
 ```
 
-The task above will be run three times: `GET /fruits/apples`,
-`GET /fruits/oranges` and `GET /fruits/plums`.
+The task above will be run three times: `GET /fruits/apples?quantity=1`,
+`GET /fruits/oranges?quantity=10` and `GET /fruits/plums?quantity=100`.
 
-With the `repeat.times` task property, tasks are simply repeated. This can
+With the `repeat.times` task property, tasks are simply repeated as is. This can
 be useful when used with the `$$random` template function.
 
 ```yml

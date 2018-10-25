@@ -1,8 +1,29 @@
-# Pending
+# 40.0.0
 
-## Upgrade dependencies
+## Breaking changes
 
-- Node to `11.0.0`
+- Upgrade Node to `11.0.0`
+
+- rename `repeat` task property to `repeat.times`.
+
+For example the following task:
+
+```
+- name: taskName
+  repeat: 5
+```
+
+will need to be migrated to:
+
+```
+- name: taskName
+  repeat:
+    times: 5
+```
+
+## Features
+
+- Add `repeat.data` for data-driven testing
 
 # 39.2.1
 

@@ -466,12 +466,29 @@ The available levels are:
 
 # Data-driven testing
 
-Tasks can be repeated several times using the `repeat` task property.
+With the `repeat.data` task property, tasks are repeated by iterating over
+an array of inputs.
 
 ```yml
 - name: exampleTask
-  repeat: 10
+  repeat:
+    data: [apples, oranges, plums]
+  call:
+    method: GET
+    path: /fruits/:fruitName
+    url.fruitName: $$data
 ```
 
-This enables data-driven testing when used with the `$$random` template
-function.
+The task above will be run three times: `GET /fruits/apples`,
+`GET /fruits/oranges` and `GET /fruits/plums`.
+
+With the `repeat.times` task property, tasks are simply repeated. This can
+be useful when used with the `$$random` template function.
+
+```yml
+- name: exampleTask
+  repeat:
+    times: 10
+```
+
+`repeat.data` and `repeat.times` can be combined.

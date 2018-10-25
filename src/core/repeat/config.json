@@ -1,6 +1,16 @@
 {
   "task": {
-    "type": "integer",
-    "minimum": 1
+    "type": "object",
+    "properties": {
+      "times": {
+        "type": "integer",
+        "minimum": 1
+      },
+      "data": {
+        "type": "array",
+        "minItems": 1
+      }
+    },
+    "additionalProperties": false
   }
 }

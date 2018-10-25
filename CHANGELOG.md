@@ -1,10 +1,8 @@
-# 40.0.0
+# 40.1.0
 
 ## Breaking changes
 
-- Upgrade Node to `11.0.0`
-
-- rename `repeat` task property to `repeat.times`.
+Rename `repeat` task property to `repeat.times`.
 
 For example the following task:
 

@@ -1,3 +1,9 @@
+# 40.2.0
+
+## Features
+
+- Make reporting much faster, and also prettier
+
 # 40.1.0
 
 ## Breaking changes

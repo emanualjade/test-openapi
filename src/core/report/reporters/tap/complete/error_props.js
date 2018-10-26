@@ -3,7 +3,7 @@
 const { mapValues, mapKeys } = require('lodash')
 const { underscored } = require('underscore.string')
 
-const { removeColors, stringifyValue, truncate } = require('../../../utils')
+const { removeColors } = require('../../../utils')
 
 // Retrieve TAP error properties
 const getErrorProps = function({ ok, reportProps }) {
@@ -54,24 +54,7 @@ const normalizeReportProps = function({ reportProps }) {
 }
 
 const normalizeReportPropValue = function(value) {
-  const valueA = removeColors(value)
-  const valueB = normalizeObject(valueA)
-  return valueB
-}
-
-const normalizeObject = function(value) {
-  // We serialize objects and arrays:
-  //  - so that they can be truncated
-  //  - to avoid too many backslash escaping in output
-  // But numbers, booleans, etc. should remain as is otherwise they will appear
-  // quoted in output.
-  if (typeof value !== 'object' || value === null) {
-    return value
-  }
-
-  const string = stringifyValue(value)
-  const stringA = truncate(string)
-  return stringA
+  return removeColors(value)
 }
 
 const normalizeReportPropKey = function(value, name) {

@@ -1,52 +1,43 @@
 'use strict'
 
-const stringWidth = require('string-width')
-const sliceAnsi = require('slice-ansi')
+const { removeColors } = require('./colors')
 
 // If reported value is too big, we truncate it
 const truncate = function(string) {
-  // We use `string-width` to ignore width taken by ANSI sequences coming from
-  // syntax highlighting done by `plugin.report()`
-  if (stringWidth(string) <= MAX_BODY_SIZE) {
+  if (string.length <= MAX_LENGTH) {
     return string
   }
 
-  // We use `slice-ansi` to avoid truncating in the middle of ANSI sequences
-  // which produces weird characters.
-  // TODO: fix, `slice-ansi` is pretty slow
-  const start = sliceAnsi(string, 0, MAX_BODY_SIZE)
-  const end = sliceAnsi(string, MAX_BODY_SIZE)
+  const stringA = addEllipsis(string)
+  const stringB = removeAnsi(stringA)
+  return stringB
+}
 
-  const lastLine = getLastLine({ end })
+const addEllipsis = function(string) {
+  const stringA = string.slice(0, MAX_LENGTH)
+  const bytesLeft = string.length - MAX_LENGTH
+  const bytesLeftStr = `\n... ${bytesLeft} more bytes`
+  const stringB = `${stringA}${bytesLeftStr}`
+  return stringB
+}
 
-  const stringA = `${start}${lastLine}\n`
+const MAX_LENGTH = 1e4
+
+// We strip ANSI color sequences at the end because:
+//  - if broken in the middle, they produce weird characters on the console
+//  - they might colorize the "more bytes" string
+// There are libraries like `slice-ansi` that do that but they are really
+// slow. Current solution is quite fast.
+const removeAnsi = function(string) {
+  const stringStart = string.slice(0, ALMOST_MAX_LENGTH)
+  const stringEnd = string.slice(ALMOST_MAX_LENGTH)
+  const stringEndA = removeColors(stringEnd)
+  const stringA = `${stringStart}${stringEndA}`
   return stringA
 }
 
-// We keep the last line non-truncated as it's more user-friendly
-const getLastLine = function({ end }) {
-  const lastLine = findLastLine({ end })
-
-  // If the last line is too big, we still truncate it
-  if (stringWidth(lastLine) > MAX_BODY_LINE_SIZE) {
-    return ''
-  }
-
-  return lastLine
-}
-
-const findLastLine = function({ end }) {
-  const index = end.indexOf('\n')
-
-  if (index === -1) {
-    return end
-  }
-
-  return end.substr(0, index)
-}
-
-const MAX_BODY_SIZE = 1e4
-const MAX_BODY_LINE_SIZE = 1e3
+const LAST_CHARS_LENGTH = 20
+const ALMOST_MAX_LENGTH = MAX_LENGTH - LAST_CHARS_LENGTH
 
 module.exports = {
   truncate,

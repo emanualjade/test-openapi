@@ -7,7 +7,7 @@ const { mapValues } = require('lodash')
 const { isObject } = require('../../../utils')
 
 // Colors used in reporting
-const { yellow, magenta, reset, italic, bold, inverse } = chalk
+const { yellow, inverse } = chalk
 
 // eslint-disable-next-line no-magic-numbers
 const red = chalk.rgb(200, 0, 0)
@@ -37,14 +37,8 @@ module.exports = {
   orange,
   // Nested keys
   yellow,
-  // Non-string values
-  magenta,
-  // String values
-  reset,
 
   // Modifiers
-  italic,
-  bold,
   inverse,
 
   // Utilities

@@ -1,27 +1,45 @@
 'use strict'
 
-const { dump: yamlDump } = require('js-yaml')
+const { inspect } = require('util')
 
-// Stringify value, prettifying it to YAML if it's an object or an array
-const stringifyValue = function(value) {
-  if (typeof value !== 'object' || value === null) {
-    return String(value)
+const { highlightAuto } = require('emphasize')
+
+const { truncate } = require('./truncate')
+
+// Serialize, colorize, prettify and truncate a value
+const stringify = function(value, { highlight = false } = {}) {
+  if (typeof value === 'string') {
+    return prettifyString(value, { highlight })
   }
 
-  const string = yamlDump(value, YAML_OPTS)
-  const stringA = string.replace(/\n$/u, '')
-
-  // Value should be on next line, even if it's a single property
-  // unless it's an empty object or array
-  if (['{}', '[]'].includes(stringA)) {
-    return stringA
-  }
-
-  return `\n${stringA}`
+  return prettifyOthers(value)
 }
 
-const YAML_OPTS = { noRefs: true }
+const prettifyString = function(string, { highlight }) {
+  // We truncate right away to speed-up syntax highlighting
+  const stringA = truncate(string)
+  const stringB = highlightString(stringA, { highlight })
+  return stringB
+}
+
+const highlightString = function(string, { highlight }) {
+  if (!highlight) {
+    return string
+  }
+
+  // Automatic syntax highlighting according to MIME type/format
+  return highlightAuto(string).value
+}
+
+const prettifyOthers = function(value) {
+  const string = inspect(value, INSPECT_OPTS)
+  const stringA = truncate(string)
+  const stringB = stringA.includes('\n') ? `\n${stringA}` : stringA
+  return stringB
+}
+
+const INSPECT_OPTS = { colors: true, depth: 2, maxArrayLength: 10 }
 
 module.exports = {
-  stringifyValue,
+  stringify,
 }

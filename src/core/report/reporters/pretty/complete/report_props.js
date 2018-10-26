@@ -8,9 +8,7 @@ const {
   orange,
   indent,
   indentValue,
-  stringifyValue,
-  highlightValue,
-  truncate,
+  stringify,
 } = require('../../../utils')
 
 // Print/prettify all `plugin.report()` return values
@@ -38,7 +36,7 @@ const printReportProp = function(value) {
   // There is no second depth level, e.g. core `reportProps` or plugin which
   // returns a primitive type
   if (!isObject(value)) {
-    return prettifyValue(value)
+    return stringify(value)
   }
 
   if (Object.keys(value).length === 0) {
@@ -54,19 +52,8 @@ const printReportProp = function(value) {
 
 // Print second-depth level pairs
 const printDeepPair = function([name, value]) {
-  const valueA = prettifyValue(value)
+  const valueA = stringify(value)
   return `${yellow(name)}: ${indentValue(valueA)}`
-}
-
-const prettifyValue = function(value) {
-  // Stringify and prettify to YAML
-  const string = stringifyValue(value)
-  // Truncate value
-  const stringA = truncate(string)
-  // Syntax highlighting, unless already highlighted
-  const stringB = highlightValue(stringA, value)
-  // Add truncating dots
-  return stringB
 }
 
 module.exports = {

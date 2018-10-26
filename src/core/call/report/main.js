@@ -4,34 +4,35 @@ const { titleize } = require('underscore.string')
 
 const { removePrefixes, sortArray } = require('../../../utils')
 const {
-  utils: { yellow, highlightValueAuto, prettifyJson, truncate },
+  utils: { yellow, stringify },
 } = require('../../report')
 
 const { getTitle } = require('./title')
 
-const report = function({ rawRequest, rawResponse } = {}) {
+const report = function({ rawRequest, rawResponse, request, response } = {}) {
   // We haven't reached `serialize` stage yet
   if (rawRequest === undefined) {
     return {}
   }
 
   const title = getTitle({ rawRequest, rawResponse })
-  const request = getRequest({ rawRequest })
-  const response = getResponse({ rawResponse })
+  const requestA = getRequest({ rawRequest, request })
+  const responseA = getResponse({ rawResponse, response })
 
   return {
     title,
     rawRequest: undefined,
     rawResponse: undefined,
-    request,
-    response,
+    request: requestA,
+    response: responseA,
   }
 }
 
 // Print HTTP request in error messages
 const getRequest = function({
   rawRequest,
-  rawRequest: { method, url, body, path },
+  rawRequest: { method, url, path },
+  request: { body = rawRequest.body } = {},
 }) {
   const urlA = printUrl({ method, url, path })
   const headersA = printHeaders(rawRequest)
@@ -42,8 +43,9 @@ const getRequest = function({
 
 // Print HTTP response in error messages
 const getResponse = function({
-  rawResponse,
-  rawResponse: { status, body } = {},
+  rawResponse = {},
+  rawResponse: { status } = {},
+  response: { body = rawResponse.body } = {},
 }) {
   // We haven't reached `request` stage yet
   if (rawResponse === undefined) {
@@ -86,14 +88,16 @@ const printHeader = function([name, value]) {
 }
 
 const printBody = function({ body }) {
-  if (body === undefined || body.trim() === '') {
+  if (isEmptyBody({ body })) {
     return ''
   }
 
-  const bodyA = prettifyJson(body)
-  const bodyB = truncate(bodyA)
-  const bodyC = highlightValueAuto(bodyB)
-  return `\n\n${bodyC}`
+  const bodyA = stringify(body, { highlight: true })
+  return `\n${bodyA}`
+}
+
+const isEmptyBody = function({ body }) {
+  return body === undefined || (typeof body === 'string' && body.trim() === '')
 }
 
 module.exports = {

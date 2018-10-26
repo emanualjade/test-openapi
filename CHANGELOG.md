@@ -1,3 +1,9 @@
+# Pending
+
+## Dependencies
+
+- Upgrade `eslint`
+
 # 40.2.0
 
 ## Features

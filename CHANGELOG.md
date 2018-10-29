@@ -1,8 +1,13 @@
-# Pending
+# 40.2.1
 
 ## Dependencies
 
 - Upgrade `eslint`
+- Upgrade `node-notifier`
+- Upgrade `cross-fetch`
+- Upgrade `eslint-config-standard-prettier-fp`
+- Upgrade `eslint-plugin-node`
+- Upgrade `eslint-plugin-markdown`
 
 # 40.2.0
 

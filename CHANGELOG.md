@@ -1,3 +1,9 @@
+# Upcoming
+
+## Dependencies
+
+- Upgrade `swagger-parser`
+
 # 40.2.2
 
 ## Bug fixes

@@ -1,3 +1,9 @@
+# 40.2.2
+
+## Bug fixes
+
+- Fix `expected` value appearing `undefined` during task failures
+
 # 40.2.1
 
 ## Dependencies

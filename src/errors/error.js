@@ -36,7 +36,7 @@ class PropsError extends Error {
     const expected = getExpected({ properties })
 
     // eslint-disable-next-line fp/no-mutating-assign
-    Object.assign(this, { ...properties, expected })
+    Object.assign(this, { ...properties, ...expected })
   }
 }
 
@@ -68,7 +68,11 @@ const VALID_PROPERTIES = [...USER_VALID_PROPERTIES, ...CORE_VALID_PROPERTIES]
 
 // Tries to guess `error.expected` from simple `error.schema`
 const getExpected = function({ properties: { schema, expected } }) {
-  if (expected !== undefined || !isSimpleSchema(schema)) {
+  if (expected !== undefined) {
+    return { expected }
+  }
+
+  if (!isSimpleSchema(schema)) {
     return
   }
 

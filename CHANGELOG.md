@@ -1,4 +1,8 @@
-# Upcoming
+# 41.0.0
+
+## Breaking changes
+
+- Upgrade Node to `10.13`
 
 ## Dependencies
 

@@ -2,6 +2,7 @@
 
 ## Dependencies
 
+- Upgrade `ajv`
 - Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `eslint-plugin-markdown`
 

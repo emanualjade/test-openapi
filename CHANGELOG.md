@@ -1,5 +1,9 @@
 # Upcoming
 
+## Features
+
+- Add `call.https` property to specify HTTPS/TLS options
+
 ## Bug fixes
 
 - Fix `status: undefined` being reported on connection errors

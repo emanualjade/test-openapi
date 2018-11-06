@@ -20,22 +20,69 @@
       "https": {
         "type": "object",
         "properties": {
-          "ca": {},
-          "cert": {},
-          "ciphers": {},
-          "clientCertEngine": {},
-          "crl": {},
-          "dhparam": {},
-          "ecdhCurve": {},
-          "honorCipherOrder": {},
-          "key": {},
-          "passphrase": {},
-          "pfx": {},
-          "rejectUnauthorized": {},
-          "secureOptions": {},
-          "secureProtocol": {},
-          "servername": {},
-          "sessionIdContext": {}
+          "ca": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "cert": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "ciphers": {
+            "type": "string"
+          },
+          "clientCertEngine": {
+            "type": "string"
+          },
+          "crl": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "dhparam": {
+            "type": "string"
+          },
+          "ecdhCurve": {
+            "type": "string"
+          },
+          "honorCipherOrder": {
+            "type": "boolean"
+          },
+          "key": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "passphrase": {
+            "type": "string"
+          },
+          "pfx": {
+            "oneOf": [
+              { "type": "string" },
+              { "type": "array", "items": { "type": "string" } }
+            ]
+          },
+          "rejectUnauthorized": {
+            "type": "boolean"
+          },
+          "secureOptions": {
+            "type": "integer"
+          },
+          "secureProtocol": {
+            "type": "string"
+          },
+          "servername": {
+            "type": "string"
+          },
+          "sessionIdContext": {
+            "type": "string"
+          }
         },
         "additionalProperties": false
       }

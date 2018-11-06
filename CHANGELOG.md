@@ -1,3 +1,10 @@
+# Upcoming
+
+## Dependencies
+
+- Upgrade `eslint-config-standard-prettier-fp`
+- Upgrade `eslint-plugin-markdown`
+
 # 41.1.0
 
 ## Features

@@ -93,7 +93,8 @@ const printBody = function({ body }) {
   }
 
   const bodyA = stringify(body, { highlight: true })
-  return `\n${bodyA}`
+  const bodyB = bodyA.includes('\n') ? `\n${bodyA}` : `\n\n${bodyA}`
+  return bodyB
 }
 
 const isEmptyBody = function({ body }) {

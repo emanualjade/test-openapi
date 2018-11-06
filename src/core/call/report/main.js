@@ -48,7 +48,7 @@ const getResponse = function({
   response: { body = rawResponse.body } = {},
 }) {
   // We haven't reached `request` stage yet
-  if (rawResponse === undefined) {
+  if (status === undefined) {
     return
   }
 

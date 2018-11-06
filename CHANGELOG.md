@@ -1,3 +1,9 @@
+# Upcoming
+
+## Bug fixes
+
+- Fix `status: undefined` being reported on connection errors
+
 # 41.0.0
 
 ## Breaking changes

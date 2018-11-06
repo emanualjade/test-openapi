@@ -3,6 +3,7 @@
 ## Bug fixes
 
 - Fix `status: undefined` being reported on connection errors
+- Fix newline between response headers and response body in default reporter
 
 # 41.0.0
 

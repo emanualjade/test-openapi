@@ -16,6 +16,28 @@
       "body": {},
       "timeout": {
         "type": "integer"
+      },
+      "https": {
+        "type": "object",
+        "properties": {
+          "ca": {},
+          "cert": {},
+          "ciphers": {},
+          "clientCertEngine": {},
+          "crl": {},
+          "dhparam": {},
+          "ecdhCurve": {},
+          "honorCipherOrder": {},
+          "key": {},
+          "passphrase": {},
+          "pfx": {},
+          "rejectUnauthorized": {},
+          "secureOptions": {},
+          "secureProtocol": {},
+          "servername": {},
+          "sessionIdContext": {}
+        },
+        "additionalProperties": false
       }
     },
     "patternProperties": {

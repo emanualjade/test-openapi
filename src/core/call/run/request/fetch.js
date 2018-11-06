@@ -5,16 +5,19 @@ const fetch = require('cross-fetch')
 const { removePrefixes } = require('../../../../utils')
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
+const { getAgent } = require('./agent')
+
 const fireRequest = function({
   rawRequest,
-  rawRequest: { method, url, body, timeout },
+  rawRequest: { method, url, body, timeout, https },
 }) {
   const headers = removePrefixes(rawRequest, 'headers')
-  return eFireFetch({ url, method, headers, body, timeout })
+  const agent = getAgent({ https, url })
+  return eFireFetch({ url, method, headers, body, timeout, agent })
 }
 
-const fireFetch = function({ url, method, headers, body, timeout }) {
-  return fetch(url, { method, headers, body, timeout })
+const fireFetch = function({ url, method, headers, body, timeout, agent }) {
+  return fetch(url, { method, headers, body, timeout, agent })
 }
 
 const fireFetchHandler = function({ message, type }, { url, timeout }) {

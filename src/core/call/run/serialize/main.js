@@ -93,6 +93,7 @@ const PARAM_STRINGIFIERS = {
   headers: stringifyParamFlat,
   body: stringifyBody,
   timeout: keepAsIs,
+  https: keepAsIs,
 }
 
 module.exports = {

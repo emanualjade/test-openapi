@@ -145,7 +145,7 @@ HTTP requests are specified with the `call` task property.
 - name: taskName
   call:
     method: PUT
-    server: http://localhost:8081
+    server: https://localhost:8081
     path: /tags/:tagName
     url.tagName: exampleTagName
     query.accessToken: 1e42f0e1
@@ -154,6 +154,8 @@ HTTP requests are specified with the `call` task property.
       _id: 1
       name: exampleTagName
       color: red
+    https:
+      rejectUnauthorized: false
 ```
 
 - `method` `{string}` (default: `GET`): HTTP method
@@ -185,6 +187,9 @@ HTTP requests are specified with the `call` task property.
     - `application/json` if `body` is an object or an array
     - `application/octet-stream` otherwise
 - `body` `{any}`: request body
+- `https` `{object}`:
+  - HTTPS/TLS options
+  - Same as the ones allowed by [https.request()](https://nodejs.org/api/https.html#https_https_request_options_callback), i.e. `ca`, `cert`, `ciphers`, `clientCertEngine`, `crl`, `dhparam`, `ecdhCurve`, `honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`, `secureOptions`, `secureProtocol`, `servername`, `sessionIdContext`.
 
 `url.NAME`, `query.NAME`, `headers.NAME` and `body` can be either a string or
 any other JSON type:

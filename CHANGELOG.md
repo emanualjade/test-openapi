@@ -5,6 +5,7 @@
 - Upgrade `ajv`
 - Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `eslint-plugin-markdown`
+- Upgrade `prettier`
 
 # 41.1.0
 

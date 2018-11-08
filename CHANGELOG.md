@@ -10,6 +10,7 @@
 - Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `eslint-plugin-markdown`
 - Upgrade `prettier`
+- Upgrade `release-it`
 
 # 41.1.0
 

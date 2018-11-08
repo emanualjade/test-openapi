@@ -1,5 +1,9 @@
 # Upcoming
 
+## Development
+
+- Make gulp tasks work on Windows
+
 ## Dependencies
 
 - Upgrade `ajv`

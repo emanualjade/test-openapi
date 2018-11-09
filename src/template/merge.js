@@ -8,7 +8,11 @@ const { isTemplate } = require('./parse')
 
 // Deep merge that never merges templates deeply
 const merge = function(...objects) {
-  return customMerge(mergeWithTemplate, ...objects)
+  const filtered = objects.filter((obj) => {
+    return obj != null
+  })
+
+  return customMerge(mergeWithTemplate, ...filtered)
 }
 
 const mergeWithTemplate = function(value) {

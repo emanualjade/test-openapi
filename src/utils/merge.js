@@ -13,6 +13,10 @@ const merge = function(...objects) {
 
 // Allow customizing merge by adding a `func`
 const customMerge = function(isMergeableObject, ...objects) {
+  const filtered = objects.filter((obj) => {
+    return obj != null
+  })
+  
   return deepMerge.all(objects, { arrayMerge, isMergeableObject })
 }
 

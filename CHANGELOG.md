@@ -1,3 +1,11 @@
+# Upcoming
+
+## Dependencies
+
+- Upgrade `eslint`
+- Upgrade `eslint-config-standard-prettier-fp`
+- Update `release-it` configuration file
+
 # 41.1.1
 
 ## Bug fixes

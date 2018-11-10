@@ -29,7 +29,7 @@ const isMergeTask = function({ merge }) {
   return merge !== undefined
 }
 
-const mergeTask = function({ task, mergeTasks, mergeConfig }) {
+const mergeTask = function({ task, mergeTasks, mergeConfig = {} }) {
   const mergeTasksA = findMergeTasks({ task, mergeTasks })
 
   if (mergeTasksA.length === 0) {

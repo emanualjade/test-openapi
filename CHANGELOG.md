@@ -1,4 +1,8 @@
-# Upcoming
+# 41.1.1
+
+## Bug fixes
+
+- Fix crash when no `--merge` CLI option is defined
 
 ## Development
 

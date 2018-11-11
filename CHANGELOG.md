@@ -4,6 +4,7 @@
 
 - Upgrade `eslint`
 - Upgrade `eslint-config-standard-prettier-fp`
+- Upgrade `prettier`
 - Update `release-it` configuration file
 
 # 41.1.1

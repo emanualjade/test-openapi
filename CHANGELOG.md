@@ -5,6 +5,7 @@
 - Upgrade `eslint`
 - Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `eslint-config-prettier`
+- Upgrade `eslint-plugin-html`
 - Upgrade `prettier`
 - Update `release-it` configuration file
 

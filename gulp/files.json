@@ -1,3 +1,9 @@
 {
-  "SOURCE": ["{index,gulpfile}.js", "src/**/*.js", "bin/**/*.js"]
+  "SOURCE": [
+    "{index,gulpfile}.js",
+    "src/*.js",
+    "src/**/*.js",
+    "bin/*.js",
+    "bin/**/*.js"
+  ]
 }

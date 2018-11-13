@@ -9,6 +9,10 @@
 - Upgrade `prettier`
 - Update `release-it` configuration file
 
+## Chores
+
+- Use `execa` to fire shell commands with Gulp
+
 # 41.1.1
 
 ## Bug fixes

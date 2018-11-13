@@ -12,6 +12,7 @@
 ## Chores
 
 - Use `execa` to fire shell commands with Gulp
+- Improve Gulp setup
 
 # 41.1.1
 

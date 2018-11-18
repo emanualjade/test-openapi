@@ -7,12 +7,13 @@
 - Upgrade `eslint-config-prettier`
 - Upgrade `eslint-plugin-html`
 - Upgrade `prettier`
-- Update `release-it` configuration file
+- Upgrade `release-it`
 
 ## Chores
 
 - Use `execa` to fire shell commands with Gulp
 - Improve Gulp setup
+- Update `release-it` configuration file
 
 # 41.1.1
 

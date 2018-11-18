@@ -6,8 +6,10 @@
 - Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `eslint-config-prettier`
 - Upgrade `eslint-plugin-html`
+- Upgrade `fast-glob`
 - Upgrade `prettier`
 - Upgrade `release-it`
+- Upgrade `yargs`
 
 ## Chores
 

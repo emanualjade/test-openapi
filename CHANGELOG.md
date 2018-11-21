@@ -1,3 +1,13 @@
+# Pending
+
+## Dependencies
+
+- Upgrade `release-it`
+
+## Chores
+
+- Disable `release-it` tracking
+
 # 41.1.2
 
 ## Dependencies

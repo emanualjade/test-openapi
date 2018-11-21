@@ -74,7 +74,7 @@
     "gulp": "^4.0.0",
     "plugin-error": "^1.0.1",
     "prettier": "^1.15.2",
-    "release-it": "^8.0.0"
+    "release-it": "^8.0.1"
   },
   "engines": {
     "node": ">=10.13.0"

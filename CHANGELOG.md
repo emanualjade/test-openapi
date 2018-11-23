@@ -1,4 +1,4 @@
-# Pending
+# 42.0.0
 
 ## Breaking changes
 

@@ -1,5 +1,9 @@
 # Pending
 
+## Breaking changes
+
+- `$$env` helper is now case-sensitive
+
 ## Dependencies
 
 - Upgrade `release-it`

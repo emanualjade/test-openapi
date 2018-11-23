@@ -367,7 +367,7 @@ Template variables can:
 
 The following template variables are always available:
 
-- `$$env`: use environment variables (case-insensitively)
+- `$$env`: use environment variables (case-sensitive)
 - `$$random`: generate fake data using a
   [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
 - `$$faker`: generate fake data using

@@ -1,5 +1,9 @@
 'use strict'
 
+// TODO: remove when using Babel. URL is global starting from Node.js 10
+// eslint-disable-next-line node/prefer-global/url, no-shadow
+const { URL } = require('url')
+
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Escape, normalize and validate the request URL

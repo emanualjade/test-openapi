@@ -31,7 +31,9 @@ const getPart = function(part, index) {
 // RegExp describing property names that can be used as NAME in `object.NAME`
 // in JavaScript
 // They otherwise need to escaped as `object["NAME"]`
-const VALID_JS_NAME = /^\p{ID_Start}[\p{ID_Continue}$\u200c\u200d]*$/u
+// TODO: use Babel instead with the following (\p is Node.js only):
+//   const VALID_JS_NAME = /^\p{ID_Start}[\p{ID_Continue}$\u200c\u200d]*$/u
+const VALID_JS_NAME = /^[A-Za-z][A-Za-z0-9_$]*$/u
 
 module.exports = {
   getPath,

@@ -4,6 +4,10 @@
 
 - `$$env` helper is now case-sensitive
 
+## Features
+
+- Support Node.js `>=8.3.0`
+
 ## Dependencies
 
 - Upgrade `release-it`

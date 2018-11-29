@@ -1,3 +1,10 @@
+# Pending
+
+## Dependencies
+
+- Upgrade `ajv`
+- Upgrade `release-it`
+
 # 42.0.0
 
 ## Breaking changes

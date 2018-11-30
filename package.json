@@ -73,7 +73,7 @@
     "execa": "^1.0.0",
     "gulp": "^4.0.0",
     "plugin-error": "^1.0.1",
-    "prettier": "^1.15.2",
+    "prettier": "^1.15.3",
     "release-it": "^8.2.0"
   },
   "engines": {

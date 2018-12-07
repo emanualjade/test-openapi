@@ -3,6 +3,7 @@
 ## Dependencies
 
 - Upgrade `ajv`
+- Upgrade `prettier`
 - Upgrade `release-it`
 
 # 42.0.0

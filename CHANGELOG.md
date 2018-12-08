@@ -3,6 +3,8 @@
 ## Dependencies
 
 - Upgrade `ajv`
+- Upgrade `eslint`
+- Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `prettier`
 - Upgrade `release-it`
 

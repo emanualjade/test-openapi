@@ -9,6 +9,10 @@
 - Upgrade `prettier`
 - Upgrade `release-it`
 
+## Chores
+
+- Fix linting
+
 # 42.0.0
 
 ## Breaking changes

@@ -3,6 +3,7 @@
 ## Dependencies
 
 - Upgrade `ajv`
+- Upgrade `cross-fetch`
 - Upgrade `eslint`
 - Upgrade `eslint-config-standard-prettier-fp`
 - Upgrade `prettier`

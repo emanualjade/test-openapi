@@ -28,7 +28,7 @@
     "lib": "src"
   },
   "dependencies": {
-    "ajv": "^6.6.1",
+    "ajv": "^6.6.2",
     "chalk": "^2.4.1",
     "cli-truncate": "^1.1.0",
     "cross-fetch": "^3.0.0",

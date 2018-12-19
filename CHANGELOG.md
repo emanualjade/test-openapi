@@ -1,5 +1,9 @@
 # Pending
 
+## Features
+
+- Show getters in reporting output
+
 ## Dependencies
 
 - Upgrade `ajv`

@@ -38,7 +38,12 @@ const prettifyOthers = function(value) {
   return stringB
 }
 
-const INSPECT_OPTS = { colors: true, depth: 2, maxArrayLength: 10 }
+const INSPECT_OPTS = {
+  colors: true,
+  depth: 2,
+  maxArrayLength: 10,
+  getters: true,
+}
 
 module.exports = {
   stringify,

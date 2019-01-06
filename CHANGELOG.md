@@ -1,3 +1,9 @@
+# 42.2.0
+
+## Chores
+
+- Fix problem during releasing process
+
 # 42.1.0
 
 ## Features

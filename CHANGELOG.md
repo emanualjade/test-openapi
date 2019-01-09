@@ -1,3 +1,9 @@
+# 42.2.1
+
+## Bug fixes
+
+- Fix Git timestamp issue
+
 # 42.2.0
 
 ## Chores

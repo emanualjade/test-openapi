@@ -1,3 +1,24 @@
+# 42.2.2
+
+## Bug fixes
+
+- Fix wrong error messages for HTTP status code validation
+
+## Dependencies
+
+- Upgrade `ajv`
+- Upgrade `deepmerge`
+- Upgrade `eslint-config-prettier`
+- Upgrade `eslint-config-standard-prettier-fp`
+- Upgrade `eslint-plugin-import`
+- Upgrade `eslint-plugin-unicorn`
+- Upgrade `eslint`
+- Upgrade `fast-glob`
+- Upgrade `path-to-regexp`
+- Upgrade `prettier`
+- Upgrade `release-it`
+- Upgrade `swagger-parser`
+
 # 42.2.1
 
 ## Bug fixes

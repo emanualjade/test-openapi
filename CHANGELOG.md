@@ -1,3 +1,9 @@
+# 42.2.3
+
+## Bug fixes
+
+- Fix bug introduced by new version of `path-to-regexp`
+
 # 42.2.2
 
 ## Bug fixes

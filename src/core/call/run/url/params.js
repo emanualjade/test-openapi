@@ -37,7 +37,7 @@ const handlePort = function(token) {
   }
 
   if (isPort(token)) {
-    return `:${token.name}`
+    return `${token.delimiter}:${token.name}`
   }
 
   return token

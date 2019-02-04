@@ -31,7 +31,7 @@
     "ajv": "^6.8.1",
     "chalk": "^2.4.2",
     "cli-truncate": "^1.1.0",
-    "cross-fetch": "^3.0.0",
+    "cross-fetch": "^3.0.1",
     "deepmerge": "^3.0.0",
     "emphasize": "^2.0.0",
     "faker": "^4.1.0",

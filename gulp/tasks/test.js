@@ -1,6 +1,6 @@
 'use strict'
 
-const { series } = require('gulp')
+const { parallel } = require('gulp')
 
 const FILES = require('../files')
 const gulpExeca = require('../exec')
@@ -17,9 +17,15 @@ const lint = function() {
 // eslint-disable-next-line fp/no-mutation
 lint.description = 'Lint source files'
 
-const test = series(lint)
+const outdated = () => gulpExeca('npm outdated')
+
+// eslint-disable-next-line fp/no-mutation
+outdated.description = 'Report outdated dependencies'
+
+const test = parallel(lint, outdated)
 
 module.exports = {
   lint,
+  outdated,
   test,
 }

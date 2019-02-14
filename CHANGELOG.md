@@ -1,3 +1,9 @@
+# 42.2.4
+
+## Bug fixes
+
+- Fix memoization not working properly
+
 # 42.2.3
 
 ## Bug fixes

@@ -19,7 +19,7 @@ const HTTPS_PROTOCOL = 'https://'
 
 // We want to re-use the same agent for several requests, but not if options
 // are different
-const mGetAgent = moize(getAgent)
+const mGetAgent = moize(getAgent, { isDeepEqual: true })
 
 const getAgentHandler = function({ message }, { https }) {
   throw new TestOpenApiError(`Invalid HTTPS options: ${message}`, {

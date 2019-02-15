@@ -1,31 +1,22 @@
 'use strict'
 
-const { parallel } = require('gulp')
+const { series } = require('gulp')
 
-const FILES = require('../files')
-const gulpExeca = require('../exec')
+const { getWatchTask } = require('../utils')
 
-// We do not use `gulp-eslint` because it does not support --cache
-// This task also fixes linting errors and apply `prettier` code formatting
-const lint = function() {
-  const files = FILES.SOURCE.map(pattern => `"${pattern}"`).join(' ')
-  return gulpExeca(
-    `eslint ${files} --ignore-path .gitignore --fix --cache --format codeframe --max-warnings 0 --report-unused-disable-directives`,
-  )
-}
+const { check } = require('./check')
+
+const testTask = series(check)
 
 // eslint-disable-next-line fp/no-mutation
-lint.description = 'Lint source files'
+testTask.description = 'Lint and test source files'
 
-const outdated = () => gulpExeca('npm outdated')
+const testwatch = getWatchTask({ TEST: testTask }, testTask)
 
 // eslint-disable-next-line fp/no-mutation
-outdated.description = 'Report outdated dependencies'
-
-const test = parallel(lint, outdated)
+testwatch.description = 'Lint and test source files in watch mode'
 
 module.exports = {
-  lint,
-  outdated,
-  test,
+  test: testTask,
+  testwatch,
 }

@@ -39,6 +39,7 @@
     "ajv": "^6.9.1",
     "chalk": "^2.4.2",
     "cli-truncate": "^1.1.0",
+    "core-js": "^2.6.5",
     "cross-fetch": "^3.0.1",
     "deepmerge": "^3.2.0",
     "emphasize": "^2.0.0",

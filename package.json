@@ -78,7 +78,8 @@
     "gulp-jscpd": "0.0.8",
     "plugin-error": "^1.0.1",
     "prettier": "^1.16.4",
-    "release-it": "^10.1.0"
+    "release-it": "^10.1.0",
+    "util.promisify": "^1.0.0"
   },
   "engines": {
     "node": ">=8.3.0"

@@ -4,7 +4,7 @@
   "main": "index.js",
   "files": [
     "bin",
-    "src",
+    "dist",
     "!*~"
   ],
   "bin": {

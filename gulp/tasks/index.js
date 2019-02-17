@@ -6,4 +6,5 @@ module.exports = {
   ...require('./test'),
   ...require('./build'),
   ...require('./coverage'),
+  ...require('./main'),
 }

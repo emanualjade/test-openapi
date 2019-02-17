@@ -50,7 +50,7 @@ const stringifyDefinition = function(task) {
   return JSON.stringify(definition)
 }
 
-const getDefinition = function({ spec: { definition } }) {
+const getDefinition = function({ spec: { definition } = {} }) {
   return definition
 }
 

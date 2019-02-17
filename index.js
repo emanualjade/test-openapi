@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = {
-  ...require('./src'),
+  ...require('./dist'),
   // eslint-disable-next-line import/no-internal-modules
-  ...require('./src/core/spec'),
+  ...require('./dist/core/spec'),
 }

@@ -2,6 +2,7 @@
 
 module.exports = {
   ...require('./check'),
+  ...require('./unit'),
   ...require('./test'),
   ...require('./build'),
 }

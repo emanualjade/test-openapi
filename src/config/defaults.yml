@@ -1,0 +1,4 @@
+tasks:
+  - '**/*.tasks.yml'
+  - '**/*.tasks.json'
+plugins: []

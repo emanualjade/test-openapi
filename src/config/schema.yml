@@ -1,0 +1,12 @@
+type: object
+properties:
+  plugins:
+    type: array
+    items:
+      type: string
+  tasks:
+    type: array
+    items:
+      type:
+        - string
+        - object

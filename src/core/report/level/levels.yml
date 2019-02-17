@@ -1,0 +1,23 @@
+silent:
+  types: []
+  taskData: none
+error:
+  types:
+    - fail
+  taskData: none
+warn:
+  types:
+    - fail
+  taskData: added
+info:
+  types:
+    - fail
+    - pass
+    - skip
+  taskData: added
+debug:
+  types:
+    - fail
+    - pass
+    - skip
+  taskData: all

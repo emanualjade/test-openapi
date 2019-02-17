@@ -1,0 +1,6 @@
+task:
+  type: object
+  patternProperties:
+    '^\$\$[\w-]+$':
+      type: string
+  additionalProperties: false

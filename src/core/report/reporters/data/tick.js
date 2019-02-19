@@ -3,8 +3,8 @@
 const { incrementSpinner } = require('../../utils')
 
 // Update spinner
-const tick = function({ options: { spinner } }) {
-  incrementSpinner(spinner)
+const tick = function({ options }) {
+  incrementSpinner(options.spinner)
 }
 
 module.exports = {

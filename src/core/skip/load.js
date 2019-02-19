@@ -1,7 +1,7 @@
 'use strict'
 
-const { TestOpenApiError, addErrorHandler } = require('../../errors')
 const { testRegExp } = require('../../utils')
+const { TestOpenApiError, addErrorHandler } = require('../../errors')
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'RegExp' or ['RegExp', ...]`

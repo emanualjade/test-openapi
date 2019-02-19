@@ -57,7 +57,6 @@
     "swagger-parser": "^6.0.5",
     "type-is": "^1.6.16",
     "underscore.string": "^3.3.5",
-    "util.promisify": "^1.0.0",
     "yargs": "^13.2.1"
   },
   "devDependencies": {

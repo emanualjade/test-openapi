@@ -1,8 +1,7 @@
 'use strict'
 
 const { stdout } = require('process')
-
-const promisify = require('util.promisify')
+const { promisify } = require('util')
 
 const { result } = require('../../utils')
 

@@ -25,7 +25,7 @@ const getContentTypeParam = function({ spec, operation, params }) {
 
 // But the Accept header is always the same
 const getAcceptParam = function({ spec, operation }) {
-  const produces = getProduces({ spec, operation })
+  const produces = getProduces({ operation, spec })
 
   if (produces === undefined) {
     return

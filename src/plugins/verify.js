@@ -8,17 +8,7 @@ const verifyConfig = function({
   plugin: { config: { general: schema } = {}, name },
   config: { [name]: value },
 }) {
-  if (schema === undefined || value === undefined) {
-    return
-  }
-
-  checkSchema({
-    schema,
-    value,
-    valueProp: `config.${name}`,
-    message: `Configuration for the '${name}' plugin is invalid`,
-    props: { module: `plugin-${name}` },
-  })
+  verifyPluginConfig({ schema, value, name, valueProp: 'config' })
 }
 
 // Validate plugin-specific task configuration against a JSON schema specified
@@ -27,6 +17,10 @@ const verifyTask = function({
   plugin: { config: { task: schema } = {}, name },
   task: { [name]: value },
 }) {
+  verifyPluginConfig({ schema, value, name, valueProp: 'task' })
+}
+
+const verifyPluginConfig = function({ schema, value, name, valueProp }) {
   if (schema === undefined || value === undefined) {
     return
   }
@@ -34,7 +28,7 @@ const verifyTask = function({
   checkSchema({
     schema,
     value,
-    valueProp: `task.${name}`,
+    valueProp: `${valueProp}.${name}`,
     message: `Configuration for the '${name}' plugin is invalid`,
     props: { module: `plugin-${name}` },
   })

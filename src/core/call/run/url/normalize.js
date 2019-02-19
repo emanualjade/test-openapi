@@ -1,8 +1,8 @@
 'use strict'
 
 // TODO: remove when using Babel. URL is global starting from Node.js 10
-// eslint-disable-next-line node/prefer-global/url, no-shadow
-const { URL } = require('url')
+// eslint-disable-next-line node/prefer-global/url, no-shadow, node/no-deprecated-api
+const { URL, parse } = require('url')
 
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
@@ -10,8 +10,7 @@ const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 const normalizeUrl = function({ url: originalUrl }) {
   const url = escapeUrl(originalUrl)
   const urlA = eParseUrl({ url, originalUrl })
-  const urlB = urlA.toString()
-  return urlB
+  return urlA
 }
 
 // According to RFC 3986, all characters should be escaped in paths except:
@@ -26,7 +25,13 @@ const escapeUrl = function(url) {
 }
 
 const parseUrl = function({ url }) {
-  return new URL(url)
+  // Node 6 does not support `URL`
+  // TODO: remove when dropping support for Node 6
+  if (URL === undefined) {
+    return parse(url).href
+  }
+
+  return new URL(url).toString()
 }
 
 const parseUrlHandler = function({ message }, { originalUrl }) {

@@ -50,7 +50,7 @@ $ test-openapi **/*.tasks.yml
 ```js
 const { run } = require('test-openapi')
 
-const results = await run(options)
+const promise = run(options)
 ```
 
 If a task failed, `run()` will reject the promise with a `TestOpenApiError`.
@@ -58,7 +58,7 @@ If a task failed, `run()` will reject the promise with a `TestOpenApiError`.
 Options are passed as arguments. Tasks are passed as a `tasks` argument.
 
 ```js
-const results = await run({
+const promise = run({
   tasks: ['**/*.tasks.yml'],
   merge: { spec: { definition: 'openapi_schema.yml' } },
 })

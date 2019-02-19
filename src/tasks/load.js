@@ -1,6 +1,7 @@
 'use strict'
 
-const { promisify } = require('util')
+const promisify = require('util.promisify')
+
 const { readFile } = require('fs')
 
 const fastGlob = require('fast-glob')

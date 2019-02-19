@@ -1,8 +1,9 @@
 'use strict'
 
-// TODO: remove when using Babel. URL is global starting from Node.js 10
-// eslint-disable-next-line node/prefer-global/url, no-shadow, node/no-deprecated-api
-const { URL, parse } = require('url')
+// URL is global starting from Node.js 10
+// TODO: remove when dropping support for Node.js 8 and 9
+// eslint-disable-next-line node/prefer-global/url, no-shadow
+const { URL } = require('url')
 
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
@@ -25,12 +26,6 @@ const escapeUrl = function(url) {
 }
 
 const parseUrl = function({ url }) {
-  // Node 6 does not support `URL`
-  // TODO: remove when dropping support for Node 6
-  if (URL === undefined) {
-    return parse(url).href
-  }
-
   return new URL(url).toString()
 }
 

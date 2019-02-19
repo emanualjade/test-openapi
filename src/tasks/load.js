@@ -1,9 +1,8 @@
 'use strict'
 
-const promisify = require('util.promisify')
-
 const { readFile } = require('fs')
 
+const promisify = require('util.promisify')
 const fastGlob = require('fast-glob')
 const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
 const { sortBy } = require('lodash')

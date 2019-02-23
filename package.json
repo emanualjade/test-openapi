@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.3.1",
-    "ajv": "^6.9.1",
+    "ajv": "^6.9.2",
     "chalk": "^2.4.2",
     "cli-truncate": "^1.1.0",
     "core-js": "^2.6.5",

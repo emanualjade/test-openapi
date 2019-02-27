@@ -4,7 +4,6 @@ module.exports = {
   ...require('./types'),
   ...require('./promise'),
   ...require('./reduce'),
-  ...require('./keep_props'),
   ...require('./sort'),
   ...require('./location'),
   ...require('./simple_schema'),

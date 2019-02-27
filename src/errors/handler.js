@@ -1,6 +1,6 @@
 'use strict'
 
-const { keepProps } = require('../utils')
+const keepFuncProps = require('keep-func-props')
 
 // Wrap a function with a error handler
 // Allow passing an empty error handler, i.e. ignoring any error thrown
@@ -9,7 +9,7 @@ const addErrorHandler = function(func, errorHandler = () => {}) {
   return errorHandledFunc.bind(null, func, errorHandler)
 }
 
-const kAddErrorHandler = keepProps(addErrorHandler)
+const kAddErrorHandler = keepFuncProps(addErrorHandler)
 
 const errorHandledFunc = function(func, errorHandler, ...args) {
   try {

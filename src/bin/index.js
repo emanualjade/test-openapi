@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict'
 
 const { exit } = require('process')
@@ -30,6 +31,4 @@ const runCliHandler = function({ tasks, message }) {
 
 const eRunCli = addErrorHandler(runCli, runCliHandler)
 
-module.exports = {
-  runCli: eRunCli,
-}
+eRunCli()

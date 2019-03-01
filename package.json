@@ -3,12 +3,10 @@
   "version": "42.2.5",
   "main": "dist/index.js",
   "files": [
-    "bin",
-    "dist",
-    "!*~"
+    "dist"
   ],
   "bin": {
-    "test-openapi": "bin/test_openapi.js"
+    "test-openapi": "dist/bin/index.js"
   },
   "scripts": {
     "test": "gulp test"

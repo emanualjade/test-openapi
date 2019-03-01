@@ -3,7 +3,8 @@
 const { version: nodeVersion } = require('process')
 const { platform } = require('os')
 
-const { version: libraryVersion } = require('../../package')
+// eslint-disable-next-line import/no-unresolved, node/no-missing-require
+const { version: libraryVersion } = require('../../../package')
 
 const { BugError } = require('./error')
 

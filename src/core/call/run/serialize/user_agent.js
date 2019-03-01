@@ -1,6 +1,7 @@
 'use strict'
 
-const { version, homepage } = require('../../../../../package')
+// eslint-disable-next-line import/no-unresolved, node/no-missing-require
+const { version, homepage } = require('../../../../../../package')
 
 // Add `User-Agent` request header
 // Can be overriden

@@ -1,12 +1,12 @@
 {
   "name": "test-openapi",
   "version": "42.2.8",
-  "main": "dist/index.js",
+  "main": "dist/src/index.js",
   "files": [
-    "dist"
+    "dist/src"
   ],
   "bin": {
-    "test-openapi": "dist/bin/index.js"
+    "test-openapi": "dist/src/bin/index.js"
   },
   "scripts": {
     "test": "gulp test"

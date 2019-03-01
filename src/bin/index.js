@@ -3,8 +3,9 @@
 
 const { exit } = require('process')
 
+const { run } = require('..')
+
 const { addErrorHandler } = require('../errors')
-const { run } = require('../run')
 
 const { defineCli } = require('./top')
 const { parseConfig } = require('./parse')

@@ -10,5 +10,6 @@ test('Smoke test', async t => {
   const { code, stdout } = await execa(BINARY_PATH, [TASKS_FILE], {
     reject: false,
   })
-  t.snapshot({ code, stdout })
+  const stdoutA = stdout.replace(/User-Agent.*/u, '')
+  t.snapshot({ code, stdout: stdoutA })
 })

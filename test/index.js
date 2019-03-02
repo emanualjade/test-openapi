@@ -3,7 +3,7 @@
 const test = require('ava')
 const execa = require('execa')
 
-const BINARY_PATH = `${__dirname}/../build/src/bin/index.js`
+const BINARY_PATH = `${__dirname}/../src/bin/index.js`
 const TASKS_FILE = `${__dirname}/tasks.yml`
 
 test('Smoke test', async t => {

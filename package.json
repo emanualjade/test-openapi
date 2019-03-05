@@ -43,7 +43,7 @@
     "is-mergeable-object": "^1.1.0",
     "js-yaml": "^3.12.2",
     "json-schema-faker": "0.5.0-rc15",
-    "keep-func-props": "^1.0.0",
+    "keep-func-props": "^1.0.2",
     "lodash": "^4.17.10",
     "methods": "^1.1.2",
     "mimic-fn": "^1.2.0",

@@ -50,7 +50,7 @@
     "moize": "^5.4.2",
     "node-notifier": "^5.4.0",
     "openapi-schema-to-json-schema": "^2.2.0",
-    "ora": "^3.1.0",
+    "ora": "^3.2.0",
     "path-to-regexp": "^3.0.0",
     "statuses": "^1.5.0",
     "strip-ansi": "^5.0.0",

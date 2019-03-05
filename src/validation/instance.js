@@ -25,6 +25,8 @@ const AJV_OPTS = {
   // JSON schema allows unknown formats
   unknownFormats: 'ignore',
   logger,
+  strictDefaults: true,
+  strictKeywords: true,
 }
 
 // Called only once

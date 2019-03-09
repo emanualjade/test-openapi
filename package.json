@@ -52,7 +52,7 @@
     "ora": "^3.2.0",
     "path-to-regexp": "^3.0.0",
     "statuses": "^1.5.0",
-    "strip-ansi": "^5.0.0",
+    "strip-ansi": "^5.1.0",
     "swagger-parser": "^6.0.5",
     "type-is": "^1.6.16",
     "underscore.string": "^3.3.5",

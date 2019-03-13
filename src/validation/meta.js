@@ -1,6 +1,5 @@
 'use strict'
 
-// eslint-disable-next-line import/no-internal-modules
 const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
 const { omit } = require('lodash')
 

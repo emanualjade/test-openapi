@@ -1,4 +1,4 @@
-[![Travis](https://img.shields.io/badge/cross-platform-4cc61e.svg?logo=travis&style=popout-square)](https://travis-ci.org/Cardero-X/test-openapi) [![Node](https://img.shields.io/node/v/test-openapi.svg?logo=node.js&style=popout-square)](https://www.npmjs.com/package/test-openapi) [![Gitter](https://img.shields.io/gitter/room/ehmicky/test-openapi.svg?logo=gitter&style=popout-square)](https://gitter.im/ehmicky/test-openapi)
+[![Travis](https://img.shields.io/badge/cross-platform-4cc61e.svg?logo=travis&style=popout-square)](https://travis-ci.org/Cardero-X/test-openapi) [![Node](https://img.shields.io/node/v/test-openapi.svg?logo=node.js&style=popout-square)](https://www.npmjs.com/package/test-openapi) [![Gitter](https://img.shields.io/gitter/room/ehmicky/test-openapi.svg?logo=gitter&logoColor=cccccc&style=popout-square)](https://gitter.im/ehmicky/test-openapi)
 
 Automatic API integration testing.
 

@@ -1,6 +1,7 @@
 import { getResultType, SEPARATOR } from '../../../utils.js'
 import { getReportProps } from '../../../props.js'
-import serializer from '../serializer.js'
+// eslint-disable-next-line import/no-namespace
+import * as serializer from '../serializer.js'
 
 import { getErrorProps } from './error_props.js'
 

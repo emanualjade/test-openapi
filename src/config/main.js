@@ -5,7 +5,8 @@ import { getPath } from '../utils.js'
 import { parseInput } from '../serialize.js'
 
 import { validateConfig } from './validate.js'
-import DEFAULT_CONFIG from './defaults.js'
+// eslint-disable-next-line import/no-namespace
+import * as DEFAULT_CONFIG from './defaults'
 
 // Load and normalize configuration
 export const loadConfig = function({ config }) {

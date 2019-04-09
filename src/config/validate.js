@@ -1,6 +1,7 @@
 import { checkSchema } from '../validation.js'
 
-import CONFIG_SCHEMA from './schema.js'
+// eslint-disable-next-line import/no-namespace
+import * as CONFIG_SCHEMA from './schema'
 
 // Validate configuration
 export const validateConfig = function({ config }) {

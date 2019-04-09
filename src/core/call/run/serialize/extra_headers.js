@@ -8,7 +8,7 @@ import { mapKeys } from 'lodash'
 // to `rawRequest`
 // Unfortunately the library does not allow accessing them, so we need to repeat
 // its logic here and recalculate them.
-const addFetchRequestHeaders = function({ call }) {
+export const addFetchRequestHeaders = function({ call }) {
   const headers = getFetchRequestHeaders({ call })
   const headersA = mapKeys(headers, (value, name) => `headers.${name}`)
   return { ...call, ...headersA }
@@ -29,7 +29,7 @@ const DEFAULT_ACCEPT_ENCODING = 'gzip,deflate'
 const DEFAULT_CONNECTION = 'close'
 
 // Same for `Content-Length` (must be done after body has been serialized)
-const addContentLength = function({ request, rawRequest }) {
+export const addContentLength = function({ request, rawRequest }) {
   const contentLength = getContentLength({ rawRequest })
 
   if (contentLength === undefined) {
@@ -54,9 +54,4 @@ const getContentLength = function({ rawRequest: { method, body } }) {
   }
 
   return 0
-}
-
-module.exports = {
-  addFetchRequestHeaders,
-  addContentLength,
 }

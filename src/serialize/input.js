@@ -8,7 +8,7 @@ import {
 } from './common.js'
 
 // Applied on input config and tasks
-const parseInput = function(taskOrConfig, throwError) {
+export const parseInput = function(taskOrConfig, throwError) {
   return crawl(
     taskOrConfig,
     (value, path) => parseInputValue({ value, path, throwError }),
@@ -35,8 +35,4 @@ const parseInputValue = function({ value, path, throwError }) {
 
 const isAllowed = function(value) {
   return isJsonType(value) || value === undefined || typeof value === 'function'
-}
-
-module.exports = {
-  parseInput,
 }

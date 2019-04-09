@@ -2,7 +2,7 @@ import { omitBy } from 'lodash'
 
 // Retrieve the properties from `task.PLUGIN.*` that have been added by this
 // plugin, i.e. not in `originalTask.*`
-const getAddedProps = function({
+export const getAddedProps = function({
   task,
   plugin: { name, config: { task: taskConfig } = {} },
 }) {
@@ -69,8 +69,4 @@ const isConfigProp = function({
       new RegExp(pattern, 'u').test(key),
     )
   )
-}
-
-module.exports = {
-  getAddedProps,
 }

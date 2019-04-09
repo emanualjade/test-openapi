@@ -4,7 +4,7 @@ import { LINE, COLORS, MARKS } from '../constants.js'
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,
 // then failed tasks names + error messages
-const printTasksList = function({ tasks, options }) {
+export const printTasksList = function({ tasks, options }) {
   const tasksList = RESULT_TYPES
     // Filter according to `config.report.REPORTER.level`
     .filter(resultType => !isSilentType({ resultType, options }))
@@ -60,8 +60,4 @@ const TASK_PRINTERS = {
   skip: printTaskSkip,
   pass: printTaskPass,
   fail: printTaskFail,
-}
-
-module.exports = {
-  printTasksList,
 }

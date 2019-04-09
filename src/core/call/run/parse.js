@@ -4,7 +4,7 @@ import { parseFlat } from '../../../utils.js'
 import { findBodyHandler } from '../body.js'
 
 // Parse response
-const parse = function({
+export const parse = function({
   call,
   call: { rawResponse: { status, body, ...headers } = {} } = {},
 }) {
@@ -62,8 +62,4 @@ const trimBody = function({ body }) {
   }
 
   return bodyA
-}
-
-module.exports = {
-  parse,
 }

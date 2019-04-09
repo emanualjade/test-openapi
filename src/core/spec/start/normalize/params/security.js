@@ -8,7 +8,7 @@ import * as IN_TO_LOCATION from './in_to_location'
 
 // Normalize OpenAPI security request parameters into specification-agnostic
 // format
-const getSecParams = function({
+export const getSecParams = function({
   spec: { securityDefinitions, security: apiSecurity = [] },
   operation: { security = apiSecurity },
 }) {
@@ -62,8 +62,4 @@ const getDefApiKey = function({ name, in: paramIn }) {
 
 const SECURITY_DEFS = {
   apiKey: getDefApiKey,
-}
-
-module.exports = {
-  getSecParams,
 }

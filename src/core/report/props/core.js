@@ -1,7 +1,7 @@
 import { isSimpleSchema } from '../../../utils.js'
 
 // Add core `reportProps`
-const addCoreReportProps = function({ reportProps, task }) {
+export const addCoreReportProps = function({ reportProps, task }) {
   const coreReportProps = getCoreReportProps(task)
   // Merged with lower priority, and appear at beginning
   return [coreReportProps, ...reportProps]
@@ -70,8 +70,4 @@ const getModule = function({ moduleProp }) {
   const nameA = name.join('-')
 
   return { [type]: nameA }
-}
-
-module.exports = {
-  addCoreReportProps,
 }

@@ -4,7 +4,7 @@ import { isObject, getPath } from '../../../utils.js'
 import { checkIsSchema } from '../../../validation.js'
 
 // Handler JSON schemas in `task.validate.headers|body`
-const handleJsonSchemas = function({ validate }) {
+export const handleJsonSchemas = function({ validate }) {
   return mapValues(validate, handleJsonSchema)
 }
 
@@ -59,8 +59,4 @@ const TYPES = Object.entries({
 const validateJsonSchema = function({ value, prop }) {
   const valueProp = getPath(['task', 'validate', prop])
   checkIsSchema({ value, valueProp })
-}
-
-module.exports = {
-  handleJsonSchemas,
 }

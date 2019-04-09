@@ -11,8 +11,6 @@ const getEnv = function() {
   return mapValues(env, parseFlat)
 }
 
-const envTemplate = getEnv()
+export const envTemplate = getEnv()
 
-module.exports = {
-  $$env: envTemplate,
-}
+export { envTemplate as $$env }

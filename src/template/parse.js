@@ -4,7 +4,7 @@ import { isObject, searchRegExp } from '../utils.js'
 //  - `$$name` into `{ type: 'value', name: '$$name' }`
 //  - `{ $$name: arg }` into `{ type: 'function', name: '$$name', arg }`
 //  - `$$name $$nameB` into `{ type: 'concat', tokens }`
-const parseTemplate = function(data) {
+export const parseTemplate = function(data) {
   if (typeof data === 'string') {
     return parseTemplateString(data)
   }
@@ -69,13 +69,13 @@ const parseToken = function(name) {
 }
 
 // Check whether `data` is `$$name` or `{ $$name: arg }`
-const isTemplate = function(data) {
+export const isTemplate = function(data) {
   const template = parseTemplate(data)
   return template !== undefined && !isEscape({ template })
 }
 
 // Check if it is `$$name` (but not `$$$name`)
-const isTemplateName = function({ name }) {
+export const isTemplateName = function({ name }) {
   return TEMPLATE_NAME_REGEXP.test(name) && !isEscapeName({ name })
 }
 
@@ -83,7 +83,7 @@ const isTemplateName = function({ name }) {
 // add an extra `$`, i.e. `{ $$$name: arg }` becomes `{ $$name: arg }`
 // and `$$$name` becomes `$$name`
 // This works with multiple `$` as well
-const parseEscape = function({ template, template: { type, name, arg } }) {
+export const parseEscape = function({ template, template: { type, name, arg } }) {
   if (!isEscape({ template })) {
     return
   }
@@ -118,10 +118,3 @@ const TEMPLATE_NAME_REGEXP = /^\$\$[\w-]+$/u
 // Escape `$$name` with an extra dollar sign, i.e. `$$$name`
 const TEMPLATE_PREFIX = '$$'
 const TEMPLATE_ESCAPE = '$'
-
-module.exports = {
-  parseTemplate,
-  isTemplate,
-  parseEscape,
-  isTemplateName,
-}

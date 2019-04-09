@@ -1,14 +1,14 @@
 import { getPath } from './path.js'
 
 // Transform a JSON pointer into a JavaScript property path
-const jsonPointerToPath = function(jsonPointer) {
+export const jsonPointerToPath = function(jsonPointer) {
   const parts = jsonPointerToParts(jsonPointer)
   // Transform to properly escaped JavaScript property path
   const path = getPath(parts)
   return path
 }
 
-const jsonPointerToParts = function(jsonPointer) {
+export const jsonPointerToParts = function(jsonPointer) {
   const jsonPointerA = decodeUriFragment({ jsonPointer })
 
   const jsonPointerB = jsonPointerA.replace(START_SLASH_REGEXP, '')
@@ -60,9 +60,4 @@ const numerizeIndex = function(value) {
   }
 
   return valueA
-}
-
-module.exports = {
-  jsonPointerToPath,
-  jsonPointerToParts,
 }

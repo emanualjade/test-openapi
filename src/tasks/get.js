@@ -6,7 +6,7 @@ import { loadTasks } from './load.js'
 import { validateTasksSyntax } from './validate.js'
 
 // Retrieve tasks as an array of normalized task objects
-const getTasks = async function({ config: { tasks } }) {
+export const getTasks = async function({ config: { tasks } }) {
   const tasksA = await loadTasks({ tasks })
 
   validateTasksSyntax({ tasks: tasksA })
@@ -29,8 +29,4 @@ const throwParseError = function(key, { message, value, path }) {
     value,
     property,
   })
-}
-
-module.exports = {
-  getTasks,
 }

@@ -8,7 +8,7 @@ import * as COMMON_OPTIONS_SCHEMA from './common_options_schema'
 import { normalizeOutput } from './output.js'
 
 // Add `config.report.REPORTER.*` as `reporter.options`
-const addOptions = async function({ reporters, config, context }) {
+export const addOptions = async function({ reporters, config, context }) {
   const promises = reporters.map(reporter =>
     addReporterOptions({ reporter, config, context }),
   )
@@ -95,8 +95,4 @@ const transformOptions = function({
 
   const optionsA = reporterOptions({ ...context, options })
   return { ...optionsA, ...options }
-}
-
-module.exports = {
-  addOptions,
 }

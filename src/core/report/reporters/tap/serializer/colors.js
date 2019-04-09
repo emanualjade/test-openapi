@@ -7,7 +7,7 @@ import { isObject } from '../../../../../utils.js'
 // `opts.colors: false` can be used to disable it
 // `opts.colors: object` can be used to theme
 // By default, it guesses (e.g. no colors if output is redirected)
-const getColors = function({ colors }) {
+export const getColors = function({ colors }) {
   const opts = getChalkOpts({ colors })
   const chalk = new Chalk(opts)
   const theme = getTheme({ chalk, colors })
@@ -54,8 +54,4 @@ const getColor = function({ defaultColor, colors, key }) {
   }
 
   return colors[key]
-}
-
-module.exports = {
-  getColors,
 }

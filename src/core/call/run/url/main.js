@@ -5,7 +5,7 @@ import { normalizeUrl } from './normalize.js'
 import { addQueryParams } from './query.js'
 
 // Build request URL from request parameters
-const addUrl = function({ call, call: { request, rawRequest } = {} }) {
+export const addUrl = function({ call, call: { request, rawRequest } = {} }) {
   if (call === undefined) {
     return
   }
@@ -24,8 +24,4 @@ const getFullUrl = function({ rawRequest }) {
   const urlC = addUrlParams({ url: urlB, rawRequest })
   const urlD = addQueryParams({ url: urlC, rawRequest })
   return urlD
-}
-
-module.exports = {
-  addUrl,
 }

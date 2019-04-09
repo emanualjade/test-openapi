@@ -4,7 +4,7 @@ import { green, red, gray, yellow } from '../../utils.js'
 import * as serializer from './serializer.js'
 
 // Set TAP state
-const options = function({ _tasks: tasks }) {
+export const options = function({ _tasks: tasks }) {
   const count = tasks.length
   const tap = serializer.init({ count, colors: THEME })
   return { tap }
@@ -18,8 +18,4 @@ const THEME = {
   version: gray,
   plan: gray,
   final: yellow,
-}
-
-module.exports = {
-  options,
 }

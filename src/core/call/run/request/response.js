@@ -1,7 +1,7 @@
 import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 // Parse a HTTP response
-const getRawResponse = async function({
+export const getRawResponse = async function({
   rawResponse,
   rawResponse: { status },
   rawRequest,
@@ -52,7 +52,3 @@ const getBodyHandler = function(
 }
 
 const eGetBody = addErrorHandler(getBody, getBodyHandler)
-
-module.exports = {
-  getRawResponse,
-}

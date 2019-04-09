@@ -1,7 +1,7 @@
 import { removePrefixes } from '../../../../utils.js'
 
 // Add `query` request parameters to the request URL
-const addQueryParams = function({ url, rawRequest }) {
+export const addQueryParams = function({ url, rawRequest }) {
   const query = removePrefixes(rawRequest, 'query')
   const queryA = Object.entries(query)
 
@@ -40,8 +40,4 @@ const encodeParam = function({ name, value }) {
   const valueA = encodeURIComponent(value)
 
   return `${name}=${valueA}`
-}
-
-module.exports = {
-  addQueryParams,
 }

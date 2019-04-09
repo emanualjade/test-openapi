@@ -1,7 +1,7 @@
 import { removeColors } from './colors.js'
 
 // If reported value is too big, we truncate it
-const truncate = function(string) {
+export const truncate = function(string) {
   if (string.length <= MAX_LENGTH) {
     return string
   }
@@ -36,7 +36,3 @@ const removeAnsi = function(string) {
 
 const LAST_CHARS_LENGTH = 20
 const ALMOST_MAX_LENGTH = MAX_LENGTH - LAST_CHARS_LENGTH
-
-module.exports = {
-  truncate,
-}

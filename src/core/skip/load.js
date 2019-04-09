@@ -3,7 +3,7 @@ import { TestOpenApiError, addErrorHandler } from '../../errors.js'
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'RegExp' or ['RegExp', ...]`
-const load = function(tasks, { config: { skip: configSkip } }) {
+export const load = function(tasks, { config: { skip: configSkip } }) {
   const tasksA = tasks.map(task => addSkipped({ task, configSkip }))
   return tasksA
 }
@@ -35,7 +35,3 @@ const testRegExpHandler = function({ message }, configSkip) {
 }
 
 const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
-
-module.exports = {
-  load,
-}

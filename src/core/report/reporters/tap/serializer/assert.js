@@ -3,7 +3,7 @@ import { getErrorProps } from './error_props.js'
 import { checkArgument } from './check.js'
 
 // TAP assert
-const assert = function(state, { ok, name = '', directive = {}, error }) {
+export const assert = function(state, { ok, name = '', directive = {}, error }) {
   const category = getCategory({ ok, directive })
 
   const index = updateState({ state, category })
@@ -61,8 +61,4 @@ const getName = function({ name }) {
   }
 
   return ` ${name}`
-}
-
-module.exports = {
-  assert,
 }

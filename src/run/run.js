@@ -3,7 +3,7 @@ import { addErrorHandler, TestOpenApiError } from '../errors.js'
 import { runHandlers, getTaskReturn } from '../plugins.js'
 
 // Run each `plugin.run()`
-const runTask = async function({ task, context, plugins, nestedPath }) {
+export const runTask = async function({ task, context, plugins, nestedPath }) {
   const taskA = await eRunAll({ task, context, plugins, nestedPath })
 
   const taskB = getTaskReturn({ task: taskA, plugins })
@@ -164,8 +164,4 @@ const runPluginHandler = function(error, task) {
 // This is used e.g. by `skip|only` or `repeat` plugins
 const stopFunc = function({ done }) {
   return done
-}
-
-module.exports = {
-  runTask,
 }

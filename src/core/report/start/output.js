@@ -4,7 +4,7 @@ import { createWriteStream } from 'fs'
 import { TestOpenApiError, addErrorHandler } from '../../../errors.js'
 
 // Where to output report according to `config.report.REPORTER.output`
-const normalizeOutput = async function({ options: { output }, reporter }) {
+export const normalizeOutput = async function({ options: { output }, reporter }) {
   // When `config.report.REPORTER.output` is `undefined` (default), write to
   // `stdout`
   if (output === undefined) {
@@ -36,7 +36,3 @@ const getFileStreamHandler = function(
 }
 
 const eGetFileStream = addErrorHandler(getFileStream, getFileStreamHandler)
-
-module.exports = {
-  normalizeOutput,
-}

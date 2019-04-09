@@ -10,7 +10,7 @@ import { getAddedProps } from './added.js'
 //    any user input is also present unchanged in the output.
 //  - other properties that have been added by the task handler are returned too
 // Note that `task.done` is not kept
-const getTaskReturn = function({
+export const getTaskReturn = function({
   task,
   task: { key, scope, name, skipped, error, originalTask },
   plugins,
@@ -72,8 +72,4 @@ const getReturnValue = function({
   }
 
   return { ...addedProps, ...originalValue }
-}
-
-module.exports = {
-  getTaskReturn,
 }

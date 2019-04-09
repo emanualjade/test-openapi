@@ -6,7 +6,8 @@ import { checkIsSchema } from '../../../../validation.js'
 import { addCustomFormats } from './format.js'
 
 // Generate random value based on a single JSON schema
-const random = function(schema) {
+// eslint-disable-next-line id-match
+export const $$random = function(schema) {
   // Validate random parameters are valid JSON schema v4
   // We cannot use later versions because json-schema-faker does not support
   // them
@@ -56,8 +57,4 @@ const addSeparators = function({
   }
 
   return value.map(stringifyFlat).join(separator)
-}
-
-module.exports = {
-  $$random: random,
 }

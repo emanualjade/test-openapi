@@ -1,8 +1,4 @@
 // TAP version
-const version = function() {
+export const version = function() {
   return 'TAP version 13\n\n'
-}
-
-module.exports = {
-  version,
 }

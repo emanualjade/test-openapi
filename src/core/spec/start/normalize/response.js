@@ -4,7 +4,7 @@ import { normalizeSchema } from './json_schema.js'
 import { getNegotiationsResponse } from './content_negotiation.js'
 
 // Normalize OpenAPI responses into specification-agnostic format
-const normalizeResponses = function({
+export const normalizeResponses = function({
   spec,
   operation,
   operation: { responses },
@@ -49,8 +49,4 @@ const getResponseHeader = function(value) {
 const normalizeHeaderKey = function(value, name) {
   const nameA = name.toLowerCase()
   return `headers.${nameA}`
-}
-
-module.exports = {
-  normalizeResponses,
 }

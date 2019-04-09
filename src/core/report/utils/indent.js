@@ -1,5 +1,5 @@
 // Indent value if multi-line
-const indentValue = function(string) {
+export const indentValue = function(string) {
   if (!shouldIndent(string)) {
     return string
   }
@@ -16,15 +16,10 @@ const shouldIndent = function(string) {
 }
 
 // Indent a string
-const indent = function(string, extraIndent = 0) {
+export const indent = function(string, extraIndent = 0) {
   const size = INDENT_SIZE + extraIndent
   const indentString = ' '.repeat(size)
   return indentString + String(string).replace(/\n/gu, `\n${indentString}`)
 }
 
 const INDENT_SIZE = 2
-
-module.exports = {
-  indentValue,
-  indent,
-}

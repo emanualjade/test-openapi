@@ -1,7 +1,2 @@
-import { config } from './config.js'
-import { load } from './load.js'
-
-module.exports = {
-  config,
-  load,
-}
+export { config } from './config.js'
+export { load } from './load.js'

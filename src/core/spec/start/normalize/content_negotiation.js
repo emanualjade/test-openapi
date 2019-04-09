@@ -1,7 +1,7 @@
 import { filterFormDataMimes } from './form_data.js'
 
 // Get OpenAPI `consumes` and `produces` properties as request headers
-const getNegotiationsParams = function({ spec, operation, params }) {
+export const getNegotiationsParams = function({ spec, operation, params }) {
   const contentType = getContentTypeParam({ spec, operation, params })
   const accept = getAcceptParam({ spec, operation })
   return { ...contentType, ...accept }
@@ -35,7 +35,7 @@ const getAcceptParam = function({ spec, operation }) {
 }
 
 // Get OpenAPI `produces` property as a `Content-Type` response header
-const getNegotiationsResponse = function({ spec, operation }) {
+export const getNegotiationsResponse = function({ spec, operation }) {
   const produces = getProduces({ spec, operation })
 
   if (produces === undefined) {
@@ -57,9 +57,4 @@ const getProduces = function({
   operation: { produces = specProduces },
 }) {
   return produces
-}
-
-module.exports = {
-  getNegotiationsParams,
-  getNegotiationsResponse,
 }

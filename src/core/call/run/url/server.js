@@ -4,7 +4,7 @@ import {
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
-const getServer = function({ rawRequest }) {
+export const getServer = function({ rawRequest }) {
   const server = getServerValue({ rawRequest })
   return server.replace(TRAILING_SLASH_REGEXP, '')
 }
@@ -44,7 +44,3 @@ const getPort = function() {
 
 // Remove trailing slashes in base URL
 const TRAILING_SLASH_REGEXP = /\/$/u
-
-module.exports = {
-  getServer,
-}

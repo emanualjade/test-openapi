@@ -1,12 +1,4 @@
-import { options } from './options.js'
-import { tick } from './tick.js'
-import { complete } from './complete.js'
-import { end } from './end.js'
-
-module.exports = {
-  options,
-  tick,
-  complete,
-  end,
-  level: 'warn',
-}
+export { options } from './options.js'
+export { tick } from './tick.js'
+export { complete } from './complete.js'
+export { end } from './end.js'

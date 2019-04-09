@@ -4,7 +4,7 @@ import { crawl } from '../../../utils.js'
 //  - `valid` means `same as OpenAPI definition`
 //  - `invalid` means `inverse of OpenAPI definition`
 // Those are crawled, extracted and removed from `call.*`
-const getSpecialValues = function({ call }) {
+export const getSpecialValues = function({ call }) {
   const specialValues = initSpecialValues()
 
   const callA = crawl(call, evalNode.bind(null, specialValues))
@@ -41,7 +41,3 @@ const evalNode = function(specialValues, value, path) {
 const SPECIAL_VALUES = ['valid', 'invalid']
 const ESCAPING_CHAR = '\\'
 const ESCAPED_VALUES = SPECIAL_VALUES.map(value => `${ESCAPING_CHAR}${value}`)
-
-module.exports = {
-  getSpecialValues,
-}

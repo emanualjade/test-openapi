@@ -27,8 +27,4 @@ const validateHttpMethods = function({
   }
 }
 
-const configB = validateHttpMethods({ config })
-
-module.exports = {
-  config: configB,
-}
+export const configB = validateHttpMethods({ config })

@@ -6,7 +6,7 @@ import { normalizeSpec } from './normalize.js'
 // Parse, validate and normalize OpenAPI specifications (including JSON
 // references) from each `task.spec.definition`, which can be a URL, a file
 // path or directly a JavaScript object
-const start = async function(startData, { _allTasks: allTasks }) {
+export const start = async function(startData, { _allTasks: allTasks }) {
   const tasksGroups = groupTasks({ allTasks })
 
   // Make sure we run all of them in parallel.
@@ -50,8 +50,4 @@ const stringifyDefinition = function(task) {
 
 const getDefinition = function({ spec: { definition } = {} }) {
   return definition
-}
-
-module.exports = {
-  start,
 }

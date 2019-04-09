@@ -3,7 +3,7 @@ import { omit } from 'lodash'
 import { TestOpenApiError } from '../../errors.js'
 
 // Validate syntax of task files
-const validateTasksSyntax = function({ tasks }) {
+export const validateTasksSyntax = function({ tasks }) {
   if (tasks.length === 0) {
     throw new TestOpenApiError('No tasks were found')
   }
@@ -70,8 +70,4 @@ const validateDuplicateKey = function({ key, scope, name }, index, tasks) {
   throw new TestOpenApiError(
     `Two tasks in the same 'scope' '${scope}' have the same 'name' '${name}'`,
   )
-}
-
-module.exports = {
-  validateTasksSyntax,
 }

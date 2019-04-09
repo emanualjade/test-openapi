@@ -1,6 +1,6 @@
 import { parseTemplate } from '../../../template.js'
 
-const templateHandler = function(error, { pluginsVarsMap }) {
+export const templateHandler = function(error, { pluginsVarsMap }) {
   if (error.property !== undefined) {
     // eslint-disable-next-line fp/no-mutation, no-param-reassign
     error.property = `task.${error.property}`
@@ -37,8 +37,4 @@ const findPlugin = function({ value: { template }, pluginsVarsMap }) {
     ({}.propertyIsEnumerable.call(pluginsVars, name)),
   )
   return plugin
-}
-
-module.exports = {
-  templateHandler,
 }

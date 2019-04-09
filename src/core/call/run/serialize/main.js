@@ -14,7 +14,7 @@ import { addFetchRequestHeaders, addContentLength } from './extra_headers.js'
 //    return value.
 //  - this implies server must ignore headers case
 //  - other plugins modifying `request.call` must use lowercase headers
-const serialize = function({ call }) {
+export const serialize = function({ call }) {
   if (call === undefined) {
     return
   }
@@ -92,8 +92,4 @@ const PARAM_STRINGIFIERS = {
   body: stringifyBody,
   timeout: keepAsIs,
   https: keepAsIs,
-}
-
-module.exports = {
-  serialize,
 }

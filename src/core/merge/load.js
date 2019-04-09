@@ -9,7 +9,7 @@ import { merge: mergeWithTemplates } from '../../template.js'
 // Also merge `config.merge` to all tasks: it is like the `merge` task `*`
 // except it is set on `config` instead of as a task, making it possible for
 // the user to specify on CLI.
-const load = function(tasks, { config: { merge: mergeConfig } }) {
+export const load = function(tasks, { config: { merge: mergeConfig } }) {
   const { mergeTasks, nonMergeTasks } = splitTasks({ tasks })
   const tasksA = nonMergeTasks.map(task =>
     mergeTask({ task, mergeTasks, mergeConfig }),
@@ -104,7 +104,3 @@ const compareMergeTasks = function({
 }
 
 const NOT_MERGED_ATTRIBUTES = ['key', 'scope', 'name', 'merge']
-
-module.exports = {
-  load,
-}

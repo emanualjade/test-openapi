@@ -2,7 +2,7 @@ import { getDirective } from './directive.js'
 import { checkArgument } from './check.js'
 
 // TAP plan
-const plan = function({ count }) {
+export const plan = function({ count }) {
   if (count === undefined) {
     return ''
   }
@@ -14,7 +14,7 @@ const plan = function({ count }) {
   return `${planString}\n\n`
 }
 
-const getPlanString = function({ count }) {
+export const getPlanString = function({ count }) {
   const planString = getPlan({ count })
 
   const directiveString = getPlanDirective({ count })
@@ -40,9 +40,4 @@ const getPlanDirective = function({ count }) {
   const directive = { skip: true }
   const directiveString = getDirective({ directive })
   return directiveString
-}
-
-module.exports = {
-  plan,
-  getPlanString,
 }

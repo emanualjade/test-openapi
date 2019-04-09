@@ -17,7 +17,7 @@ import { addScopes, addKey, validateScopes } from './scope.js'
 //    streaming-friendly.
 //  - it gives a stronger sense that tasks are run in parallel.
 //  - it allows `task.name` to be `undefined`.
-const loadTasks = async function({ tasks }) {
+export const loadTasks = async function({ tasks }) {
   const fileTasks = await loadFileTasks({ tasks })
 
   const inlineTasks = loadInlineTasks({ tasks })
@@ -91,8 +91,4 @@ const loadInlineTasks = function({ tasks }) {
   validateInlineTasks({ tasks: tasksA })
 
   return tasksA
-}
-
-module.exports = {
-  loadTasks,
 }

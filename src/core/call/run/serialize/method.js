@@ -3,7 +3,7 @@ import METHODS from 'methods'
 import { TestOpenApiError } from '../../../../errors.js'
 
 // Validate `task.call.method` and add default value
-const normalizeMethod = function({ call, call: { method = DEFAULT_METHOD } }) {
+export const normalizeMethod = function({ call, call: { method = DEFAULT_METHOD } }) {
   validateMethod({ method })
 
   return { ...call, method }
@@ -20,8 +20,4 @@ const validateMethod = function({ method }) {
     property: 'task.call.method',
     value: method,
   })
-}
-
-module.exports = {
-  normalizeMethod,
 }

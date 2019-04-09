@@ -5,7 +5,7 @@ import { isTemplateName } from '../../../template.js'
 import { wrapTemplateVars } from './check.js'
 
 // Retrieve all `plugin.template`
-const getPluginsVars = function({ context, context: { _plugins: plugins } }) {
+export const getPluginsVars = function({ context, context: { _plugins: plugins } }) {
   const pluginsVarsMap = getPluginsVarsMap({ context, plugins })
   const pluginsVars = mergePluginsVars({ plugins, pluginsVarsMap })
   return { pluginsVars, pluginsVarsMap }
@@ -95,8 +95,4 @@ const mergePluginsVars = function({ plugins, pluginsVarsMap }) {
     ...pluginsVars,
   )
   return pluginsVarsA
-}
-
-module.exports = {
-  getPluginsVars,
 }

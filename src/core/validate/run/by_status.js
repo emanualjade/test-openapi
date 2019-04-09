@@ -6,7 +6,7 @@ import { STATUS_REGEXP, parseStatus } from './status.js'
 
 // `validate.STATUS.*` is like `validate.*` but as map according to status code.
 // STATUS can use ranges and comma-separated lists like `validate.status`
-const addByStatus = function({ validate, response }) {
+export const addByStatus = function({ validate, response }) {
   const byStatus = pickBy(validate, isByStatus)
   const validateA = omitBy(validate, isByStatus)
 
@@ -32,8 +32,4 @@ const matchesResponse = function({ status, response }) {
 
   const matchesStatus = statuses.includes(String(response.status))
   return matchesStatus
-}
-
-module.exports = {
-  addByStatus,
 }

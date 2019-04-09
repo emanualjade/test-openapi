@@ -6,7 +6,7 @@ import { TestOpenApiError } from '../../errors.js'
 // `task.variables.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task,
 // to run the task that defined the variables, and retrieve a specific property
 // at `PATH`
-const template = function({ _allTasks: allTasks, _runTask: runTask }) {
+export const template = function({ _allTasks: allTasks, _runTask: runTask }) {
   const variables = allTasks.map(taskA =>
     getTaskVariables({ task: taskA, allTasks, runTask }),
   )
@@ -79,8 +79,4 @@ const parseValue = function({ value }) {
   const optionsA = options.split(',').filter(option => option !== '')
 
   return { path, options: optionsA }
-}
-
-module.exports = {
-  template,
 }

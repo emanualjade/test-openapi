@@ -1,6 +1,6 @@
 // Similar to JSON.stringify() except does not add double quotes around
 // top-level strings
-const stringifyFlat = function(value) {
+export const stringifyFlat = function(value) {
   if (value === undefined) {
     return ''
   }
@@ -13,15 +13,10 @@ const stringifyFlat = function(value) {
 }
 
 // Inverse
-const parseFlat = function(value) {
+export const parseFlat = function(value) {
   try {
     return JSON.parse(value)
   } catch (error) {
     return value
   }
-}
-
-module.exports = {
-  stringifyFlat,
-  parseFlat,
 }

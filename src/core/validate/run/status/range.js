@@ -4,7 +4,7 @@ import { VALID_STATUSES_MAP } from './valid.js'
 
 // `validate.status` can be `1xx`, `2xx`, `3xx`, `4xx` or `5xx`,
 // case-insensitively
-const parseRanges = function({ statuses }) {
+export const parseRanges = function({ statuses }) {
   const statusesA = statuses.flatMap(parseRange)
   const statusesB = uniq(statusesA)
   return statusesB
@@ -22,7 +22,7 @@ const parseRange = function(status) {
 const RANGE_REGEXP = /^[1-5]xx$/iu
 
 // Replace `100` + `101` + `102` by `1xx`, for any status code range
-const replaceByRanges = function({ statuses }) {
+export const replaceByRanges = function({ statuses }) {
   return Object.entries(VALID_STATUSES_MAP).reduce(replaceByRange, statuses)
 }
 
@@ -35,9 +35,4 @@ const replaceByRange = function(statuses, [range, rangeStatuses]) {
   }
 
   return [range, ...statusesA]
-}
-
-module.exports = {
-  parseRanges,
-  replaceByRanges,
 }

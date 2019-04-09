@@ -10,7 +10,7 @@ import {
 // Add OpenAPI specification to `task.validate.*`
 // Use the specification response matching both the current operation and
 // the received status code `{ '200': validate, default: validate, ... }`
-const addSpecToValidate = function({
+export const addSpecToValidate = function({
   validate = {},
   pluginNames,
   operation: { responses, operationId },
@@ -98,8 +98,4 @@ const handleDefaultResponse = function({ responseStatus, responses }) {
 
   const key = serializeStatus({ statuses })
   return key
-}
-
-module.exports = {
-  addSpecToValidate,
 }

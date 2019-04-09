@@ -28,8 +28,4 @@ const AJV_OPTS = {
 }
 
 // Called only once
-const defaultInstance = getInstance()
-
-module.exports = {
-  defaultInstance,
-}
+export const defaultInstance = getInstance()

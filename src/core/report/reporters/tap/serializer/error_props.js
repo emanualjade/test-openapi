@@ -4,7 +4,7 @@ import { omitBy } from 'lodash'
 import { indent } from '../../../utils.js'
 
 // YAML error properties for each failed assertion
-const getErrorProps = function({ ok, error }) {
+export const getErrorProps = function({ ok, error }) {
   if (ok || error === undefined) {
     return ''
   }
@@ -48,8 +48,4 @@ const YAML_OPTS = {
   noRefs: true,
   // Otherwise `tap-out` parser crashes
   flowLevel: 1,
-}
-
-module.exports = {
-  getErrorProps,
 }

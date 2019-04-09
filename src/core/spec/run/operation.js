@@ -1,6 +1,6 @@
 // Find the operation related to a specific task, and add it
 // Does so by checking OpenAPI's `operationId` against `task.spec.operation`
-const getOperation = function({
+export const getOperation = function({
   key,
   spec: { operation: taskOperationId } = {},
   startData: {
@@ -15,8 +15,4 @@ const getOperation = function({
     ({ operationId }) => operationId === taskOperationId,
   )
   return operation
-}
-
-module.exports = {
-  getOperation,
 }

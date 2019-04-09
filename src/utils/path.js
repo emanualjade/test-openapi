@@ -1,5 +1,5 @@
 // Concatenate parts into a single JavaScript part, e.g. `object.name[index]`
-const getPath = function(parts) {
+export const getPath = function(parts) {
   return parts.map(getPart).join('')
 }
 
@@ -32,7 +32,3 @@ const getPart = function(part, index) {
 // TODO: use Babel instead with the following (\p is Node.js only):
 //   const VALID_JS_NAME = /^\p{ID_Start}[\p{ID_Continue}$\u200c\u200d]*$/u
 const VALID_JS_NAME = /^[A-Za-z][A-Za-z0-9_$]*$/u
-
-module.exports = {
-  getPath,
-}

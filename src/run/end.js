@@ -2,7 +2,7 @@ import { runHandlers } from '../plugins.js'
 
 // Run each `plugin.end()`
 // They should not throw.
-const endTasks = async function({ tasks, config, context, plugins }) {
+export const endTasks = async function({ tasks, config, context, plugins }) {
   // `config` and `tasks` cannot be modified
   await runHandlers({
     type: 'end',
@@ -10,8 +10,4 @@ const endTasks = async function({ tasks, config, context, plugins }) {
     input: tasks,
     context: { ...context, config },
   })
-}
-
-module.exports = {
-  endTasks,
 }

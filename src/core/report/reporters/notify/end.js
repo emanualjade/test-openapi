@@ -4,7 +4,7 @@ import { getSummary } from '../../utils.js'
 import { isSilentType } from '../../level.js'
 
 // Show notification at end of run
-const end = function(tasks, { options }) {
+export const end = function(tasks, { options }) {
   const opts = getOpts({ tasks, options })
 
   if (opts === undefined) {
@@ -65,8 +65,4 @@ const FAIL_OPTS = {
 const OPTS = {
   true: PASS_OPTS,
   false: FAIL_OPTS,
-}
-
-module.exports = {
-  end,
 }

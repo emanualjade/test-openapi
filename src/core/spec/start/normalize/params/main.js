@@ -7,7 +7,7 @@ import { getSecParams } from './security.js'
 import { getConstants } from './constants.js'
 
 // Normalize OpenAPI request parameters into specification-agnostic format
-const getParams = function({
+export const getParams = function({
   spec,
   method,
   path,
@@ -34,8 +34,4 @@ const getParams = function({
   const paramsD = merge(contentNegotiations, secParams, paramsC, constants)
 
   return paramsD
-}
-
-module.exports = {
-  getParams,
 }

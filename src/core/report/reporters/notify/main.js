@@ -1,5 +1,1 @@
-import { end } from './end.js'
-
-module.exports = {
-  end,
-}
+export { end } from './end.js'

@@ -28,6 +28,4 @@ const getAgentHandler = function({ message }, { https }) {
 
 const eGetAgent = addErrorHandler(mGetAgent, getAgentHandler)
 
-module.exports = {
-  getAgent: eGetAgent,
-}
+export { eGetAgent as getAgent }

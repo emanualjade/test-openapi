@@ -5,7 +5,7 @@ import { isObject, merge } from '../../../utils.js'
 import { addCoreReportProps } from './core.js'
 
 // Get plugin-specific properties printed on reporting
-const getReportProps = function({ task, context }) {
+export const getReportProps = function({ task, context }) {
   const { titles, reportProps } = callReportFuncs({ task, context })
 
   const reportPropsA = addCoreReportProps({ reportProps, task })
@@ -96,8 +96,4 @@ const isDefinedTitle = function(title) {
 // Do not print properties that are not present
 const removeEmptyProps = function(object) {
   return omitBy(object, value => value === undefined)
-}
-
-module.exports = {
-  getReportProps,
 }

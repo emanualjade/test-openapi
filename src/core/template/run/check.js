@@ -6,7 +6,7 @@ import { checkSchema } from '../../../validation.js'
 
 // Wrap template helper functions with JSON schema validation from
 // `plugin.config['template.*']`
-const wrapTemplateVars = function({ vars, plugin }) {
+export const wrapTemplateVars = function({ vars, plugin }) {
   const templateConfig = getTemplateConfig({ plugin })
 
   const varsA = mapValues(templateConfig, (schema, name) =>
@@ -96,8 +96,4 @@ const checkVarUndefined = function({
   }
 
   throw new TestOpenApiError(`${message} must be defined`)
-}
-
-module.exports = {
-  wrapTemplateVars,
 }

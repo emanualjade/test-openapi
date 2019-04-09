@@ -1,5 +1,3 @@
 import faker from 'faker'
 
-module.exports = {
-  $$faker: faker,
-}
+export { faker as $$faker }

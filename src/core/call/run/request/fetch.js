@@ -5,7 +5,7 @@ import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 import { getAgent } from './agent.js'
 
-const fireRequest = function({
+export const fireRequest = function({
   rawRequest,
   rawRequest: { method, url, body, timeout, https },
 }) {
@@ -29,7 +29,3 @@ const fireFetchHandler = function({ message, type }, { url, timeout }) {
 }
 
 const eFireFetch = addErrorHandler(fireFetch, fireFetchHandler)
-
-module.exports = {
-  fireRequest,
-}

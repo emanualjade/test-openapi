@@ -5,7 +5,7 @@ import { convertPlainObject, BugError } from '../errors.js'
 
 // If a value in `task.*` could not be serialized, we add it as `task.error`
 // so it gets properly reported (as opposed to throwing an error)
-const addSerializeFail = function({ task, error, plugins }) {
+export const addSerializeFail = function({ task, error, plugins }) {
   if (error === undefined) {
     return task
   }
@@ -44,8 +44,4 @@ const guessModule = function({ path: [name], plugins }) {
   }
 
   return { module: `plugin-${name}` }
-}
-
-module.exports = {
-  addSerializeFail,
 }

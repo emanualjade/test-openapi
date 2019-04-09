@@ -4,7 +4,7 @@ import { getParams } from './params.js'
 import { normalizeResponses } from './response.js'
 
 // Normalize OpenAPI 2.0 operation into specification-agnostic format
-const normalizeSpec = function({ spec }) {
+export const normalizeSpec = function({ spec }) {
   const operations = getOperations({ spec })
   return { operations }
 }
@@ -39,8 +39,4 @@ const getOperationId = function({ operation: { operationId } }) {
   }
 
   return { operationId }
-}
-
-module.exports = {
-  normalizeSpec,
 }

@@ -23,7 +23,7 @@ import { templateHandler } from './error.js'
 //    many issues
 //  - templating is a user-facing feature. Plugin writers can `require()`
 //    template functions directly and use their functions if needed.
-const run = function(task, context) {
+export const run = function(task, context) {
   const { vars, pluginsVarsMap } = getVars({ task, context })
 
   const noEvalProps = pick(task, NO_EVAL_PROPS)
@@ -61,8 +61,4 @@ const returnTask = function({ task, noEvalProps }) {
   // No nested `originalTask` in final return value
   const taskB = omit(taskA, 'originalTask')
   return { ...taskB, originalTask: taskB }
-}
-
-module.exports = {
-  run,
 }

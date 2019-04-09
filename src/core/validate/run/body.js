@@ -3,7 +3,7 @@ import { checkSchema } from '../../../validation.js'
 import { checkRequired } from './required.js'
 
 // Validates response body
-const validateBody = function({
+export const validateBody = function({
   validate: { body: schema },
   response: { body },
 }) {
@@ -27,7 +27,3 @@ const validateBody = function({
 
 const PROPERTY = 'task.validate.body'
 const NAME = 'response body'
-
-module.exports = {
-  validateBody,
-}

@@ -5,7 +5,7 @@ import { TestOpenApiError } from '../../../errors.js'
 // Whether they are defined or not in the response is validated according to:
 //  - if `task.validate.*.x-forbidden: false`: must not be defined
 //  - if `task.validate.*.x-optional: false` (default): must be defined
-const checkRequired = function({
+export const checkRequired = function({
   schema,
   schema: {
     'x-optional': isOptional = false,
@@ -46,8 +46,4 @@ const validateRequired = function({ schema, value, property, name }) {
     schema,
     value,
   })
-}
-
-module.exports = {
-  checkRequired,
 }

@@ -3,7 +3,7 @@
 // E.g. /-.-/g and 'abc-A-def-B-hij' return ['abc', '-A-', 'def', '-B-', 'hij']
 // If no matches, returns `undefined`.
 // `regExp` must have the `g` flag.
-const searchRegExp = function(regExp, string) {
+export const searchRegExp = function(regExp, string) {
   const delims = string.match(regExp)
 
   if (delims === null) {
@@ -32,8 +32,4 @@ const interleaveDelims = function({ match, index, delims }) {
   }
 
   return [match, delim]
-}
-
-module.exports = {
-  searchRegExp,
 }

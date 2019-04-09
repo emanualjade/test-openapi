@@ -26,7 +26,7 @@ import { isObject, getPath } from '../utils.js'
 //  - but serialized to JSON in output for the reasons above
 
 // Check if valid JSON type
-const isJsonType = function(value) {
+export const isJsonType = function(value) {
   return (
     ['string', 'number', 'boolean'].includes(typeof value) ||
     value === null ||
@@ -36,7 +36,7 @@ const isJsonType = function(value) {
 }
 
 // Error message
-const getMessage = function({ value, path }) {
+export const getMessage = function({ value, path }) {
   const property = getPath(path)
   return `property '${property}' with value '${value}' is invalid: it can only be a JSON type, undefined or a function`
 }
@@ -47,12 +47,5 @@ const getMessage = function({ value, path }) {
 // It is converted here to an actual `undefined` value.
 // It can also be escaped with backslash if we actually meant the
 // `undefined` string.
-const UNDEFINED = 'undefined'
-const ESCAPED_UNDEFINED = '\\undefined'
-
-module.exports = {
-  isJsonType,
-  getMessage,
-  UNDEFINED,
-  ESCAPED_UNDEFINED,
-}
+export const UNDEFINED = 'undefined'
+export const ESCAPED_UNDEFINED = '\\undefined'

@@ -1,5 +1,5 @@
 // Turn OpenAPI `collectionFormat` into `$$random` `x-separator`
-const addSeparator = function({ schema, collectionFormat }) {
+export const addSeparator = function({ schema, collectionFormat }) {
   if (collectionFormat === undefined) {
     return schema
   }
@@ -15,8 +15,4 @@ const COLLECTION_FORMATS = {
   pipes: '|',
   // This is using a special notation, see the code that handles query
   multi: '&=',
-}
-
-module.exports = {
-  addSeparator,
 }

@@ -4,7 +4,7 @@ import { addSpecToValidate } from './validate.js'
 
 // Add OpenAPI specification to `task.call|validate.*`
 // According to `task.spec.definition` and `task.spec.operation`
-const run = function(
+export const run = function(
   { key, call, validate, spec },
   { pluginNames, startData },
 ) {
@@ -20,8 +20,4 @@ const run = function(
   const validateA = addSpecToValidate({ validate, pluginNames, operation })
 
   return { call: callA, validate: validateA }
-}
-
-module.exports = {
-  run,
 }

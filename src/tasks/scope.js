@@ -7,13 +7,13 @@ import { TestOpenApiError } from '../errors.js'
 // Add `task.scope`.
 // It is the filename without file extensions.
 // It is `undefined` for inline tasks unless they specify it.
-const addScopes = function({ tasks, path }) {
+export const addScopes = function({ tasks, path }) {
   const scope = getScope(path)
   const tasksA = tasks.map(task => ({ ...task, scope }))
   return tasksA
 }
 
-const getScope = function(path) {
+export const getScope = function(path) {
   const filename = basename(path)
   const scope = filename.replace(/\..*/u, '')
   return scope
@@ -24,7 +24,7 @@ const getScope = function(path) {
 // `task.key` can be parsed with `task.key.split('/')` since neither `scope` nor
 // `name` are allowed to contain a slash.
 // Plugins that must target other tasks should target their `task.key`
-const addKey = function({ scope, name, ...task }) {
+export const addKey = function({ scope, name, ...task }) {
   // Make sure it is not overridden by user
   const taskA = omit(task, 'key')
 
@@ -39,7 +39,7 @@ const addKey = function({ scope, name, ...task }) {
 
 // Since we use filenames as `task.scope` which itself is used in `task.key`,
 // and `task.key` must be unique, we validate every filename is unique.
-const validateScopes = function({ paths }) {
+export const validateScopes = function({ paths }) {
   const scopes = paths.map(getScope)
   scopes.forEach((scope, index) =>
     validateScope({ scope, index, scopes, paths }),
@@ -59,11 +59,4 @@ const validateScope = function({ scope, index, scopes, paths }) {
   throw new TestOpenApiError(
     `Each task file name must be unique, but the two following files are not: '${path}' and '${duplicatePath}'`,
   )
-}
-
-module.exports = {
-  addScopes,
-  getScope,
-  addKey,
-  validateScopes,
 }

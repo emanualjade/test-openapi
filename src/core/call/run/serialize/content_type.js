@@ -2,7 +2,7 @@ import { isObject } from '../../../../utils.js'
 
 // `Content-Type` should be empty if no request body is going to be sent.
 // Also add a default one.
-const normalizeContentType = function({
+export const normalizeContentType = function({
   call,
   call: { body },
   call: { 'headers.content-type': contentTypeParam, ...noBodyCall },
@@ -35,7 +35,3 @@ const getDefaultContentType = function({ body }) {
 // or an array, we default to `application/json` for convenience.
 const DEFAULT_OBJ_MIME = 'application/json'
 const DEFAULT_NON_OBJ_MIME = 'application/octet-stream'
-
-module.exports = {
-  normalizeContentType,
-}

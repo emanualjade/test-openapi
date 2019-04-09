@@ -8,7 +8,7 @@ import { validateConfig } from './validate.js'
 import DEFAULT_CONFIG from './defaults.js'
 
 // Load and normalize configuration
-const loadConfig = function({ config }) {
+export const loadConfig = function({ config }) {
   validateConfig({ config })
 
   const configA = parseInput(config, throwParseError)
@@ -25,8 +25,4 @@ const loadConfig = function({ config }) {
 const throwParseError = function({ message, value, path }) {
   const property = getPath(['config', ...path])
   throw new TestOpenApiError(`Configuration ${message}`, { value, property })
-}
-
-module.exports = {
-  loadConfig,
 }

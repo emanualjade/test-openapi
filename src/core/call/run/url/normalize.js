@@ -6,7 +6,7 @@ import { URL } from 'url'
 import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 // Escape, normalize and validate the request URL
-const normalizeUrl = function({ url: originalUrl }) {
+export const normalizeUrl = function({ url: originalUrl }) {
   const url = escapeUrl(originalUrl)
   const urlA = eParseUrl({ url, originalUrl })
   return urlA
@@ -36,7 +36,3 @@ const parseUrlHandler = function({ message }, { originalUrl }) {
 }
 
 const eParseUrl = addErrorHandler(parseUrl, parseUrlHandler)
-
-module.exports = {
-  normalizeUrl,
-}

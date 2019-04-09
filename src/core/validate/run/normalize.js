@@ -2,7 +2,7 @@ import { STATUS_REGEXP } from './status.js'
 
 // Make `validate.[STATUS.]headers.*` case-insensitive
 // Also remove `undefined` validate values
-const normalizeValidate = function({ validate }) {
+export const normalizeValidate = function({ validate }) {
   return normalizeObject(validate)
 }
 
@@ -29,8 +29,4 @@ const normalizeKeys = function([name, value]) {
   }
 
   return { [name.toLowerCase()]: value }
-}
-
-module.exports = {
-  normalizeValidate,
 }

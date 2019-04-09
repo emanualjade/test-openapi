@@ -7,7 +7,7 @@ import {
 
 import { getTitle } from './title.js'
 
-const report = function({ rawRequest, rawResponse, request, response } = {}) {
+export const report = function({ rawRequest, rawResponse, request, response } = {}) {
   // We haven't reached `serialize` stage yet
   if (rawRequest === undefined) {
     return {}
@@ -97,8 +97,4 @@ const printBody = function({ body }) {
 
 const isEmptyBody = function({ body }) {
   return body === undefined || (typeof body === 'string' && body.trim() === '')
-}
-
-module.exports = {
-  report,
 }

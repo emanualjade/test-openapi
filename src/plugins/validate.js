@@ -2,7 +2,7 @@ import { getPath } from '../utils.js'
 import { checkIsSchema } from '../validation.js'
 
 // Validate export value `config` are JSON schemas
-const validateJsonSchemas = function({ plugin: { name, config = {} } }) {
+export const validateJsonSchemas = function({ plugin: { name, config = {} } }) {
   Object.entries(config).forEach(([propName, schema]) =>
     validateJsonSchema({ schema, name, propName }),
   )
@@ -17,8 +17,4 @@ const validateJsonSchema = function({ schema, name, propName }) {
     props: { module: `plugin-${name}` },
     bug: true,
   })
-}
-
-module.exports = {
-  validateJsonSchemas,
 }

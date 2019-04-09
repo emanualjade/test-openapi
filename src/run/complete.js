@@ -21,7 +21,4 @@ const completeTaskHandler = function(error, { task }) {
 }
 
 const eCompleteTask = addErrorHandler(completeTask, completeTaskHandler)
-
-module.exports = {
-  completeTask: eCompleteTask,
-}
+export { eCompleteTask as completeTask }

@@ -148,7 +148,4 @@ const concatProp = function(prop, path) {
 
 // Compilation is automatically memoized by `ajv` but not validation
 const mValidateFromSchema = moize(validateFromSchema, { isDeepEqual: true })
-
-module.exports = {
-  validateFromSchema: mValidateFromSchema,
-}
+export { mValidateFromSchema as validateFromSchema }

@@ -37,6 +37,7 @@ const run = async function(config = {}) {
 }
 
 const eRun = addErrorHandler(run, topLevelHandler)
+export { eRun as run }
 
 // Fire all plugin handlers for all tasks
 const performRun = async function({ config, tasks, plugins }) {
@@ -82,8 +83,4 @@ const fireTask = async function({ task, context, plugins }) {
   const taskC = await completeTask({ task: taskA, context, plugins })
 
   return taskC
-}
-
-module.exports = {
-  run: eRun,
 }

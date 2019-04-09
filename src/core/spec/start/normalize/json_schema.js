@@ -5,7 +5,7 @@ import { crawl } from '../../../../utils.js'
 
 // OpenAPI schemas are not 100% valid JSON schemas v4, so we use a library to
 // convert them
-const normalizeSchema = function({ schema }) {
+export const normalizeSchema = function({ schema }) {
   const schemaA = normalizeKeys({ schema })
 
   // At the moment, this function should not throw because we already validated
@@ -45,8 +45,4 @@ const KEYS = {
   'x-not': 'not',
   'x-additionalItems': 'additionalItems',
   'x-dependencies': 'dependencies',
-}
-
-module.exports = {
-  normalizeSchema,
 }

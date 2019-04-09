@@ -12,15 +12,11 @@ import { runHandlers } from '../plugins.js'
 //    on users.
 //  - make `run` handler a function that returns a function.
 //    This does not allow cleanup though.
-const startTasks = function({ config, context, plugins }) {
+export const startTasks = function({ config, context, plugins }) {
   return runHandlers({
     type: 'start',
     plugins,
     input: {},
     context: { ...context, config },
   })
-}
-
-module.exports = {
-  startTasks,
 }

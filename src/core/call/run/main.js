@@ -8,8 +8,4 @@ import { parse } from './parse.js'
 //  - build request URL
 //  - send HTTP request
 //  - parse HTTP response
-const run = [serialize, addUrl, request, parse]
-
-module.exports = {
-  run,
-}
+export const run = [serialize, addUrl, request, parse]

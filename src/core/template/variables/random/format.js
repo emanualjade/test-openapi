@@ -5,7 +5,7 @@ import formatRegExps from 'ajv/lib/compile/formats'
 // Allow `json-schema-faker` to use all the `format` that `ajv` can handle,
 // except `regexp`. Note that AJV does not support JSON schema v7 formats
 // `idn-email|hostname` nor `iri[-reference]`
-const addCustomFormats = function() {
+export const addCustomFormats = function() {
   Object.entries(CUSTOM_FORMATS).forEach(addCustomFormat)
 }
 
@@ -30,8 +30,4 @@ const CUSTOM_FORMATS = {
   url: formatRegExps.full.url,
   'json-pointer-uri-fragment': formatRegExps.full['json-pointer-uri-fragment'],
   uuid: UUID_REGEXP,
-}
-
-module.exports = {
-  addCustomFormats,
 }

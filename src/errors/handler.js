@@ -8,6 +8,7 @@ const addErrorHandler = function(func, errorHandler = () => {}) {
 }
 
 const kAddErrorHandler = keepFuncProps(addErrorHandler)
+export { kAddErrorHandler as addErrorHandler }
 
 const errorHandledFunc = function(func, errorHandler, ...args) {
   try {
@@ -49,8 +50,4 @@ const addStack = function(error) {
 
   // eslint-disable-next-line fp/no-mutation, no-param-reassign
   error.stack = stack
-}
-
-module.exports = {
-  addErrorHandler: kAddErrorHandler,
 }

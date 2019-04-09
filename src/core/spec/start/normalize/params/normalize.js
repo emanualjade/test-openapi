@@ -8,7 +8,7 @@ import * as IN_TO_LOCATION from './in_to_location'
 import { addSeparator } from './separator.js'
 
 // From OpenAPI request `parameters` to normalized format
-const normalizeParams = function({ params }) {
+export const normalizeParams = function({ params }) {
   const paramsA = params.map(normalizeParam)
   const paramsB = Object.assign({}, ...paramsA)
   return paramsB
@@ -51,8 +51,4 @@ const getSchema = function({ schema }) {
   const schemaB = schemaA.schema || schemaA
   const schemaC = normalizeSchema({ schema: schemaB })
   return schemaC
-}
-
-module.exports = {
-  normalizeParams,
 }

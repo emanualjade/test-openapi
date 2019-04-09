@@ -8,7 +8,7 @@ import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 // Uses same syntax as Express paths, e.g. `:NAME`, `:NAME*`, `:NAME+`
 // or `(RegExp)`
 // The library calls `encodeURIComponent()` on each URL variable
-const addUrlParams = function({ url, rawRequest }) {
+export const addUrlParams = function({ url, rawRequest }) {
   const urlParams = removePrefixes(rawRequest, 'url')
 
   const tokens = parseUrl({ url })
@@ -95,8 +95,4 @@ const throwError = function(message, { name }) {
   throw new TestOpenApiError(`The URL parameter '${name}' ${message}`, {
     property,
   })
-}
-
-module.exports = {
-  addUrlParams,
 }

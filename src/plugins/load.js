@@ -9,7 +9,7 @@ import { verifyConfig } from './verify.js'
 
 // Retrieve `config.plugins` then `require()` all the plugins
 // Also validate their configuration
-const loadPlugins = function({ config, config: { plugins } }) {
+export const loadPlugins = function({ config, config: { plugins } }) {
   const pluginsA = normalizePlugins({ plugins })
 
   const pluginsB = pluginsA.map(name => loadPlugin({ name, config }))
@@ -161,7 +161,3 @@ const MODULE_OPTS = {
 // If a function, gets same arguments as `run` handler and must return template
 // variables.
 // `context` is same as `run` handlers
-
-module.exports = {
-  loadPlugins,
-}

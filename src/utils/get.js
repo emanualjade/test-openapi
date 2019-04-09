@@ -1,7 +1,7 @@
 // Like Lodash.get() except takes into account objects whose properties
 // have dots
 // E.g. _.get({ a: { 'b.c': true } }, 'a.b.c') does not work
-const get = function(value, path) {
+export const get = function(value, path) {
   const pathA = removeBrackets({ path })
   return getProperty(value, pathA)
 }
@@ -49,7 +49,7 @@ const getLargestString = function(memo, string) {
 // Similar to `get()` but using the longest path that does not
 // return `undefined`.
 // Also set the parent path as a top-level property.
-const tryGet = function(value, path) {
+export const tryGet = function(value, path) {
   const pathA = splitPath({ path })
 
   // Find longest path that does not return `undefined`
@@ -106,8 +106,3 @@ const removeBrackets = function({ path }) {
 }
 
 const BRACKETS_REGEXP = /\[([\d]+)\]/gu
-
-module.exports = {
-  get,
-  tryGet,
-}

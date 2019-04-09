@@ -1,7 +1,7 @@
 import { getPlanString } from './plan.js'
 
 // Final TAP comments, indicating number of tests|pass|fail|skip
-const end = function({ pass, fail, skip, count: initialCount, colors }) {
+export const end = function({ pass, fail, skip, count: initialCount, colors }) {
   const count = pass + fail + skip
 
   const planString = getPlan({ colors, initialCount, count })
@@ -41,8 +41,4 @@ const getEndOk = function({ fail }) {
   }
 
   return '\n# ok'
-}
-
-module.exports = {
-  end,
 }

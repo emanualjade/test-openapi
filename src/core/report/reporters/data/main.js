@@ -1,10 +1,3 @@
-import { options } from './options.js'
-import { tick } from './tick.js'
-import { end } from './end.js'
-
-module.exports = {
-  options,
-  tick,
-  end,
-  level: 'debug',
-}
+export { options } from './options.js'
+export { tick } from './tick.js'
+export { end } from './end.js'

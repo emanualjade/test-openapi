@@ -6,7 +6,7 @@ import { addErrorHandler } from '../errors.js'
 // They also receive `readOnlyArgs` as input, but cannot modify it
 // An error handler can also be added to every handler
 // Handlers can be async
-const runHandlers = function({
+export const runHandlers = function({
   type,
   plugins,
   input,
@@ -103,8 +103,4 @@ const runHandler = function(input, handler) {
 
 const defaultMergeReturn = function(input, newInput) {
   return { ...input, ...newInput }
-}
-
-module.exports = {
-  runHandlers,
 }

@@ -5,7 +5,7 @@ import { printTasksList } from './list.js'
 import { printSummary } from './summary.js'
 
 // Clears spinner and print summarized tasks list and final counters message
-const end = function(tasks, { options, options: { spinner } }) {
+export const end = function(tasks, { options, options: { spinner } }) {
   stopSpinner(spinner)
 
   const endMessage = getEndMessage({ tasks, options })
@@ -20,8 +20,4 @@ const getEndMessage = function({ tasks, options }) {
 ${tasksList}${indent(summaryString)}
 ${LINE}
 `
-}
-
-module.exports = {
-  end,
 }

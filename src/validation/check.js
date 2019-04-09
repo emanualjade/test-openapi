@@ -9,7 +9,7 @@ import { validateFromSchema } from './validate.js'
 // `error.value|schema|property` set accordingly
 // As opposed to `validateFromSchema()` which is meant to be separated in its
 // own repository, this is meant only for this project.
-const checkSchema = function({ bug = false, value, ...opts }) {
+export const checkSchema = function({ bug = false, value, ...opts }) {
   const valueA = removeUndefined({ value })
 
   const error = validateFromSchema({ ...opts, value: valueA })
@@ -62,8 +62,4 @@ const getProperty = function({ schemaProp, valuePath, schemaPath }) {
   }
 
   return { property }
-}
-
-module.exports = {
-  checkSchema,
 }

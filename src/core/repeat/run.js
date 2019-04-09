@@ -1,7 +1,7 @@
 // Repeat each task `config|task.repeat` times.
 // It will be reported only as a single task.
 // Run all tasks in parallel.
-const run = async function(
+export const run = async function(
   task,
   { _nestedPath: nestedPath, _runTask: runTask },
 ) {
@@ -47,8 +47,4 @@ const runRepeatedTask = function({
   const templateA = { $$data: datum, $$index: index, ...template }
   const taskA = { ...task, template: templateA }
   return runTask({ task: taskA, self: true })
-}
-
-module.exports = {
-  run,
 }

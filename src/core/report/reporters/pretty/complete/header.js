@@ -15,7 +15,7 @@ import { MARKS, COLORS } from '../constants.js'
 //  - a symbol indicating whether the task passed, failed or was skipped
 //  - the task key
 //  - the `titles` (as returned by `plugin.report()`)
-const getHeader = function({ task, task: { isNested }, titles, resultType }) {
+export const getHeader = function({ task, task: { isNested }, titles, resultType }) {
   const subKeys = getSubKeys({ titles })
 
   if (isNested) {
@@ -76,8 +76,4 @@ const fitLine = function(string) {
   const stringA = cliTruncate(string, LINE_SIZE - 1)
   const stringB = stringA.padEnd(LINE_SIZE)
   return stringB
-}
-
-module.exports = {
-  getHeader,
 }

@@ -1,7 +1,7 @@
 import { checkArgument } from './check.js'
 
 // Retrieve '# SKIP|TODO' directive for plan or asserts
-const getDirective = function({ directive = {} }) {
+export const getDirective = function({ directive = {} }) {
   checkArgument(directive, 'object')
 
   const [directiveName, comment] =
@@ -32,8 +32,4 @@ const getDirectiveComment = function({ comment }) {
   checkArgument(comment, 'string')
 
   return ` ${comment}`
-}
-
-module.exports = {
-  getDirective,
 }

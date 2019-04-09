@@ -6,7 +6,7 @@ import { isFormData, removeFormDataPrefix } from '../form_data.js'
 //   { type: 'object', properties: { one: { ... }, two: { ... } },
 //     required: ['one'] }
 // TODO: make `collectionFormat` work for `formData` parameters
-const normalizeFormData = function({ params }) {
+export const normalizeFormData = function({ params }) {
   const formDataParams = pickBy(params, (value, key) => isFormData(key))
 
   if (Object.keys(formDataParams).length === 0) {
@@ -39,8 +39,4 @@ const getRequired = function({ properties }) {
   return Object.entries(properties)
     .filter(([, { optional }]) => !optional)
     .map(([key]) => key)
-}
-
-module.exports = {
-  normalizeFormData,
 }

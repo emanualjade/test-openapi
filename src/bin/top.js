@@ -1,6 +1,6 @@
 import yargs from 'yargs'
 
-const defineCli = function() {
+export const defineCli = function() {
   return yargs
     .options(CONFIG)
     .usage(USAGE)
@@ -63,7 +63,3 @@ Defaults to any file ending with 'tasks.yml.json'`
 
 const RUN_EXAMPLE =
   '$0 --merge.spec.definition ./openapi.yml --merge.call.server http://localhost:5001 ./**/*.tasks.yml'
-
-module.exports = {
-  defineCli,
-}

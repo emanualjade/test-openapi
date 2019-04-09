@@ -1,9 +1,3 @@
-import { config } from './config.js'
-import { report } from './report.js'
-import { run } from './run.js'
-
-module.exports = {
-  config,
-  report,
-  run,
-}
+export { config } from './config.js'
+export { report } from './report.js'
+export { run } from './run.js'

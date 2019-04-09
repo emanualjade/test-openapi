@@ -10,7 +10,7 @@ import {
 } from '../../../utils.js'
 
 // Print/prettify all `plugin.report()` return values
-const printReportProps = function({ reportProps, resultType }) {
+export const printReportProps = function({ reportProps, resultType }) {
   if (resultType === 'skip' || Object.keys(reportProps).length === 0) {
     return ''
   }
@@ -52,8 +52,4 @@ const printReportProp = function(value) {
 const printDeepPair = function([name, value]) {
   const valueA = stringify(value)
   return `${yellow(name)}: ${indentValue(valueA)}`
-}
-
-module.exports = {
-  printReportProps,
 }

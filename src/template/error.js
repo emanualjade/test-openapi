@@ -3,7 +3,7 @@ import { omit } from 'lodash'
 import { getPath } from '../utils.js'
 
 // Exceptions thrown during template evaluation
-const templateHandler = function(error, { template, data, path }) {
+export const templateHandler = function(error, { template, data, path }) {
   appendMessage({ error, template })
 
   setErrorProps({ error, data, path })
@@ -50,7 +50,3 @@ const setErrorProps = function({ error, data, path }) {
 
 // Do not move those error properties
 const KEPT_ERROR_PROPS = ['name', 'nested']
-
-module.exports = {
-  templateHandler,
-}

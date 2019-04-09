@@ -4,7 +4,7 @@ import { testRegExp } from '../../utils.js'
 // `config.only: 'RegExp' or ['RegExp', ...]` will only run tasks whose
 // name matches.
 // `task.only: anyValue` will only run those tasks
-const load = function(tasks, { config: { only: configOnly } }) {
+export const load = function(tasks, { config: { only: configOnly } }) {
   // Check if `config|task.only` is used, so we know whether to perform an
   // `only` run
   const enabled =
@@ -44,7 +44,3 @@ const testRegExpHandler = function({ message }, configOnly) {
 }
 
 const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
-
-module.exports = {
-  load,
-}

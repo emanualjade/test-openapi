@@ -4,7 +4,7 @@ import { isObject } from '../../../utils.js'
 
 // Apply `config.report.REPORTER.level` to remove some `task.PLUGIN.*`
 // Use `task.originalTask` but do not keep it
-const filterTaskData = function({
+export const filterTaskData = function({
   task: { originalTask, ...task },
   options: {
     level: { taskData },
@@ -62,8 +62,4 @@ const TASK_DATA = {
   all: ({ task }) => task,
   none: keepNone,
   added: keepAdded,
-}
-
-module.exports = {
-  filterTaskData,
 }

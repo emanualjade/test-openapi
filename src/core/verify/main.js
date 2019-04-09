@@ -1,5 +1,1 @@
-import { run } from './run.js'
-
-module.exports = {
-  run,
-}
+export { run } from './run.js'

@@ -3,7 +3,7 @@ import { getWordsList, sortArray } from '../../../../utils.js'
 import { replaceByRanges } from './range.js'
 
 // Normalize status for error reporting
-const normalizeStatuses = function(statuses) {
+export const normalizeStatuses = function(statuses) {
   const statusesA = replaceByRanges({ statuses })
 
   const statusesB = sortArray(statusesA)
@@ -27,8 +27,4 @@ const numerizeStatus = function(status) {
   }
 
   return statusA
-}
-
-module.exports = {
-  normalizeStatuses,
 }

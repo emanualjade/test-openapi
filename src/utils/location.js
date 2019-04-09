@@ -1,6 +1,6 @@
 // Use dot notation for `task.call.*`, e.g. `task.call['query.VAR']`
 // to indicate both `location` and `name`
-const keyToLocation = function({ key }) {
+export const keyToLocation = function({ key }) {
   if (SINGLE_NAME_LOCATIONS.includes(key)) {
     return { location: key, name: key }
   }
@@ -11,7 +11,7 @@ const keyToLocation = function({ key }) {
   return { location, name: nameA }
 }
 
-const locationToKey = function({ location, name }) {
+export const locationToKey = function({ location, name }) {
   if (SINGLE_NAME_LOCATIONS.includes(location)) {
     return location
   }
@@ -31,9 +31,4 @@ const normalizeHeaderKey = function(key) {
   }
 
   return key.toLowerCase()
-}
-
-module.exports = {
-  keyToLocation,
-  locationToKey,
 }

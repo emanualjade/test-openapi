@@ -2,7 +2,7 @@ import { assert } from './assert.js'
 import { checkArgument } from './check.js'
 
 // TAP test, i.e. group of asserts
-const test = function(state, testName, asserts = []) {
+export const test = function(state, testName, asserts = []) {
   checkArgument(testName, 'string')
 
   const testHeader = getTestHeader({ state, testName, asserts })
@@ -26,8 +26,4 @@ const getCategory = function({ asserts }) {
   }
 
   return 'pass'
-}
-
-module.exports = {
-  test,
 }

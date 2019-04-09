@@ -4,7 +4,7 @@ import { underscored } from 'underscore.string'
 import { removeColors } from '../../../utils.js'
 
 // Retrieve TAP error properties
-const getErrorProps = function({ ok, reportProps }) {
+export const getErrorProps = function({ ok, reportProps }) {
   if (ok) {
     return
   }
@@ -75,8 +75,4 @@ const TAP_NAMES = {
   'actual value': 'actual',
   'JSON schema': 'schema',
   property: 'property',
-}
-
-module.exports = {
-  getErrorProps,
 }

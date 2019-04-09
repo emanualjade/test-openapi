@@ -43,6 +43,4 @@ const getErrorMessage = function({ path, message }) {
 
 const eLoadOpenApiSpec = addErrorHandler(loadOpenApiSpec, loadSpecHandler)
 
-module.exports = {
-  loadOpenApiSpec: eLoadOpenApiSpec,
-}
+export { eLoadOpenApiSpec as loadOpenApiSpec }

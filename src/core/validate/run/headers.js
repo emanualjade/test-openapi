@@ -4,7 +4,7 @@ import { checkSchema } from '../../../validation.js'
 import { checkRequired } from './required.js'
 
 // Validates response headers
-const validateHeaders = function({ validate, response }) {
+export const validateHeaders = function({ validate, response }) {
   const validatedHeaders = removePrefixes(validate, 'headers')
   const headers = removePrefixes(response, 'headers')
 
@@ -48,7 +48,3 @@ const getResponseHeader = function({ headers, name }) {
 
 const PROPERTY = name => getPath(['task', 'validate', `headers.${name}`])
 const NAME = name => `response header '${name}'`
-
-module.exports = {
-  validateHeaders,
-}

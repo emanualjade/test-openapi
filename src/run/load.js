@@ -10,7 +10,7 @@ import { addOriginalTasks } from '../tasks.js'
 //  - `merge` plugin must be applied before `variables` plugin so users can't
 //    target
 //    a `merge` task
-const loadTasks = async function({ config, tasks, plugins }) {
+export const loadTasks = async function({ config, tasks, plugins }) {
   const allTasks = await runHandlers({
     type: 'load',
     plugins,
@@ -43,8 +43,4 @@ const mergeReturn = function(input, newInput) {
   }
 
   return newInput
-}
-
-module.exports = {
-  loadTasks,
 }

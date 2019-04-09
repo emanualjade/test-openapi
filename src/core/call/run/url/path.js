@@ -1,7 +1,7 @@
 import { TestOpenApiError } from '../../../../errors.js'
 
 // Retrieve `task.call.path`
-const addPath = function({ url, rawRequest: { path = '' } }) {
+export const addPath = function({ url, rawRequest: { path = '' } }) {
   validatePath({ path })
 
   return `${url}${path}`
@@ -16,8 +16,4 @@ const validatePath = function({ path }) {
     property: 'task.call.path',
     value: path,
   })
-}
-
-module.exports = {
-  addPath,
 }

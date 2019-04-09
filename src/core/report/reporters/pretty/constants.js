@@ -1,6 +1,6 @@
 import { gray, red, green, HORIZONTAL_LINE } from '../../utils.js'
 
-const MARKS = {
+export const MARKS = {
   // Pause symbol
   skip: '\u23F8',
   // Check symbol
@@ -9,23 +9,16 @@ const MARKS = {
   fail: '\u2718',
 }
 
-const COLORS = {
+export const COLORS = {
   skip: gray,
   pass: green,
   fail: red,
 }
 
-const NAMES = {
+export const NAMES = {
   skip: 'Skipped: ',
   pass: 'Passed:  ',
   fail: 'Failed:  ',
 }
 
-const LINE = `\n${gray(HORIZONTAL_LINE)}\n`
-
-module.exports = {
-  MARKS,
-  COLORS,
-  NAMES,
-  LINE,
-}
+export const LINE = `\n${gray(HORIZONTAL_LINE)}\n`

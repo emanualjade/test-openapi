@@ -4,7 +4,7 @@ import { TestOpenApiError } from '../errors.js'
 
 // Since templates can return other templates which then get evaluated, we need
 // to check for infinite recursions.
-const checkRecursion = function({
+export const checkRecursion = function({
   template,
   opts,
   opts: { recursive, stack = [] },
@@ -36,7 +36,3 @@ const printTemplate = function({ type, name, arg }) {
 }
 
 const RIGHT_ARROW = '\u21AA'
-
-module.exports = {
-  checkRecursion,
-}

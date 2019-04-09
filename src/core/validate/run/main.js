@@ -6,7 +6,7 @@ import { validateHeaders } from './headers.js'
 import { validateBody } from './body.js'
 
 // Validate response against `task.validate.*` JSON schemas
-const run = function({ validate = {}, call, call: { response } = {} }) {
+export const run = function({ validate = {}, call, call: { response } = {} }) {
   if (call === undefined) {
     return
   }
@@ -20,8 +20,4 @@ const run = function({ validate = {}, call, call: { response } = {} }) {
   validateStatus({ validate: validateC, response })
   validateHeaders({ validate: validateC, response })
   validateBody({ validate: validateC, response })
-}
-
-module.exports = {
-  run,
 }

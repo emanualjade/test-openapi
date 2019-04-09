@@ -3,7 +3,7 @@ import { callReporters } from '../call.js'
 import { isSilentTask, filterTaskData } from '../level.js'
 
 // Call reporters `complete` handlers
-const callComplete = async function({
+export const callComplete = async function({
   task,
   task: { error: { nested } = {} },
   reporters,
@@ -43,8 +43,4 @@ const getArg = function({ task, plugins }, { options }) {
 const getContext = function({ task, context }, { options }) {
   const silent = isSilentTask({ task, options })
   return { ...context, silent }
-}
-
-module.exports = {
-  callComplete,
 }

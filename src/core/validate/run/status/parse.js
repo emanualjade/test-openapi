@@ -8,7 +8,7 @@ import { VALID_STATUSES } from './valid.js'
 import { normalizeStatuses } from './normalize.js'
 
 // Parse `validate.status` into an array of possible statuses
-const parseStatus = function({ status, property }) {
+export const parseStatus = function({ status, property }) {
   // `validate.status` can be an integer because it's simpler when writing in
   // YAML (does not require quotes)
   const statusA = String(status)
@@ -41,7 +41,7 @@ const checkValidStatuses = function({ statuses, property }) {
 }
 
 // Inverse of `parseStatus`
-const serializeStatus = function({ statuses }) {
+export const serializeStatus = function({ statuses }) {
   const statusesA = replaceByRanges({ statuses })
   const statusesB = sortArray(statusesA)
   const statusKey = statusesB.join(' ')
@@ -49,10 +49,4 @@ const serializeStatus = function({ statuses }) {
 }
 
 // Status code like `102` or status range like `2xx`
-const STATUS_REGEXP = /^[1-5][\dx]{2}/iu
-
-module.exports = {
-  parseStatus,
-  serializeStatus,
-  STATUS_REGEXP,
-}
+export const STATUS_REGEXP = /^[1-5][\dx]{2}/iu

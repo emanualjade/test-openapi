@@ -2,7 +2,7 @@ import { TestOpenApiError } from '../../../../../errors.js'
 
 // Operation's method, server and path as a `task.call.method|server|path`
 // parameter
-const getConstants = function({ spec, operation, method, path }) {
+export const getConstants = function({ spec, operation, method, path }) {
   const serverParam = getServerParam({ spec, operation })
   const methodParam = getMethodParam({ method })
   const pathParam = getPathParam({ path })
@@ -65,7 +65,3 @@ const getExpressVariable = function({ name, path }) {
 // We are sligtly more restrictive as we disallow starting with a digit,
 // to distinguish from URL port.
 const VALID_EXPRESS_PATH_NAME = /^[a-zA-Z_]\w*$/u
-
-module.exports = {
-  getConstants,
-}

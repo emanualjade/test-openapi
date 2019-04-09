@@ -2,7 +2,7 @@
 import { get, set } from 'lodash/fp'
 
 // Inverse OpenAPI params where `call.*: invalid` was used
-const setInvalidParams = function({ params, specialValues: { invalid } }) {
+export const setInvalidParams = function({ params, specialValues: { invalid } }) {
   return invalid.reduce(reduceInvalidParam, params)
 }
 
@@ -27,8 +27,4 @@ const getInvalidParam = function({ param }) {
   // E.g. `type` array is not supported, so `invalid value` actually does not
   // work at the moment.
   return { not: param }
-}
-
-module.exports = {
-  setInvalidParams,
 }

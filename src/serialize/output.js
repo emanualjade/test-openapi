@@ -10,7 +10,7 @@ import {
 } from './common.js'
 
 // Applied on tasks output, i.e. what is reported and returned
-const serializeOutput = function({ task, plugins }) {
+export const serializeOutput = function({ task, plugins }) {
   // We use a `state` object because `crawl` utility does not allow returning
   // both the crawled object and extra information
   const state = {}
@@ -63,7 +63,3 @@ const serializeFunction = function({ name }) {
 }
 
 const DEFAULT_FUNC_NAME = 'anonymous'
-
-module.exports = {
-  serializeOutput,
-}

@@ -1,5 +1,5 @@
 // Get whether a task failed, passed or was skipped
-const getResultType = function({ error, skipped }) {
+export const getResultType = function({ error, skipped }) {
   if (error !== undefined) {
     return 'fail'
   }
@@ -9,8 +9,4 @@ const getResultType = function({ error, skipped }) {
   }
 
   return 'pass'
-}
-
-module.exports = {
-  getResultType,
 }

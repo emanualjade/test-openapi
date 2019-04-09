@@ -5,7 +5,7 @@ import serializer from '../serializer.js'
 import { getErrorProps } from './error_props.js'
 
 // Add TAP output for each task, as a single assert
-const complete = function(task, { options: { tap }, silent, ...context }) {
+export const complete = function(task, { options: { tap }, silent, ...context }) {
   const assert = getAssert({ task, context })
   const message = serializer.assert(tap, assert)
 
@@ -34,8 +34,4 @@ const getName = function({ key, titles }) {
     .map(string => string.trim())
     .filter(string => string !== '')
     .join(SEPARATOR)
-}
-
-module.exports = {
-  complete,
 }

@@ -1,7 +1,7 @@
 // When using a `formData` parameter, make sure the `Content-Type` request
 // header includes `urlencoded` or `multipart/form-data`
 // When using a `body` parameter, do the opposite.
-const filterFormDataMimes = function({ mimes, params }) {
+export const filterFormDataMimes = function({ mimes, params }) {
   if (hasFormDataParams({ params })) {
     return keepFormDataMimes({ mimes })
   }
@@ -48,18 +48,12 @@ const FORM_DATA_MIMES = [
   'multipart/form-data',
 ]
 
-const isFormData = function(key) {
+export const isFormData = function(key) {
   return FORM_DATA_REGEXP.test(key)
 }
 
-const removeFormDataPrefix = function(key) {
+export const removeFormDataPrefix = function(key) {
   return key.replace(FORM_DATA_REGEXP, '')
 }
 
 const FORM_DATA_REGEXP = /^formData\./u
-
-module.exports = {
-  filterFormDataMimes,
-  isFormData,
-  removeFormDataPrefix,
-}

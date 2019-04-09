@@ -1,7 +1,7 @@
 import { isObject } from '../../../../../utils.js'
 
 // Check input arguments
-const checkArgument = function(value, type) {
+export const checkArgument = function(value, type) {
   const isValid = TYPES[type](value)
 
   if (isValid) {
@@ -19,8 +19,4 @@ const TYPES = {
   boolean: value => typeof value === 'boolean',
 
   object: isObject,
-}
-
-module.exports = {
-  checkArgument,
 }

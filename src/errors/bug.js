@@ -7,7 +7,7 @@ import { version as libraryVersion } from '../../../package.json'
 import { BugError } from './error.js'
 
 // Any error not using `TestOpenApiError` is a bug
-const handleBugs = function({ error }) {
+export const handleBugs = function({ error }) {
   const bugError = findBugError({ error })
 
   if (bugError === undefined) {
@@ -43,7 +43,7 @@ const getBugError = function(error) {
   }
 }
 
-const isBugError = function({ name }) {
+export const isBugError = function({ name }) {
   return name !== 'TestOpenApiError'
 }
 
@@ -73,8 +73,3 @@ const getRepositoryName = function({ bugError }) {
 
 const DEFAULT_REPOSITORY = 'test-openapi'
 const MODULE_REPOSITORY = 'test-openapi-'
-
-module.exports = {
-  handleBugs,
-  isBugError,
-}

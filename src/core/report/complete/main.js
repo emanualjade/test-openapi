@@ -5,7 +5,7 @@ import { callComplete } from './call.js'
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.
 // We do so by buffering each task until its reporting time comes.
-const complete = async function(task, context) {
+export const complete = async function(task, context) {
   const {
     startData: {
       report,
@@ -81,8 +81,4 @@ const completeTask = async function({
 
   // Async iteration through recursion
   await completeTask({ keys, tasks, reporters, plugins, context })
-}
-
-module.exports = {
-  complete,
 }

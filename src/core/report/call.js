@@ -4,7 +4,7 @@ import { promisify } from 'util'
 import { result } from '../../utils.js'
 
 // Call reporters' functions then write return value to output
-const callReporters = async function({ reporters, type }, ...args) {
+export const callReporters = async function({ reporters, type }, ...args) {
   const promises = reporters.map(reporter =>
     callReporter({ reporter, type }, ...args),
   )
@@ -56,8 +56,4 @@ const endReporting = async function({ output }) {
   }
 
   output.destroy()
-}
-
-module.exports = {
-  callReporters,
 }

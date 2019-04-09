@@ -1,5 +1,5 @@
 // Add `METHOD URL (STATUS)` to reporting
-const getTitle = function({ rawRequest, rawResponse }) {
+export const getTitle = function({ rawRequest, rawResponse }) {
   const url = getUrl({ rawRequest })
   const status = getStatus({ rawResponse })
   return [url, status].filter(part => part !== undefined).join(' ')
@@ -26,8 +26,4 @@ const getStatus = function({ rawResponse: { status } = {} }) {
   }
 
   return `(${status})`
-}
-
-module.exports = {
-  getTitle,
 }

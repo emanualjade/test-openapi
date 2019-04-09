@@ -2,7 +2,7 @@ import { addErrorHandler, TestOpenApiError, BugError } from '../errors.js'
 import { checkSchema } from '../validation.js'
 
 // A module is either a plugin or a reporter
-const getModule = function(name, info) {
+export const getModule = function(name, info) {
   // Can pass the module object directly
   if (typeof name !== 'string') {
     return name
@@ -114,8 +114,4 @@ const getModuleProp = function({ title, name, addModule }) {
   }
 
   return { module: `${title}-${name}` }
-}
-
-module.exports = {
-  getModule,
 }

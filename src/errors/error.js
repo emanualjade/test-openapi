@@ -79,7 +79,7 @@ const getExpected = function({ properties: { schema, expected } }) {
 }
 
 // A normal error
-class TestOpenApiError extends PropsError {
+export class TestOpenApiError extends PropsError {
   constructor(...args) {
     super(...args)
     // eslint-disable-next-line fp/no-mutation
@@ -91,16 +91,11 @@ class TestOpenApiError extends PropsError {
 // Note that any non `TestOpenApiError` error is considered a bug.
 // Using `BugError` allows being more explicit and assigning
 // `error.*` properties.
-class BugError extends PropsError {
+export class BugError extends PropsError {
   constructor(...args) {
     super(...args)
     // eslint-disable-next-line fp/no-mutation
     this.name = 'BugError'
   }
-}
-
-module.exports = {
-  TestOpenApiError,
-  BugError,
 }
 /* eslint-enable fp/no-class, fp/no-this */

@@ -5,7 +5,7 @@ import { highlightAuto } from 'emphasize'
 import { truncate } from './truncate.js'
 
 // Serialize, colorize, prettify and truncate a value
-const stringify = function(value, { highlight = false } = {}) {
+export const stringify = function(value, { highlight = false } = {}) {
   if (typeof value === 'string') {
     return prettifyString(value, { highlight })
   }
@@ -41,8 +41,4 @@ const INSPECT_OPTS = {
   depth: 2,
   maxArrayLength: 10,
   getters: true,
-}
-
-module.exports = {
-  stringify,
 }

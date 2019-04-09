@@ -4,7 +4,7 @@ import { omit } from 'lodash'
 import { checkSchema } from './check.js'
 
 // Like `checkSchema()` but validating that the value is a JSON schema v4
-const checkIsSchema = function(opts) {
+export const checkIsSchema = function(opts) {
   const message = getSchemaMessage(opts)
 
   checkSchema({ schema: jsonSchemaSchema, message, ...opts })
@@ -53,7 +53,3 @@ const fixCustomProperties = function(schema) {
 const SCHEMA_FIXES = [removeId, fixMultipleOf, fixFormat, fixCustomProperties]
 
 const jsonSchemaSchema = getJsonSchemaSchema()
-
-module.exports = {
-  checkIsSchema,
-}

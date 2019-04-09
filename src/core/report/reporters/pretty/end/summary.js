@@ -2,7 +2,7 @@ import { getSummary, yellow } from '../../../utils.js'
 import { NAMES } from '../constants.js'
 
 // Print final reporting message with counter of passed|failed|skipped tasks
-const printSummary = function({ tasks }) {
+export const printSummary = function({ tasks }) {
   const { skip, pass, fail } = getSummary({ tasks })
   // Order matters
   const summary = { skip, pass, fail }
@@ -25,8 +25,4 @@ const printEntry = function({ name, count, padLength }) {
   const nameA = NAMES[name]
   const countA = String(count).padStart(padLength)
   return `${yellow.bold(nameA)}${countA}`
-}
-
-module.exports = {
-  printSummary,
 }

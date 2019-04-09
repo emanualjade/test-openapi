@@ -5,7 +5,7 @@ import { addErrorHandler, TestOpenApiError } from '../../errors.js'
 // Retrieve a parser and stringifier for a specific MIME type
 // TODO: replace by real body parsing library and add support for other
 // content types
-const findBodyHandler = function({ mime }) {
+export const findBodyHandler = function({ mime }) {
   return BODY_HANDLERS.find(({ condition }) => condition({ mime })) || {}
 }
 
@@ -35,7 +35,3 @@ const BODY_HANDLERS = [
     stringify: JSON.stringify,
   },
 ].map(normalizeHandler)
-
-module.exports = {
-  findBodyHandler,
-}

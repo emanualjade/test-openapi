@@ -1,5 +1,3 @@
-'use strict'
-
 const { isSimpleSchema } = require('../../../utils')
 
 // Add core `reportProps`

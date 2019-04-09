@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapValues, mapKeys } = require('lodash')
 const { underscored } = require('underscore.string')
 

@@ -1,5 +1,3 @@
-'use strict'
-
 const chalk = require('chalk')
 const stripAnsi = require('strip-ansi')
 const { mapValues } = require('lodash')

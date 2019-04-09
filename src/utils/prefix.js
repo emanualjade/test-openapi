@@ -1,5 +1,3 @@
-'use strict'
-
 const { pickBy, mapKeys } = require('lodash')
 
 // Handle special dot notation `task['headers.NAME']`,

@@ -1,5 +1,3 @@
-'use strict'
-
 const Ajv = require('ajv')
 
 // Retrieve `ajv` instance

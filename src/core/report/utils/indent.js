@@ -1,5 +1,3 @@
-'use strict'
-
 // Indent value if multi-line
 const indentValue = function(string) {
   if (!shouldIndent(string)) {

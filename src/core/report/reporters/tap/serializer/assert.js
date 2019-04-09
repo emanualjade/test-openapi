@@ -1,5 +1,3 @@
-'use strict'
-
 const { getDirective } = require('./directive')
 const { getErrorProps } = require('./error_props')
 const { checkArgument } = require('./check')

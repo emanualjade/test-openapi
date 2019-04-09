@@ -1,5 +1,3 @@
-'use strict'
-
 // When using a `formData` parameter, make sure the `Content-Type` request
 // header includes `urlencoded` or `multipart/form-data`
 // When using a `body` parameter, do the opposite.

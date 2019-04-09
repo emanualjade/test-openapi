@@ -1,5 +1,3 @@
-'use strict'
-
 const { checkSchema } = require('../../../validation')
 
 const { checkRequired } = require('./required')

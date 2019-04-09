@@ -1,5 +1,3 @@
-'use strict'
-
 const { omitBy } = require('lodash')
 
 const { TestOpenApiError } = require('../errors')

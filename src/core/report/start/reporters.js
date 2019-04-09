@@ -1,5 +1,3 @@
-'use strict'
-
 const { difference, omitBy } = require('lodash')
 
 const { getModule } = require('../../../modules')

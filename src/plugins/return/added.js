@@ -1,5 +1,3 @@
-'use strict'
-
 const { omitBy } = require('lodash')
 
 // Retrieve the properties from `task.PLUGIN.*` that have been added by this

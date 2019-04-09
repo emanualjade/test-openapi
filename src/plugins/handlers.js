@@ -1,5 +1,3 @@
-'use strict'
-
 const { reduceAsync } = require('../utils')
 const { addErrorHandler } = require('../errors')
 

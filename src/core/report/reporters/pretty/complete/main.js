@@ -1,5 +1,3 @@
-'use strict'
-
 const { getResultType, clearSpinner } = require('../../../utils')
 const { getReportProps } = require('../../../props')
 

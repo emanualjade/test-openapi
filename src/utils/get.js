@@ -1,5 +1,3 @@
-'use strict'
-
 // Like Lodash.get() except takes into account objects whose properties
 // have dots
 // E.g. _.get({ a: { 'b.c': true } }, 'a.b.c') does not work

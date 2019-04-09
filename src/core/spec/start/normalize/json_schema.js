@@ -1,5 +1,3 @@
-'use strict'
-
 const openapiToJsonSchema = require('openapi-schema-to-json-schema')
 const { omit } = require('lodash')
 

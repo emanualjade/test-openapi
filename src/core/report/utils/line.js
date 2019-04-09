@@ -1,5 +1,3 @@
-'use strict'
-
 const LINE_SIZE = 78
 
 // Horizontal line between sections

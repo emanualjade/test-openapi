@@ -1,5 +1,3 @@
-'use strict'
-
 const { checkArgument } = require('./check')
 
 // TAP comment

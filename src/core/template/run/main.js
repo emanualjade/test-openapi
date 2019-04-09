@@ -1,5 +1,3 @@
-'use strict'
-
 const { pick, omit } = require('lodash')
 
 const { promiseThen } = require('../../../utils')

@@ -1,5 +1,3 @@
-'use strict'
-
 const { fireRequest } = require('./fetch')
 const { getRawResponse } = require('./response')
 

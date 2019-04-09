@@ -1,5 +1,3 @@
-'use strict'
-
 // Use dot notation for `task.call.*`, e.g. `task.call['query.VAR']`
 // to indicate both `location` and `name`
 const keyToLocation = function({ key }) {

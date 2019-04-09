@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapKeys, difference, intersection } = require('lodash')
 const { STATUS_CODES } = require('statuses')
 

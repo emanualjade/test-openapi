@@ -1,5 +1,3 @@
-'use strict'
-
 const { load } = require('./load')
 const config = require('./config')
 

@@ -1,6 +1,4 @@
 /* eslint-disable-line max-lines */
-'use strict'
-
 const Ajv = require('ajv')
 const moize = require('moize').default
 const { get, omitBy } = require('lodash')

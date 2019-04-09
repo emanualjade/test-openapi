@@ -1,5 +1,3 @@
-'use strict'
-
 const METHODS = require('methods')
 
 const { TestOpenApiError } = require('../../../../errors')

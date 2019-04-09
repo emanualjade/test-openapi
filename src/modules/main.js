@@ -1,5 +1,3 @@
-'use strict'
-
 const { addErrorHandler, TestOpenApiError, BugError } = require('../errors')
 const { checkSchema } = require('../validation')
 

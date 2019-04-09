@@ -1,5 +1,3 @@
-'use strict'
-
 const { getResultType } = require('./result_type')
 
 // Retrieve `tasks` summarized numbers

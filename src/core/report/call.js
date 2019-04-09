@@ -1,5 +1,3 @@
-'use strict'
-
 const { stdout } = require('process')
 const { promisify } = require('util')
 

@@ -1,5 +1,3 @@
-'use strict'
-
 const { isObject, getPath } = require('../utils')
 
 // Tasks and config are constrained to JSON.

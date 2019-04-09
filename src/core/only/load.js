@@ -1,5 +1,3 @@
-'use strict'
-
 const { TestOpenApiError, addErrorHandler } = require('../../errors')
 const { testRegExp } = require('../../utils')
 

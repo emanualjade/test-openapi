@@ -1,5 +1,3 @@
-'use strict'
-
 const { TestOpenApiError } = require('../../../../../errors')
 
 // Operation's method, server and path as a `task.call.method|server|path`

@@ -1,5 +1,3 @@
-'use strict'
-
 const { merge } = require('../../../../../utils')
 const { getNegotiationsParams } = require('../content_negotiation')
 

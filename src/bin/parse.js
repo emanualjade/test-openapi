@@ -1,5 +1,3 @@
-'use strict'
-
 const { omit, omitBy } = require('lodash')
 
 const parseConfig = function({ yargs }) {

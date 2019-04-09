@@ -1,5 +1,3 @@
-'use strict'
-
 const { getOperation } = require('./operation')
 const { addSpecToCall } = require('./call')
 const { addSpecToValidate } = require('./validate')

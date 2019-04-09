@@ -1,5 +1,3 @@
-'use strict'
-
 const { callReporters } = require('../call')
 
 const { callComplete } = require('./call')

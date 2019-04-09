@@ -1,5 +1,3 @@
-'use strict'
-
 const { getSummary, yellow } = require('../../../utils')
 const { NAMES } = require('../constants')
 

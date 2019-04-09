@@ -1,5 +1,3 @@
-'use strict'
-
 const { TestOpenApiError } = require('../../../../errors')
 
 // Retrieve `task.call.path`

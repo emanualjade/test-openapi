@@ -1,5 +1,3 @@
-'use strict'
-
 const { normalizeValidate } = require('./normalize')
 const { handleJsonSchemas } = require('./json_schema')
 const { addByStatus } = require('./by_status')

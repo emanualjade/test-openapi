@@ -1,5 +1,3 @@
-'use strict'
-
 const { difference, uniq } = require('lodash')
 
 const { VALID_STATUSES_MAP } = require('./valid')

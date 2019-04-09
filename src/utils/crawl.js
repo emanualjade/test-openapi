@@ -1,5 +1,3 @@
-'use strict'
-
 const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
 
 // Crawl and replace an object.

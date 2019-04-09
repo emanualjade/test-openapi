@@ -1,5 +1,3 @@
-'use strict'
-
 const keepFuncProps = require('keep-func-props')
 
 // Wrap a function with a error handler

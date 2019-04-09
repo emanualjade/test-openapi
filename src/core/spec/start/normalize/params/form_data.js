@@ -1,5 +1,3 @@
-'use strict'
-
 const { omitBy, pickBy, mapKeys } = require('lodash')
 
 const { isFormData, removeFormDataPrefix } = require('../form_data')

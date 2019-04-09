@@ -1,5 +1,3 @@
-'use strict'
-
 const METHODS = require('methods')
 
 const config = require('./config.json')

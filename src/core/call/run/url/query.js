@@ -1,5 +1,3 @@
-'use strict'
-
 const { removePrefixes } = require('../../../../utils')
 
 // Add `query` request parameters to the request URL

@@ -1,5 +1,3 @@
-'use strict'
-
 const { pickBy, omitBy, mapKeys, mapValues } = require('lodash')
 
 const { BugError, TestOpenApiError } = require('../../../errors')

@@ -1,5 +1,3 @@
-'use strict'
-
 const { version: nodeVersion } = require('process')
 const { platform } = require('os')
 

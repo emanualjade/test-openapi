@@ -1,5 +1,3 @@
-'use strict'
-
 const { parse, tokensToFunction } = require('path-to-regexp')
 
 const { removePrefixes, getPath } = require('../../../../utils')

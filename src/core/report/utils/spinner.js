@@ -1,5 +1,3 @@
-'use strict'
-
 const ora = require('ora')
 
 // CLI spinner showing `INDEX/TOTAL` next to it (like a progress bar)

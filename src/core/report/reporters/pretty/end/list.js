@@ -1,5 +1,3 @@
-'use strict'
-
 const { getResultType, gray, indent } = require('../../../utils')
 const { isSilentType } = require('../../../level')
 const { LINE, COLORS, MARKS } = require('../constants')

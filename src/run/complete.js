@@ -1,5 +1,3 @@
-'use strict'
-
 const { addErrorHandler } = require('../errors')
 const { runHandlers } = require('../plugins')
 

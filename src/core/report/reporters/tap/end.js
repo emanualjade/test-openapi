@@ -1,5 +1,3 @@
-'use strict'
-
 const serializer = require('./serializer')
 
 // Ends TAP v13 output

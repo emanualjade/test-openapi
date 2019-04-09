@@ -1,5 +1,3 @@
-'use strict'
-
 const { TestOpenApiError } = require('../errors')
 const { getPath } = require('../utils')
 const { parseInput } = require('../serialize')

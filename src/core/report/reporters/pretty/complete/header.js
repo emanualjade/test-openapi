@@ -1,5 +1,3 @@
-'use strict'
-
 const cliTruncate = require('cli-truncate')
 
 const {

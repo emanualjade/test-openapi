@@ -1,5 +1,3 @@
-'use strict'
-
 const { getPlanString } = require('./plan')
 
 // Final TAP comments, indicating number of tests|pass|fail|skip

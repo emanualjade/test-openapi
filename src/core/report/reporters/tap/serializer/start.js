@@ -1,5 +1,3 @@
-'use strict'
-
 const { version } = require('./version')
 const { plan } = require('./plan')
 

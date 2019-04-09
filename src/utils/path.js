@@ -1,5 +1,3 @@
-'use strict'
-
 // Concatenate parts into a single JavaScript part, e.g. `object.name[index]`
 const getPath = function(parts) {
   return parts.map(getPart).join('')

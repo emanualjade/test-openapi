@@ -1,5 +1,3 @@
-'use strict'
-
 const { STATUS_CODES } = require('statuses')
 const { groupBy } = require('lodash')
 

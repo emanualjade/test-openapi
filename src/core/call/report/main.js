@@ -1,5 +1,3 @@
-'use strict'
-
 const { titleize } = require('underscore.string')
 
 const { removePrefixes, sortArray } = require('../../../utils')

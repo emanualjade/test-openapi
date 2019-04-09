@@ -1,5 +1,3 @@
-'use strict'
-
 // Similar to JSON.stringify() except does not add double quotes around
 // top-level strings
 const stringifyFlat = function(value) {

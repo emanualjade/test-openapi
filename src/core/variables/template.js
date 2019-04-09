@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapValues, omitBy } = require('lodash')
 
 const { get, tryGet } = require('../../utils')

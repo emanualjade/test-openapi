@@ -1,5 +1,3 @@
-'use strict'
-
 const { getPath } = require('./path')
 
 // Transform a JSON pointer into a JavaScript property path

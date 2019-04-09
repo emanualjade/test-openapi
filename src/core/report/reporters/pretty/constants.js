@@ -1,5 +1,3 @@
-'use strict'
-
 const { gray, red, green, HORIZONTAL_LINE } = require('../../utils')
 
 const MARKS = {

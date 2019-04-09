@@ -1,5 +1,3 @@
-'use strict'
-
 const { is: isMime } = require('type-is')
 
 const { addErrorHandler, TestOpenApiError } = require('../../errors')

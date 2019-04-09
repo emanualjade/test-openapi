@@ -1,5 +1,3 @@
-'use strict'
-
 // Repeat each task `config|task.repeat` times.
 // It will be reported only as a single task.
 // Run all tasks in parallel.

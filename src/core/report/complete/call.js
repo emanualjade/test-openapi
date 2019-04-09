@@ -1,5 +1,3 @@
-'use strict'
-
 const { serializeOutput } = require('../../../serialize')
 const { callReporters } = require('../call')
 const { isSilentTask, filterTaskData } = require('../level')

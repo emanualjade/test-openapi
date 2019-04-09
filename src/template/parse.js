@@ -1,5 +1,3 @@
-'use strict'
-
 const { isObject, searchRegExp } = require('../utils')
 
 // Parse:

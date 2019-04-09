@@ -1,5 +1,3 @@
-'use strict'
-
 const jsonSchemaFaker = require('json-schema-faker')
 
 const { stringifyFlat } = require('../../../../utils')

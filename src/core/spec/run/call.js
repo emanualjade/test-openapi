@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapValues } = require('lodash')
 
 const { merge } = require('../../../utils')

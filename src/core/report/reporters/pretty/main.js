@@ -1,5 +1,3 @@
-'use strict'
-
 const { options } = require('./options')
 const { tick } = require('./tick')
 const { complete } = require('./complete')

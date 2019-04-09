@@ -1,5 +1,3 @@
-'use strict'
-
 const deepMerge = require('deepmerge')
 
 // We need a deep merge utility that:

@@ -1,5 +1,3 @@
-'use strict'
-
 const { constructor: Chalk } = require('chalk')
 const { get, mapValues } = require('lodash')
 

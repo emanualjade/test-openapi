@@ -1,5 +1,3 @@
-'use strict'
-
 const { runHandlers } = require('../plugins')
 const { addOriginalTasks } = require('../tasks')
 

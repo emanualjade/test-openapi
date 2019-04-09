@@ -1,5 +1,3 @@
-'use strict'
-
 const { verifyTask } = require('../../plugins')
 
 // Validate plugin-specific configuration

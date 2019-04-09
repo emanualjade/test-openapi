@@ -1,7 +1,5 @@
 // We use classes because that's the most conventional way of extending errors
 /* eslint-disable fp/no-class, fp/no-this */
-'use strict'
-
 const {
   isSimpleSchema,
   getSimpleSchemaConstant,

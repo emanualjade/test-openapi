@@ -1,5 +1,3 @@
-'use strict'
-
 const { crawl } = require('../../../utils')
 
 // Handle values in `call.*` that have special meanings:

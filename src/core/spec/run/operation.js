@@ -1,5 +1,3 @@
-'use strict'
-
 // Find the operation related to a specific task, and add it
 // Does so by checking OpenAPI's `operationId` against `task.spec.operation`
 const getOperation = function({

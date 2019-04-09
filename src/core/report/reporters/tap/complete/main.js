@@ -1,5 +1,3 @@
-'use strict'
-
 const { getResultType, SEPARATOR } = require('../../../utils')
 const { getReportProps } = require('../../../props')
 const serializer = require('../serializer')

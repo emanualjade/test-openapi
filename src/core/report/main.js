@@ -1,5 +1,3 @@
-'use strict'
-
 const config = require('./config')
 const { start } = require('./start')
 const { complete } = require('./complete')

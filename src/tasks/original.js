@@ -1,5 +1,3 @@
-'use strict'
-
 const { omit } = require('lodash')
 
 // Used to keep original task properties as is in return values and reporting

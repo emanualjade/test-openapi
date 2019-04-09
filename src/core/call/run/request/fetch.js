@@ -1,5 +1,3 @@
-'use strict'
-
 const fetch = require('cross-fetch')
 
 const { removePrefixes } = require('../../../../utils')

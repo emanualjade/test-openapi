@@ -1,5 +1,3 @@
-'use strict'
-
 const { STATUS_REGEXP } = require('./status')
 
 // Make `validate.[STATUS.]headers.*` case-insensitive

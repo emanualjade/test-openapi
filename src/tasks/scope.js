@@ -1,5 +1,3 @@
-'use strict'
-
 const { basename } = require('path')
 
 const { omit } = require('lodash')

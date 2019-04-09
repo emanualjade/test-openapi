@@ -1,5 +1,3 @@
-'use strict'
-
 const { removePrefixes, getPath } = require('../../../utils')
 const { checkSchema } = require('../../../validation')
 

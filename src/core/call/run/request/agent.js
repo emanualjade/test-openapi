@@ -1,5 +1,3 @@
-'use strict'
-
 const { Agent } = require('https')
 
 const moize = require('moize').default

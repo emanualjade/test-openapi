@@ -1,5 +1,3 @@
-'use strict'
-
 // `types` decides whether to show errors, successes, skipped tasks
 // `taskData` decided whether to include task.PLUGIN.*
 //    - `added` means only the added props (i.e. not in `task.config.task.*`)

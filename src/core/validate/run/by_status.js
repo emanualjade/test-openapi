@@ -1,5 +1,3 @@
-'use strict'
-
 const { pickBy, omitBy } = require('lodash')
 
 const { merge, getPath } = require('../../../utils')

@@ -1,5 +1,3 @@
-'use strict'
-
 const { TestOpenApiError } = require('./error')
 
 // If any task failed, throw an error

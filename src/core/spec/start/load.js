@@ -1,5 +1,3 @@
-'use strict'
-
 const SwaggerParser = require('swagger-parser')
 
 const { addErrorHandler, TestOpenApiError } = require('../../../errors')

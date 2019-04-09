@@ -1,5 +1,3 @@
-'use strict'
-
 // Check RegExp string against a value.
 // Can be an array for alternatives.
 const testRegExp = function(regExp, value) {

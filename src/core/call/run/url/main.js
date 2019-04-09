@@ -1,5 +1,3 @@
-'use strict'
-
 const { getServer } = require('./server')
 const { addPath } = require('./path')
 const { addUrlParams } = require('./params')

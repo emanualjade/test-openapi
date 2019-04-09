@@ -1,5 +1,3 @@
-'use strict'
-
 const { incrementSpinner } = require('../../utils')
 
 // Update spinner

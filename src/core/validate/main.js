@@ -1,5 +1,3 @@
-'use strict'
-
 const { run, parseStatus, serializeStatus } = require('./run')
 const config = require('./config')
 

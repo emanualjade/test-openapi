@@ -1,5 +1,3 @@
-'use strict'
-
 // Split a string into an array of strings according to delimiter `regExp`.
 // Non-delimiters and delimiters are alternated.
 // E.g. /-.-/g and 'abc-A-def-B-hij' return ['abc', '-A-', 'def', '-B-', 'hij']

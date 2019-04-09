@@ -1,5 +1,3 @@
-'use strict'
-
 const { getWordsList, sortArray } = require('../../../../utils')
 
 const { replaceByRanges } = require('./range')

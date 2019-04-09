@@ -1,5 +1,3 @@
-'use strict'
-
 const { pick, omitBy } = require('lodash')
 
 const { checkSchema } = require('../../../validation')

@@ -1,5 +1,3 @@
-'use strict'
-
 const { indent, stopSpinner } = require('../../../utils')
 const { LINE } = require('../constants')
 

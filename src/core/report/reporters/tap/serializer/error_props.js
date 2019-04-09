@@ -1,5 +1,3 @@
-'use strict'
-
 const { dump: yamlDump, DEFAULT_FULL_SCHEMA } = require('js-yaml')
 const { omitBy } = require('lodash')
 

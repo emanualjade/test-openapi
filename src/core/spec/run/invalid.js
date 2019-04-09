@@ -1,5 +1,3 @@
-'use strict'
-
 // eslint-disable-next-line import/no-internal-modules
 const { get, set } = require('lodash/fp')
 

@@ -1,5 +1,3 @@
-'use strict'
-
 // From 22 to "22nd", etc.
 const numberToCardinal = function(integer) {
   if (!Number.isInteger(integer) || integer < 1) {

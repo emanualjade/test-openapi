@@ -1,5 +1,3 @@
-'use strict'
-
 const isMergeableObject = require('is-mergeable-object')
 
 const { customMerge } = require('../utils')

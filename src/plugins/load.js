@@ -1,5 +1,3 @@
-'use strict'
-
 const { uniq, difference } = require('lodash')
 
 const { getModule } = require('../modules')

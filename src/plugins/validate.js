@@ -1,5 +1,3 @@
-'use strict'
-
 const { getPath } = require('../utils')
 const { checkIsSchema } = require('../validation')
 

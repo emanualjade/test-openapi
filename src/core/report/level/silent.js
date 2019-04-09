@@ -1,5 +1,3 @@
-'use strict'
-
 const { getResultType } = require('../utils')
 
 // When using `config.report.REPORTER.level: silent`, whole run is silent

@@ -1,5 +1,3 @@
-'use strict'
-
 // eslint-disable-next-line import/no-unresolved, node/no-missing-require
 const { version, homepage } = require('../../../../../../package')
 

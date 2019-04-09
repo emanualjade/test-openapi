@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapValues, mapKeys, omit } = require('lodash')
 
 const { normalizeSchema } = require('./json_schema')

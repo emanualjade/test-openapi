@@ -1,5 +1,3 @@
-'use strict'
-
 const { parseTemplate } = require('../../../template')
 
 const templateHandler = function(error, { pluginsVarsMap }) {

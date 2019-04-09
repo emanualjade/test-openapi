@@ -1,5 +1,3 @@
-'use strict'
-
 const { serialize } = require('./serialize')
 const { addUrl } = require('./url')
 const { request } = require('./request')

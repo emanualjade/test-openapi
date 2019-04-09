@@ -1,5 +1,3 @@
-'use strict'
-
 const { readFile } = require('fs')
 const { promisify } = require('util')
 

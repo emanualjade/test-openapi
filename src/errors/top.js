@@ -1,5 +1,3 @@
-'use strict'
-
 const { handleBugs } = require('./bug')
 
 // Add `error.config` and `error.errors` to every error

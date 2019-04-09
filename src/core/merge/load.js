@@ -1,5 +1,3 @@
-'use strict'
-
 const { omit } = require('lodash')
 
 const { TestOpenApiError, addErrorHandler } = require('../../errors')

@@ -1,5 +1,3 @@
-'use strict'
-
 const { env } = require('process')
 
 const { mapValues } = require('lodash')

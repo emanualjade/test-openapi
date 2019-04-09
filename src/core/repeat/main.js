@@ -1,5 +1,3 @@
-'use strict'
-
 const { run } = require('./run')
 const config = require('./config')
 

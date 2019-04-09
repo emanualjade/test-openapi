@@ -1,5 +1,3 @@
-'use strict'
-
 const { isBugError } = require('./bug')
 
 // Must do this to convert to plain object while keeping non-enumerable

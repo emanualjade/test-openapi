@@ -1,5 +1,3 @@
-'use strict'
-
 const { stdout } = require('process')
 const { createWriteStream } = require('fs')
 

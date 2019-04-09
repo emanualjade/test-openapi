@@ -1,5 +1,3 @@
-'use strict'
-
 // Add `METHOD URL (STATUS)` to reporting
 const getTitle = function({ rawRequest, rawResponse }) {
   const url = getUrl({ rawRequest })

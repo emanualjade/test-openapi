@@ -1,5 +1,3 @@
-'use strict'
-
 const { difference, uniq } = require('lodash')
 
 const { TestOpenApiError } = require('../../../../errors')

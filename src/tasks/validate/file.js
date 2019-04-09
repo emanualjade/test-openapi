@@ -1,5 +1,3 @@
-'use strict'
-
 const { isObject } = require('../../utils')
 const { TestOpenApiError } = require('../../errors')
 

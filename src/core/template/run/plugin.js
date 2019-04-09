@@ -1,5 +1,3 @@
-'use strict'
-
 const { addErrorHandler, BugError } = require('../../../errors')
 const { getPath } = require('../../../utils')
 const { isTemplateName } = require('../../../template')

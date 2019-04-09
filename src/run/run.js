@@ -1,6 +1,4 @@
 /* eslint-disable-line max-lines */
-'use strict'
-
 const { addErrorHandler, TestOpenApiError } = require('../errors')
 const { runHandlers, getTaskReturn } = require('../plugins')
 

@@ -1,5 +1,3 @@
-'use strict'
-
 const { checkArgument } = require('./check')
 
 // Retrieve '# SKIP|TODO' directive for plan or asserts

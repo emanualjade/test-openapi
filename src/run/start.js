@@ -1,5 +1,3 @@
-'use strict'
-
 const { runHandlers } = require('../plugins')
 
 // Run each `plugin.start()`

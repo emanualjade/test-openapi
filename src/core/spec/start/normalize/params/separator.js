@@ -1,5 +1,3 @@
-'use strict'
-
 // Turn OpenAPI `collectionFormat` into `$$random` `x-separator`
 const addSeparator = function({ schema, collectionFormat }) {
   if (collectionFormat === undefined) {

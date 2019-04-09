@@ -1,5 +1,3 @@
-'use strict'
-
 const { getSummary, stopSpinner } = require('../../utils')
 const { isSilentTask } = require('../../level')
 

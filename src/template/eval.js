@@ -1,6 +1,4 @@
 /* eslint-disable-line max-lines */
-'use strict'
-
 const { get } = require('lodash')
 
 const { addErrorHandler } = require('../errors')

@@ -1,5 +1,3 @@
-'use strict'
-
 const notifier = require('node-notifier')
 
 const { getSummary } = require('../../utils')

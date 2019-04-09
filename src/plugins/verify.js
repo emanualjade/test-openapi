@@ -1,5 +1,3 @@
-'use strict'
-
 const { checkSchema } = require('../validation')
 
 // Validate plugin-specific configuration against a JSON schema specified in

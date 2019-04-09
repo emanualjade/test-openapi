@@ -1,5 +1,3 @@
-'use strict'
-
 const jsonSchemaFaker = require('json-schema-faker')
 // eslint-disable-next-line import/no-internal-modules
 const formatRegExps = require('ajv/lib/compile/formats')

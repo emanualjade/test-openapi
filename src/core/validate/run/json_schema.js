@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapValues } = require('lodash')
 
 const { isObject, getPath } = require('../../../utils')

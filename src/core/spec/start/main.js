@@ -1,5 +1,3 @@
-'use strict'
-
 const { groupBy } = require('lodash')
 
 const { loadOpenApiSpec } = require('./load')

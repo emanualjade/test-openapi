@@ -1,5 +1,3 @@
-'use strict'
-
 const { getDirective } = require('./directive')
 const { checkArgument } = require('./check')
 

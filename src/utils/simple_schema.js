@@ -1,5 +1,3 @@
-'use strict'
-
 const { isObject } = require('./types')
 
 // Check if JSON schema is a constant, i.e. `{ enum: [value] }`

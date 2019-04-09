@@ -1,5 +1,3 @@
-'use strict'
-
 const { mapValues, omit, omitBy } = require('lodash')
 
 // Spec parameters are only generated if either:

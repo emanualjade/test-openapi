@@ -1,5 +1,3 @@
-'use strict'
-
 const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
 
 // Parse a HTTP response

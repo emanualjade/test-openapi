@@ -1,5 +1,3 @@
-'use strict'
-
 const { getColors } = require('./colors')
 
 // Create new state object

@@ -1,5 +1,3 @@
-'use strict'
-
 const { TestOpenApiError } = require('../../../errors')
 
 // Only response headers|body that are present in `task.validate.*` are

@@ -1,5 +1,3 @@
-'use strict'
-
 const { filterFormDataMimes } = require('./form_data')
 
 // Get OpenAPI `consumes` and `produces` properties as request headers

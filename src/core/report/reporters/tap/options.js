@@ -1,5 +1,3 @@
-'use strict'
-
 const { green, red, gray, yellow } = require('../../utils')
 
 const serializer = require('./serializer')

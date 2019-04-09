@@ -1,5 +1,3 @@
-'use strict'
-
 const { removeColors } = require('./colors')
 
 // If reported value is too big, we truncate it

@@ -1,4 +1,4 @@
-const { omitBy } = require('lodash')
+import { omitBy } from 'lodash'
 
 // Retrieve the properties from `task.PLUGIN.*` that have been added by this
 // plugin, i.e. not in `originalTask.*`

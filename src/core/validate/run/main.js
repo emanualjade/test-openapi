@@ -1,9 +1,9 @@
-const { normalizeValidate } = require('./normalize')
-const { handleJsonSchemas } = require('./json_schema')
-const { addByStatus } = require('./by_status')
-const { validateStatus } = require('./status')
-const { validateHeaders } = require('./headers')
-const { validateBody } = require('./body')
+import { normalizeValidate } from './normalize.js'
+import { handleJsonSchemas } from './json_schema.js'
+import { addByStatus } from './by_status.js'
+import { validateStatus } from './status.js'
+import { validateHeaders } from './headers.js'
+import { validateBody } from './body.js'
 
 // Validate response against `task.validate.*` JSON schemas
 const run = function({ validate = {}, call, call: { response } = {} }) {

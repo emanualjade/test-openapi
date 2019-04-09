@@ -1,12 +1,12 @@
 /* eslint-disable-line max-lines */
-const { get } = require('lodash')
+import { get } from 'lodash'
 
-const { addErrorHandler } = require('../errors')
-const { crawl, promiseThen, promiseAllThen } = require('../utils')
+import { addErrorHandler } from '../errors.js'
+import { crawl, promiseThen, promiseAllThen } from '../utils.js'
 
-const { parseTemplate, parseEscape } = require('./parse')
-const { checkRecursion } = require('./recursion')
-const { templateHandler } = require('./error')
+import { parseTemplate, parseEscape } from './parse.js'
+import { checkRecursion } from './recursion.js'
+import { templateHandler } from './error.js'
 
 // This is a data templating system.
 // As opposed to most other templating system, it works over (parsed) data

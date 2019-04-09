@@ -1,9 +1,9 @@
 // URL is global starting from Node.js 10
 // TODO: remove when dropping support for Node.js 8 and 9
 // eslint-disable-next-line node/prefer-global/url, no-shadow
-const { URL } = require('url')
+import { URL } from 'url'
 
-const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
+import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 // Escape, normalize and validate the request URL
 const normalizeUrl = function({ url: originalUrl }) {

@@ -1,9 +1,11 @@
-const { difference, omitBy } = require('lodash')
+import { difference, omitBy } from 'lodash'
 
-const { getModule } = require('../../../modules')
+import { getModule } from '../../../modules.js'
 
-const COMMON_OPTIONS_SCHEMA = require('./common_options_schema')
-const REPORTER_SCHEMA = require('./reporter_schema')
+// eslint-disable-next-line import/no-namespace
+import * as COMMON_OPTIONS_SCHEMA from './common_options_schema'
+// eslint-disable-next-line import/no-namespace
+import * as REPORTER_SCHEMA from './reporter_schema'
 
 // Get `startData.report.reporters`
 const getReporters = function({ config }) {

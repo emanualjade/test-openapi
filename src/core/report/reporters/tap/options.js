@@ -1,6 +1,7 @@
-const { green, red, gray, yellow } = require('../../utils')
+import { green, red, gray, yellow } from '../../utils.js'
 
-const serializer = require('./serializer')
+// eslint-disable-next-line import/no-namespace
+import * as serializer from './serializer.js'
 
 // Set TAP state
 const options = function({ _tasks: tasks }) {

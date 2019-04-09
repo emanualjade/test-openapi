@@ -1,11 +1,11 @@
-const chalk = require('chalk')
-const stripAnsi = require('strip-ansi')
-const { mapValues } = require('lodash')
+import chalk from 'chalk'
+import stripAnsi from 'strip-ansi'
+import { mapValues } from 'lodash'
 
-const { isObject } = require('../../../utils')
+import { isObject } from '../../../utils.js'
 
 // Colors used in reporting
-const { yellow, inverse } = chalk
+import { yellow, inverse } = chalk
 
 // eslint-disable-next-line no-magic-numbers
 const red = chalk.rgb(200, 0, 0)

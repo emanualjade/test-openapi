@@ -1,6 +1,6 @@
-const { options } = require('./options')
-const { tick } = require('./tick')
-const { end } = require('./end')
+import { options } from './options.js'
+import { tick } from './tick.js'
+import { end } from './end.js'
 
 module.exports = {
   options,

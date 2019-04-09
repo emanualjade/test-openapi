@@ -1,4 +1,4 @@
 module.exports = {
-  ...require('./check'),
-  ...require('./meta'),
+  ...require('./check.js'),
+  ...require('./meta.js'),
 }

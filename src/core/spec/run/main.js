@@ -1,6 +1,6 @@
-const { getOperation } = require('./operation')
-const { addSpecToCall } = require('./call')
-const { addSpecToValidate } = require('./validate')
+import { getOperation } from './operation.js'
+import { addSpecToCall } from './call.js'
+import { addSpecToValidate } from './validate.js'
 
 // Add OpenAPI specification to `task.call|validate.*`
 // According to `task.spec.definition` and `task.spec.operation`

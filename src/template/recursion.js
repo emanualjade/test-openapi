@@ -1,6 +1,6 @@
-const { isEqual } = require('lodash')
+import { isEqual } from 'lodash'
 
-const { TestOpenApiError } = require('../errors')
+import { TestOpenApiError } from '../errors.js'
 
 // Since templates can return other templates which then get evaluated, we need
 // to check for infinite recursions.

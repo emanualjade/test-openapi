@@ -1,6 +1,6 @@
-const { is: isMime } = require('type-is')
+import { is as isMime } from 'type-is'
 
-const { addErrorHandler, TestOpenApiError } = require('../../errors')
+import { addErrorHandler, TestOpenApiError } from '../../errors.js'
 
 // Retrieve a parser and stringifier for a specific MIME type
 // TODO: replace by real body parsing library and add support for other

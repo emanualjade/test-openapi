@@ -1,8 +1,8 @@
-const { addErrorHandler, BugError } = require('../../../errors')
-const { getPath } = require('../../../utils')
-const { isTemplateName } = require('../../../template')
+import { addErrorHandler, BugError } from '../../../errors.js'
+import { getPath } from '../../../utils.js'
+import { isTemplateName } from '../../../template.js'
 
-const { wrapTemplateVars } = require('./check')
+import { wrapTemplateVars } from './check.js'
 
 // Retrieve all `plugin.template`
 const getPluginsVars = function({ context, context: { _plugins: plugins } }) {

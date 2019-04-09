@@ -1,7 +1,7 @@
-const { serializeOutput } = require('../../serialize')
+import { serializeOutput } from '../../serialize.js'
 
-const { filterTaskData } = require('./level')
-const { callReporters } = require('./call')
+import { filterTaskData } from './level.js'
+import { callReporters } from './call.js'
 
 // Ends reporting
 const end = async function(tasks, context) {

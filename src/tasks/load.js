@@ -1,14 +1,14 @@
-const { readFile } = require('fs')
-const { promisify } = require('util')
+import { readFile } from 'fs'
+import { promisify } from 'util'
 
-const fastGlob = require('fast-glob')
-const { load: loadYaml, JSON_SCHEMA } = require('js-yaml')
-const { sortBy } = require('lodash')
+import fastGlob from 'fast-glob'
+import { load: loadYaml, JSON_SCHEMA } from 'js-yaml'
+import { sortBy } from 'lodash'
 
-const { addErrorHandler, TestOpenApiError } = require('../errors')
+import { addErrorHandler, TestOpenApiError } from '../errors.js'
 
-const { validateFileTasks, validateInlineTasks } = require('./validate')
-const { addScopes, addKey, validateScopes } = require('./scope')
+import { validateFileTasks, validateInlineTasks } from './validate.js'
+import { addScopes, addKey, validateScopes } from './scope.js'
 
 // Load tasks.
 // Tasks are specified as an array of objects instead of a map of objects

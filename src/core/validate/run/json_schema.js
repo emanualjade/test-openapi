@@ -1,7 +1,7 @@
-const { mapValues } = require('lodash')
+import { mapValues } from 'lodash'
 
-const { isObject, getPath } = require('../../../utils')
-const { checkIsSchema } = require('../../../validation')
+import { isObject, getPath } from '../../../utils.js'
+import { checkIsSchema } from '../../../validation.js'
 
 // Handler JSON schemas in `task.validate.headers|body`
 const handleJsonSchemas = function({ validate }) {

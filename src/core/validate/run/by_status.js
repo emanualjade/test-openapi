@@ -1,8 +1,8 @@
-const { pickBy, omitBy } = require('lodash')
+import { pickBy, omitBy } from 'lodash'
 
-const { merge, getPath } = require('../../../utils')
+import { merge, getPath } from '../../../utils.js'
 
-const { STATUS_REGEXP, parseStatus } = require('./status')
+import { STATUS_REGEXP, parseStatus } from './status.js'
 
 // `validate.STATUS.*` is like `validate.*` but as map according to status code.
 // STATUS can use ranges and comma-separated lists like `validate.status`

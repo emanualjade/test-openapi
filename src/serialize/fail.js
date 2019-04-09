@@ -1,7 +1,7 @@
-const { capitalize } = require('underscore.string')
+import { capitalize } from 'underscore.string'
 
-const { getPath } = require('../utils')
-const { convertPlainObject, BugError } = require('../errors')
+import { getPath } from '../utils.js'
+import { convertPlainObject, BugError } from '../errors.js'
 
 // If a value in `task.*` could not be serialized, we add it as `task.error`
 // so it gets properly reported (as opposed to throwing an error)

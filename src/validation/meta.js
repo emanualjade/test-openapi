@@ -1,7 +1,7 @@
-const JSON_SCHEMA_SCHEMA = require('ajv/lib/refs/json-schema-draft-04')
-const { omit } = require('lodash')
+import JSON_SCHEMA_SCHEMA from 'ajv/lib/refs/json-schema-draft-04'
+import { omit } from 'lodash'
 
-const { checkSchema } = require('./check')
+import { checkSchema } from './check.js'
 
 // Like `checkSchema()` but validating that the value is a JSON schema v4
 const checkIsSchema = function(opts) {

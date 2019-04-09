@@ -1,4 +1,4 @@
-const { isObject, getPath } = require('../utils')
+import { isObject, getPath } from '../utils.js'
 
 // Tasks and config are constrained to JSON.
 // Reasons:

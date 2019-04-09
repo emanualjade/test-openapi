@@ -1,4 +1,4 @@
-const { handleBugs } = require('./bug')
+import { handleBugs } from './bug.js'
 
 // Add `error.config` and `error.errors` to every error
 // Also mark exceptions that are probably bugs as such

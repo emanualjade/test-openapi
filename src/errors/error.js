@@ -1,10 +1,10 @@
 // We use classes because that's the most conventional way of extending errors
 /* eslint-disable fp/no-class, fp/no-this */
-const {
+import {
   isSimpleSchema,
   getSimpleSchemaConstant,
   getWordsList,
-} = require('../utils')
+} from '../utils.js'
 
 // Error properties (all might not be present):
 //  - `config` `{object}`: initial configuration object

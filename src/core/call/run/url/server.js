@@ -1,6 +1,6 @@
-const {
+import {
   template: { $$env },
-} = require('../../../template')
+} from '../../../template.js'
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced

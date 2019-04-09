@@ -1,4 +1,4 @@
-const { omit, omitBy } = require('lodash')
+import { omit, omitBy } from 'lodash'
 
 const parseConfig = function({ yargs }) {
   // eslint-disable-next-line id-length

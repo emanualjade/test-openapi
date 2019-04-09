@@ -1,4 +1,4 @@
-const { verifyTask } = require('../../plugins')
+import { verifyTask } from '../../plugins.js'
 
 // Validate plugin-specific configuration
 // Must be done after templating.

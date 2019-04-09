@@ -1,4 +1,4 @@
-const { isBugError } = require('./bug')
+import { isBugError } from './bug.js'
 
 // Must do this to convert to plain object while keeping non-enumerable
 // properties `error.name|message|stack`

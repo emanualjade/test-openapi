@@ -1,5 +1,5 @@
-const { getPath } = require('../utils')
-const { checkIsSchema } = require('../validation')
+import { getPath } from '../utils.js'
+import { checkIsSchema } from '../validation.js'
 
 // Validate export value `config` are JSON schemas
 const validateJsonSchemas = function({ plugin: { name, config = {} } }) {

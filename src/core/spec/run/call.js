@@ -1,13 +1,13 @@
-const { mapValues } = require('lodash')
+import { mapValues } from 'lodash'
 
-const { merge } = require('../../../utils')
-const {
+import { merge } from '../../../utils.js'
+import {
   template: { $$random },
-} = require('../../template')
+} from '../../template.js'
 
-const { getSpecialValues } = require('./special')
-const { removeOptionals } = require('./optional')
-const { setInvalidParams } = require('./invalid')
+import { getSpecialValues } from './special.js'
+import { removeOptionals } from './optional.js'
+import { setInvalidParams } from './invalid.js'
 
 // Add OpenAPI specification parameters to `task.call.*`
 const addSpecToCall = function({ call, operation: { params } }) {

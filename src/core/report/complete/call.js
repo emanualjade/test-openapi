@@ -1,6 +1,6 @@
-const { serializeOutput } = require('../../../serialize')
-const { callReporters } = require('../call')
-const { isSilentTask, filterTaskData } = require('../level')
+import { serializeOutput } from '../../../serialize.js'
+import { callReporters } from '../call.js'
+import { isSilentTask, filterTaskData } from '../level.js'
 
 // Call reporters `complete` handlers
 const callComplete = async function({

@@ -1,4 +1,4 @@
 module.exports = {
-  ...require('./main'),
-  ...require('./status'),
+  ...require('./main.js'),
+  ...require('./status.js'),
 }

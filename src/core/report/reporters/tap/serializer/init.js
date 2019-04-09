@@ -1,4 +1,4 @@
-const { getColors } = require('./colors')
+import { getColors } from './colors.js'
 
 // Create new state object
 const init = function({ count, colors } = {}) {

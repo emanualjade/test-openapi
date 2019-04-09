@@ -1,1 +1,1 @@
-module.exports = require('./run')
+module.exports from './run.js'

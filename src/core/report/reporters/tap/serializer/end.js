@@ -1,4 +1,4 @@
-const { getPlanString } = require('./plan')
+import { getPlanString } from './plan.js'
 
 // Final TAP comments, indicating number of tests|pass|fail|skip
 const end = function({ pass, fail, skip, count: initialCount, colors }) {

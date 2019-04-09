@@ -1,11 +1,11 @@
-const { crawl } = require('../utils')
+import { crawl } from '../utils.js'
 
-const {
+import {
   isJsonType,
   getMessage,
   UNDEFINED,
   ESCAPED_UNDEFINED,
-} = require('./common')
+} from './common.js'
 
 // Applied on input config and tasks
 const parseInput = function(taskOrConfig, throwError) {

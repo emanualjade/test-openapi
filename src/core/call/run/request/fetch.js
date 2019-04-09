@@ -1,9 +1,9 @@
-const fetch = require('cross-fetch')
+import fetch from 'cross-fetch'
 
-const { removePrefixes } = require('../../../../utils')
-const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
+import { removePrefixes } from '../../../../utils.js'
+import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
-const { getAgent } = require('./agent')
+import { getAgent } from './agent.js'
 
 const fireRequest = function({
   rawRequest,

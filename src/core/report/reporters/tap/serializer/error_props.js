@@ -1,7 +1,7 @@
-const { dump: yamlDump, DEFAULT_FULL_SCHEMA } = require('js-yaml')
-const { omitBy } = require('lodash')
+import { dump as yamlDump, DEFAULT_FULL_SCHEMA } from 'js-yaml'
+import { omitBy } from 'lodash'
 
-const { indent } = require('../../../utils')
+import { indent } from '../../../utils.js'
 
 // YAML error properties for each failed assertion
 const getErrorProps = function({ ok, error }) {

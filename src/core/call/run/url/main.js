@@ -1,8 +1,8 @@
-const { getServer } = require('./server')
-const { addPath } = require('./path')
-const { addUrlParams } = require('./params')
-const { normalizeUrl } = require('./normalize')
-const { addQueryParams } = require('./query')
+import { getServer } from './server.js'
+import { addPath } from './path.js'
+import { addUrlParams } from './params.js'
+import { normalizeUrl } from './normalize.js'
+import { addQueryParams } from './query.js'
 
 // Build request URL from request parameters
 const addUrl = function({ call, call: { request, rawRequest } = {} }) {

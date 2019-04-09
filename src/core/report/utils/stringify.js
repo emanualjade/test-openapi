@@ -1,8 +1,8 @@
-const { inspect } = require('util')
+import { inspect } from 'util'
 
-const { highlightAuto } = require('emphasize')
+import { highlightAuto } from 'emphasize'
 
-const { truncate } = require('./truncate')
+import { truncate } from './truncate.js'
 
 // Serialize, colorize, prettify and truncate a value
 const stringify = function(value, { highlight = false } = {}) {

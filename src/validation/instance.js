@@ -1,4 +1,4 @@
-const Ajv = require('ajv')
+import Ajv from 'ajv'
 
 // Retrieve `ajv` instance
 const getInstance = function() {

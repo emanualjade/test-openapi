@@ -1,7 +1,7 @@
-const { mapValues } = require('lodash')
+import { mapValues } from 'lodash'
 
-const { parseFlat } = require('../../../utils')
-const { findBodyHandler } = require('../body')
+import { parseFlat } from '../../../utils.js'
+import { findBodyHandler } from '../body.js'
 
 // Parse response
 const parse = function({

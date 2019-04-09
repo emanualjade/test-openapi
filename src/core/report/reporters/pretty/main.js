@@ -1,7 +1,7 @@
-const { options } = require('./options')
-const { tick } = require('./tick')
-const { complete } = require('./complete')
-const { end } = require('./end')
+import { options } from './options.js'
+import { tick } from './tick.js'
+import { complete } from './complete.js'
+import { end } from './end.js'
 
 module.exports = {
   options,

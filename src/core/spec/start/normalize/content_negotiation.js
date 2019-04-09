@@ -1,4 +1,4 @@
-const { filterFormDataMimes } = require('./form_data')
+import { filterFormDataMimes } from './form_data.js'
 
 // Get OpenAPI `consumes` and `produces` properties as request headers
 const getNegotiationsParams = function({ spec, operation, params }) {

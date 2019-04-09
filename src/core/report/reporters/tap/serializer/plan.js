@@ -1,5 +1,5 @@
-const { getDirective } = require('./directive')
-const { checkArgument } = require('./check')
+import { getDirective } from './directive.js'
+import { checkArgument } from './check.js'
 
 // TAP plan
 const plan = function({ count }) {

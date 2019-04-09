@@ -1,8 +1,8 @@
-const { indent, stopSpinner } = require('../../../utils')
-const { LINE } = require('../constants')
+import { indent, stopSpinner } from '../../../utils.js'
+import { LINE } from '../constants.js'
 
-const { printTasksList } = require('./list')
-const { printSummary } = require('./summary')
+import { printTasksList } from './list.js'
+import { printSummary } from './summary.js'
 
 // Clears spinner and print summarized tasks list and final counters message
 const end = function(tasks, { options, options: { spinner } }) {

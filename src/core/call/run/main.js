@@ -1,7 +1,7 @@
-const { serialize } = require('./serialize')
-const { addUrl } = require('./url')
-const { request } = require('./request')
-const { parse } = require('./parse')
+import { serialize } from './serialize.js'
+import { addUrl } from './url.js'
+import { request } from './request.js'
+import { parse } from './parse.js'
 
 // Does in order:
 //  - serialize request parameters

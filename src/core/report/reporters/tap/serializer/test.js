@@ -1,5 +1,5 @@
-const { assert } = require('./assert')
-const { checkArgument } = require('./check')
+import { assert } from './assert.js'
+import { checkArgument } from './check.js'
 
 // TAP test, i.e. group of asserts
 const test = function(state, testName, asserts = []) {

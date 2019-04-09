@@ -1,6 +1,6 @@
-const SwaggerParser = require('swagger-parser')
+import SwaggerParser from 'swagger-parser'
 
-const { addErrorHandler, TestOpenApiError } = require('../../../errors')
+import { addErrorHandler, TestOpenApiError } from '../../../errors.js'
 
 // Parses an OpenAPI file (including JSON references)
 // Can also be a URL or directly an object

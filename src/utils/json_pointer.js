@@ -1,4 +1,4 @@
-const { getPath } = require('./path')
+import { getPath } from './path.js'
 
 // Transform a JSON pointer into a JavaScript property path
 const jsonPointerToPath = function(jsonPointer) {

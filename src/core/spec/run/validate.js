@@ -1,11 +1,11 @@
-const { mapKeys, difference, intersection } = require('lodash')
-const { STATUS_CODES } = require('statuses')
+import { mapKeys, difference, intersection } from 'lodash'
+import { STATUS_CODES } from 'statuses'
 
-const { TestOpenApiError } = require('../../../errors')
-const { getWordsList, merge } = require('../../../utils')
-const {
+import { TestOpenApiError } from '../../../errors.js'
+import { getWordsList, merge } from '../../../utils.js'
+import {
   utils: { parseStatus, serializeStatus },
-} = require('../../validate')
+} from '../../validate.js'
 
 // Add OpenAPI specification to `task.validate.*`
 // Use the specification response matching both the current operation and

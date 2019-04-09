@@ -1,6 +1,6 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { getPath } = require('../utils')
+import { getPath } from '../utils.js'
 
 // Exceptions thrown during template evaluation
 const templateHandler = function(error, { template, data, path }) {

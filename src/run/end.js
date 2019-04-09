@@ -1,4 +1,4 @@
-const { runHandlers } = require('../plugins')
+import { runHandlers } from '../plugins.js'
 
 // Run each `plugin.end()`
 // They should not throw.

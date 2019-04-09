@@ -1,5 +1,5 @@
-const test = require('ava')
-const execa = require('execa')
+import test from 'ava'
+import execa from 'execa'
 
 const BINARY_PATH = `${__dirname}/../src/bin/index.js`
 const TASKS_FILE = `${__dirname}/tasks.json`

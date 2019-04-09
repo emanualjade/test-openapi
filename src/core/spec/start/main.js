@@ -1,7 +1,7 @@
-const { groupBy } = require('lodash')
+import { groupBy } from 'lodash'
 
-const { loadOpenApiSpec } = require('./load')
-const { normalizeSpec } = require('./normalize')
+import { loadOpenApiSpec } from './load.js'
+import { normalizeSpec } from './normalize.js'
 
 // Parse, validate and normalize OpenAPI specifications (including JSON
 // references) from each `task.spec.definition`, which can be a URL, a file

@@ -1,9 +1,10 @@
-const { uniqBy } = require('lodash')
+import { uniqBy } from 'lodash'
 
-const { TestOpenApiError } = require('../../../../../errors')
-const { locationToKey } = require('../../../../../utils')
+import { TestOpenApiError } from '../../../../../errors.js'
+import { locationToKey } from '../../../../../utils.js'
 
-const IN_TO_LOCATION = require('./in_to_location')
+// eslint-disable-next-line import/no-namespace
+import * as IN_TO_LOCATION from './in_to_location'
 
 // Normalize OpenAPI security request parameters into specification-agnostic
 // format

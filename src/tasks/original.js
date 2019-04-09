@@ -1,4 +1,4 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
 // Used to keep original task properties as is in return values and reporting
 // Does not need to be done before this point, since only used by later

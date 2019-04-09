@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-unresolved, node/no-missing-require
-const { version, homepage } = require('../../../../../../package')
+import { version, homepage } from '../../../../../../package.json'
 
 // Add `User-Agent` request header
 // Can be overriden

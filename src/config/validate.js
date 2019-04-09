@@ -1,6 +1,6 @@
-const { checkSchema } = require('../validation')
+import { checkSchema } from '../validation.js'
 
-const CONFIG_SCHEMA = require('./schema')
+import CONFIG_SCHEMA from './schema.js'
 
 // Validate configuration
 const validateConfig = function({ config }) {

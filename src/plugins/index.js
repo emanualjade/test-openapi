@@ -1,6 +1,6 @@
 module.exports = {
-  ...require('./load'),
-  ...require('./handlers'),
-  ...require('./return'),
-  ...require('./verify'),
+  ...require('./load.js'),
+  ...require('./handlers.js'),
+  ...require('./return.js'),
+  ...require('./verify.js'),
 }

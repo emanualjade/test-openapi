@@ -1,4 +1,4 @@
-const { isObject } = require('./types')
+import { isObject } from './types.js'
 
 // Check if JSON schema is a constant, i.e. `{ enum: [value] }`
 const isSimpleSchema = function(schema) {

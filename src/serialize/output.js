@@ -1,13 +1,13 @@
-const { crawl } = require('../utils')
-const { convertPlainObject } = require('../errors')
+import { crawl } from '../utils.js'
+import { convertPlainObject } from '../errors.js'
 
-const { addSerializeFail } = require('./fail')
-const {
+import { addSerializeFail } from './fail.js'
+import {
   isJsonType,
   getMessage,
   UNDEFINED,
   ESCAPED_UNDEFINED,
-} = require('./common')
+} from './common.js'
 
 // Applied on tasks output, i.e. what is reported and returned
 const serializeOutput = function({ task, plugins }) {

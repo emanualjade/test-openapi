@@ -1,4 +1,4 @@
-const { isObject } = require('../../../../../utils')
+import { isObject } from '../../../../../utils.js'
 
 // Check input arguments
 const checkArgument = function(value, type) {

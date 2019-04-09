@@ -1,6 +1,7 @@
-const METHODS = require('methods')
+import METHODS from 'methods'
 
-const config = require('./config.json')
+// eslint-disable-next-line import/no-namespace
+import * as config from './config_data'
 
 const UPPERCASE_METHODS = METHODS.map(method => method.toUpperCase())
 

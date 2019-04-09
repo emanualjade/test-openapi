@@ -1,5 +1,5 @@
-const { addErrorHandler } = require('../errors')
-const { runHandlers } = require('../plugins')
+import { addErrorHandler } from '../errors.js'
+import { runHandlers } from '../plugins.js'
 
 // Run each `plugin.complete()`
 const completeTask = async function({ task, context, plugins }) {

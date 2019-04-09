@@ -1,4 +1,4 @@
-const deepMerge = require('deepmerge')
+import deepMerge from 'deepmerge'
 
 // We need a deep merge utility that:
 //  - shallow merges arrays, i.e. `{ a: [1] }` + `{ a: [2] }` = `{ a: [2] }`

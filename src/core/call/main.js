@@ -1,6 +1,6 @@
-const { config } = require('./config.js')
-const { report } = require('./report')
-const { run } = require('./run')
+import { config } from './config.js'
+import { report } from './report.js'
+import { run } from './run.js'
 
 module.exports = {
   config,

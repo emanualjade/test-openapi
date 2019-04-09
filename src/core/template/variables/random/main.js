@@ -1,9 +1,9 @@
-const jsonSchemaFaker = require('json-schema-faker')
+import jsonSchemaFaker from 'json-schema-faker'
 
-const { stringifyFlat } = require('../../../../utils')
-const { checkIsSchema } = require('../../../../validation')
+import { stringifyFlat } from '../../../../utils.js'
+import { checkIsSchema } from '../../../../validation.js'
 
-const { addCustomFormats } = require('./format')
+import { addCustomFormats } from './format.js'
 
 // Generate random value based on a single JSON schema
 const random = function(schema) {

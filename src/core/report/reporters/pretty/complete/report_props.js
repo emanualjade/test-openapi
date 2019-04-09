@@ -1,13 +1,13 @@
-const { capitalize } = require('underscore.string')
+import { capitalize } from 'underscore.string'
 
-const { isObject } = require('../../../../../utils')
-const {
+import { isObject } from '../../../../../utils.js'
+import {
   yellow,
   orange,
   indent,
   indentValue,
   stringify,
-} = require('../../../utils')
+} from '../../../utils.js'
 
 // Print/prettify all `plugin.report()` return values
 const printReportProps = function({ reportProps, resultType }) {

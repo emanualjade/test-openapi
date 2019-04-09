@@ -1,4 +1,4 @@
-const yargs = require('yargs')
+import yargs from 'yargs'
 
 const defineCli = function() {
   return yargs

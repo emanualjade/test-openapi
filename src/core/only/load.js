@@ -1,5 +1,5 @@
-const { TestOpenApiError, addErrorHandler } = require('../../errors')
-const { testRegExp } = require('../../utils')
+import { TestOpenApiError, addErrorHandler } from '../../errors.js'
+import { testRegExp } from '../../utils.js'
 
 // `config.only: 'RegExp' or ['RegExp', ...]` will only run tasks whose
 // name matches.

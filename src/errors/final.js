@@ -1,4 +1,4 @@
-const { TestOpenApiError } = require('./error')
+import { TestOpenApiError } from './error.js'
 
 // If any task failed, throw an error
 const handleFinalFailure = function({ tasks }) {

@@ -1,5 +1,5 @@
-const { getSummary, yellow } = require('../../../utils')
-const { NAMES } = require('../constants')
+import { getSummary, yellow } from '../../../utils.js'
+import { NAMES } from '../constants.js'
 
 // Print final reporting message with counter of passed|failed|skipped tasks
 const printSummary = function({ tasks }) {

@@ -1,9 +1,9 @@
-const { omitBy } = require('lodash')
+import { omitBy } from 'lodash'
 
-const { TestOpenApiError, BugError } = require('../errors')
-const { crawl, isObject } = require('../utils')
+import { TestOpenApiError, BugError } from '../errors.js'
+import { crawl, isObject } from '../utils.js'
 
-const { validateFromSchema } = require('./validate')
+import { validateFromSchema } from './validate.js'
 
 // Validate against JSON schema and on failure throw error with
 // `error.value|schema|property` set accordingly

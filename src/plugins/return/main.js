@@ -1,8 +1,8 @@
-const { omitBy } = require('lodash')
+import { omitBy } from 'lodash'
 
-const { isObject } = require('../../utils')
+import { isObject } from '../../utils.js'
 
-const { getAddedProps } = require('./added')
+import { getAddedProps } from './added.js'
 
 // Each task plugin returns itself (i.e. `task.PLUGIN_NAME`):
 //  - task config properties (i.e. specified in `plugin.config.task.*`) are

@@ -1,8 +1,8 @@
-const { basename } = require('path')
+import { basename } from 'path'
 
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { TestOpenApiError } = require('../errors')
+import { TestOpenApiError } from '../errors.js'
 
 // Add `task.scope`.
 // It is the filename without file extensions.

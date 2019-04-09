@@ -1,6 +1,6 @@
-const { getResultType, gray, indent } = require('../../../utils')
-const { isSilentType } = require('../../../level')
-const { LINE, COLORS, MARKS } = require('../constants')
+import { getResultType, gray, indent } from '../../../utils.js'
+import { isSilentType } from '../../../level.js'
+import { LINE, COLORS, MARKS } from '../constants.js'
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,
 // then failed tasks names + error messages

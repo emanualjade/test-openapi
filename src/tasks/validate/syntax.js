@@ -1,6 +1,6 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { TestOpenApiError } = require('../../errors')
+import { TestOpenApiError } from '../../errors.js'
 
 // Validate syntax of task files
 const validateTasksSyntax = function({ tasks }) {

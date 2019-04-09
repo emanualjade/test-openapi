@@ -1,5 +1,5 @@
-const { load } = require('./load')
-const config = require('./config')
+import { load } from './load.js'
+import config from './config.js'
 
 module.exports = {
   config,

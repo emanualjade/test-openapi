@@ -1,8 +1,8 @@
-const { getResultType, clearSpinner } = require('../../../utils')
-const { getReportProps } = require('../../../props')
+import { getResultType, clearSpinner } from '../../../utils.js'
+import { getReportProps } from '../../../props.js'
 
-const { getHeader } = require('./header')
-const { printReportProps } = require('./report_props')
+import { getHeader } from './header.js'
+import { printReportProps } from './report_props.js'
 
 // Print task errors and update spinner
 const complete = function(task, { options: { spinner }, silent, ...context }) {

@@ -1,4 +1,4 @@
-const { getResultType } = require('./result_type')
+import { getResultType } from './result_type.js'
 
 // Retrieve `tasks` summarized numbers
 const getSummary = function({ tasks }) {

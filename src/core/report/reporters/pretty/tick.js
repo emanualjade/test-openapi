@@ -1,4 +1,4 @@
-const { incrementSpinner } = require('../../utils')
+import { incrementSpinner } from '../../utils.js'
 
 // Update spinner
 const tick = function({ options: { spinner } }) {

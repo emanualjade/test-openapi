@@ -1,9 +1,9 @@
-const { TestOpenApiError } = require('../errors')
-const { getPath } = require('../utils')
-const { parseInput } = require('../serialize')
+import { TestOpenApiError } from '../errors.js'
+import { getPath } from '../utils.js'
+import { parseInput } from '../serialize.js'
 
-const { loadTasks } = require('./load')
-const { validateTasksSyntax } = require('./validate')
+import { loadTasks } from './load.js'
+import { validateTasksSyntax } from './validate.js'
 
 // Retrieve tasks as an array of normalized task objects
 const getTasks = async function({ config: { tasks } }) {

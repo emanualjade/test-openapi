@@ -1,6 +1,6 @@
-const jsonSchemaFaker = require('json-schema-faker')
+import jsonSchemaFaker from 'json-schema-faker'
 // eslint-disable-next-line import/no-internal-modules
-const formatRegExps = require('ajv/lib/compile/formats')
+import formatRegExps from 'ajv/lib/compile/formats'
 
 // Allow `json-schema-faker` to use all the `format` that `ajv` can handle,
 // except `regexp`. Note that AJV does not support JSON schema v7 formats

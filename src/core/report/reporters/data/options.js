@@ -1,4 +1,4 @@
-const { startSpinner } = require('../../utils')
+import { startSpinner } from '../../utils.js'
 
 // Add a CLI spinner updated with each complete task
 const options = function({ _tasks: tasks }) {

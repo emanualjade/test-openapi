@@ -1,7 +1,7 @@
-const { TestOpenApiError } = require('../../../../errors')
+import { TestOpenApiError } from '../../../../errors.js'
 
-const { parseStatus } = require('./parse')
-const { normalizeStatuses } = require('./normalize')
+import { parseStatus } from './parse.js'
+import { normalizeStatuses } from './normalize.js'
 
 // Validates response status code
 const validateStatus = function({

@@ -1,5 +1,5 @@
-const { runHandlers } = require('../plugins')
-const { addOriginalTasks } = require('../tasks')
+import { runHandlers } from '../plugins.js'
+import { addOriginalTasks } from '../tasks.js'
 
 // Run each `plugin.load()`
 // Goal is to modify `tasks`.

@@ -1,5 +1,6 @@
-const { load } = require('./load')
-const config = require('./config')
+import { load } from './load.js'
+// eslint-disable-next-line import/no-namespace
+import * as config from './config'
 
 module.exports = {
   config,

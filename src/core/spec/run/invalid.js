@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-internal-modules
-const { get, set } = require('lodash/fp')
+import { get, set } from 'lodash/fp'
 
 // Inverse OpenAPI params where `call.*: invalid` was used
 const setInvalidParams = function({ params, specialValues: { invalid } }) {

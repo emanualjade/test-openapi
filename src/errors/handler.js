@@ -1,4 +1,4 @@
-const keepFuncProps = require('keep-func-props')
+import keepFuncProps from 'keep-func-props'
 
 // Wrap a function with a error handler
 // Allow passing an empty error handler, i.e. ignoring any error thrown

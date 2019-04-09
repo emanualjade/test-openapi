@@ -1,4 +1,4 @@
-const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
+import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 // Parse a HTTP response
 const getRawResponse = async function({

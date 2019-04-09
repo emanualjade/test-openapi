@@ -1,8 +1,8 @@
-const isMergeableObject = require('is-mergeable-object')
+import isMergeableObject from 'is-mergeable-object'
 
-const { customMerge } = require('../utils')
+import { customMerge } from '../utils.js'
 
-const { isTemplate } = require('./parse')
+import { isTemplate } from './parse.js'
 
 // Deep merge that never merges templates deeply
 const merge = function(...objects) {

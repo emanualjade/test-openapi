@@ -1,4 +1,4 @@
-const { parseTemplate } = require('../../../template')
+import { parseTemplate } from '../../../template.js'
 
 const templateHandler = function(error, { pluginsVarsMap }) {
   if (error.property !== undefined) {

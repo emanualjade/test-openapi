@@ -1,10 +1,11 @@
-const { pick, omitBy } = require('lodash')
+import { pick, omitBy } from 'lodash'
 
-const { checkSchema } = require('../../../validation')
-const { isSilent, normalizeLevel } = require('../level')
+import { checkSchema } from '../../../validation.js'
+import { isSilent, normalizeLevel } from '../level.js'
 
-const COMMON_OPTIONS_SCHEMA = require('./common_options_schema')
-const { normalizeOutput } = require('./output')
+// eslint-disable-next-line import/no-namespace
+import * as COMMON_OPTIONS_SCHEMA from './common_options_schema'
+import { normalizeOutput } from './output.js'
 
 // Add `config.report.REPORTER.*` as `reporter.options`
 const addOptions = async function({ reporters, config, context }) {

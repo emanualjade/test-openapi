@@ -1,8 +1,8 @@
 module.exports = {
-  ...require('./init'),
-  ...require('./start'),
-  ...require('./test'),
-  ...require('./assert'),
-  ...require('./comment'),
-  ...require('./end'),
+  ...require('./init.js'),
+  ...require('./start.js'),
+  ...require('./test.js'),
+  ...require('./assert.js'),
+  ...require('./comment.js'),
+  ...require('./end.js'),
 }

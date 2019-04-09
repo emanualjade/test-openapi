@@ -1,4 +1,4 @@
-const { checkArgument } = require('./check')
+import { checkArgument } from './check.js'
 
 // TAP comment
 const comment = function({ colors }, commentString) {

@@ -1,11 +1,11 @@
-const { difference, uniq } = require('lodash')
+import { difference, uniq } from 'lodash'
 
-const { TestOpenApiError } = require('../../../../errors')
-const { sortArray } = require('../../../../utils')
+import { TestOpenApiError } from '../../../../errors.js'
+import { sortArray } from '../../../../utils.js'
 
-const { parseRanges, replaceByRanges } = require('./range')
-const { VALID_STATUSES } = require('./valid')
-const { normalizeStatuses } = require('./normalize')
+import { parseRanges, replaceByRanges } from './range.js'
+import { VALID_STATUSES } from './valid.js'
+import { normalizeStatuses } from './normalize.js'
 
 // Parse `validate.status` into an array of possible statuses
 const parseStatus = function({ status, property }) {

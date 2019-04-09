@@ -1,4 +1,4 @@
-const { checkArgument } = require('./check')
+import { checkArgument } from './check.js'
 
 // Retrieve '# SKIP|TODO' directive for plan or asserts
 const getDirective = function({ directive = {} }) {

@@ -1,7 +1,7 @@
-const openapiToJsonSchema = require('openapi-schema-to-json-schema')
-const { omit } = require('lodash')
+import openapiToJsonSchema from 'openapi-schema-to-json-schema'
+import { omit } from 'lodash'
 
-const { crawl } = require('../../../../utils')
+import { crawl } from '../../../../utils.js'
 
 // OpenAPI schemas are not 100% valid JSON schemas v4, so we use a library to
 // convert them

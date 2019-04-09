@@ -1,5 +1,5 @@
-const { isObject } = require('../../utils')
-const { TestOpenApiError } = require('../../errors')
+import { isObject } from '../../utils.js'
+import { TestOpenApiError } from '../../errors.js'
 
 // Validate content of tasks specified inline
 const validateInlineTasks = function({ tasks }) {

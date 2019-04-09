@@ -1,7 +1,7 @@
-const { callReporters } = require('../call')
+import { callReporters } from '../call.js'
 
-const { getReporters } = require('./reporters')
-const { addOptions } = require('./options')
+import { getReporters } from './reporters.js'
+import { addOptions } from './options.js'
 
 // Starts reporting
 const start = async function(startData, context) {

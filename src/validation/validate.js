@@ -1,12 +1,12 @@
 /* eslint-disable-line max-lines */
-const Ajv = require('ajv')
-const moize = require('moize').default
-const { get, omitBy } = require('lodash')
-const { capitalize } = require('underscore.string')
+import Ajv from 'ajv'
+import moize from 'moize'
+import { get, omitBy } from 'lodash'
+import { capitalize } from 'underscore.string'
 
-const { jsonPointerToParts, getPath } = require('../utils')
+import { jsonPointerToParts, getPath } from '../utils.js'
 
-const { defaultInstance } = require('./instance')
+import { defaultInstance } from './instance.js'
 
 // Wrapper around AJV validate() that augments its error return value:
 //  - error.message: better error message.

@@ -1,10 +1,11 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { locationToKey } = require('../../../../../utils')
-const { normalizeSchema } = require('../json_schema')
+import { locationToKey } from '../../../../../utils.js'
+import { normalizeSchema } from '../json_schema.js'
 
-const IN_TO_LOCATION = require('./in_to_location')
-const { addSeparator } = require('./separator')
+// eslint-disable-next-line import/no-namespace
+import * as IN_TO_LOCATION from './in_to_location'
+import { addSeparator } from './separator.js'
 
 // From OpenAPI request `parameters` to normalized format
 const normalizeParams = function({ params }) {

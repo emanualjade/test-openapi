@@ -1,8 +1,8 @@
-const { Agent } = require('https')
+import { Agent } from 'https'
 
-const moize = require('moize').default
+import moize from 'moize'
 
-const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
+import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 // Allow passing HTTPS options, e.g. for self-signed certificates, etc.
 const getAgent = function({ https = {}, url }) {

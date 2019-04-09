@@ -1,5 +1,5 @@
-const { getSummary, stopSpinner } = require('../../utils')
-const { isSilentTask } = require('../../level')
+import { getSummary, stopSpinner } from '../../utils.js'
+import { isSilentTask } from '../../level.js'
 
 // JSON reporter
 const end = function(tasks, { options, options: { spinner } }) {

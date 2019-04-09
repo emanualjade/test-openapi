@@ -1,8 +1,10 @@
-const config = require('./config')
-const { start } = require('./start')
-const { complete } = require('./complete')
-const { end } = require('./end')
-const utils = require('./utils')
+// eslint-disable-next-line import/no-namespace
+import * as config from './config'
+import { start } from './start.js'
+import { complete } from './complete.js'
+import { end } from './end.js'
+// eslint-disable-next-line import/no-namespace
+import * as utils from './utils.js'
 
 module.exports = {
   config,

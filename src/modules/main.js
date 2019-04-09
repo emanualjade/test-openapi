@@ -1,5 +1,5 @@
-const { addErrorHandler, TestOpenApiError, BugError } = require('../errors')
-const { checkSchema } = require('../validation')
+import { addErrorHandler, TestOpenApiError, BugError } from '../errors.js'
+import { checkSchema } from '../validation.js'
 
 // A module is either a plugin or a reporter
 const getModule = function(name, info) {
@@ -19,6 +19,7 @@ const getModule = function(name, info) {
 // TODO: `require(`${modulePrefix}${name}`)` instead
 // Can only done once we moved core plugins/reporters to separate repositories
 const loadModule = function({ name, info: { corePath } }) {
+  // TODO: replace with `import()` once it is supported by default by ESLint
   // eslint-disable-next-line import/no-dynamic-require
   const moduleObj = require(`${corePath}${name}`)
   return { ...moduleObj, name }

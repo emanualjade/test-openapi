@@ -1,4 +1,4 @@
-const { isSimpleSchema } = require('../../../utils')
+import { isSimpleSchema } from '../../../utils.js'
 
 // Add core `reportProps`
 const addCoreReportProps = function({ reportProps, task }) {

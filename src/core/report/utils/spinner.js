@@ -1,4 +1,4 @@
-const ora = require('ora')
+import ora from 'ora'
 
 // CLI spinner showing `INDEX/TOTAL` next to it (like a progress bar)
 // Start the spinner

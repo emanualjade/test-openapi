@@ -1,8 +1,8 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { TestOpenApiError, addErrorHandler } = require('../../errors')
-const { testRegExp } = require('../../utils')
-const { merge: mergeWithTemplates } = require('../../template')
+import { TestOpenApiError, addErrorHandler } from '../../errors.js'
+import { testRegExp } from '../../utils.js'
+import { merge: mergeWithTemplates } from '../../template.js'
 
 // Merge tasks whose name include RegExp matching other task names.
 // I.e. special task name to allow for shared properties

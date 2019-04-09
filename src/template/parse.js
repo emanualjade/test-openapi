@@ -1,4 +1,4 @@
-const { isObject, searchRegExp } = require('../utils')
+import { isObject, searchRegExp } from '../utils.js'
 
 // Parse:
 //  - `$$name` into `{ type: 'value', name: '$$name' }`

@@ -1,7 +1,7 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { getParams } = require('./params')
-const { normalizeResponses } = require('./response')
+import { getParams } from './params.js'
+import { normalizeResponses } from './response.js'
 
 // Normalize OpenAPI 2.0 operation into specification-agnostic format
 const normalizeSpec = function({ spec }) {

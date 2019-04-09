@@ -1,6 +1,6 @@
-const METHODS = require('methods')
+import METHODS from 'methods'
 
-const { TestOpenApiError } = require('../../../../errors')
+import { TestOpenApiError } from '../../../../errors.js'
 
 // Validate `task.call.method` and add default value
 const normalizeMethod = function({ call, call: { method = DEFAULT_METHOD } }) {

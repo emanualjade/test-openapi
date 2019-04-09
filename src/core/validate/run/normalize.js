@@ -1,4 +1,4 @@
-const { STATUS_REGEXP } = require('./status')
+import { STATUS_REGEXP } from './status.js'
 
 // Make `validate.[STATUS.]headers.*` case-insensitive
 // Also remove `undefined` validate values

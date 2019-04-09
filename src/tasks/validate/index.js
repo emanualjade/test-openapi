@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./file'),
-  ...require('./inline'),
-  ...require('./syntax'),
+  ...require('./file.js'),
+  ...require('./inline.js'),
+  ...require('./syntax.js'),
 }

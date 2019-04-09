@@ -1,4 +1,4 @@
-const { mapValues, omit, omitBy } = require('lodash')
+import { mapValues, omit, omitBy } from 'lodash'
 
 // Spec parameters are only generated if either:
 //  - they are required

@@ -1,8 +1,8 @@
-const { env } = require('process')
+import { env } from 'process'
 
-const { mapValues } = require('lodash')
+import { mapValues } from 'lodash'
 
-const { parseFlat } = require('../../../utils')
+import { parseFlat } from '../../../utils.js'
 
 // `$$env.envVarName` template function
 // Replaced by `process.env.envVarName`

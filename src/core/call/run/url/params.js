@@ -1,7 +1,7 @@
-const { parse, tokensToFunction } = require('path-to-regexp')
+import { parse, tokensToFunction } from 'path-to-regexp'
 
-const { removePrefixes, getPath } = require('../../../../utils')
-const { addErrorHandler, TestOpenApiError } = require('../../../../errors')
+import { removePrefixes, getPath } from '../../../../utils.js'
+import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
 
 // Replace `url` request parameters to the request URL.
 // Can replace in both `task.call.server` and `task.call.path`

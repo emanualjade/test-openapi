@@ -1,7 +1,8 @@
 // `types` decides whether to show errors, successes, skipped tasks
 // `taskData` decided whether to include task.PLUGIN.*
 //    - `added` means only the added props (i.e. not in `task.config.task.*`)
-const LEVELS = require('./levels')
+// eslint-disable-next-line import/no-namespace
+import * as LEVELS from './levels'
 
 // Normalize `config.report.REPORTER.level`
 // The reporting level should affect individual tasks reporting, not the summary

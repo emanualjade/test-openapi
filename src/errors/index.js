@@ -1,8 +1,8 @@
 module.exports = {
-  ...require('./error'),
-  ...require('./handler'),
-  ...require('./convert'),
-  ...require('./final'),
-  ...require('./top'),
-  ...require('./bug'),
+  ...require('./error.js'),
+  ...require('./handler.js'),
+  ...require('./convert.js'),
+  ...require('./final.js'),
+  ...require('./top.js'),
+  ...require('./bug.js'),
 }

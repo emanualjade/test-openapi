@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./eval'),
-  ...require('./merge'),
-  ...require('./parse'),
+  ...require('./eval.js'),
+  ...require('./merge.js'),
+  ...require('./parse.js'),
 }

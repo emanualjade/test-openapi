@@ -1,6 +1,6 @@
-const { callReporters } = require('../call')
+import { callReporters } from '../call.js'
 
-const { callComplete } = require('./call')
+import { callComplete } from './call.js'
 
 // Reporting for each task.
 // We ensure reporting output has same order as tasks definition.

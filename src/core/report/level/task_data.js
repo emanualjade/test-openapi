@@ -1,6 +1,6 @@
-const { omit } = require('lodash')
+import { omit } from 'lodash'
 
-const { isObject } = require('../../../utils')
+import { isObject } from '../../../utils.js'
 
 // Apply `config.report.REPORTER.level` to remove some `task.PLUGIN.*`
 // Use `task.originalTask` but do not keep it

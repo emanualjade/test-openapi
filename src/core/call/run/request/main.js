@@ -1,5 +1,5 @@
-const { fireRequest } = require('./fetch')
-const { getRawResponse } = require('./response')
+import { fireRequest } from './fetch.js'
+import { getRawResponse } from './response.js'
 
 // Fire actual HTTP call
 const request = async function({ call, call: { rawRequest } = {} }) {

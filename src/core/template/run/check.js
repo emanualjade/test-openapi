@@ -1,8 +1,8 @@
-const { pickBy, omitBy, mapKeys, mapValues } = require('lodash')
+import { pickBy, omitBy, mapKeys, mapValues } from 'lodash'
 
-const { BugError, TestOpenApiError } = require('../../../errors')
-const { getPath, numberToCardinal } = require('../../../utils')
-const { checkSchema } = require('../../../validation')
+import { BugError, TestOpenApiError } from '../../../errors.js'
+import { getPath, numberToCardinal } from '../../../utils.js'
+import { checkSchema } from '../../../validation.js'
 
 // Wrap template helper functions with JSON schema validation from
 // `plugin.config['template.*']`

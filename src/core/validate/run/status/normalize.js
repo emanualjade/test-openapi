@@ -1,6 +1,6 @@
-const { getWordsList, sortArray } = require('../../../../utils')
+import { getWordsList, sortArray } from '../../../../utils.js'
 
-const { replaceByRanges } = require('./range')
+import { replaceByRanges } from './range.js'
 
 // Normalize status for error reporting
 const normalizeStatuses = function(statuses) {

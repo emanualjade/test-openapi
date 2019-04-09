@@ -1,17 +1,17 @@
-const {
+import {
   addErrorHandler,
   topLevelHandler,
   handleFinalFailure,
-} = require('../errors')
-const { loadConfig } = require('../config')
-const { getTasks, removeOriginalTasks } = require('../tasks')
-const { loadPlugins } = require('../plugins')
+} from '../errors.js'
+import { loadConfig } from '../config.js'
+import { getTasks, removeOriginalTasks } from '../tasks.js'
+import { loadPlugins } from '../plugins.js'
 
-const { loadTasks } = require('./load')
-const { startTasks } = require('./start')
-const { runTask } = require('./run')
-const { completeTask } = require('./complete')
-const { endTasks } = require('./end')
+import { loadTasks } from './load.js'
+import { startTasks } from './start.js'
+import { runTask } from './run.js'
+import { completeTask } from './complete.js'
+import { endTasks } from './end.js'
 
 // Main entry point
 // Does in order:

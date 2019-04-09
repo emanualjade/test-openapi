@@ -1,8 +1,9 @@
-const { options } = require('./options')
-const { start } = require('./start')
-const { complete } = require('./complete')
-const { end } = require('./end')
-const config = require('./config')
+import { options } from './options.js'
+import { start } from './start.js'
+import { complete } from './complete.js'
+import { end } from './end.js'
+// eslint-disable-next-line import/no-namespace
+import * as config from './config.js'
 
 module.exports = {
   config,

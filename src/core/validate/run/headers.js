@@ -1,7 +1,7 @@
-const { removePrefixes, getPath } = require('../../../utils')
-const { checkSchema } = require('../../../validation')
+import { removePrefixes, getPath } from '../../../utils.js'
+import { checkSchema } from '../../../validation.js'
 
-const { checkRequired } = require('./required')
+import { checkRequired } from './required.js'
 
 // Validates response headers
 const validateHeaders = function({ validate, response }) {

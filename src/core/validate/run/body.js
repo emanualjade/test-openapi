@@ -1,6 +1,6 @@
-const { checkSchema } = require('../../../validation')
+import { checkSchema } from '../../../validation.js'
 
-const { checkRequired } = require('./required')
+import { checkRequired } from './required.js'
 
 // Validates response body
 const validateBody = function({

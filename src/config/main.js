@@ -1,11 +1,11 @@
-const { omitBy } = require('lodash')
+import { omitBy } from 'lodash'
 
-const { TestOpenApiError } = require('../errors')
-const { getPath } = require('../utils')
-const { parseInput } = require('../serialize')
+import { TestOpenApiError } from '../errors.js'
+import { getPath } from '../utils.js'
+import { parseInput } from '../serialize.js'
 
-const { validateConfig } = require('./validate')
-const DEFAULT_CONFIG = require('./defaults')
+import { validateConfig } from './validate.js'
+import DEFAULT_CONFIG from './defaults.js'
 
 // Load and normalize configuration
 const loadConfig = function({ config }) {

@@ -1,11 +1,11 @@
-const { pick, omit } = require('lodash')
+import { pick, omit } from 'lodash'
 
-const { promiseThen } = require('../../../utils')
-const { addErrorHandler } = require('../../../errors')
-const { evalTemplate } = require('../../../template')
+import { promiseThen } from '../../../utils.js'
+import { addErrorHandler } from '../../../errors.js'
+import { evalTemplate } from '../../../template.js'
 
-const { getPluginsVars } = require('./plugin')
-const { templateHandler } = require('./error')
+import { getPluginsVars } from './plugin.js'
+import { templateHandler } from './error.js'
 
 // Substitute templates `{ $$name: arg }` and `$$name` for dynamic values.
 // Including in deep properties.

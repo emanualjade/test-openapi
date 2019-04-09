@@ -1,10 +1,10 @@
-const { merge } = require('../../../../../utils')
-const { getNegotiationsParams } = require('../content_negotiation')
+import { merge } from '../../../../../utils.js'
+import { getNegotiationsParams } from '../content_negotiation.js'
 
-const { normalizeParams } = require('./normalize')
-const { normalizeFormData } = require('./form_data')
-const { getSecParams } = require('./security')
-const { getConstants } = require('./constants')
+import { normalizeParams } from './normalize.js'
+import { normalizeFormData } from './form_data.js'
+import { getSecParams } from './security.js'
+import { getConstants } from './constants.js'
 
 // Normalize OpenAPI request parameters into specification-agnostic format
 const getParams = function({

@@ -1,4 +1,4 @@
-const { removePrefixes } = require('../../../../utils')
+import { removePrefixes } from '../../../../utils.js'
 
 // Add `query` request parameters to the request URL
 const addQueryParams = function({ url, rawRequest }) {

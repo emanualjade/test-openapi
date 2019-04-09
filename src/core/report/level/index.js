@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./normalize'),
-  ...require('./silent'),
-  ...require('./task_data'),
+  ...require('./normalize.js'),
+  ...require('./silent.js'),
+  ...require('./task_data.js'),
 }

@@ -1,8 +1,8 @@
-const { omit, omitBy } = require('lodash')
+import { omit, omitBy } from 'lodash'
 
-const { isObject, merge } = require('../../../utils')
+import { isObject, merge } from '../../../utils.js'
 
-const { addCoreReportProps } = require('./core')
+import { addCoreReportProps } from './core.js'
 
 // Get plugin-specific properties printed on reporting
 const getReportProps = function({ task, context }) {

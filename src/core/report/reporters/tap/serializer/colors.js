@@ -1,7 +1,7 @@
-const { constructor: Chalk } = require('chalk')
-const { get, mapValues } = require('lodash')
+import { constructor as Chalk } from 'chalk'
+import { get, mapValues } from 'lodash'
 
-const { isObject } = require('../../../../../utils')
+import { isObject } from '../../../../../utils.js'
 
 // Used for colored output
 // `opts.colors: false` can be used to disable it

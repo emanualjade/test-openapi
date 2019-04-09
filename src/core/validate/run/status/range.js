@@ -1,6 +1,6 @@
-const { difference, uniq } = require('lodash')
+import { difference, uniq } from 'lodash'
 
-const { VALID_STATUSES_MAP } = require('./valid')
+import { VALID_STATUSES_MAP } from './valid.js'
 
 // `validate.status` can be `1xx`, `2xx`, `3xx`, `4xx` or `5xx`,
 // case-insensitively

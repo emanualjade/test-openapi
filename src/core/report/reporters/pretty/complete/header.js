@@ -1,6 +1,6 @@
-const cliTruncate = require('cli-truncate')
+import cliTruncate from 'cli-truncate'
 
-const {
+import {
   red,
   inverse,
   indent,
@@ -8,8 +8,8 @@ const {
   FULL_UPPER_LINE,
   LINE_SIZE,
   HORIZONTAL_LINE,
-} = require('../../../utils')
-const { MARKS, COLORS } = require('../constants')
+} from '../../../utils.js'
+import { MARKS, COLORS } from '../constants.js'
 
 // Header of the the message, with:
 //  - a symbol indicating whether the task passed, failed or was skipped

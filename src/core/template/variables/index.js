@@ -1,5 +1,5 @@
 module.exports = {
-  ...require('./env'),
-  ...require('./random'),
-  ...require('./faker'),
+  ...require('./env.js'),
+  ...require('./random.js'),
+  ...require('./faker.js'),
 }

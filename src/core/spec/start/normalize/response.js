@@ -1,7 +1,7 @@
-const { mapValues, mapKeys, omit } = require('lodash')
+import { mapValues, mapKeys, omit } from 'lodash'
 
-const { normalizeSchema } = require('./json_schema')
-const { getNegotiationsResponse } = require('./content_negotiation')
+import { normalizeSchema } from './json_schema.js'
+import { getNegotiationsResponse } from './content_negotiation.js'
 
 // Normalize OpenAPI responses into specification-agnostic format
 const normalizeResponses = function({

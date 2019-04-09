@@ -1,10 +1,10 @@
-const { version: nodeVersion } = require('process')
-const { platform } = require('os')
+import { version as nodeVersion } from 'process'
+import { platform } from 'os'
 
 // eslint-disable-next-line import/no-unresolved, node/no-missing-require
-const { version: libraryVersion } = require('../../../package')
+import { version as libraryVersion } from '../../../package.json'
 
-const { BugError } = require('./error')
+import { BugError } from './error.js'
 
 // Any error not using `TestOpenApiError` is a bug
 const handleBugs = function({ error }) {

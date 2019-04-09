@@ -1,11 +1,11 @@
-const { titleize } = require('underscore.string')
+import { titleize } from 'underscore.string'
 
-const { removePrefixes, sortArray } = require('../../../utils')
-const {
+import { removePrefixes, sortArray } from '../../../utils.js'
+import {
   utils: { yellow, stringify },
-} = require('../../report')
+} from '../../report.js'
 
-const { getTitle } = require('./title')
+import { getTitle } from './title.js'
 
 const report = function({ rawRequest, rawResponse, request, response } = {}) {
   // We haven't reached `serialize` stage yet

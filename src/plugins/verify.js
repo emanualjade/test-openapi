@@ -1,4 +1,4 @@
-const { checkSchema } = require('../validation')
+import { checkSchema } from '../validation.js'
 
 // Validate plugin-specific configuration against a JSON schema specified in
 // `plugin.config`

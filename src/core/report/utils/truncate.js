@@ -1,4 +1,4 @@
-const { removeColors } = require('./colors')
+import { removeColors } from './colors.js'
 
 // If reported value is too big, we truncate it
 const truncate = function(string) {

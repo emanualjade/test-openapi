@@ -1,4 +1,4 @@
-const { end } = require('./end')
+import { end } from './end.js'
 
 module.exports = {
   end,

@@ -1,5 +1,5 @@
-const { STATUS_CODES } = require('statuses')
-const { groupBy } = require('lodash')
+import { STATUS_CODES } from 'statuses'
+import { groupBy } from 'lodash'
 
 // All possible HTTP status code as an array and as a
 // `{ "1xx": [...], "2xx": [...], ... }` map
@@ -9,7 +9,7 @@ const getValidStatusesMap = function() {
   return { validStatuses, validStatusesMap }
 }
 
-const {
+import {
   validStatuses: VALID_STATUSES,
   validStatusesMap: VALID_STATUSES_MAP,
 } = getValidStatusesMap()

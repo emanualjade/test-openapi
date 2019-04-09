@@ -1,4 +1,4 @@
-const { pickBy, mapKeys } = require('lodash')
+import { pickBy, mapKeys } from 'lodash'
 
 // Handle special dot notation `task['headers.NAME']`,
 // `task['query.NAME']`, etc.

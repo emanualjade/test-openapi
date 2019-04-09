@@ -1,10 +1,11 @@
-const { uniq, difference } = require('lodash')
+import { uniq, difference } from 'lodash'
 
-const { getModule } = require('../modules')
+import { getModule } from '../modules.js'
 
-const PLUGIN_SCHEMA = require('./plugin_schema')
-const { validateJsonSchemas } = require('./validate')
-const { verifyConfig } = require('./verify')
+// eslint-disable-next-line import/no-namespace
+import * as PLUGIN_SCHEMA from './plugin_schema'
+import { validateJsonSchemas } from './validate.js'
+import { verifyConfig } from './verify.js'
 
 // Retrieve `config.plugins` then `require()` all the plugins
 // Also validate their configuration

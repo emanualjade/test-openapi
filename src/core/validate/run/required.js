@@ -1,4 +1,4 @@
-const { TestOpenApiError } = require('../../../errors')
+import { TestOpenApiError } from '../../../errors.js'
 
 // Only response headers|body that are present in `task.validate.*` are
 // validated.

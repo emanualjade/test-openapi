@@ -1,4 +1,4 @@
-const { gray, red, green, HORIZONTAL_LINE } = require('../../utils')
+import { gray, red, green, HORIZONTAL_LINE } from '../../utils.js'
 
 const MARKS = {
   // Pause symbol

@@ -1,4 +1,4 @@
-const { run } = require('./run')
+import { run } from './run.js'
 
 module.exports = {
   run,

@@ -1,6 +1,6 @@
-const { getDirective } = require('./directive')
-const { getErrorProps } = require('./error_props')
-const { checkArgument } = require('./check')
+import { getDirective } from './directive.js'
+import { getErrorProps } from './error_props.js'
+import { checkArgument } from './check.js'
 
 // TAP assert
 const assert = function(state, { ok, name = '', directive = {}, error }) {

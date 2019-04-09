@@ -1,12 +1,12 @@
-const { mapValues, omitBy } = require('lodash')
+import { mapValues, omitBy } from 'lodash'
 
-const { keyToLocation, stringifyFlat } = require('../../../../utils')
-const { findBodyHandler } = require('../../body')
+import { keyToLocation, stringifyFlat } from '../../../../utils.js'
+import { findBodyHandler } from '../../body.js'
 
-const { normalizeContentType } = require('./content_type')
-const { normalizeMethod } = require('./method')
-const { normalizeUserAgent } = require('./user_agent')
-const { addFetchRequestHeaders, addContentLength } = require('./extra_headers')
+import { normalizeContentType } from './content_type.js'
+import { normalizeMethod } from './method.js'
+import { normalizeUserAgent } from './user_agent.js'
+import { addFetchRequestHeaders, addContentLength } from './extra_headers.js'
 
 // Serialize request parameters
 // Request headers name are only allowed lowercase:

@@ -1,4 +1,4 @@
-const { runHandlers } = require('../plugins')
+import { runHandlers } from '../plugins.js'
 
 // Run each `plugin.start()`
 // Meant to modify `startData` (initialized to empty object)

@@ -1,8 +1,8 @@
-const { getResultType, SEPARATOR } = require('../../../utils')
-const { getReportProps } = require('../../../props')
-const serializer = require('../serializer')
+import { getResultType, SEPARATOR } from '../../../utils.js'
+import { getReportProps } from '../../../props.js'
+import serializer from '../serializer.js'
 
-const { getErrorProps } = require('./error_props')
+import { getErrorProps } from './error_props.js'
 
 // Add TAP output for each task, as a single assert
 const complete = function(task, { options: { tap }, silent, ...context }) {

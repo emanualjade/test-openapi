@@ -1,4 +1,4 @@
-const { TestOpenApiError } = require('../../../../../errors')
+import { TestOpenApiError } from '../../../../../errors.js'
 
 // Operation's method, server and path as a `task.call.method|server|path`
 // parameter

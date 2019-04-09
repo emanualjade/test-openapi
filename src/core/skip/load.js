@@ -1,5 +1,5 @@
-const { testRegExp } = require('../../utils')
-const { TestOpenApiError, addErrorHandler } = require('../../errors')
+import { testRegExp } from '../../utils.js'
+import { TestOpenApiError, addErrorHandler } from '../../errors.js'
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'RegExp' or ['RegExp', ...]`

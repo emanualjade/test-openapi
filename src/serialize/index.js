@@ -1,4 +1,4 @@
 module.exports = {
-  ...require('./input'),
-  ...require('./output'),
+  ...require('./input.js'),
+  ...require('./output.js'),
 }

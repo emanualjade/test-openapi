@@ -1,4 +1,4 @@
-const { promiseThen, promiseAll, promiseAllThen } = require('./promise')
+import { promiseThen, promiseAll, promiseAllThen } from './promise.js'
 
 // Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when

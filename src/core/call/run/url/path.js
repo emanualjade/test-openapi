@@ -1,4 +1,4 @@
-const { TestOpenApiError } = require('../../../../errors')
+import { TestOpenApiError } from '../../../../errors.js'
 
 // Retrieve `task.call.path`
 const addPath = function({ url, rawRequest: { path = '' } }) {

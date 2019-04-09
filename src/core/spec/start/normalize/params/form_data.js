@@ -1,6 +1,6 @@
-const { omitBy, pickBy, mapKeys } = require('lodash')
+import { omitBy, pickBy, mapKeys } from 'lodash'
 
-const { isFormData, removeFormDataPrefix } = require('../form_data')
+import { isFormData, removeFormDataPrefix } from '../form_data.js'
 
 // Merge `formData` parameters into a single `task.call.body` parameter
 //   { type: 'object', properties: { one: { ... }, two: { ... } },

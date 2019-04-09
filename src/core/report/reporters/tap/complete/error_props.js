@@ -1,7 +1,7 @@
-const { mapValues, mapKeys } = require('lodash')
-const { underscored } = require('underscore.string')
+import { mapValues, mapKeys } from 'lodash'
+import { underscored } from 'underscore.string'
 
-const { removeColors } = require('../../../utils')
+import { removeColors } from '../../../utils.js'
 
 // Retrieve TAP error properties
 const getErrorProps = function({ ok, reportProps }) {

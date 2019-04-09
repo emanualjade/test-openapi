@@ -1,7 +1,7 @@
-const { stdout } = require('process')
-const { promisify } = require('util')
+import { stdout } from 'process'
+import { promisify } from 'util'
 
-const { result } = require('../../utils')
+import { result } from '../../utils.js'
 
 // Call reporters' functions then write return value to output
 const callReporters = async function({ reporters, type }, ...args) {

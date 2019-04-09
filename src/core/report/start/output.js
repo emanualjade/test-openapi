@@ -1,7 +1,7 @@
-const { stdout } = require('process')
-const { createWriteStream } = require('fs')
+import { stdout } from 'process'
+import { createWriteStream } from 'fs'
 
-const { TestOpenApiError, addErrorHandler } = require('../../../errors')
+import { TestOpenApiError, addErrorHandler } from '../../../errors.js'
 
 // Where to output report according to `config.report.REPORTER.output`
 const normalizeOutput = async function({ options: { output }, reporter }) {

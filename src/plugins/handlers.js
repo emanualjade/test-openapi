@@ -1,5 +1,5 @@
-const { reduceAsync } = require('../utils')
-const { addErrorHandler } = require('../errors')
+import { reduceAsync } from '../utils.js'
+import { addErrorHandler } from '../errors.js'
 
 // Run plugin `handlers` of a given `type`
 // Handlers will reduce over `input`. Their return values gets shallowly merged

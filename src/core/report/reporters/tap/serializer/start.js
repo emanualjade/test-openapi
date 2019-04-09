@@ -1,5 +1,5 @@
-const { version } = require('./version')
-const { plan } = require('./plan')
+import { version } from './version.js'
+import { plan } from './plan.js'
 
 // Start TAP output
 const start = function({ count, colors }) {

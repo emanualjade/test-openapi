@@ -1,9 +1,3 @@
-import { version as nodeVersion } from 'process'
-import { platform } from 'os'
-
-// eslint-disable-next-line import/no-unresolved, node/no-missing-require
-import { version as libraryVersion } from '../../../package.json'
-
 import { BugError } from './error.js'
 
 // Any error not using `TestOpenApiError` is a bug
@@ -55,10 +49,6 @@ const getBugMessage = function({
 
   return `A bug occurred.
 Please report an issue on the '${repositoryName}' code repository and paste the following lines:
-
-OS: ${platform()}
-node.js: ${nodeVersion}
-test-openapi: ${libraryVersion}
 
 ${stack}`
 }

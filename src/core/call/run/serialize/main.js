@@ -14,12 +14,12 @@ import { addFetchRequestHeaders, addContentLength } from './extra_headers.js'
 //    return value.
 //  - this implies server must ignore headers case
 //  - other plugins modifying `request.call` must use lowercase headers
-export const serialize = function({ call }) {
+export const serialize = async function({ call }) {
   if (call === undefined) {
     return
   }
 
-  const callA = normalizeCall({ call })
+  const callA = await normalizeCall({ call })
 
   const request = addFetchRequestHeaders({ call: callA })
 
@@ -35,12 +35,12 @@ export const serialize = function({ call }) {
   return { call: { ...call, request: requestB, rawRequest: rawRequestA } }
 }
 
-const normalizeCall = function({ call }) {
+const normalizeCall = async function({ call }) {
   const callA = normalizeContentType({ call })
 
   const callB = normalizeMethod({ call: callA })
 
-  const callC = normalizeUserAgent({ call: callB })
+  const callC = await normalizeUserAgent({ call: callB })
 
   const callD = normalizeTimeout({ call: callC })
 

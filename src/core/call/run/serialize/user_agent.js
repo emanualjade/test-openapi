@@ -1,13 +1,23 @@
-// eslint-disable-next-line import/no-unresolved, node/no-missing-require
-import { version, homepage } from '../../../../../../package.json'
+import readPkgUp from 'read-pkg-up'
+
+// Caches it
+const currentPackage = readPkgUp()
 
 // Add `User-Agent` request header
 // Can be overriden
-export const normalizeUserAgent = function({
+export const normalizeUserAgent = async function({
   call,
-  call: { 'headers.user-agent': userAgent = DEFAULT_USER_AGENT },
+  call: { 'headers.user-agent': userAgent },
 }) {
-  return { ...call, 'headers.user-agent': userAgent }
+  const userAgentA = await getUserAgent({ userAgent })
+  return { ...call, 'headers.user-agent': userAgentA }
 }
 
-const DEFAULT_USER_AGENT = `test-openapi/${version} (${homepage})`
+const getUserAgent = async function({ userAgent }) {
+  if (userAgent !== undefined) { return userAgent }
+
+  const { pkg: { name, version, homepage } } = await currentPackage
+  return `${name}/${version} (${homepage})`
+}
+
+

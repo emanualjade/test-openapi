@@ -3,7 +3,11 @@ import { promiseThen, promiseAll, promiseAllThen } from './promise.js'
 // Crawl and replace an object.
 // We use `promise[All][Then]()` utilities to avoid creating microtasks when
 // `evalNode|evalKey` is synchronous.
-export const crawl = function(value, evalNode, { evalKey, topDown = false } = {}) {
+export const crawl = function(
+  value,
+  evalNode,
+  { evalKey, topDown = false } = {},
+) {
   return crawlNode(value, [], { evalNode, evalKey, topDown })
 }
 

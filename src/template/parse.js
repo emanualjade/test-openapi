@@ -83,7 +83,10 @@ export const isTemplateName = function({ name }) {
 // add an extra `$`, i.e. `{ $$$name: arg }` becomes `{ $$name: arg }`
 // and `$$$name` becomes `$$name`
 // This works with multiple `$` as well
-export const parseEscape = function({ template, template: { type, name, arg } }) {
+export const parseEscape = function({
+  template,
+  template: { type, name, arg },
+}) {
   if (!isEscape({ template })) {
     return
   }

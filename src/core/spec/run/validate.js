@@ -1,11 +1,11 @@
 import { mapKeys, difference, intersection } from 'lodash'
 import { STATUS_CODES } from 'statuses'
 
-import { TestOpenApiError } from '../../../errors.js'
+import { TestOpenApiError } from '../../../errors/error.js'
 import { getWordsList, merge } from '../../../utils.js'
-import {
-  utils: { parseStatus, serializeStatus },
-} from '../../validate.js'
+import { utils } from '../../validate.js'
+
+const { parseStatus, serializeStatus } = utils
 
 // Add OpenAPI specification to `task.validate.*`
 // Use the specification response matching both the current operation and

@@ -1,4 +1,4 @@
-import { crawl } from '../../../utils.js'
+import { crawl } from '../../../utils/crawl.js'
 
 // Handle values in `call.*` that have special meanings:
 //  - `valid` means `same as OpenAPI definition`

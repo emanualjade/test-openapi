@@ -1,6 +1,8 @@
 /* eslint-disable-line max-lines */
-import { addErrorHandler, TestOpenApiError } from '../errors.js'
-import { runHandlers, getTaskReturn } from '../plugins.js'
+import { TestOpenApiError } from '../errors/error.js'
+import { addErrorHandler } from '../errors/handler.js'
+import { getTaskReturn } from '../plugins/return/main.js'
+import { runHandlers } from '../plugins/handlers.js'
 
 // Run each `plugin.run()`
 export const runTask = async function({ task, context, plugins, nestedPath }) {

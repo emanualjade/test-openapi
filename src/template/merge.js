@@ -5,7 +5,7 @@ import { customMerge } from '../utils.js'
 import { isTemplate } from './parse.js'
 
 // Deep merge that never merges templates deeply
-export const merge = function(...objects) {
+export const mergeWithTemplates = function(...objects) {
   return customMerge(mergeWithTemplate, ...objects)
 }
 

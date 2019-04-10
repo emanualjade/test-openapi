@@ -1,13 +1,14 @@
 import { mapValues } from 'lodash'
 
 import { merge } from '../../../utils.js'
-import {
-  template: { $$random },
-} from '../../template.js'
+import { template } from '../../template.js'
 
 import { getSpecialValues } from './special.js'
 import { removeOptionals } from './optional.js'
 import { setInvalidParams } from './invalid.js'
+
+// eslint-disable-next-line id-match
+const { $$random } = template
 
 // Add OpenAPI specification parameters to `task.call.*`
 export const addSpecToCall = function({ call, operation: { params } }) {

@@ -1,4 +1,4 @@
-import { runHandlers } from '../plugins.js'
+import { runHandlers } from '../plugins/handlers.js'
 
 // Run each `plugin.start()`
 // Meant to modify `startData` (initialized to empty object)

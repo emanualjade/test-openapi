@@ -1,4 +1,4 @@
-import { TestOpenApiError } from '../../../../../errors.js'
+import { TestOpenApiError } from '../../../../../errors/error.js'
 
 // Operation's method, server and path as a `task.call.method|server|path`
 // parameter

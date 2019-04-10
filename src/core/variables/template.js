@@ -1,7 +1,7 @@
 import { mapValues, omitBy } from 'lodash'
 
-import { get, tryGet } from '../../utils.js'
-import { TestOpenApiError } from '../../errors.js'
+import { get, tryGet } from '../../utils/get.js'
+import { TestOpenApiError } from '../../errors/error.js'
 
 // `task.variables.$$NAME: '[PATH] [OPTS]'` allows using `$$NAME` in any task,
 // to run the task that defined the variables, and retrieve a specific property

@@ -2,12 +2,14 @@ import { readFile } from 'fs'
 import { promisify } from 'util'
 
 import fastGlob from 'fast-glob'
-import { load: loadYaml, JSON_SCHEMA } from 'js-yaml'
+import { load as loadYaml, JSON_SCHEMA } from 'js-yaml'
 import { sortBy } from 'lodash'
 
-import { addErrorHandler, TestOpenApiError } from '../errors.js'
+import { TestOpenApiError } from '../errors/error.js'
+import { addErrorHandler } from '../errors/handler.js'
 
-import { validateFileTasks, validateInlineTasks } from './validate.js'
+import { validateFileTasks } from './validate/file.js'
+import { validateInlineTasks } from './validate/inline.js'
 import { addScopes, addKey, validateScopes } from './scope.js'
 
 // Load tasks.

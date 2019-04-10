@@ -1,7 +1,7 @@
 import test from 'ava'
 import execa from 'execa'
 
-const BINARY_PATH = `${__dirname}/../src/bin/index.js`
+const BINARY_PATH = `${__dirname}/../src/bin/main.js`
 const TASKS_FILE = `${__dirname}/tasks.json`
 
 test('Smoke test', async t => {

@@ -1,5 +1,5 @@
-import { crawl } from '../utils.js'
-import { convertPlainObject } from '../errors.js'
+import { crawl } from '../utils/crawl.js'
+import { convertPlainObject } from '../errors/convert.js'
 
 import { addSerializeFail } from './fail.js'
 import {

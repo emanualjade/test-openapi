@@ -1,4 +1,4 @@
-import { crawl } from '../utils.js'
+import { crawl } from '../utils/crawl.js'
 
 import {
   isJsonType,

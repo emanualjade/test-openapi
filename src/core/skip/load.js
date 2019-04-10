@@ -1,5 +1,6 @@
 import { testRegExp } from '../../utils.js'
-import { TestOpenApiError, addErrorHandler } from '../../errors.js'
+import { TestOpenApiError } from '../../errors/error.js'
+import { addErrorHandler } from '../../errors/handler.js'
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'RegExp' or ['RegExp', ...]`

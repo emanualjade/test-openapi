@@ -1,5 +1,5 @@
 import { reduceAsync } from '../utils.js'
-import { addErrorHandler } from '../errors.js'
+import { addErrorHandler } from '../errors/handler.js'
 
 // Run plugin `handlers` of a given `type`
 // Handlers will reduce over `input`. Their return values gets shallowly merged

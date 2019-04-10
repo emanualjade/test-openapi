@@ -1,4 +1,4 @@
-import { verifyTask } from '../../plugins.js'
+import { verifyTask } from '../../plugins/verify.js'
 
 // Validate plugin-specific configuration
 // Must be done after templating.

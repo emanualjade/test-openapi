@@ -5,17 +5,13 @@ module.exports = {
   ...require('./sort.js'),
   ...require('./location.js'),
   ...require('./simple_schema.js'),
-  ...require('./flat.js'),
   ...require('./prefix.js'),
-  ...require('./get.js'),
   ...require('./result.js'),
   ...require('./merge.js'),
-  ...require('./crawl.js'),
   ...require('./search.js'),
   ...require('./path.js'),
   ...require('./json_pointer.js'),
   ...require('./string.js'),
-  ...require('./cardinal.js'),
   // eslint-disable-next-line import/max-dependencies
   ...require('./regexp.js'),
 }

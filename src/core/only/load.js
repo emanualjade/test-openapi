@@ -1,4 +1,5 @@
-import { TestOpenApiError, addErrorHandler } from '../../errors.js'
+import { TestOpenApiError } from '../../errors/error.js'
+import { addErrorHandler } from '../../errors/handler.js'
 import { testRegExp } from '../../utils.js'
 
 // `config.only: 'RegExp' or ['RegExp', ...]` will only run tasks whose

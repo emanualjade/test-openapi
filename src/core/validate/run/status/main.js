@@ -1,4 +1,4 @@
-import { TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
 
 import { parseStatus } from './parse.js'
 import { normalizeStatuses } from './normalize.js'

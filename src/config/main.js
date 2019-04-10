@@ -1,8 +1,8 @@
 import { omitBy } from 'lodash'
 
-import { TestOpenApiError } from '../errors.js'
+import { TestOpenApiError } from '../errors/error.js'
 import { getPath } from '../utils.js'
-import { parseInput } from '../serialize.js'
+import { parseInput } from '../serialize/input.js'
 
 import { validateConfig } from './validate.js'
 // eslint-disable-next-line import/no-namespace

@@ -1,5 +1,5 @@
 import { isObject } from '../../utils.js'
-import { TestOpenApiError } from '../../errors.js'
+import { TestOpenApiError } from '../../errors/error.js'
 
 // Validate content of tasks specified inline
 export const validateInlineTasks = function({ tasks }) {

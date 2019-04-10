@@ -7,7 +7,7 @@
     "!~"
   ],
   "bin": {
-    "test-openapi": "build/src/bin/index.js"
+    "test-openapi": "build/src/bin/main.js"
   },
   "scripts": {
     "test": "gulp test"

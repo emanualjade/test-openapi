@@ -1,4 +1,4 @@
-import { TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
 
 // Retrieve `task.call.path`
 export const addPath = function({ url, rawRequest: { path = '' } }) {

@@ -1,4 +1,4 @@
-import { TestOpenApiError } from '../../../errors.js'
+import { TestOpenApiError } from '../../../errors/error.js'
 
 // Only response headers|body that are present in `task.validate.*` are
 // validated.

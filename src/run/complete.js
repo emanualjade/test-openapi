@@ -1,5 +1,5 @@
-import { addErrorHandler } from '../errors.js'
-import { runHandlers } from '../plugins.js'
+import { addErrorHandler } from '../errors/handler.js'
+import { runHandlers } from '../plugins/handlers.js'
 
 // Run each `plugin.complete()`
 const completeTask = async function({ task, context, plugins }) {

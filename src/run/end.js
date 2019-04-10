@@ -1,4 +1,4 @@
-import { runHandlers } from '../plugins.js'
+import { runHandlers } from '../plugins/handlers.js'
 
 // Run each `plugin.end()`
 // They should not throw.

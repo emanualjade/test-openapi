@@ -1,6 +1,7 @@
-import {
-  template: { $$env },
-} from '../../../template.js'
+import { template } from '../../../template.js'
+
+// eslint-disable-next-line id-match
+const { $$env } = template
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced

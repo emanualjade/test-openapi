@@ -1,7 +1,8 @@
 import { stdout } from 'process'
 import { createWriteStream } from 'fs'
 
-import { TestOpenApiError, addErrorHandler } from '../../../errors.js'
+import { TestOpenApiError } from '../../../errors/error.js'
+import { addErrorHandler } from '../../../errors/handler.js'
 
 // Where to output report according to `config.report.REPORTER.output`
 export const normalizeOutput = async function({ options: { output }, reporter }) {

@@ -1,6 +1,6 @@
 import { uniqBy } from 'lodash'
 
-import { TestOpenApiError } from '../../../../../errors.js'
+import { TestOpenApiError } from '../../../../../errors/error.js'
 import { locationToKey } from '../../../../../utils.js'
 
 // eslint-disable-next-line import/no-namespace

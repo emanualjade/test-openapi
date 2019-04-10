@@ -2,7 +2,7 @@ import { basename } from 'path'
 
 import { omit } from 'lodash'
 
-import { TestOpenApiError } from '../errors.js'
+import { TestOpenApiError } from '../errors/error.js'
 
 // Add `task.scope`.
 // It is the filename without file extensions.

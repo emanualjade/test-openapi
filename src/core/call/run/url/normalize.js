@@ -3,7 +3,8 @@
 // eslint-disable-next-line node/prefer-global/url, no-shadow
 import { URL } from 'url'
 
-import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
+import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Escape, normalize and validate the request URL
 export const normalizeUrl = function({ url: originalUrl }) {

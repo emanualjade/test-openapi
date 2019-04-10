@@ -1,5 +1,5 @@
-import { runHandlers } from '../plugins.js'
-import { addOriginalTasks } from '../tasks.js'
+import { runHandlers } from '../plugins/handlers.js'
+import { addOriginalTasks } from '../tasks/original.js'
 
 // Run each `plugin.load()`
 // Goal is to modify `tasks`.

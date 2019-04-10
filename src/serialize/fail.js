@@ -1,7 +1,8 @@
 import { capitalize } from 'underscore.string'
 
 import { getPath } from '../utils.js'
-import { convertPlainObject, BugError } from '../errors.js'
+import { convertPlainObject } from '../errors/convert.js'
+import { BugError } from '../errors/error.js'
 
 // If a value in `task.*` could not be serialized, we add it as `task.error`
 // so it gets properly reported (as opposed to throwing an error)

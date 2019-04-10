@@ -1,7 +1,8 @@
 import { pickBy, omitBy, mapKeys, mapValues } from 'lodash'
 
-import { BugError, TestOpenApiError } from '../../../errors.js'
-import { getPath, numberToCardinal } from '../../../utils.js'
+import { BugError, TestOpenApiError } from '../../../errors/error.js'
+import { numberToCardinal } from '../../../utils/cardinal.js'
+import { getPath } from '../../../utils.js'
 import { checkSchema } from '../../../validation.js'
 
 // Wrap template helper functions with JSON schema validation from

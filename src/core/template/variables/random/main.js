@@ -1,6 +1,6 @@
 import jsonSchemaFaker from 'json-schema-faker'
 
-import { stringifyFlat } from '../../../../utils.js'
+import { stringifyFlat } from '../../../../utils/flat.js'
 import { checkIsSchema } from '../../../../validation.js'
 
 import { addCustomFormats } from './format.js'

@@ -1,7 +1,7 @@
 import openapiToJsonSchema from 'openapi-schema-to-json-schema'
 import { omit } from 'lodash'
 
-import { crawl } from '../../../../utils.js'
+import { crawl } from '../../../../utils/crawl.js'
 
 // OpenAPI schemas are not 100% valid JSON schemas v4, so we use a library to
 // convert them

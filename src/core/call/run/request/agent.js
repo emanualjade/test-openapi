@@ -2,7 +2,8 @@ import { Agent } from 'https'
 
 import moize from 'moize'
 
-import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
+import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Allow passing HTTPS options, e.g. for self-signed certificates, etc.
 const getAgent = function({ https = {}, url }) {

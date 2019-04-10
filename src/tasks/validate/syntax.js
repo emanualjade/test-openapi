@@ -1,6 +1,6 @@
 import { omit } from 'lodash'
 
-import { TestOpenApiError } from '../../errors.js'
+import { TestOpenApiError } from '../../errors/error.js'
 
 // Validate syntax of task files
 export const validateTasksSyntax = function({ tasks }) {

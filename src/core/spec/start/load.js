@@ -1,6 +1,7 @@
 import SwaggerParser from 'swagger-parser'
 
-import { addErrorHandler, TestOpenApiError } from '../../../errors.js'
+import { TestOpenApiError } from '../../../errors/error.js'
+import { addErrorHandler } from '../../../errors/handler.js'
 
 // Parses an OpenAPI file (including JSON references)
 // Can also be a URL or directly an object

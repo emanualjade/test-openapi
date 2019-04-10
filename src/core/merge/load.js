@@ -1,8 +1,9 @@
 import { omit } from 'lodash'
 
-import { TestOpenApiError, addErrorHandler } from '../../errors.js'
+import { TestOpenApiError } from '../../errors/error.js'
+import { addErrorHandler } from '../../errors/handler.js'
 import { testRegExp } from '../../utils.js'
-import { merge as mergeWithTemplates } from '../../template.js'
+import { mergeWithTemplates } from '../../template/merge.js'
 
 // Merge tasks whose name include RegExp matching other task names.
 // I.e. special task name to allow for shared properties

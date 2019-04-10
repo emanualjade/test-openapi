@@ -1,6 +1,6 @@
 import METHODS from 'methods'
 
-import { TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
 
 // Validate `task.call.method` and add default value
 export const normalizeMethod = function({ call, call: { method = DEFAULT_METHOD } }) {

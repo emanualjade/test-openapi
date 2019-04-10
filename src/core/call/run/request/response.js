@@ -1,4 +1,5 @@
-import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
+import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Parse a HTTP response
 export const getRawResponse = async function({

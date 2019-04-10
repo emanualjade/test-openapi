@@ -1,6 +1,7 @@
 import { is as isMime } from 'type-is'
 
-import { addErrorHandler, TestOpenApiError } from '../../errors.js'
+import { TestOpenApiError } from '../../errors/error.js'
+import { addErrorHandler } from '../../errors/handler.js'
 
 // Retrieve a parser and stringifier for a specific MIME type
 // TODO: replace by real body parsing library and add support for other

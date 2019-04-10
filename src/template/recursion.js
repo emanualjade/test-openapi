@@ -1,6 +1,6 @@
 import { isEqual } from 'lodash'
 
-import { TestOpenApiError } from '../errors.js'
+import { TestOpenApiError } from '../errors/error.js'
 
 // Since templates can return other templates which then get evaluated, we need
 // to check for infinite recursions.

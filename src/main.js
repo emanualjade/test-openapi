@@ -1,17 +1,15 @@
-import {
-  addErrorHandler,
-  topLevelHandler,
-  handleFinalFailure,
-} from '../errors.js'
-import { loadConfig } from '../config.js'
-import { getTasks, removeOriginalTasks } from '../tasks.js'
-import { loadPlugins } from '../plugins.js'
-
-import { loadTasks } from './load.js'
-import { startTasks } from './start.js'
-import { runTask } from './run.js'
-import { completeTask } from './complete.js'
-import { endTasks } from './end.js'
+import { handleFinalFailure } from './errors/final.js'
+import { addErrorHandler } from './errors/handler.js'
+import { topLevelHandler } from './errors/top.js'
+import { loadConfig } from './config/main.js'
+import { getTasks } from './tasks/get.js'
+import { removeOriginalTasks } from './tasks/original.js'
+import { loadPlugins } from './plugins/load.js'
+import { loadTasks } from './run/load.js'
+import { startTasks } from './run/start.js'
+import { runTask } from './run/run.js'
+import { completeTask } from './run/complete.js'
+import { endTasks } from './run/end.js'
 
 // Main entry point
 // Does in order:
@@ -25,7 +23,7 @@ import { endTasks } from './end.js'
 //  - run each `plugin.end()`
 // Return tasks on success
 // If any task failed, throw an error instead
-const run = async function(config = {}) {
+const eRun = async function(config = {}) {
   const configA = loadConfig({ config })
 
   const tasks = await getTasks({ config: configA })
@@ -36,8 +34,7 @@ const run = async function(config = {}) {
   return tasksA
 }
 
-const eRun = addErrorHandler(run, topLevelHandler)
-export { eRun as run }
+export const run = addErrorHandler(eRun, topLevelHandler)
 
 // Fire all plugin handlers for all tasks
 const performRun = async function({ config, tasks, plugins }) {

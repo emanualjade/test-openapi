@@ -1,7 +1,8 @@
 import fetch from 'cross-fetch'
 
 import { removePrefixes } from '../../../../utils.js'
-import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
+import { addErrorHandler } from '../../../../errors/handler.js'
 
 import { getAgent } from './agent.js'
 

@@ -1,7 +1,8 @@
 import { parse, tokensToFunction } from 'path-to-regexp'
 
 import { removePrefixes, getPath } from '../../../../utils.js'
-import { addErrorHandler, TestOpenApiError } from '../../../../errors.js'
+import { TestOpenApiError } from '../../../../errors/error.js'
+import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Replace `url` request parameters to the request URL.
 // Can replace in both `task.call.server` and `task.call.path`

@@ -3,7 +3,7 @@ import { exit } from 'process'
 
 import { run } from '..'
 
-import { addErrorHandler } from '../errors.js'
+import { addErrorHandler } from '../errors/handler.js'
 
 import { defineCli } from './top.js'
 import { parseConfig } from './parse.js'

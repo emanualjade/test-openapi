@@ -1,8 +1,8 @@
 import { pick, omit } from 'lodash'
 
 import { promiseThen } from '../../../utils.js'
-import { addErrorHandler } from '../../../errors.js'
-import { evalTemplate } from '../../../template.js'
+import { addErrorHandler } from '../../../errors/handler.js'
+import { evalTemplate } from '../../../template/eval.js'
 
 import { getPluginsVars } from './plugin.js'
 import { templateHandler } from './error.js'

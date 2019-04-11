@@ -4,126 +4,126 @@ import METHODS from 'methods'
 const UPPERCASE_METHODS = METHODS.map(method => method.toUpperCase())
 
 export const config = {
-  'task': {
-    'type': 'object',
-    'properties': {
-      'method': {
-        'type': 'string',
+  task: {
+    type: 'object',
+    properties: {
+      method: {
+        type: 'string',
         enum: [...METHODS, ...UPPERCASE_METHODS],
       },
-      'server': {
-        'type': 'string',
-        'pattern': '^[\\w-.+]+://'
+      server: {
+        type: 'string',
+        pattern: '^[\\w-.+]+://',
       },
-      'path': {
-        'type': 'string',
-        'pattern': '^/'
+      path: {
+        type: 'string',
+        pattern: '^/',
       },
-      'body': {},
-      'timeout': {
-        'type': 'integer'
+      body: {},
+      timeout: {
+        type: 'integer',
       },
-      'https': {
-        'type': 'object',
-        'properties': {
-          'ca': {
-            'oneOf': [
-              { 'type': 'string' },
+      https: {
+        type: 'object',
+        properties: {
+          ca: {
+            oneOf: [
+              { type: 'string' },
               {
-                'type': 'array',
-                'items': {
-                  'type': 'string'
-                }
-              }
-            ]
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+            ],
           },
-          'cert': {
-            'oneOf': [
-              { 'type': 'string' },
+          cert: {
+            oneOf: [
+              { type: 'string' },
               {
-                'type': 'array',
-                'items': {
-                  'type': 'string'
-                }
-              }
-            ]
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+            ],
           },
-          'ciphers': {
-            'type': 'string'
+          ciphers: {
+            type: 'string',
           },
-          'clientCertEngine': {
-            'type': 'string'
+          clientCertEngine: {
+            type: 'string',
           },
-          'crl': {
-            'oneOf': [
-              { 'type': 'string' },
+          crl: {
+            oneOf: [
+              { type: 'string' },
               {
-                'type': 'array',
-                'items': {
-                  'type': 'string'
-                }
-              }
-            ]
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+            ],
           },
-          'dhparam': {
-            'type': 'string'
+          dhparam: {
+            type: 'string',
           },
-          'ecdhCurve': {
-            'type': 'string'
+          ecdhCurve: {
+            type: 'string',
           },
-          'honorCipherOrder': {
-            'type': 'boolean'
+          honorCipherOrder: {
+            type: 'boolean',
           },
-          'key': {
-            'oneOf': [
-              { 'type': 'string' },
+          key: {
+            oneOf: [
+              { type: 'string' },
               {
-                'type': 'array',
-                'items': {
-                  'type': 'string'
-                }
-              }
-            ]
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+            ],
           },
-          'passphrase': {
-            'type': 'string'
+          passphrase: {
+            type: 'string',
           },
-          'pfx': {
-            'oneOf': [
-              { 'type': 'string' },
+          pfx: {
+            oneOf: [
+              { type: 'string' },
               {
-                'type': 'array',
-                'items': {
-                  'type': 'string'
-                }
-              }
-            ]
+                type: 'array',
+                items: {
+                  type: 'string',
+                },
+              },
+            ],
           },
-          'rejectUnauthorized': {
-            'type': 'boolean'
+          rejectUnauthorized: {
+            type: 'boolean',
           },
-          'secureOptions': {
-            'type': 'integer'
+          secureOptions: {
+            type: 'integer',
           },
-          'secureProtocol': {
-            'type': 'string'
+          secureProtocol: {
+            type: 'string',
           },
-          'servername': {
-            'type': 'string'
+          servername: {
+            type: 'string',
           },
-          'sessionIdContext': {
-            'type': 'string'
-          }
+          sessionIdContext: {
+            type: 'string',
+          },
         },
-        'additionalProperties': false
-      }
+        additionalProperties: false,
+      },
     },
-    'patternProperties': {
+    patternProperties: {
       '^url\\.[a-zA-Z_]\\w*': {},
       '^query\\..+': {},
-      '^headers\\.[^A-Z]+': {}
+      '^headers\\.[^A-Z]+': {},
     },
-    'additionalProperties': false
-  }
+    additionalProperties: false,
+  },
 }
 /* eslint-enable max-lines */

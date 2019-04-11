@@ -11,22 +11,19 @@ export const validateConfig = function({ config }) {
 }
 
 const CONFIG_SCHEMA = {
-  'type': 'object',
-  'properties': {
-    'plugins': {
-      'type': 'array',
-      'items': {
-        'type': 'string'
-      }
+  type: 'object',
+  properties: {
+    plugins: {
+      type: 'array',
+      items: {
+        type: 'string',
+      },
     },
-    'tasks': {
-      'type': 'array',
-      'items': {
-        'type': [
-          'string',
-          'object'
-        ]
-      }
-    }
-  }
+    tasks: {
+      type: 'array',
+      items: {
+        type: ['string', 'object'],
+      },
+    },
+  },
 }

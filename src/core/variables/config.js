@@ -1,11 +1,11 @@
 export const config = {
-  'task': {
-    'type': 'object',
-    'patternProperties': {
+  task: {
+    type: 'object',
+    patternProperties: {
       '^\\$\\$[\\w-]+$': {
-        'type': 'string'
-      }
+        type: 'string',
+      },
     },
-    'additionalProperties': false
-  }
+    additionalProperties: false,
+  },
 }

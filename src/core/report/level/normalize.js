@@ -12,36 +12,24 @@ export const normalizeLevel = function({ options, reporter }) {
 const DEFAULT_LEVEL = 'info'
 
 export const LEVELS = {
-  'silent': {
-    'types': [],
-    'taskData': 'none'
+  silent: {
+    types: [],
+    taskData: 'none',
   },
-  'error': {
-    'types': [
-      'fail'
-    ],
-    'taskData': 'none'
+  error: {
+    types: ['fail'],
+    taskData: 'none',
   },
-  'warn': {
-    'types': [
-      'fail'
-    ],
-    'taskData': 'added'
+  warn: {
+    types: ['fail'],
+    taskData: 'added',
   },
-  'info': {
-    'types': [
-      'fail',
-      'pass',
-      'skip'
-    ],
-    'taskData': 'added'
+  info: {
+    types: ['fail', 'pass', 'skip'],
+    taskData: 'added',
   },
-  'debug': {
-    'types': [
-      'fail',
-      'pass',
-      'skip'
-    ],
-    'taskData': 'all'
-  }
+  debug: {
+    types: ['fail', 'pass', 'skip'],
+    taskData: 'all',
+  },
 }

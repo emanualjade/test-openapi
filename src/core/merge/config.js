@@ -1,16 +1,16 @@
 export const config = {
-  'general': {
-    'type': 'object'
+  general: {
+    type: 'object',
   },
-  'task': {
-    'oneOf': [
-      { 'type': 'string' },
+  task: {
+    oneOf: [
+      { type: 'string' },
       {
-        'type': 'array',
-        'items': {
-          'type': 'string'
-        }
-      }
-    ]
-  }
+        type: 'array',
+        items: {
+          type: 'string',
+        },
+      },
+    ],
+  },
 }

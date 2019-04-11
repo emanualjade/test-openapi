@@ -1,20 +1,14 @@
 export const config = {
-  'general': {
-    'type': 'object',
-    'properties': {
-      'output': {
-        'type': 'string'
+  general: {
+    type: 'object',
+    properties: {
+      output: {
+        type: 'string',
       },
-      'level': {
-        'type': 'string',
-        'enum': [
-          'silent',
-          'error',
-          'warn',
-          'info',
-          'debug'
-        ]
-      }
-    }
-  }
+      level: {
+        type: 'string',
+        enum: ['silent', 'error', 'warn', 'info', 'debug'],
+      },
+    },
+  },
 }

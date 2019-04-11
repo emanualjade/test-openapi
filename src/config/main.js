@@ -27,9 +27,6 @@ const throwParseError = function({ message, value, path }) {
 }
 
 const DEFAULT_CONFIG = {
-  'tasks': [
-    '**/*.tasks.yml',
-    '**/*.tasks.json'
-  ],
-  'plugins': []
+  tasks: ['**/*.tasks.yml', '**/*.tasks.json'],
+  plugins: [],
 }

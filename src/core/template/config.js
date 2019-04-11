@@ -1,9 +1,9 @@
 export const config = {
-  'task': {
-    'type': 'object',
-    'patternProperties': {
-      '^\\$\\$[\\w-]+$': {}
+  task: {
+    type: 'object',
+    patternProperties: {
+      '^\\$\\$[\\w-]+$': {},
     },
-    'additionalProperties': false
-  }
+    additionalProperties: false,
+  },
 }

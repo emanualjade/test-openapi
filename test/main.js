@@ -1,4 +1,3 @@
-/* eslint-disable filenames/no-index */
 import test from 'ava'
 import execa from 'execa'
 
@@ -12,4 +11,3 @@ test('Smoke test', async t => {
   const stdoutA = stdout.replace(/User-Agent.*/u, '')
   t.snapshot({ code, stdout: stdoutA })
 })
-/* eslint-enable filenames/no-index */

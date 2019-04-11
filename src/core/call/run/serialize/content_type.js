@@ -1,4 +1,4 @@
-import { isObject } from '../../../../utils.js'
+import { isObject } from '../../../../utils/types.js'
 
 // `Content-Type` should be empty if no request body is going to be sent.
 // Also add a default one.

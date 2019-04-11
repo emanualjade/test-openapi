@@ -2,7 +2,7 @@ import { omitBy } from 'lodash'
 
 import { TestOpenApiError, BugError } from '../errors/error.js'
 import { crawl } from '../utils/crawl.js'
-import { isObject } from '../utils.js'
+import { isObject } from '../utils/types.js'
 
 import { validateFromSchema } from './validate.js'
 

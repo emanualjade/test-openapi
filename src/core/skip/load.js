@@ -1,4 +1,4 @@
-import { testRegExp } from '../../utils.js'
+import { testRegExp } from '../../utils/regexp.js'
 import { TestOpenApiError } from '../../errors/error.js'
 import { addErrorHandler } from '../../errors/handler.js'
 

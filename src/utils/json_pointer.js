@@ -1,13 +1,4 @@
-import { getPath } from './path.js'
-
 // Transform a JSON pointer into a JavaScript property path
-export const jsonPointerToPath = function(jsonPointer) {
-  const parts = jsonPointerToParts(jsonPointer)
-  // Transform to properly escaped JavaScript property path
-  const path = getPath(parts)
-  return path
-}
-
 export const jsonPointerToParts = function(jsonPointer) {
   const jsonPointerA = decodeUriFragment({ jsonPointer })
 

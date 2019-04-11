@@ -1,5 +1,5 @@
 import { TestOpenApiError } from '../errors/error.js'
-import { getPath } from '../utils.js'
+import { getPath } from '../utils/path.js'
 import { parseInput } from '../serialize/input.js'
 
 import { loadTasks } from './load.js'

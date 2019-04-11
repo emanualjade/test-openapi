@@ -1,6 +1,6 @@
 import { omit } from 'lodash'
 
-import { isObject } from '../../../utils.js'
+import { isObject } from '../../../utils/types.js'
 
 // Apply `config.report.REPORTER.level` to remove some `task.PLUGIN.*`
 // Use `task.originalTask` but do not keep it

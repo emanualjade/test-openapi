@@ -1,4 +1,4 @@
-import { reduceAsync } from '../utils.js'
+import { reduceAsync } from '../utils/reduce.js'
 import { addErrorHandler } from '../errors/handler.js'
 
 // Run plugin `handlers` of a given `type`

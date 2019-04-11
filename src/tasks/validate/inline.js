@@ -1,4 +1,4 @@
-import { isObject } from '../../utils.js'
+import { isObject } from '../../utils/types.js'
 import { TestOpenApiError } from '../../errors/error.js'
 
 // Validate content of tasks specified inline

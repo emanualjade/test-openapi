@@ -1,4 +1,4 @@
-import { getPath } from '../../../utils.js'
+import { getPath } from '../../../utils/path.js'
 import { BugError } from '../../../errors/error.js'
 import { addErrorHandler } from '../../../errors/handler.js'
 import { isTemplateName } from '../../../template/parse.js'

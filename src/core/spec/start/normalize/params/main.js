@@ -1,4 +1,4 @@
-import { merge } from '../../../../../utils.js'
+import { merge } from '../../../../../utils/merge.js'
 import { getNegotiationsParams } from '../content_negotiation.js'
 
 import { normalizeParams } from './normalize.js'

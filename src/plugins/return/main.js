@@ -1,6 +1,6 @@
 import { omitBy } from 'lodash'
 
-import { isObject } from '../../utils.js'
+import { isObject } from '../../utils/types.js'
 
 import { getAddedProps } from './added.js'
 

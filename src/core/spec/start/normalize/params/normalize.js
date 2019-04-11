@@ -1,6 +1,6 @@
 import { omit } from 'lodash'
 
-import { locationToKey } from '../../../../../utils.js'
+import { locationToKey } from '../../../../../utils/location.js'
 import { normalizeSchema } from '../json_schema.js'
 
 // eslint-disable-next-line import/no-namespace

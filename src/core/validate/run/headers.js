@@ -1,4 +1,5 @@
-import { removePrefixes, getPath } from '../../../utils.js'
+import { getPath } from '../../../utils/path.js'
+import { removePrefixes } from '../../../utils/prefix.js'
 import { checkSchema } from '../../../validation.js'
 
 import { checkRequired } from './required.js'

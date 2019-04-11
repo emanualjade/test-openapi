@@ -1,6 +1,6 @@
 import { pick, omit } from 'lodash'
 
-import { promiseThen } from '../../../utils.js'
+import { promiseThen } from '../../../utils/promise.js'
 import { addErrorHandler } from '../../../errors/handler.js'
 import { evalTemplate } from '../../../template/eval.js'
 

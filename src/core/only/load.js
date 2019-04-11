@@ -1,6 +1,6 @@
 import { TestOpenApiError } from '../../errors/error.js'
 import { addErrorHandler } from '../../errors/handler.js'
-import { testRegExp } from '../../utils.js'
+import { testRegExp } from '../../utils/regexp.js'
 
 // `config.only: 'RegExp' or ['RegExp', ...]` will only run tasks whose
 // name matches.

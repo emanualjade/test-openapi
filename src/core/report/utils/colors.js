@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import stripAnsi from 'strip-ansi'
 import { mapValues } from 'lodash'
 
-import { isObject } from '../../../utils.js'
+import { isObject } from '../../../utils/types.js'
 
 // Colors used in reporting
 const { yellow, inverse } = chalk

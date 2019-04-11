@@ -1,6 +1,7 @@
 import { parse, tokensToFunction } from 'path-to-regexp'
 
-import { removePrefixes, getPath } from '../../../../utils.js'
+import { getPath } from '../../../../utils/path.js'
+import { removePrefixes } from '../../../../utils/prefix.js'
 import { TestOpenApiError } from '../../../../errors/error.js'
 import { addErrorHandler } from '../../../../errors/handler.js'
 

@@ -1,4 +1,4 @@
-import { isSimpleSchema } from '../../../utils.js'
+import { isSimpleSchema } from '../../../utils/simple_schema.js'
 
 // Add core `reportProps`
 export const addCoreReportProps = function({ reportProps, task }) {

@@ -1,4 +1,4 @@
-import { getPath } from '../utils.js'
+import { getPath } from '../utils/path.js'
 import { checkIsSchema } from '../validation.js'
 
 // Validate export value `config` are JSON schemas

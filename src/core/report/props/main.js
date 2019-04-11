@@ -1,6 +1,7 @@
 import { omit, omitBy } from 'lodash'
 
-import { isObject, merge } from '../../../utils.js'
+import { merge } from '../../../utils/merge.js'
+import { isObject } from '../../../utils/types.js'
 
 import { addCoreReportProps } from './core.js'
 

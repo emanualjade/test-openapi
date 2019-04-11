@@ -2,7 +2,7 @@ import { omit } from 'lodash'
 
 import { TestOpenApiError } from '../../errors/error.js'
 import { addErrorHandler } from '../../errors/handler.js'
-import { testRegExp } from '../../utils.js'
+import { testRegExp } from '../../utils/regexp.js'
 import { mergeWithTemplates } from '../../template/merge.js'
 
 // Merge tasks whose name include RegExp matching other task names.

@@ -1,6 +1,6 @@
 import { capitalize } from 'underscore.string'
 
-import { isObject } from '../../../../../utils.js'
+import { isObject } from '../../../../../utils/types.js'
 import {
   yellow,
   orange,

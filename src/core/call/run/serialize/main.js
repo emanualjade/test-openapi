@@ -1,7 +1,7 @@
 import { mapValues, omitBy } from 'lodash'
 
 import { stringifyFlat } from '../../../../utils/flat.js'
-import { keyToLocation } from '../../../../utils.js'
+import { keyToLocation } from '../../../../utils/location.js'
 import { findBodyHandler } from '../../body.js'
 
 import { normalizeContentType } from './content_type.js'

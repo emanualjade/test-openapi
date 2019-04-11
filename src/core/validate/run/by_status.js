@@ -1,6 +1,7 @@
 import { pickBy, omitBy } from 'lodash'
 
-import { merge, getPath } from '../../../utils.js'
+import { merge } from '../../../utils/merge.js'
+import { getPath } from '../../../utils/path.js'
 
 import { STATUS_REGEXP, parseStatus } from './status.js'
 

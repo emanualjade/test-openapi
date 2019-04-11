@@ -1,6 +1,6 @@
 import { capitalize } from 'underscore.string'
 
-import { getPath } from '../utils.js'
+import { getPath } from '../utils/path.js'
 import { convertPlainObject } from '../errors/convert.js'
 import { BugError } from '../errors/error.js'
 

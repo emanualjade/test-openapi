@@ -1,11 +1,12 @@
 import { titleize } from 'underscore.string'
 
-import { removePrefixes, sortArray } from '../../../utils.js'
-import {
-  utils: { yellow, stringify },
-} from '../../report.js'
+import { removePrefixes } from '../../../utils/prefix.js'
+import { sortArray } from '../../../utils/sort.js'
+import { utils } from '../../report.js'
 
 import { getTitle } from './title.js'
+
+const { yellow, stringify } = utils
 
 export const report = function({ rawRequest, rawResponse, request, response } = {}) {
   // We haven't reached `serialize` stage yet

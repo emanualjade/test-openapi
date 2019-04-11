@@ -1,7 +1,7 @@
 import { difference, uniq } from 'lodash'
 
 import { TestOpenApiError } from '../../../../errors/error.js'
-import { sortArray } from '../../../../utils.js'
+import { sortArray } from '../../../../utils/sort.js'
 
 import { parseRanges, replaceByRanges } from './range.js'
 import { VALID_STATUSES } from './valid.js'

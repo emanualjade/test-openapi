@@ -1,4 +1,4 @@
-import { isObject } from '../../../../../utils.js'
+import { isObject } from '../../../../../utils/types.js'
 
 // Check input arguments
 export const checkArgument = function(value, type) {

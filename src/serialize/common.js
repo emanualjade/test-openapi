@@ -1,4 +1,5 @@
-import { isObject, getPath } from '../utils.js'
+import { getPath } from '../utils/path.js'
+import { isObject } from '../utils/types.js'
 
 // Tasks and config are constrained to JSON.
 // Reasons:

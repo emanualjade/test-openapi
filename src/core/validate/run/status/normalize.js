@@ -1,4 +1,5 @@
-import { getWordsList, sortArray } from '../../../../utils.js'
+import { sortArray } from '../../../../utils/sort.js'
+import { getWordsList } from '../../../../utils/string.js'
 
 import { replaceByRanges } from './range.js'
 

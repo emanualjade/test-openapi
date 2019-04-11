@@ -4,7 +4,8 @@ import moize from 'moize'
 import { get, omitBy } from 'lodash'
 import { capitalize } from 'underscore.string'
 
-import { jsonPointerToParts, getPath } from '../utils.js'
+import { jsonPointerToParts } from '../utils/json_pointer.js'
+import { getPath } from '../utils/path.js'
 
 import { defaultInstance } from './instance.js'
 

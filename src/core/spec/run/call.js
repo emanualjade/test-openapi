@@ -1,6 +1,6 @@
 import { mapValues } from 'lodash'
 
-import { merge } from '../../../utils.js'
+import { merge } from '../../../utils/merge.js'
 import { template } from '../../template.js'
 
 import { getSpecialValues } from './special.js'

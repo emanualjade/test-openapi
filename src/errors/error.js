@@ -3,8 +3,8 @@
 import {
   isSimpleSchema,
   getSimpleSchemaConstant,
-  getWordsList,
-} from '../utils.js'
+} from '../utils/simple_schema.js'
+import { getWordsList } from '../utils/string.js'
 
 // Error properties (all might not be present):
 //  - `config` `{object}`: initial configuration object

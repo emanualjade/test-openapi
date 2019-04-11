@@ -1,6 +1,6 @@
 import { omit } from 'lodash'
 
-import { getPath } from '../utils.js'
+import { getPath } from '../utils/path.js'
 
 // Exceptions thrown during template evaluation
 export const templateHandler = function(error, { template, data, path }) {

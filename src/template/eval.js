@@ -3,7 +3,7 @@ import { get } from 'lodash'
 
 import { addErrorHandler } from '../errors/handler.js'
 import { crawl } from '../utils/crawl.js'
-import { promiseThen, promiseAllThen } from '../utils.js'
+import { promiseThen, promiseAllThen } from '../utils/promise.js'
 
 import { parseTemplate, parseEscape } from './parse.js'
 import { checkRecursion } from './recursion.js'

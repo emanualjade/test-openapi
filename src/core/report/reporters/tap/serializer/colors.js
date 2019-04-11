@@ -1,7 +1,7 @@
 import { constructor as Chalk } from 'chalk'
 import { get, mapValues } from 'lodash'
 
-import { isObject } from '../../../../../utils.js'
+import { isObject } from '../../../../../utils/types.js'
 
 // Used for colored output
 // `opts.colors: false` can be used to disable it

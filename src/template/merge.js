@@ -1,6 +1,6 @@
 import isMergeableObject from 'is-mergeable-object'
 
-import { customMerge } from '../utils.js'
+import { customMerge } from '../utils/merge.js'
 
 import { isTemplate } from './parse.js'
 

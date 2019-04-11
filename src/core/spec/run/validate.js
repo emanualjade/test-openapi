@@ -2,7 +2,8 @@ import { mapKeys, difference, intersection } from 'lodash'
 import { STATUS_CODES } from 'statuses'
 
 import { TestOpenApiError } from '../../../errors/error.js'
-import { getWordsList, merge } from '../../../utils.js'
+import { merge } from '../../../utils/merge.js'
+import { getWordsList } from '../../../utils/string.js'
 import { utils } from '../../validate.js'
 
 const { parseStatus, serializeStatus } = utils

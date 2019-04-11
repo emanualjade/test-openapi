@@ -1,4 +1,5 @@
-import { isObject, searchRegExp } from '../utils.js'
+import { searchRegExp } from '../utils/search.js'
+import { isObject } from '../utils/types.js'
 
 // Parse:
 //  - `$$name` into `{ type: 'value', name: '$$name' }`

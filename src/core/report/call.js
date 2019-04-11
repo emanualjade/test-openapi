@@ -1,7 +1,7 @@
 import { stdout } from 'process'
 import { promisify } from 'util'
 
-import { result } from '../../utils.js'
+import { result } from '../../utils/result.js'
 
 // Call reporters' functions then write return value to output
 export const callReporters = async function({ reporters, type }, ...args) {

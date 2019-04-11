@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 import { exit } from 'process'
 
-import { run } from '..'
-
+import { run } from '../main.js'
 import { addErrorHandler } from '../errors/handler.js'
 
 import { defineCli } from './top.js'

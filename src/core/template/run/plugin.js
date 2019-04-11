@@ -6,7 +6,10 @@ import { isTemplateName } from '../../../template/parse.js'
 import { wrapTemplateVars } from './check.js'
 
 // Retrieve all `plugin.template`
-export const getPluginsVars = function({ context, context: { _plugins: plugins } }) {
+export const getPluginsVars = function({
+  context,
+  context: { _plugins: plugins },
+}) {
   const pluginsVarsMap = getPluginsVarsMap({ context, plugins })
   const pluginsVars = mergePluginsVars({ plugins, pluginsVarsMap })
   return { pluginsVars, pluginsVarsMap }

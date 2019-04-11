@@ -8,7 +8,12 @@ import { getTitle } from './title.js'
 
 const { yellow, stringify } = utils
 
-export const report = function({ rawRequest, rawResponse, request, response } = {}) {
+export const report = function({
+  rawRequest,
+  rawResponse,
+  request,
+  response,
+} = {}) {
   // We haven't reached `serialize` stage yet
   if (rawRequest === undefined) {
     return {}

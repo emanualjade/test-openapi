@@ -5,7 +5,10 @@ import { TestOpenApiError } from '../../../errors/error.js'
 import { addErrorHandler } from '../../../errors/handler.js'
 
 // Where to output report according to `config.report.REPORTER.output`
-export const normalizeOutput = async function({ options: { output }, reporter }) {
+export const normalizeOutput = async function({
+  options: { output },
+  reporter,
+}) {
   // When `config.report.REPORTER.output` is `undefined` (default), write to
   // `stdout`
   if (output === undefined) {

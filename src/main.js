@@ -9,6 +9,7 @@ import { loadTasks } from './run/load.js'
 import { startTasks } from './run/start.js'
 import { runTask } from './run/run.js'
 import { completeTask } from './run/complete.js'
+// eslint-disable-next-line import/max-dependencies
 import { endTasks } from './run/end.js'
 
 // Main entry point

@@ -14,10 +14,12 @@ export const normalizeUserAgent = async function({
 }
 
 const getUserAgent = async function({ userAgent }) {
-  if (userAgent !== undefined) { return userAgent }
+  if (userAgent !== undefined) {
+    return userAgent
+  }
 
-  const { pkg: { name, version, homepage } } = await currentPackage
+  const {
+    pkg: { name, version, homepage },
+  } = await currentPackage
   return `${name}/${version} (${homepage})`
 }
-
-

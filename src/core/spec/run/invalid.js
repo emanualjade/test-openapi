@@ -2,7 +2,10 @@
 import { get, set } from 'lodash/fp'
 
 // Inverse OpenAPI params where `call.*: invalid` was used
-export const setInvalidParams = function({ params, specialValues: { invalid } }) {
+export const setInvalidParams = function({
+  params,
+  specialValues: { invalid },
+}) {
   return invalid.reduce(reduceInvalidParam, params)
 }
 

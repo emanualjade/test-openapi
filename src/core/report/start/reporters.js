@@ -34,7 +34,7 @@ const DEFAULT_REPORTERS = ['pretty']
 const MODULE_OPTS = {
   title: 'reporter',
   modulePrefix: 'test-openapi-reporter-',
-  corePath: '../core/report/reporters/',
+  corePath: `${__dirname}/../reporters/`,
   props: ({ name }) => ({ property: `config.report.${name}` }),
   schema: REPORTER_SCHEMA,
 }

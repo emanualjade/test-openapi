@@ -1,4 +1,4 @@
-import { STATUS_REGEXP } from './status.js'
+import { STATUS_REGEXP } from './status/parse.js'
 
 // Make `validate.[STATUS.]headers.*` case-insensitive
 // Also remove `undefined` validate values

@@ -2,11 +2,10 @@ import { titleize } from 'underscore.string'
 
 import { removePrefixes } from '../../../utils/prefix.js'
 import { sortArray } from '../../../utils/sort.js'
-import { utils } from '../../report.js'
+import { yellow } from '../../report/utils/colors.js'
+import { stringify } from '../../report/utils/stringify.js'
 
 import { getTitle } from './title.js'
-
-const { yellow, stringify } = utils
 
 export const report = function({
   rawRequest,

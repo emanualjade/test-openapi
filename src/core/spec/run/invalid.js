@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-internal-modules
 import { get, set } from 'lodash/fp'
 
 // Inverse OpenAPI params where `call.*: invalid` was used

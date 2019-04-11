@@ -1,4 +1,4 @@
-import { template } from '../../../template.js'
+import { template } from '../../../template/index.js'
 
 // eslint-disable-next-line id-match
 const { $$env } = template

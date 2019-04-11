@@ -1,6 +1,6 @@
 {
   "name": "test-openapi",
-  "version": "42.2.10",
+  "version": "42.3.0",
   "main": "build/src/index.js",
   "files": [
     "build/src",

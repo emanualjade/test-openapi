@@ -2,8 +2,7 @@ import { uniq, difference } from 'lodash'
 
 import { getModule } from '../modules.js'
 
-// eslint-disable-next-line import/no-namespace
-import * as PLUGIN_SCHEMA from './plugin_schema'
+import { PLUGIN_SCHEMA } from './plugin_schema'
 import { validateJsonSchemas } from './validate.js'
 import { verifyConfig } from './verify.js'
 

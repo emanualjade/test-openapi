@@ -1,31 +1,129 @@
+/* eslint-disable max-lines */
 import METHODS from 'methods'
-
-// eslint-disable-next-line import/no-namespace
-import * as config from './config_data'
 
 const UPPERCASE_METHODS = METHODS.map(method => method.toUpperCase())
 
-// Add all allowed HTTP methods to config validation
-const validateHttpMethods = function({
-  config: configA,
-  config: {
-    task,
-    task: {
-      properties,
-      properties: { method },
+export const config = {
+  'task': {
+    'type': 'object',
+    'properties': {
+      'method': {
+        'type': 'string',
+        enum: [...METHODS, ...UPPERCASE_METHODS],
+      },
+      'server': {
+        'type': 'string',
+        'pattern': '^[\\w-.+]+://'
+      },
+      'path': {
+        'type': 'string',
+        'pattern': '^/'
+      },
+      'body': {},
+      'timeout': {
+        'type': 'integer'
+      },
+      'https': {
+        'type': 'object',
+        'properties': {
+          'ca': {
+            'oneOf': [
+              { 'type': 'string' },
+              {
+                'type': 'array',
+                'items': {
+                  'type': 'string'
+                }
+              }
+            ]
+          },
+          'cert': {
+            'oneOf': [
+              { 'type': 'string' },
+              {
+                'type': 'array',
+                'items': {
+                  'type': 'string'
+                }
+              }
+            ]
+          },
+          'ciphers': {
+            'type': 'string'
+          },
+          'clientCertEngine': {
+            'type': 'string'
+          },
+          'crl': {
+            'oneOf': [
+              { 'type': 'string' },
+              {
+                'type': 'array',
+                'items': {
+                  'type': 'string'
+                }
+              }
+            ]
+          },
+          'dhparam': {
+            'type': 'string'
+          },
+          'ecdhCurve': {
+            'type': 'string'
+          },
+          'honorCipherOrder': {
+            'type': 'boolean'
+          },
+          'key': {
+            'oneOf': [
+              { 'type': 'string' },
+              {
+                'type': 'array',
+                'items': {
+                  'type': 'string'
+                }
+              }
+            ]
+          },
+          'passphrase': {
+            'type': 'string'
+          },
+          'pfx': {
+            'oneOf': [
+              { 'type': 'string' },
+              {
+                'type': 'array',
+                'items': {
+                  'type': 'string'
+                }
+              }
+            ]
+          },
+          'rejectUnauthorized': {
+            'type': 'boolean'
+          },
+          'secureOptions': {
+            'type': 'integer'
+          },
+          'secureProtocol': {
+            'type': 'string'
+          },
+          'servername': {
+            'type': 'string'
+          },
+          'sessionIdContext': {
+            'type': 'string'
+          }
+        },
+        'additionalProperties': false
+      }
     },
-  },
-}) {
-  const methods = [...METHODS, ...UPPERCASE_METHODS]
-
-  return {
-    ...configA,
-    task: {
-      ...task,
-      properties: { ...properties, method: { ...method, enum: methods } },
+    'patternProperties': {
+      '^url\\.[a-zA-Z_]\\w*': {},
+      '^query\\..+': {},
+      '^headers\\.[^A-Z]+': {}
     },
+    'additionalProperties': false
   }
 }
-
-const configB = validateHttpMethods({ config })
-export { configB as config }
+/* eslint-enable max-lines */

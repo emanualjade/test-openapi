@@ -5,8 +5,6 @@ import { getPath } from '../utils/path.js'
 import { parseInput } from '../serialize/input.js'
 
 import { validateConfig } from './validate.js'
-// eslint-disable-next-line import/no-namespace
-import * as DEFAULT_CONFIG from './defaults'
 
 // Load and normalize configuration
 export const loadConfig = function({ config }) {
@@ -26,4 +24,12 @@ export const loadConfig = function({ config }) {
 const throwParseError = function({ message, value, path }) {
   const property = getPath(['config', ...path])
   throw new TestOpenApiError(`Configuration ${message}`, { value, property })
+}
+
+const DEFAULT_CONFIG = {
+  'tasks': [
+    '**/*.tasks.yml',
+    '**/*.tasks.json'
+  ],
+  'plugins': []
 }

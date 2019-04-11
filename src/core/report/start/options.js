@@ -4,8 +4,7 @@ import { checkSchema } from '../../../validation/check.js'
 import { isSilent } from '../level/silent.js'
 import { normalizeLevel } from '../level/normalize.js'
 
-// eslint-disable-next-line import/no-namespace
-import * as COMMON_OPTIONS_SCHEMA from './common_options_schema'
+import { COMMON_OPTIONS_SCHEMA } from './common_options_schema'
 import { normalizeOutput } from './output.js'
 
 // Add `config.report.REPORTER.*` as `reporter.options`

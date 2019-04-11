@@ -2,10 +2,8 @@ import { difference, omitBy } from 'lodash'
 
 import { getModule } from '../../../modules.js'
 
-// eslint-disable-next-line import/no-namespace
-import * as COMMON_OPTIONS_SCHEMA from './common_options_schema'
-// eslint-disable-next-line import/no-namespace
-import * as REPORTER_SCHEMA from './reporter_schema'
+import { COMMON_OPTIONS_SCHEMA } from './common_options_schema'
+import { REPORTER_SCHEMA } from './reporter_schema'
 
 // Get `startData.report.reporters`
 export const getReporters = function({ config }) {

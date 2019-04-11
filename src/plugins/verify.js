@@ -1,4 +1,4 @@
-import { checkSchema } from '../validation.js'
+import { checkSchema } from '../validation/check.js'
 
 // Validate plugin-specific configuration against a JSON schema specified in
 // `plugin.config`

@@ -1,6 +1,6 @@
 import { TestOpenApiError, BugError } from './errors/error.js'
 import { addErrorHandler } from './errors/handler.js'
-import { checkSchema } from './validation.js'
+import { checkSchema } from './validation/check.js'
 
 // A module is either a plugin or a reporter
 export const getModule = function(name, info) {

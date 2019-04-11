@@ -1,5 +1,5 @@
 import { getPath } from '../utils/path.js'
-import { checkIsSchema } from '../validation.js'
+import { checkIsSchema } from '../validation/meta.js'
 
 // Validate export value `config` are JSON schemas
 export const validateJsonSchemas = function({ plugin: { name, config = {} } }) {

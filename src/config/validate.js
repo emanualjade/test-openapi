@@ -1,4 +1,4 @@
-import { checkSchema } from '../validation.js'
+import { checkSchema } from '../validation/check.js'
 
 // eslint-disable-next-line import/no-namespace
 import * as CONFIG_SCHEMA from './schema'

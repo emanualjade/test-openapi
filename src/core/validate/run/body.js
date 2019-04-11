@@ -1,4 +1,4 @@
-import { checkSchema } from '../../../validation.js'
+import { checkSchema } from '../../../validation/check.js'
 
 import { checkRequired } from './required.js'
 

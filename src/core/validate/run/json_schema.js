@@ -2,7 +2,7 @@ import { mapValues } from 'lodash'
 
 import { getPath } from '../../../utils/path.js'
 import { isObject } from '../../../utils/types.js'
-import { checkIsSchema } from '../../../validation.js'
+import { checkIsSchema } from '../../../validation/meta.js'
 
 // Handler JSON schemas in `task.validate.headers|body`
 export const handleJsonSchemas = function({ validate }) {

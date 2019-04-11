@@ -6,7 +6,7 @@ import { addErrorHandler } from '../../../errors/handler.js'
 // Parses an OpenAPI file (including JSON references)
 // Can also be a URL or directly an object
 // Also validates its syntax
-const loadOpenApiSpec = function({ spec }) {
+const eLoadOpenApiSpec = function({ spec }) {
   return SwaggerParser.validate(spec)
 }
 
@@ -17,6 +17,11 @@ const loadSpecHandler = function({ message, details }) {
 
   invalidSpecHandler({ details })
 }
+
+export const loadOpenApiSpec = addErrorHandler(
+  eLoadOpenApiSpec,
+  loadSpecHandler,
+)
 
 // Validate OpenAPI file exists and can be fetched
 const fetchSpecHandler = function({ message }) {
@@ -41,7 +46,3 @@ const INDENT = ' '.repeat(INDENT_LENGTH)
 const getErrorMessage = function({ path, message }) {
   return `At '${path.join('.')}': ${message}`
 }
-
-const eLoadOpenApiSpec = addErrorHandler(loadOpenApiSpec, loadSpecHandler)
-
-export { eLoadOpenApiSpec as loadOpenApiSpec }

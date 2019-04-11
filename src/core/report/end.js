@@ -1,6 +1,6 @@
 import { serializeOutput } from '../../serialize/output.js'
 
-import { filterTaskData } from './level.js'
+import { filterTaskData } from './level/task_data.js'
 import { callReporters } from './call.js'
 
 // Ends reporting

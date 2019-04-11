@@ -1,7 +1,7 @@
 import { groupBy } from 'lodash'
 
 import { loadOpenApiSpec } from './load.js'
-import { normalizeSpec } from './normalize.js'
+import { normalizeSpec } from './normalize/main.js'
 
 // Parse, validate and normalize OpenAPI specifications (including JSON
 // references) from each `task.spec.definition`, which can be a URL, a file

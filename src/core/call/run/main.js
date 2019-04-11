@@ -1,6 +1,6 @@
-import { serialize } from './serialize.js'
-import { addUrl } from './url.js'
-import { request } from './request.js'
+import { serialize } from './serialize/main.js'
+import { addUrl } from './url/main.js'
+import { request } from './request/main.js'
 import { parse } from './parse.js'
 
 // Does in order:

@@ -1,4 +1,5 @@
-import { gray, red, green, HORIZONTAL_LINE } from '../../utils.js'
+import { gray, red, green } from '../../utils/colors.js'
+import { HORIZONTAL_LINE } from '../../utils/line.js'
 
 export const MARKS = {
   // Pause symbol

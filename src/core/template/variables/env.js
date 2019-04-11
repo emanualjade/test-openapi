@@ -11,6 +11,5 @@ const getEnv = function() {
   return mapValues(env, parseFlat)
 }
 
-export const envTemplate = getEnv()
-
-export { envTemplate as $$env }
+// eslint-disable-next-line id-match
+export const $$env = getEnv()

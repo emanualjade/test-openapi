@@ -1,4 +1,4 @@
-import { incrementSpinner } from '../../utils.js'
+import { incrementSpinner } from '../../utils/spinner.js'
 
 // Update spinner
 export const tick = function({ options }) {

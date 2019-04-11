@@ -1,21 +1,25 @@
 import cliTruncate from 'cli-truncate'
 
+import { red, inverse } from '../../../utils/colors.js'
+import { indent } from '../../../utils/indent.js'
 import {
-  red,
-  inverse,
-  indent,
   FULL_LOWER_LINE,
   FULL_UPPER_LINE,
   LINE_SIZE,
   HORIZONTAL_LINE,
-} from '../../../utils.js'
+} from '../../../utils/line.js'
 import { MARKS, COLORS } from '../constants.js'
 
 // Header of the the message, with:
 //  - a symbol indicating whether the task passed, failed or was skipped
 //  - the task key
 //  - the `titles` (as returned by `plugin.report()`)
-export const getHeader = function({ task, task: { isNested }, titles, resultType }) {
+export const getHeader = function({
+  task,
+  task: { isNested },
+  titles,
+  resultType,
+}) {
   const subKeys = getSubKeys({ titles })
 
   if (isNested) {

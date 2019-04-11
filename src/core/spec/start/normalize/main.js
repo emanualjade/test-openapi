@@ -1,6 +1,6 @@
 import { omit } from 'lodash'
 
-import { getParams } from './params.js'
+import { getParams } from './params/main.js'
 import { normalizeResponses } from './response.js'
 
 // Normalize OpenAPI 2.0 operation into specification-agnostic format

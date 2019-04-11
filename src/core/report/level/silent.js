@@ -1,4 +1,4 @@
-import { getResultType } from '../utils.js'
+import { getResultType } from '../utils/result_type.js'
 
 // When using `config.report.REPORTER.level: silent`, whole run is silent
 export const isSilent = function({

@@ -1,13 +1,9 @@
 import { capitalize } from 'underscore.string'
 
 import { isObject } from '../../../../../utils/types.js'
-import {
-  yellow,
-  orange,
-  indent,
-  indentValue,
-  stringify,
-} from '../../../utils.js'
+import { yellow, orange } from '../../../utils/colors.js'
+import { indent, indentValue } from '../../../utils/indent.js'
+import { stringify } from '../../../utils/stringify.js'
 
 // Print/prettify all `plugin.report()` return values
 export const printReportProps = function({ reportProps, resultType }) {

@@ -1,4 +1,5 @@
-import { indent, stopSpinner } from '../../../utils.js'
+import { indent } from '../../../utils/indent.js'
+import { stopSpinner } from '../../../utils/spinner.js'
 import { LINE } from '../constants.js'
 
 import { printTasksList } from './list.js'

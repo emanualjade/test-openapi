@@ -1,7 +1,8 @@
 import { pick, omitBy } from 'lodash'
 
 import { checkSchema } from '../../../validation/check.js'
-import { isSilent, normalizeLevel } from '../level.js'
+import { isSilent } from '../level/silent.js'
+import { normalizeLevel } from '../level/normalize.js'
 
 // eslint-disable-next-line import/no-namespace
 import * as COMMON_OPTIONS_SCHEMA from './common_options_schema'

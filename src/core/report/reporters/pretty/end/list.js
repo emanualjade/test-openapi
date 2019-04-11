@@ -1,5 +1,7 @@
-import { getResultType, gray, indent } from '../../../utils.js'
-import { isSilentType } from '../../../level.js'
+import { getResultType } from '../../../utils/result_type.js'
+import { gray } from '../../../utils/colors.js'
+import { indent } from '../../../utils/indent.js'
+import { isSilentType } from '../../../level/silent.js'
 import { LINE, COLORS, MARKS } from '../constants.js'
 
 // Print a summary of each task: skipped tasks names, then passed tasks names,

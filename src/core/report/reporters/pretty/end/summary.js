@@ -1,4 +1,5 @@
-import { getSummary, yellow } from '../../../utils.js'
+import { yellow } from '../../../utils/colors.js'
+import { getSummary } from '../../../utils/summary.js'
 import { NAMES } from '../constants.js'
 
 // Print final reporting message with counter of passed|failed|skipped tasks

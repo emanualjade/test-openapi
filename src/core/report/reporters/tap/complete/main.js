@@ -1,12 +1,16 @@
-import { getResultType, SEPARATOR } from '../../../utils.js'
-import { getReportProps } from '../../../props.js'
+import { getResultType } from '../../../utils/result_type.js'
+import { SEPARATOR } from '../../../utils/line.js'
+import { getReportProps } from '../../../props/main.js'
 // eslint-disable-next-line import/no-namespace
-import * as serializer from '../serializer.js'
+import * as serializer from '../serializer'
 
 import { getErrorProps } from './error_props.js'
 
 // Add TAP output for each task, as a single assert
-export const complete = function(task, { options: { tap }, silent, ...context }) {
+export const complete = function(
+  task,
+  { options: { tap }, silent, ...context },
+) {
   const assert = getAssert({ task, context })
   const message = serializer.assert(tap, assert)
 

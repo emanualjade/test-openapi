@@ -1,7 +1,7 @@
 import { mapValues, mapKeys } from 'lodash'
 import { underscored } from 'underscore.string'
 
-import { removeColors } from '../../../utils.js'
+import { removeColors } from '../../../utils/colors.js'
 
 // Retrieve TAP error properties
 export const getErrorProps = function({ ok, reportProps }) {

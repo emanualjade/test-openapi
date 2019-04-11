@@ -1,7 +1,7 @@
 import { dump as yamlDump, DEFAULT_FULL_SCHEMA } from 'js-yaml'
 import { omitBy } from 'lodash'
 
-import { indent } from '../../../utils.js'
+import { indent } from '../../../utils/indent.js'
 
 // YAML error properties for each failed assertion
 export const getErrorProps = function({ ok, error }) {

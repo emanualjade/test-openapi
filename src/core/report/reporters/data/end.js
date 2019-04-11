@@ -1,5 +1,6 @@
-import { getSummary, stopSpinner } from '../../utils.js'
-import { isSilentTask } from '../../level.js'
+import { getSummary } from '../../utils/summary.js'
+import { stopSpinner } from '../../utils/spinner.js'
+import { isSilentTask } from '../../level/silent.js'
 
 // JSON reporter
 export const end = function(tasks, { options, options: { spinner } }) {

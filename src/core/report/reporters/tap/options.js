@@ -1,7 +1,7 @@
-import { green, red, gray, yellow } from '../../utils.js'
+import { green, red, gray, yellow } from '../../utils/colors.js'
 
 // eslint-disable-next-line import/no-namespace
-import * as serializer from './serializer.js'
+import * as serializer from './serializer'
 
 // Set TAP state
 export const options = function({ _tasks: tasks }) {

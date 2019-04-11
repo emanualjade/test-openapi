@@ -1,6 +1,7 @@
 import { serializeOutput } from '../../../serialize/output.js'
 import { callReporters } from '../call.js'
-import { isSilentTask, filterTaskData } from '../level.js'
+import { isSilentTask } from '../level/silent.js'
+import { filterTaskData } from '../level/task_data.js'
 
 // Call reporters `complete` handlers
 export const callComplete = async function({

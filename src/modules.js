@@ -21,7 +21,7 @@ export const getModule = function(name, info) {
 // Can only done once we moved core plugins/reporters to separate repositories
 const loadModule = function({ name, info: { corePath } }) {
   // TODO: replace with `import()` once it is supported by default by ESLint
-  // eslint-disable-next-line import/no-dynamic-require
+  // eslint-disable-next-line import/no-dynamic-require, global-require
   const moduleObj = require(`${corePath}${name}`)
   return { ...moduleObj, name }
 }

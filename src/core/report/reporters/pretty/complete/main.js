@@ -1,11 +1,15 @@
-import { getResultType, clearSpinner } from '../../../utils.js'
-import { getReportProps } from '../../../props.js'
+import { getResultType } from '../../../utils/result_type.js'
+import { clearSpinner } from '../../../utils/spinner.js'
+import { getReportProps } from '../../../props/main.js'
 
 import { getHeader } from './header.js'
 import { printReportProps } from './report_props.js'
 
 // Print task errors and update spinner
-export const complete = function(task, { options: { spinner }, silent, ...context }) {
+export const complete = function(
+  task,
+  { options: { spinner }, silent, ...context },
+) {
   if (silent) {
     return ''
   }

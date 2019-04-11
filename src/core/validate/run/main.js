@@ -1,7 +1,7 @@
 import { normalizeValidate } from './normalize.js'
 import { handleJsonSchemas } from './json_schema.js'
 import { addByStatus } from './by_status.js'
-import { validateStatus } from './status.js'
+import { validateStatus } from './status/main.js'
 import { validateHeaders } from './headers.js'
 import { validateBody } from './body.js'
 

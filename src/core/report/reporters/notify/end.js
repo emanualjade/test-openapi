@@ -1,7 +1,7 @@
 import notifier from 'node-notifier'
 
-import { getSummary } from '../../utils.js'
-import { isSilentType } from '../../level.js'
+import { getSummary } from '../../utils/summary.js'
+import { isSilentType } from '../../level/silent.js'
 
 // Show notification at end of run
 export const end = function(tasks, { options }) {

@@ -4,9 +4,10 @@ import { STATUS_CODES } from 'statuses'
 import { TestOpenApiError } from '../../../errors/error.js'
 import { merge } from '../../../utils/merge.js'
 import { getWordsList } from '../../../utils/string.js'
-import { utils } from '../../validate.js'
-
-const { parseStatus, serializeStatus } = utils
+import {
+  parseStatus,
+  serializeStatus,
+} from '../../validate/run/status/parse.js'
 
 // Add OpenAPI specification to `task.validate.*`
 // Use the specification response matching both the current operation and

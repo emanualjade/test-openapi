@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-namespace
-import * as serializer from './serializer.js'
+import * as serializer from './serializer'
 
 // Ends TAP v13 output
 // Write # tests|pass|fail|skip|ok comments at the end

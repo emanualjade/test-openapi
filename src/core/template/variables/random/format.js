@@ -1,5 +1,4 @@
 import jsonSchemaFaker from 'json-schema-faker'
-// eslint-disable-next-line import/no-internal-modules
 import formatRegExps from 'ajv/lib/compile/formats'
 
 // Allow `json-schema-faker` to use all the `format` that `ajv` can handle,

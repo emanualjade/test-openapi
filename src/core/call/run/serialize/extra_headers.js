@@ -1,8 +1,8 @@
-import {
-  Buffer: { byteLength },
-} from 'buffer'
+import { Buffer } from 'buffer'
 
 import { mapKeys } from 'lodash'
+
+const { byteLength } = Buffer
 
 // The `node-fetch` library adds few HTTP request headers, so we add them
 // to `rawRequest`

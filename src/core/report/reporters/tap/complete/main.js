@@ -1,8 +1,7 @@
 import { getResultType } from '../../../utils/result_type.js'
 import { SEPARATOR } from '../../../utils/line.js'
 import { getReportProps } from '../../../props/main.js'
-// eslint-disable-next-line import/no-namespace
-import * as serializer from '../serializer'
+import { assert as serializerAssert } from '../serializer'
 
 import { getErrorProps } from './error_props.js'
 
@@ -12,7 +11,7 @@ export const complete = function(
   { options: { tap }, silent, ...context },
 ) {
   const assert = getAssert({ task, context })
-  const message = serializer.assert(tap, assert)
+  const message = serializerAssert(tap, assert)
 
   if (silent) {
     return ''

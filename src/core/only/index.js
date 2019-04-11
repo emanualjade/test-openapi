@@ -1,8 +1,3 @@
-/* eslint-disable filenames/no-index */
-
-// eslint-disable-next-line import/no-namespace
-import * as config from './config'
-
+// eslint-disable-next-line filenames/no-index
 export { load } from './load.js'
-export { config }
-/* eslint-enable filenames/no-index */
+export { config } from './config.js'

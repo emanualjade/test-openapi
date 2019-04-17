@@ -11,9 +11,9 @@ Automatic API integration testing.
   specify the [request parameters](#http-requests) and the
   [response validation](#response-validation). More complex requests flows
   [are also supported](#sequences-of-requests).
-- Integrated to [**OpenAPI**](#openapi). Tasks re-use your OpenAPI
-  specification by default, making them less verbose and ensuring they match
-  your documentation.
+- Integrated to [**OpenAPI**](#openapi). Tasks re-use your OpenAPI specification
+  by default, making them less verbose and ensuring they match your
+  documentation.
 - **Fast**. Tasks have minimum overhead and run in parallel.
 - Nice **developer experience**. [Reporting](#example-output) is pretty,
   informative and usable.
@@ -191,7 +191,12 @@ HTTP requests are specified with the `call` task property.
 - `body` `{any}`: request body
 - `https` `{object}`:
   - HTTPS/TLS options
-  - Same as the ones allowed by [https.request()](https://nodejs.org/api/https.html#https_https_request_options_callback), i.e. `ca`, `cert`, `ciphers`, `clientCertEngine`, `crl`, `dhparam`, `ecdhCurve`, `honorCipherOrder`, `key`, `passphrase`, `pfx`, `rejectUnauthorized`, `secureOptions`, `secureProtocol`, `servername`, `sessionIdContext`.
+  - Same as the ones allowed by
+    [https.request()](https://nodejs.org/api/https.html#https_https_request_options_callback),
+    i.e. `ca`, `cert`, `ciphers`, `clientCertEngine`, `crl`, `dhparam`,
+    `ecdhCurve`, `honorCipherOrder`, `key`, `passphrase`, `pfx`,
+    `rejectUnauthorized`, `secureOptions`, `secureProtocol`, `servername`,
+    `sessionIdContext`.
 
 `url.NAME`, `query.NAME`, `headers.NAME` and `body` can be either a string or
 any other JSON type:
@@ -227,11 +232,12 @@ The HTTP response is validated against the `validate` task property.
   - this can be either:
     - any value checked for equality
     - a
-      [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject) with the additional following properties:
+      [JSON schema version 4](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#schemaObject)
+      with the additional following properties:
       - `x-optional` `{boolean}` (default: `true`): if `false`, validate that
         the HTTP header is present in the response
-      - `x-forbidden` `{boolean}` (default: `false`): if `true`, validate
-        that the HTTP header is not present in the response
+      - `x-forbidden` `{boolean}` (default: `false`): if `true`, validate that
+        the HTTP header is not present in the response
 - `body` `{any|jsonSchema}`:
   - expected value for the response body
   - this can be either a non-object checked for equality or a
@@ -268,8 +274,8 @@ described your API endpoints with [OpenAPI](https://www.openapis.org/).
   [`operationId`](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#operation-object)
 - `definition` `{string}`:
   - path to the OpenAPI document
-  - it is likely that the same OpenAPI document is re-used across tasks, so
-    the [`merge` task property](#shared-properties) can be used
+  - it is likely that the same OpenAPI document is re-used across tasks, so the
+    [`merge` task property](#shared-properties) can be used
   - the OpenAPI document syntax is validated
   - only OpenAPI 2.0 is currently supported but we plan to add OpenAPI 3.0
     support
@@ -284,8 +290,9 @@ The following OpenAPI properties are currently used:
   sets the request `Accept` header (`call['headers.accept']`) and validate the
   response's `Content-Type` header (`validate['headers.content-type']`)
 - the
-  [`host` and `basePath` OpenAPI properties](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object) set the
-  `call.server` task property. At the moment the protocol is always `http://`.
+  [`host` and `basePath` OpenAPI properties](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#swagger-object)
+  set the `call.server` task property. At the moment the protocol is always
+  `http://`.
 - the `call.method` and `call.path` is taken from the
   [OpenAPI definition](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#path-item-object)
 - the request parameters are randomly generated from the
@@ -299,8 +306,9 @@ The following OpenAPI properties are currently used:
       parameter is not marked as `required`. Redundant otherwise.
     - `undefined`: do not use the OpenAPI parameter definition
 - the
-  [response's](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject) `schema` and `headers` OpenAPI properties are used to
-  validate the HTTP response (`validate.status|body|headers`)
+  [response's](https://github.com/OAI/OpenAPI-Specification/blob/master/versions/2.0.md#responseObject)
+  `schema` and `headers` OpenAPI properties are used to validate the HTTP
+  response (`validate.status|body|headers`)
 
 OpenAPI schemas can use the following extensions:
 
@@ -328,9 +336,8 @@ property.
 ```
 
 The `merge` property should be a regular expression (or an array of them)
-targeting other tasks by `name`.
-The shared task will not be run. Instead it will be deeply merged to the target
-tasks.
+targeting other tasks by `name`. The shared task will not be run. Instead it
+will be deeply merged to the target tasks.
 
 The target tasks can override the shared task by using `undefined` inside task
 properties.
@@ -391,8 +398,7 @@ The following template variables are always available:
 # Sequences of requests
 
 A request can save its response using `variables`. Other requests will be able
-to re-use it as template variables.
-This creates sequences of requests.
+to re-use it as template variables. This creates sequences of requests.
 
 ```yml
 - name: createAccessToken
@@ -473,8 +479,8 @@ The available levels are:
 
 # Data-driven testing
 
-With the `repeat.data` task property, tasks are repeated by iterating over
-an array of inputs.
+With the `repeat.data` task property, tasks are repeated by iterating over an
+array of inputs.
 
 ```yml
 - name: exampleTask

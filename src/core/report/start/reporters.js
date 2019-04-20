@@ -2,8 +2,8 @@ import { difference, omitBy } from 'lodash'
 
 import { getModule } from '../../../modules.js'
 
-import { COMMON_OPTIONS_SCHEMA } from './common_options_schema'
-import { REPORTER_SCHEMA } from './reporter_schema'
+import { COMMON_OPTIONS_SCHEMA } from './common_options_schema.js'
+import { REPORTER_SCHEMA } from './reporter_schema.js'
 
 // Get `startData.report.reporters`
 export const getReporters = function({ config }) {

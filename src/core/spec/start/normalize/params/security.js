@@ -3,7 +3,7 @@ import { uniqBy } from 'lodash'
 import { TestOpenApiError } from '../../../../../errors/error.js'
 import { locationToKey } from '../../../../../utils/location.js'
 
-import { IN_TO_LOCATION } from './in_to_location'
+import { IN_TO_LOCATION } from './in_to_location.js'
 
 // Normalize OpenAPI security request parameters into specification-agnostic
 // format

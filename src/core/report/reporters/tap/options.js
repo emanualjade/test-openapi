@@ -1,6 +1,6 @@
 import { green, red, gray, yellow } from '../../utils/colors.js'
 
-import { init } from './serializer'
+import { init } from './serializer/main.js'
 
 // Set TAP state
 export const options = function({ _tasks: tasks }) {

@@ -3,7 +3,7 @@ import { omit } from 'lodash'
 import { locationToKey } from '../../../../../utils/location.js'
 import { normalizeSchema } from '../json_schema.js'
 
-import { IN_TO_LOCATION } from './in_to_location'
+import { IN_TO_LOCATION } from './in_to_location.js'
 import { addSeparator } from './separator.js'
 
 // From OpenAPI request `parameters` to normalized format

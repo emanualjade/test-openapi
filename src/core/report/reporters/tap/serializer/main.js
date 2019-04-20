@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/no-index
 export { init } from './init.js'
 export { start } from './start.js'
 export { test } from './test.js'

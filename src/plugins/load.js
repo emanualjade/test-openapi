@@ -2,7 +2,7 @@ import { uniq, difference } from 'lodash'
 
 import { getModule } from '../modules.js'
 
-import { PLUGIN_SCHEMA } from './plugin_schema'
+import { PLUGIN_SCHEMA } from './plugin_schema.js'
 import { validateJsonSchemas } from './validate.js'
 import { verifyConfig } from './verify.js'
 

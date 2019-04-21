@@ -1,4 +1,4 @@
-import JSON_SCHEMA_SCHEMA from 'ajv/lib/refs/json-schema-draft-04'
+import JSON_SCHEMA_SCHEMA from 'ajv/lib/refs/json-schema-draft-04.json'
 import { omit } from 'lodash'
 
 import { checkSchema } from './check.js'

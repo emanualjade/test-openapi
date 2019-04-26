@@ -1,6 +1,3 @@
-// URL is global starting from Node.js 10
-// TODO: remove when dropping support for Node.js 8 and 9
-// eslint-disable-next-line node/prefer-global/url, no-shadow
 import { URL } from 'url'
 
 import { TestOpenApiError } from '../../../../errors/error.js'

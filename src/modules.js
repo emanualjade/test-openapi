@@ -22,7 +22,7 @@ export const getModule = function(name, info) {
 const loadModule = function({ name, info: { corePath } }) {
   // TODO: replace with `import()` once it is supported by default by ESLint
   // eslint-disable-next-line import/no-dynamic-require, global-require
-  const moduleObj = require(`${corePath}${name}`)
+  const moduleObj = require(`${corePath}${name}/main.js`)
   return { ...moduleObj, name }
 }
 

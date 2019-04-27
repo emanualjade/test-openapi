@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/no-index
 export { config } from './config.js'
 export { start } from './start/main.js'
 export { loadOpenApiSpec } from './start/load.js'

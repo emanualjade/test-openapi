@@ -20,7 +20,6 @@ const runCliHandler = function({ tasks, message }) {
   // Do not print error message if the error happened during task running, as
   // it's already been reported using `report`
   if (tasks === undefined) {
-    // eslint-disable-next-line no-console, no-restricted-globals
     console.error(message)
   }
 

@@ -1,7 +1,6 @@
 import { omit, omitBy } from 'lodash'
 
 export const parseConfig = function({ yargs }) {
-  // eslint-disable-next-line id-length
   const { _: tasks, ...config } = yargs.parse()
 
   // `yargs`-specific options

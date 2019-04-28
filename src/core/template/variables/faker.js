@@ -1,3 +1,3 @@
 import faker from 'faker'
 
-export { faker as $$faker }
+export { faker as fakerHelper }

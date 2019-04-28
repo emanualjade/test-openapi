@@ -1,11 +1,11 @@
-// eslint-disable-next-line id-match
-import { $$random } from './variables/random/main.js'
-// eslint-disable-next-line id-match
-import { $$env } from './variables/env.js'
-// eslint-disable-next-line id-match
-import { $$faker } from './variables/faker.js'
+import { randomHelper } from './variables/random/main.js'
+import { envHelper } from './variables/env.js'
+import { fakerHelper } from './variables/faker.js'
 
-export const template = { $$random, $$env, $$faker }
-
+export const template = {
+  $$random: randomHelper,
+  $$env: envHelper,
+  $$faker: fakerHelper,
+}
 export { config } from './config.js'
 export { run } from './run/main.js'

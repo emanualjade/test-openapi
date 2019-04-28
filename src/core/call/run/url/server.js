@@ -1,7 +1,6 @@
-import { template } from '../../../template/main.js'
+import { env } from 'process'
 
-// eslint-disable-next-line id-match
-const { $$env } = template
+const { HOST, PORT } = env
 
 // Add `task.call.server`
 // It can only be validated after URL variables have been replaced
@@ -27,17 +26,15 @@ const getDefaultServer = function() {
 
 // Defaults to environment variable HOST or to `localhost`
 const getHostname = function() {
-  return $$env.HOST || DEFAULT_HOSTNAME
+  return HOST || DEFAULT_HOSTNAME
 }
 
 const DEFAULT_HOSTNAME = 'localhost'
 
 // Defaults to environment variable PORT or the protocol's default port
 const getPort = function() {
-  const port = $$env.PORT
-
-  if (port) {
-    return `:${port}`
+  if (PORT) {
+    return `:${PORT}`
   }
 
   return ''

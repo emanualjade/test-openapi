@@ -1,7 +1,7 @@
 {
   "name": "test-openapi",
   "version": "42.3.0",
-  "main": "build/src/index.js",
+  "main": "build/src/main.js",
   "files": [
     "build/src",
     "!~"

@@ -7,8 +7,7 @@ import { getSpecialValues } from './special.js'
 import { removeOptionals } from './optional.js'
 import { setInvalidParams } from './invalid.js'
 
-// eslint-disable-next-line id-match
-const { $$random } = template
+const { $$random: randomHelper } = template
 
 // Add OpenAPI specification parameters to `task.call.*`
 export const addSpecToCall = function({ call, operation: { params } }) {
@@ -26,7 +25,7 @@ export const addSpecToCall = function({ call, operation: { params } }) {
 
   const paramsB = setInvalidParams({ params: paramsA, specialValues })
 
-  const paramsC = mapValues(paramsB, schema => $$random(schema))
+  const paramsC = mapValues(paramsB, schema => randomHelper(schema))
 
   // Specification params have less priority than `task.call.*`
   const callC = merge(paramsC, callB)

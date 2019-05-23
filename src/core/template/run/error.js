@@ -1,5 +1,9 @@
 import { parseTemplate } from '../../../template/parse.js'
 
+// Make it work with `Object.create(null)`
+// eslint-disable-next-line no-shadow
+const { propertyIsEnumerable } = Object.prototype
+
 export const templateHandler = function(error, { pluginsVarsMap }) {
   if (error.property !== undefined) {
     // eslint-disable-next-line fp/no-mutation, no-param-reassign
@@ -34,7 +38,7 @@ const findPlugin = function({ value: { template }, pluginsVarsMap }) {
   const { name } = parseTemplate(template)
 
   const plugin = Object.entries(pluginsVarsMap).find(([, pluginsVars]) =>
-    ({}.propertyIsEnumerable.call(pluginsVars, name)),
+    propertyIsEnumerable.call(pluginsVars, name),
   )
   return plugin
 }

@@ -1,3 +1,7 @@
+// Make it work with `Object.create(null)`
+// eslint-disable-next-line no-shadow
+const { propertyIsEnumerable } = Object.prototype
+
 // Like Lodash.get() except takes into account objects whose properties
 // have dots
 // E.g. _.get({ a: { 'b.c': true } }, 'a.b.c') does not work
@@ -13,7 +17,7 @@ const getProperty = function(value, path) {
   }
 
   // When we reached the final property
-  if ({}.propertyIsEnumerable.call(value, path)) {
+  if (propertyIsEnumerable.call(value, path)) {
     return value[path]
   }
 

@@ -19,7 +19,7 @@ const getUserAgent = async function({ userAgent }) {
   }
 
   const {
-    pkg: { name, version, homepage },
+    package: { name, version, homepage },
   } = await currentPackage
   return `${name}/${version} (${homepage})`
 }

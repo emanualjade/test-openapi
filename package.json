@@ -37,7 +37,7 @@
     "core-js": "^3.1.2",
     "cross-fetch": "^3.0.2",
     "deepmerge": "^3.2.0",
-    "emphasize": "^2.0.0",
+    "emphasize": "^2.1.0",
     "faker": "^4.1.0",
     "fast-glob": "^2.2.7",
     "is-mergeable-object": "^1.1.0",

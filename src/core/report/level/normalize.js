@@ -11,7 +11,7 @@ export const normalizeLevel = function({ options, reporter }) {
 
 const DEFAULT_LEVEL = 'info'
 
-export const LEVELS = {
+const LEVELS = {
   silent: {
     types: [],
     taskData: 'none',

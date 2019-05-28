@@ -13,7 +13,7 @@ export const addScopes = function({ tasks, path }) {
   return tasksA
 }
 
-export const getScope = function(path) {
+const getScope = function(path) {
   const filename = basename(path)
   const scope = filename.replace(/\..*/u, '')
   return scope

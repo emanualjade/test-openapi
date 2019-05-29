@@ -1,5 +1,4 @@
 import { TestOpenApiError } from '../../../../errors/error.js'
-import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Parse a HTTP response
 export const getRawResponse = async function({
@@ -8,9 +7,15 @@ export const getRawResponse = async function({
   rawRequest,
 }) {
   const headers = getHeaders({ rawResponse })
-  const body = await eGetBody({ rawResponse, rawRequest })
 
-  return { status, ...headers, body }
+  try {
+    // We get the raw body. It will be parsed according to the `Content-Type`
+    // later
+    const body = await rawResponse.text()
+    return { status, ...headers, body }
+  } catch (error) {
+    getBodyHandler(error, { rawRequest })
+  }
 }
 
 // Normalize response headers to a plain object
@@ -27,11 +32,6 @@ const getHeaders = function({ rawResponse: { headers } }) {
   }))
   const headersC = Object.assign({}, ...headersB)
   return headersC
-}
-
-// We get the raw body. It will be parsed according to the `Content-Type` later
-const getBody = function({ rawResponse }) {
-  return rawResponse.text()
 }
 
 const getBodyHandler = function(
@@ -51,5 +51,3 @@ const getBodyHandler = function(
     property,
   })
 }
-
-const eGetBody = addErrorHandler(getBody, getBodyHandler)

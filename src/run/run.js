@@ -1,18 +1,17 @@
 /* eslint-disable-line max-lines */
 import { TestOpenApiError } from '../errors/error.js'
-import { addErrorHandler } from '../errors/handler.js'
 import { getTaskReturn } from '../plugins/return/main.js'
 import { runHandlers } from '../plugins/handlers.js'
 
 // Run each `plugin.run()`
 export const runTask = async function({ task, context, plugins, nestedPath }) {
-  const taskA = await eRunAll({ task, context, plugins, nestedPath })
+  const taskA = await runAll({ task, context, plugins, nestedPath })
 
   const taskB = getTaskReturn({ task: taskA, plugins })
   return taskB
 }
 
-const runAll = function({
+const runAll = async function({
   task,
   task: { skipped },
   context,
@@ -30,14 +29,18 @@ const runAll = function({
 
   const contextA = getContext({ context, plugins, nestedPath })
 
-  return runHandlers({
-    type: 'run',
-    plugins,
-    input: task,
-    context: contextA,
-    errorHandler: runPluginHandler,
-    stopFunc,
-  })
+  try {
+    return await runHandlers({
+      type: 'run',
+      plugins,
+      input: task,
+      context: contextA,
+      errorHandler: runPluginHandler,
+      stopFunc,
+    })
+  } catch (error) {
+    return runAllHandler(error)
+  }
 }
 
 // Top-level errors are returned as `task.error`
@@ -52,8 +55,6 @@ const runAllHandler = function(error) {
 
   return task
 }
-
-const eRunAll = addErrorHandler(runAll, runAllHandler)
 
 const getContext = function({ context, plugins, nestedPath }) {
   const recursiveRunTaskA = recursiveRunTask.bind(null, {

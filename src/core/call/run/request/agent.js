@@ -3,7 +3,6 @@ import { Agent } from 'https'
 import moize from 'moize'
 
 import { TestOpenApiError } from '../../../../errors/error.js'
-import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Allow passing HTTPS options, e.g. for self-signed certificates, etc.
 const getAgent = function({ https = {}, url }) {
@@ -11,7 +10,14 @@ const getAgent = function({ https = {}, url }) {
     return
   }
 
-  return new Agent(https)
+  try {
+    return new Agent(https)
+  } catch (error) {
+    throw new TestOpenApiError(`Invalid HTTPS options: ${error.message}`, {
+      property: 'call.https',
+      value: https,
+    })
+  }
 }
 
 const HTTPS_PROTOCOL = 'https://'
@@ -20,13 +26,4 @@ const HTTPS_PROTOCOL = 'https://'
 // are different
 const mGetAgent = moize(getAgent, { isDeepEqual: true })
 
-const getAgentHandler = function({ message }, { https }) {
-  throw new TestOpenApiError(`Invalid HTTPS options: ${message}`, {
-    property: 'call.https',
-    value: https,
-  })
-}
-
-const eGetAgent = addErrorHandler(mGetAgent, getAgentHandler)
-
-export { eGetAgent as getAgent }
+export { mGetAgent as getAgent }

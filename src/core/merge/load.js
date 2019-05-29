@@ -1,7 +1,6 @@
 import { omit } from 'lodash'
 
 import { TestOpenApiError } from '../../errors/error.js'
-import { addErrorHandler } from '../../errors/handler.js'
 import { testRegExp } from '../../utils/regexp.js'
 import { mergeWithTemplates } from '../../template/merge.js'
 
@@ -41,19 +40,21 @@ const mergeTask = function({ task, mergeTasks, mergeConfig = {} }) {
 const findMergeTasks = function({ task: { key, scope }, mergeTasks }) {
   // eslint-disable-next-line fp/no-mutating-methods
   return mergeTasks
-    .filter(({ merge }) => eTestRegExp(merge, key))
+    .filter(({ merge }) => testMergeRegExp(merge, key))
     .sort((taskA, taskB) => compareMergeTasks({ taskA, taskB, scope }))
     .map(task => omit(task, NOT_MERGED_ATTRIBUTES))
 }
 
-const testRegExpHandler = function({ message }, merge) {
-  throw new TestOpenApiError(`'task.merge' '${merge}' is invalid: ${message}`, {
-    value: merge,
-    property: 'task.merge',
-  })
+const testMergeRegExp = function(merge, key) {
+  try {
+    return testRegExp(merge, key)
+  } catch (error) {
+    throw new TestOpenApiError(`'task.merge' '${merge}' is invalid: ${error.message}`, {
+      value: merge,
+      property: 'task.merge',
+    })
+  }
 }
-
-const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)
 
 // Compute which `merge` tasks have priority over each other.
 // Mostly depends on the scope it was loaded in with priority:

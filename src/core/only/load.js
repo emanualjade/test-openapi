@@ -1,5 +1,4 @@
 import { TestOpenApiError } from '../../errors/error.js'
-import { addErrorHandler } from '../../errors/handler.js'
 import { testRegExp } from '../../utils/regexp.js'
 
 // `config.only: 'RegExp' or ['RegExp', ...]` will only run tasks whose
@@ -33,15 +32,17 @@ const addExcluded = function({ task, task: { only, key }, configOnly }) {
 const isOnly = function({ only, configOnly, key }) {
   return (
     only !== undefined ||
-    (configOnly !== undefined && eTestRegExp(configOnly, key))
+    (configOnly !== undefined && testOnlyRegExp(configOnly, key))
   )
 }
 
-const testRegExpHandler = function({ message }, configOnly) {
-  throw new TestOpenApiError(
-    `'config.only' '${configOnly}' is invalid: ${message}`,
-    { value: configOnly, property: 'config.only' },
-  )
+const testOnlyRegExp = function(configOnly, key) {
+  try {
+    return testRegExp(configOnly, key)
+  } catch (error) {
+    throw new TestOpenApiError(
+      `'config.only' '${configOnly}' is invalid: ${error.message}`,
+      { value: configOnly, property: 'config.only' },
+    )
+  }
 }
-
-const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)

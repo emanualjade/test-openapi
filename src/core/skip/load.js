@@ -1,6 +1,5 @@
 import { testRegExp } from '../../utils/regexp.js'
 import { TestOpenApiError } from '../../errors/error.js'
-import { addErrorHandler } from '../../errors/handler.js'
 
 // `task.skip: anyValue` will skip those tasks
 // Can also use `config.skip: 'RegExp' or ['RegExp', ...]`
@@ -24,15 +23,17 @@ const addSkipped = function({ task, task: { skip, key }, configSkip }) {
 const isSkipped = function({ skip, configSkip, key }) {
   return (
     skip !== undefined ||
-    (configSkip !== undefined && eTestRegExp(configSkip, key))
+    (configSkip !== undefined && testSkipRegExp(configSkip, key))
   )
 }
 
-const testRegExpHandler = function({ message }, configSkip) {
-  throw new TestOpenApiError(
-    `'config.skip' '${configSkip}' is invalid: ${message}`,
-    { value: configSkip, property: 'config.skip' },
-  )
+const testSkipRegExp = function(configSkip, key) {
+  try {
+    return testRegExp(configSkip, key)
+  } catch (error) {
+    throw new TestOpenApiError(
+      `'config.skip' '${configSkip}' is invalid: ${error.message}`,
+      { value: configSkip, property: 'config.skip' },
+    )
+  }
 }
-
-const eTestRegExp = addErrorHandler(testRegExp, testRegExpHandler)

@@ -1,13 +1,20 @@
 import { URL } from 'url'
 
 import { TestOpenApiError } from '../../../../errors/error.js'
-import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Escape, normalize and validate the request URL
 export const normalizeUrl = function({ url: originalUrl }) {
   const url = escapeUrl(originalUrl)
-  const urlA = eParseUrl({ url, originalUrl })
-  return urlA
+
+  try {
+    return new URL(url).toString()
+  } catch (error) {
+    throw new TestOpenApiError(
+      `Request URL '${originalUrl}' is not a valid full URL: ${error.message}`,
+      // It could come from either `server` or `path`
+      { property: 'task.call', value: originalUrl },
+    )
+  }
 }
 
 // According to RFC 3986, all characters should be escaped in paths except:
@@ -20,17 +27,3 @@ const escapeUrl = function(url) {
     .replace(/#/gu, '%23')
     .replace(/\?/gu, '%3F')
 }
-
-const parseUrl = function({ url }) {
-  return new URL(url).toString()
-}
-
-const parseUrlHandler = function({ message }, { originalUrl }) {
-  throw new TestOpenApiError(
-    `Request URL '${originalUrl}' is not a valid full URL: ${message}`,
-    // It could come from either `server` or `path`
-    { property: 'task.call', value: originalUrl },
-  )
-}
-
-const eParseUrl = addErrorHandler(parseUrl, parseUrlHandler)

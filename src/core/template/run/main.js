@@ -1,7 +1,6 @@
 import { pick, omit } from 'lodash'
 
 import { promiseThen } from '../../../utils/promise.js'
-import { addErrorHandler } from '../../../errors/handler.js'
 import { evalTemplate } from '../../../template/eval.js'
 
 import { getPluginsVars } from './plugin.js'
@@ -29,7 +28,7 @@ export const run = function(task, context) {
   const noEvalProps = pick(task, NO_EVAL_PROPS)
   const taskA = omit(task, NO_EVAL_PROPS)
 
-  const taskB = eEvalTaskTemplate({ task: taskA, vars, pluginsVarsMap })
+  const taskB = evalTaskTemplate({ task: taskA, vars, pluginsVarsMap })
 
   return promiseThen(taskB, taskC => returnTask({ task: taskC, noEvalProps }))
 }
@@ -47,11 +46,17 @@ const getVars = function({ task: { template: taskTemplates }, context }) {
   return { vars, pluginsVarsMap }
 }
 
-const evalTaskTemplate = function({ task, vars }) {
-  return evalTemplate(task, vars)
+const evalTaskTemplate = function({ task, vars, pluginsVarsMap }) {
+  try {
+    const retVal = evalTemplate(task, vars)
+    // eslint-disable-next-line promise/prefer-await-to-then
+    return retVal && typeof retVal.then === 'function'
+      ? retVal.catch(error => templateHandler(error, { pluginsVarsMap }))
+      : retVal
+  } catch (error) {
+    templateHandler(error, { pluginsVarsMap })
+  }
 }
-
-const eEvalTaskTemplate = addErrorHandler(evalTaskTemplate, templateHandler)
 
 // Update `originalTask` so that templates are shown evaluated in both return
 // value and reporting

@@ -1,13 +1,16 @@
 import SwaggerParser from 'swagger-parser'
 
 import { TestOpenApiError } from '../../../errors/error.js'
-import { addErrorHandler } from '../../../errors/handler.js'
 
 // Parses an OpenAPI file (including JSON references)
 // Can also be a URL or directly an object
 // Also validates its syntax
-const eLoadOpenApiSpec = function({ spec }) {
-  return SwaggerParser.validate(spec)
+export const loadOpenApiSpec = async function({ spec }) {
+  try {
+    return await SwaggerParser.validate(spec)
+  } catch (error) {
+    loadSpecHandler(error)
+  }
 }
 
 const loadSpecHandler = function({ message, details }) {
@@ -17,11 +20,6 @@ const loadSpecHandler = function({ message, details }) {
 
   invalidSpecHandler({ details })
 }
-
-export const loadOpenApiSpec = addErrorHandler(
-  eLoadOpenApiSpec,
-  loadSpecHandler,
-)
 
 // Validate OpenAPI file exists and can be fetched
 const fetchSpecHandler = function({ message }) {

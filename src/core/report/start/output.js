@@ -2,12 +2,11 @@ import { stdout } from 'process'
 import { createWriteStream } from 'fs'
 
 import { TestOpenApiError } from '../../../errors/error.js'
-import { addErrorHandler } from '../../../errors/handler.js'
 
 // Where to output report according to `config.report.REPORTER.output`
 export const normalizeOutput = async function({
   options: { output },
-  reporter,
+  reporter: { name },
 }) {
   // When `config.report.REPORTER.output` is `undefined` (default), write to
   // `stdout`
@@ -16,11 +15,17 @@ export const normalizeOutput = async function({
   }
 
   // Otherwise write to a file
-  const stream = await eGetFileStream({ output, reporter })
-  return stream
+  try {
+    return await getFileStream(output)
+  } catch (error) {
+    throw new TestOpenApiError(
+      `Could not write output to file '${output}': ${error.message}`,
+      { property: `config.report.${name}.output`, value: output },
+    )
+  }
 }
 
-const getFileStream = function({ output }) {
+const getFileStream = function(output) {
   // eslint-disable-next-line promise/avoid-new
   return new Promise((resolve, reject) => {
     const stream = createWriteStream(output)
@@ -28,15 +33,3 @@ const getFileStream = function({ output }) {
     stream.on('error', reject)
   })
 }
-
-const getFileStreamHandler = function(
-  { message },
-  { output, reporter: { name } },
-) {
-  throw new TestOpenApiError(
-    `Could not write output to file '${output}': ${message}`,
-    { property: `config.report.${name}.output`, value: output },
-  )
-}
-
-const eGetFileStream = addErrorHandler(getFileStream, getFileStreamHandler)

@@ -1,7 +1,6 @@
 /* eslint-disable-line max-lines */
 import { get } from 'lodash'
 
-import { addErrorHandler } from '../errors/handler.js'
 import { crawl } from '../utils/crawl.js'
 import { promiseThen, promiseAllThen } from '../utils/promise.js'
 
@@ -57,7 +56,7 @@ const evalNode = function(opts, data, path) {
     return evalConcat({ template, opts, path })
   }
 
-  return eEvalSingle({ template, opts, data, path })
+  return evalSingle({ template, opts, data, path })
 }
 
 // Evaluate `$$name` when it's inside a string.
@@ -77,7 +76,7 @@ const evalConcatToken = function({ token, token: { type, name }, opts, path }) {
     return name
   }
 
-  return eEvalSingle({ template: token, opts, data: name, path })
+  return evalSingle({ template: token, opts, data: name, path })
 }
 
 // `tokens` are joined.
@@ -108,13 +107,23 @@ const evalSingle = function({ template, opts }) {
     return
   }
 
-  // `$$name` can be an async function, fired right away
-  return promiseThen(data, dataA =>
-    getNestedProp({ data: dataA, template, opts: optsA, propPath }),
-  )
+  return evalSingleData({ template, opts: optsA, data, propPath })
 }
 
-const eEvalSingle = addErrorHandler(evalSingle, templateHandler)
+const evalSingleData = function({ template, opts, data, propPath }) {
+  // `$$name` can be an async function, fired right away
+  try {
+    const retVal = promiseThen(data, dataA =>
+      getNestedProp({ data: dataA, template, opts, propPath }),
+    )
+    // eslint-disable-next-line promise/prefer-await-to-then
+    return retVal && typeof retVal.then === 'function'
+      ? retVal.catch(error => templateHandler(error, { template }))
+      : retVal
+  } catch (error) {
+    templateHandler(error, { template })
+  }
+}
 
 // Retrieve template's top-level value
 const getTopLevelProp = function({

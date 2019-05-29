@@ -6,11 +6,12 @@ import { load as loadYaml, JSON_SCHEMA } from 'js-yaml'
 import { sortBy } from 'lodash'
 
 import { TestOpenApiError } from '../errors/error.js'
-import { addErrorHandler } from '../errors/handler.js'
 
 import { validateFileTasks } from './validate/file.js'
 import { validateInlineTasks } from './validate/inline.js'
 import { addScopes, addKey, validateScopes } from './scope.js'
+
+const pReadFile = promisify(readFile)
 
 // Load tasks.
 // Tasks are specified as an array of objects instead of a map of objects
@@ -50,8 +51,8 @@ const loadFileTasks = async function({ tasks }) {
 
 // Load and parse each task file in parallel
 const loadTaskFile = async function({ path }) {
-  const content = await eReadFile(path)
-  const tasks = eParseTaskFile({ path, content })
+  const content = await readTaskFile(path)
+  const tasks = parseTaskFile({ path, content })
 
   validateFileTasks({ tasks, path })
 
@@ -59,15 +60,23 @@ const loadTaskFile = async function({ path }) {
   return tasksA
 }
 
-const readFileHandler = function({ message }, path) {
-  throw new TestOpenApiError(`Could not load task file '${path}': ${message}`)
+const readTaskFile = async function(path) {
+  try {
+    return await pReadFile(path)
+  } catch (error) {
+    throw new TestOpenApiError(`Could not load task file '${path}': ${error.message}`)
+  }
 }
-
-const eReadFile = addErrorHandler(promisify(readFile), readFileHandler)
 
 // YAML parsing
 const parseTaskFile = function({ path, content }) {
-  return loadYaml(content, { ...YAML_OPTS, filename: path })
+  try {
+    return loadYaml(content, { ...YAML_OPTS, filename: path })
+  } catch (error) {
+    throw new TestOpenApiError(
+      `Task file '${path}' is not valid YAML nor JSON: ${error.message}`,
+    )
+  }
 }
 
 const YAML_OPTS = {
@@ -77,14 +86,6 @@ const YAML_OPTS = {
     throw error
   },
 }
-
-const parseTaskFileHandler = function({ message }, { path }) {
-  throw new TestOpenApiError(
-    `Task file '${path}' is not valid YAML nor JSON: ${message}`,
-  )
-}
-
-const eParseTaskFile = addErrorHandler(parseTaskFile, parseTaskFileHandler)
 
 // Load tasks that are specified directly as objects
 const loadInlineTasks = function({ tasks }) {

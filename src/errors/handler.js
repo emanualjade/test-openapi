@@ -2,12 +2,9 @@ import keepFuncProps from 'keep-func-props'
 
 // Wrap a function with a error handler
 // Allow passing an empty error handler, i.e. ignoring any error thrown
-const kAddErrorHandler = function(func, errorHandler = noop) {
+const kAddErrorHandler = function(func, errorHandler) {
   return errorHandledFunc.bind(null, func, errorHandler)
 }
-
-// eslint-disable-next-line no-empty-function
-const noop = function() {}
 
 export const addErrorHandler = keepFuncProps(kAddErrorHandler)
 

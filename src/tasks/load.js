@@ -64,7 +64,9 @@ const readTaskFile = async function(path) {
   try {
     return await pReadFile(path)
   } catch (error) {
-    throw new TestOpenApiError(`Could not load task file '${path}': ${error.message}`)
+    throw new TestOpenApiError(
+      `Could not load task file '${path}': ${error.message}`,
+    )
   }
 }
 

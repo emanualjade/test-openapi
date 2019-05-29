@@ -35,7 +35,7 @@ const runAll = async function({
       plugins,
       input: task,
       context: contextA,
-      errorHandler: runPluginHandler,
+      onError,
       stopFunc,
     })
   } catch (error) {
@@ -151,7 +151,7 @@ const throwRecursiveError = function({ task, error, getError }) {
 // We do this by attaching it to `error.task`, then extracting it on a top-level
 // error handler.
 // The error is finally set to `task.error`
-const runPluginHandler = function(error, task) {
+const onError = function(error, task) {
   // Recursive tasks already have `error.task` defined
   if (error.task === undefined) {
     // eslint-disable-next-line fp/no-mutation, no-param-reassign

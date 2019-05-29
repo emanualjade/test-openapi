@@ -49,10 +49,13 @@ const testMergeRegExp = function(merge, key) {
   try {
     return testRegExp(merge, key)
   } catch (error) {
-    throw new TestOpenApiError(`'task.merge' '${merge}' is invalid: ${error.message}`, {
-      value: merge,
-      property: 'task.merge',
-    })
+    throw new TestOpenApiError(
+      `'task.merge' '${merge}' is invalid: ${error.message}`,
+      {
+        value: merge,
+        property: 'task.merge',
+      },
+    )
   }
 }
 

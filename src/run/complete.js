@@ -6,8 +6,8 @@ export const completeTask = async function({ task, context, plugins }) {
     // `task` cannot be modified
     await runHandlers({ type: 'complete', plugins, input: task, context })
     return task
-  // Errors in `complete` handlers return `task.error`, just like the ones in
-  // `run` handlers
+    // Errors in `complete` handlers return `task.error`, just like the ones in
+    // `run` handlers
   } catch (error) {
     return { ...task, error }
   }

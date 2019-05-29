@@ -1,5 +1,4 @@
 import { reduceAsync } from '../utils/reduce.js'
-import { addErrorHandler } from '../errors/handler.js'
 
 // Run plugin `handlers` of a given `type`
 // Handlers will reduce over `input`. Their return values gets shallowly merged
@@ -11,17 +10,12 @@ export const runHandlers = function({
   plugins,
   input,
   context,
-  errorHandler,
+  onError,
   stopFunc,
   mergeReturn = defaultMergeReturn,
 }) {
   const contextA = getContext({ context, plugins })
-  const handlers = getHandlers({
-    plugins,
-    type,
-    errorHandler,
-    context: contextA,
-  })
+  const handlers = getHandlers({ plugins, type, onError, context: contextA })
 
   return reduceAsync(handlers, runHandler, {
     prevVal: input,
@@ -35,10 +29,10 @@ const getContext = function({ context, plugins }) {
   return { ...context, pluginNames, _plugins: plugins }
 }
 
-const getHandlers = function({ plugins, type, errorHandler, context }) {
+const getHandlers = function({ plugins, type, onError, context }) {
   return plugins
     .flatMap(plugin => getPluginHandlers({ plugin, type }))
-    .map(handler => wrapHandler({ handler, errorHandler, context }))
+    .map(handler => callHandler.bind(null, { handler, onError, context }))
 }
 
 const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
@@ -57,44 +51,30 @@ const getPluginHandlers = function({ plugin, plugin: { name }, type }) {
   return handlersB
 }
 
-const wrapHandler = function({
-  handler: { func, name },
-  errorHandler,
-  context,
-}) {
-  const handlerA = callHandler.bind(null, { func, context })
-
-  const handlerB = addErrorHandler(
-    handlerA,
-    pluginErrorHandler.bind(null, name),
-  )
-  const handlerC = wrapErrorHandler({ handler: handlerB, errorHandler })
-  return handlerC
-}
-
-const callHandler = function({ func, context }, input) {
-  return func(input, context)
+const callHandler = async function(
+  { handler: { func, name }, onError, context },
+  input,
+) {
+  try {
+    return await func(input, context)
+  } catch (error) {
+    pluginErrorHandler({ name, error, input, onError })
+  }
 }
 
 // Add `error.module` to every thrown error
-const pluginErrorHandler = function(name, error) {
+const pluginErrorHandler = function({ name, error, input, onError }) {
   // Recursive handlers already have `error.module` defined
   if (error.module === undefined) {
     // eslint-disable-next-line fp/no-mutation, no-param-reassign
     error.module = `plugin-${name}`
   }
 
-  throw error
-}
-
-// Extra error handling logic
-const wrapErrorHandler = function({ handler, errorHandler }) {
-  if (errorHandler === undefined) {
-    return handler
+  if (onError !== undefined) {
+    onError(error, input)
   }
 
-  const handlerA = addErrorHandler(handler, errorHandler)
-  return handlerA
+  throw error
 }
 
 const runHandler = function(input, handler) {

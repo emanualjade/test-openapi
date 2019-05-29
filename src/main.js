@@ -1,5 +1,4 @@
 import { handleFinalFailure } from './errors/final.js'
-import { addErrorHandler } from './errors/handler.js'
 import { topLevelHandler } from './errors/top.js'
 import { loadConfig } from './config/main.js'
 import { getTasks } from './tasks/get.js'
@@ -24,50 +23,55 @@ import { endTasks } from './run/end.js'
 //  - run each `plugin.end()`
 // Return tasks on success
 // If any task failed, throw an error instead
-const eRun = async function(config = {}) {
-  const configA = loadConfig({ config })
+export const run = async function(config = {}) {
+  try {
+    const configA = loadConfig({ config })
 
-  const tasks = await getTasks({ config: configA })
+    const tasks = await getTasks({ config: configA })
 
-  const plugins = loadPlugins({ config: configA })
+    const plugins = loadPlugins({ config: configA })
 
-  const tasksA = await ePerformRun({ config: configA, tasks, plugins })
-  return tasksA
+    const tasksA = await performRun({ config: configA, tasks, plugins })
+    return tasksA
+  } catch (error) {
+    topLevelHandler(error, config)
+  }
 }
-
-export const run = addErrorHandler(eRun, topLevelHandler)
 
 // Fire all plugin handlers for all tasks
 const performRun = async function({ config, tasks, plugins }) {
-  const { tasks: tasksA, allTasks } = await loadTasks({
-    config,
-    tasks,
-    plugins,
-  })
-  const context = { _tasks: tasksA, _allTasks: allTasks }
+  try {
+    const { tasks: tasksA, allTasks } = await loadTasks({
+      config,
+      tasks,
+      plugins,
+    })
+    const context = { _tasks: tasksA, _allTasks: allTasks }
 
-  const startData = await startTasks({ config, context, plugins })
-  const contextA = { ...context, startData }
+    const startData = await startTasks({ config, context, plugins })
+    const contextA = { ...context, startData }
 
-  const tasksB = await fireTasks({ tasks: tasksA, context: contextA, plugins })
+    const tasksB = await fireTasks({
+      tasks: tasksA,
+      context: contextA,
+      plugins,
+    })
 
-  await endTasks({ tasks: tasksB, config, context: contextA, plugins })
+    const tasksC = await finalizeTasks({
+      tasks: tasksB,
+      config,
+      context: contextA,
+      plugins,
+    })
 
-  const tasksC = removeOriginalTasks({ tasks: tasksB })
-
-  handleFinalFailure({ tasks: tasksC })
-
-  return tasksC
+    return tasksC
+    // Add `error.plugins` to every thrown error
+  } catch (error) {
+    // eslint-disable-next-line fp/no-mutation
+    error.plugins = plugins.map(({ name }) => name)
+    throw error
+  }
 }
-
-// Add `error.plugins` to every thrown error
-const performRunHandler = function(error, { plugins }) {
-  // eslint-disable-next-line fp/no-mutation, no-param-reassign
-  error.plugins = plugins.map(({ name }) => name)
-  throw error
-}
-
-const ePerformRun = addErrorHandler(performRun, performRunHandler)
 
 // Fire all tasks in parallel
 const fireTasks = function({ tasks, context, plugins }) {
@@ -81,4 +85,14 @@ const fireTask = async function({ task, context, plugins }) {
   const taskC = await completeTask({ task: taskA, context, plugins })
 
   return taskC
+}
+
+const finalizeTasks = async function({ tasks, config, context, plugins }) {
+  await endTasks({ tasks, config, context, plugins })
+
+  const tasksA = removeOriginalTasks({ tasks })
+
+  handleFinalFailure({ tasks: tasksA })
+
+  return tasksA
 }

@@ -1,6 +1,7 @@
 import { mapValues } from 'lodash'
 
 import { parseFlat } from '../../../utils/flat.js'
+import { TestOpenApiError } from '../../../errors/error.js'
 import { findBodyHandler } from '../body.js'
 
 // Parse response
@@ -43,14 +44,21 @@ const parseBody = function({ body, headers }) {
   // On bad servers, this could be undefined
   const mime = headers['headers.content-type']
 
-  const { parse: parseFunc } = findBodyHandler({ mime })
+  const { parse: parseFunc, name } = findBodyHandler({ mime })
 
   // Defaults to leaving as is
   if (parseFunc === undefined) {
     return bodyA
   }
 
-  return parseFunc(bodyA)
+  try {
+    return parseFunc(bodyA)
+  } catch (error) {
+    throw new TestOpenApiError(
+      `Could not read response body as ${name}: ${error.message}`,
+      { property: 'task.call.response.body' },
+    )
+  }
 }
 
 const trimBody = function({ body }) {

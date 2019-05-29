@@ -1,6 +1,5 @@
 import { getPath } from '../../../utils/path.js'
 import { BugError } from '../../../errors/error.js'
-import { addErrorHandler } from '../../../errors/handler.js'
 import { isTemplateName } from '../../../template/parse.js'
 
 import { wrapTemplateVars } from './check.js'
@@ -31,7 +30,7 @@ const getPluginVars = function({
     return
   }
 
-  const vars = eGetVars({ plugin, context })
+  const vars = getVars({ plugin, context })
 
   validateVarNames({ vars, plugin })
 
@@ -40,13 +39,16 @@ const getPluginVars = function({
   return { [name]: varsA }
 }
 
-const getVars = function({ plugin: { template }, context }) {
+const getVars = function({ plugin, plugin: { template }, context }) {
   if (typeof template !== 'function') {
     return template
   }
 
-  const vars = template(context)
-  return vars
+  try {
+    return template(context)
+  } catch (error) {
+    getVarsHandler(error, { plugin })
+  }
 }
 
 // Add `error.message|module` when `plugin.template` throws
@@ -61,8 +63,6 @@ const getVarsHandler = function(error, { plugin: { name } }) {
 
   throw error
 }
-
-const eGetVars = addErrorHandler(getVars, getVarsHandler)
 
 // Validate `plugin.template` return value
 const validateVarNames = function({ vars, plugin }) {

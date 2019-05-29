@@ -3,7 +3,6 @@ import { parse, tokensToFunction } from 'path-to-regexp'
 import { getPath } from '../../../../utils/path.js'
 import { removePrefixes } from '../../../../utils/prefix.js'
 import { TestOpenApiError } from '../../../../errors/error.js'
-import { addErrorHandler } from '../../../../errors/handler.js'
 
 // Replace `url` request parameters to the request URL.
 // Can replace in both `task.call.server` and `task.call.path`
@@ -78,19 +77,17 @@ const serializeUrl = function({ tokens, urlParams }) {
   // We run `tokensToFunction` on each `token` instead of once on all of them
   // so the error handler knows which `token` failed without parsing the
   // error message
-  return tokens.map(token => eSerializeToken({ token, urlParams })).join('')
+  return tokens.map(token => serializeToken({ token, urlParams })).join('')
 }
 
+// This also performs `encodeURIComponent()`
 const serializeToken = function({ token, urlParams }) {
-  // This also performs `encodeURIComponent()`
-  return tokensToFunction([token])(urlParams)
+  try {
+    return tokensToFunction([token])(urlParams)
+  } catch (error) {
+    throwError(`is invalid: ${error.message}`, token)
+  }
 }
-
-const serializeTokenHandler = function({ message }, { token: { name } }) {
-  throwError(`is invalid: ${message}`, { name })
-}
-
-const eSerializeToken = addErrorHandler(serializeToken, serializeTokenHandler)
 
 const throwError = function(message, { name }) {
   const property = getPath(['task', 'call', `url.${name}`])

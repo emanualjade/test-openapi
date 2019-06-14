@@ -77,7 +77,9 @@ const fitContent = function({ content }) {
 }
 
 const fitLine = function(string) {
-  const stringA = cliTruncate(string, LINE_SIZE - 1)
+  const stringA = cliTruncate(string, LINE_SIZE - 1, {
+    preferTruncationOnSpace: true,
+  })
   const stringB = stringA.padEnd(LINE_SIZE)
   return stringB
 }

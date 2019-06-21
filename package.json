@@ -36,7 +36,7 @@
     "cli-truncate": "^2.0.0",
     "core-js": "^3.1.4",
     "cross-fetch": "^3.0.4",
-    "deepmerge": "^3.2.1",
+    "deepmerge": "^3.3.0",
     "emphasize": "^2.1.0",
     "faker": "^4.1.0",
     "fast-glob": "^2.2.7",

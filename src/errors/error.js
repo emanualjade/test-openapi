@@ -1,6 +1,5 @@
 // We use classes because that's the most conventional way of extending errors
 /* eslint-disable fp/no-class, fp/no-this */
-// eslint-disable-next-line import/no-unused-modules
 import {
   isSimpleSchema,
   getSimpleSchemaConstant,

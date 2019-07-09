@@ -40,7 +40,7 @@
     "emphasize": "^2.1.0",
     "faker": "^4.1.0",
     "fast-glob": "^3.0.2",
-    "is-mergeable-object": "^1.1.0",
+    "is-mergeable-object": "^1.1.1",
     "js-yaml": "^3.13.1",
     "json-schema-faker": "0.5.0-rc15",
     "lodash": "^4.17.10",
